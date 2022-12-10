@@ -11,14 +11,16 @@ import { useHistory, useRouteMatch } from "react-router-dom";
 import Banner from '../../../../../assets/images/Popup-Side.svg';
 import InputField from '../../../../../components/InputField/InputField';
 import SelectFields from '../../../../../components/SelectField/SelectField';
+import { getMoleculeList } from "../../../../../services/viewCreationPublishing";
 import "./eLogbookForm.scss";
 
 function ElogForm({ isTemplateModal }) {
-	
+
 	const history = useHistory();
 	const match = useRouteMatch();
 
 	const [isModalVisible, setIsModalVisible] = useState(isTemplateModal);
+	const [moleculeList, setMoleculeList] = useState([])
 
 	const [formData, setFormData] = useState({
 		Tname: '',
@@ -27,7 +29,27 @@ function ElogForm({ isTemplateModal }) {
 
 	useEffect(() => {
 		setIsModalVisible(isTemplateModal)
-	},[isTemplateModal])
+	}, [isTemplateModal])
+
+	useEffect(() => {
+		getMoleculeLists()
+	}, [])
+
+	const getMoleculeLists = async () => {
+		let req = {
+			data: {},
+			parameters: {}
+		}
+		let molecule_list = await getMoleculeList(req)
+		if (molecule_list.Data && molecule_list.Data.hierarchy) {
+			let tabs_list_data = molecule_list.Data.hierarchy
+			let tabs_list_array = []
+			tabs_list_data.forEach(v => {
+				tabs_list_array.push(v.ds_name)
+			});
+			setMoleculeList(tabs_list_array)
+		}
+	}
 
 
 	const handleCancel = () => {
@@ -40,13 +62,15 @@ function ElogForm({ isTemplateModal }) {
 		});
 	}
 
+
+
 	const handleBack = () => {
 		setIsModalVisible(false);
 	}
 
 	const data = ["Hour", "Minutes", "Seconds"];
 
-
+	console.log(formData)
 	return (
 
 		<Modal
@@ -94,8 +118,8 @@ function ElogForm({ isTemplateModal }) {
 						label="What product are you creating this template for?"
 						placeholder="Select product"
 						name="Pname"
-						selectList={data}
-						// selectedValue={formData.Pname}
+						selectList={moleculeList}
+						selectedValue={formData.Pname}
 						onChangeSelect={(e) =>
 							setFormData({ ...formData, Pname: e })
 						}
