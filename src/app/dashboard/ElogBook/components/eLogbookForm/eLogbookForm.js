@@ -55,7 +55,6 @@ function ElogForm({ isTemplateModal }) {
 	const handleCancel = () => {
 		setIsModalVisible(false);
 	};
-	console.log(isTemplateModal, isModalVisible, formData);
 	const handleNext = () => {
 		history.push({
 			pathname: `${match.url}/new-template`, formData: formData
@@ -70,7 +69,6 @@ function ElogForm({ isTemplateModal }) {
 
 	const data = ["Hour", "Minutes", "Seconds"];
 
-	console.log(formData)
 	return (
 
 		<Modal
