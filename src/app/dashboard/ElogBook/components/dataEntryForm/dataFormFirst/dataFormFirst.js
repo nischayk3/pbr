@@ -410,25 +410,24 @@ class DataFormFirst extends Component {
 		});
 		return (
 			<div className="custom-table-wrapper">
-				<div>
+				{/* <div>
 					<span className="form-head-ing">
 						{this.props.title} [{this.props.size}]
 					</span>
 					<span >
 						<span className="see-all" onClick={() => setDrawerVisible(!drawervisible)}>See all records  </span>
-						<span className="buttons-head">
-							<Button className="delete-btn" onClick={() => this.onSaveTable(true)} >Delete</Button>
-							<Button className="publish-btn">Publish</Button>
-							<Button className="publish-btn" onClick={() => this.onSaveTable(false)}>Save</Button>
-						</span>
 					</span>
 				</div>
 				<br />
-				<hr className="divider" />
+				<hr className="divider" /> */}
 
 				<div className="form-details">
 					<span>
-						<span className="form-heading">Record {this.props.recording_id}  <span>&nbsp;&nbsp;&nbsp;&bull;</span> {this.props.status}</span>  </span>
+						<span className="form-heading">Record {this.props.batch}  <span>&nbsp;&nbsp;&nbsp;&bull;</span> {this.props.status}</span>						<span className="buttons-head">
+							<Button className="delete-btn" onClick={() => this.onSaveTable(true)} icon={<DeleteTwoTone twoToneColor="red" />} />
+							<Button className="delete-btn">Publish</Button>
+							<Button className="publish-btn" onClick={() => this.onSaveTable(false)}>Save</Button>
+						</span>  </span>
 				</div >
 				<div className="form-details">
 
@@ -455,31 +454,33 @@ class DataFormFirst extends Component {
 					{columns && columns.length > 0 &&
 						<div className="table-wrapper">
 							<div className="table-head">
-								<div >
+								<div style={{ display: 'inline-block' }}>
 									<p className="table-heading"><Button
 										className="add_new_row"
 										onClick={this.onAddRow}
 										icon={<PlusOutlined />}
-										// style={{ left: `${columns.length * 10 > 80 ? '66%' : columns.length * 8 + '%'}` }}
+										style={{ float: 'right' }}
 										id="editable-table-button-add-new-user"
 									>
 										Add new row
 									</Button>
 									</p>
+									<Table
+										className="first-Table"
+										rowClassName={() => "editable-row"}
+										bordered
+										dataSource={dataSource}
+										columns={columns}
+										// style={{ width: '100%' }}
+										pagination={{
+											position: ['bottomRight'],
+											size: 'small'
+										}}
+										// scroll={dataSource.length > 0 && { x: 'max-content' }}
+										scroll={dataSource.length > 0 && { x: 800 }}
+									/>
 								</div>
-								<Table
-									className="first-Table"
-									rowClassName={() => "editable-row"}
-									bordered
-									dataSource={dataSource}
-									columns={columns}
-									style={{ width: columns.length * 200 }}
-									pagination={{
-										position: ['bottomRight'],
-										size: 'small'
-									}}
-									scroll={dataSource.length > 0 && { x: 400 }}
-								/>
+
 							</div>
 						</div>}
 

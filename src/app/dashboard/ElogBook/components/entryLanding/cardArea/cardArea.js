@@ -82,7 +82,7 @@ export default function DataEntryCardArea(props) {
                             <div className="template-card-div" >
                                 <br />
                                 <div className="template-card-head">
-                                    <p className="template-card-heading" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{i.template_disp_id + '_' + i.version}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <Button className="download-button-small" icon={<DownloadOutlined />} /> <Button className="download-button-small" icon={<UploadOutlined />} /></p>
+                                    <p className="template-card-heading" > {i.template_disp_id + '_' + i.version}  <Button className="download-button-small" icon={<DownloadOutlined />} /> <Button className="download-button-small" icon={<UploadOutlined />} /></p>
                                 </div>
                                 <div className="template-card-content">
                                     <div className="template-card-subheading">Product &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:<span className="template-card-subheading-data">{i.molecule}</span></div>

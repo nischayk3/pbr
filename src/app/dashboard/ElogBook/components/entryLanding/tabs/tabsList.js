@@ -102,6 +102,7 @@ export default function DataEntryFormTabs(props) {
                     )
                 })
             }
+
         </div>
     )
 
