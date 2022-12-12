@@ -1,5 +1,5 @@
 import { PlusOutlined } from "@ant-design/icons";
-import { Form, Button, Col, Input, Popconfirm, Row, Select, Table, Typography, Checkbox } from "antd";
+import { Button, Checkbox, Col, Form, Input, Popconfirm, Row, Select, Table, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import "./metaData.scss";
 
@@ -94,7 +94,7 @@ function metaData({ sendDataToParent, Alldata }) {
 		setEditingKey('');
 	};
 	const save = async (key) => {
-				try {
+		try {
 			const row = await form.validateFields();
 			const newData = [...moleculeData];
 			const index = newData.findIndex((item) => key.key === item.key);
