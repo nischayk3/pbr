@@ -11,7 +11,7 @@ import urlJson from './urls.json';
 
 const { Option } = Select;
 
-/* istanbul ignore next */
+
 const Estimator = (props) => {
 	const {
 		estimatorPopupData,

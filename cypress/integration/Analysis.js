@@ -115,7 +115,7 @@ describe("Analysis", () => {
 		).click({ force: true });
 		cy.get(
 			".header-title > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input"
-		).type("v238{enter}", { force: true });
+		).type("v475{enter}", { force: true });
 		cy.get(".ant-table-row > :nth-child(1)").click({ force: true });
 
 		cy.log("Click Ok");
@@ -144,6 +144,7 @@ describe("Analysis", () => {
 
 	it("Preprocessing Tab", () => {
 		cy.log("Preprocessing Tab");
+		cy.wait(10000);
 		cy.get(".ant-select-selection-overflow").click({ force: true });
 		cy.wait(1000);
 		cy.log("Select Option from  Tab");
@@ -152,7 +153,11 @@ describe("Analysis", () => {
 		).click({ force: true });
 		cy.get(":nth-child(2) > .ant-col > .ant-btn > span").click({ force: true });
 		cy.wait(1000);
+		cy.get('.ant-select-clear > .anticon > svg > path').click({ force: true });
+		cy.get(":nth-child(2) > .ant-col > .ant-btn > span").click({ force: true });
+		cy.wait(1000);
 		cy.log("Select checkbox in preprocess Tab");
+		cy.get('.ant-table-selection-extra > .ant-dropdown-trigger').click({ force: true })
 		cy.get(
 			".ant-table-selection-column > .ant-checkbox-wrapper > .ant-checkbox > .ant-checkbox-input"
 		).check({ force: true });
@@ -166,11 +171,24 @@ describe("Analysis", () => {
 			"modal tab is the response from the api itself no function of the tab"
 		);
 		cy.wait(5000);
+		cy.get(".ant-tabs-nav-list > :nth-child(3)").click();
 	});
 
+	it("Modal Simple Imputer Node", () => {
+		cy.wait(10000);
+		cy.get('[data-id="imp-3"] > [style="text-align: center;"] > [style="display: flex; flex-direction: column; align-items: center;"] > button').click();
+		cy.get(':nth-child(3) > .ant-select > .ant-select-selector').click();
+		cy.get(
+			".ant-select-item-option-active > .ant-select-item-option-content"
+		).rightclick({ force: true, multiple: true });
+		cy.get('center').click();
+		cy.get(
+			".ant-select-item-option-active > .ant-select-item-option-content"
+		).click({ force: true, multiple: true });
+		cy.get('.drawer-details > .ant-btn').click();
+	})
+
 	it("Modal Feature Union Node", () => {
-		cy.get(".ant-tabs-nav-list > :nth-child(3)").click();
-		cy.wait(5000);
 		cy.get('.react-flow__node-FeatureUninonNode > [style="text-align: center;"] > [style="display: flex; flex-direction: column; align-items: center;"] > button').click();
 		cy.get('.drawer-details > .ant-btn > span').click();
 	});
