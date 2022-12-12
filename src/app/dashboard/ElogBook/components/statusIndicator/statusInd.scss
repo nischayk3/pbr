@@ -1,0 +1,40 @@
+.Draft{
+    height: 12px;
+    width: 12px;
+    background-color: #363636;
+    border-radius: 50%;
+    display: inline-block;
+}
+.Awaitingapproval{
+    height: 12px;
+    width: 12px;
+    background-color: #F6BA60;
+    border-radius: 50%;
+    display: inline-block;
+}
+.Approved{
+    height: 12px;
+    width: 12px;
+    background-color: #A4F588;
+    border-radius: 50%;
+    display: inline-block;
+}
+.Rejected{
+    height: 12px;
+    width: 12px;
+    background-color: #D64045;
+    border-radius: 50%;
+    display: inline-block;
+}
+.labeltext{
+    font-family: 'Roboto';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+// line-height: 10px;
+padding-right: 15px;
+/* identical to box height, or 83% */
+
+padding-left: 5px;
+color: #232323;
+}

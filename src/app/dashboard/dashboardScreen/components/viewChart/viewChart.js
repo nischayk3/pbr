@@ -555,7 +555,13 @@ const ViewChart = (props, ref) => {
 							if (item.mode === 'markers') {
 								let pointIndex = item.text.findIndex(x => x == point);
 								if (pointIndex >= 0) {
-									item.marker.color[pointIndex] = 'orange';
+									if (Array.isArray(item.marker.color)) {
+										item.marker.color[pointIndex] = 'orange';
+
+									}
+									else {
+										item.marker.color = 'orange';
+									}
 								}
 								item.selectedpoints = null;
 							}
