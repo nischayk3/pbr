@@ -72,17 +72,25 @@ const Workflow = () => {
 				dispatch(showLoader());
 				const tableResponse = await getTableData(req);
 				/* istanbul ignore next */
+				dispatch(hideLoader());
+				/* istanbul ignore next */
 				if (tableResponse["status-code"] === 200) {
 					/* istanbul ignore next */
 					setColumns(tableResponse.Data.config);
 					/* istanbul ignore next */
 					setDataSource(tableResponse.Data.data);
-					/* istanbul ignore next */
-					dispatch(hideLoader());
+
 				} else if (tableResponse["status-code"] === 404) {
 					setColumns(tableResponse.Data.config);
 					setDataSource(tableResponse.Data.data);
-					dispatch(hideLoader());
+					dispatch(showNotification("error", tableResponse.Message));
+				} else if (tableResponse["status-code"] === 400) {
+					setColumns([]);
+					setDataSource([]);
+					dispatch(showNotification("error", tableResponse.Message));
+				} else {
+					setColumns([]);
+					setDataSource([]);
 					dispatch(showNotification("error", tableResponse.Message));
 				}
 			} catch (error) {

@@ -350,7 +350,7 @@ const ViewPageAnalysis = () => {
 				handleClose={handleClose}
 				screenName="Analytics"
 				PublishResponse={PublishResponse}
-				appType="ANALYTICS"
+				appType="ANALYSIS"
 				dispId={selectedViewData.viewData.pipeline_id}
 				version='1'
 				status={approveReject}
