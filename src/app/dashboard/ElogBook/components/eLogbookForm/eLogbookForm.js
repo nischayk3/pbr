@@ -44,7 +44,7 @@ function ElogForm({ isTemplateModal }) {
 		setIsModalVisible(false);
 	}
 
-	const data = ["Hour", "Minutes", "Seconds"];
+	const data = ["Product1", "Product2", "Product3"];
 
 
 	return (

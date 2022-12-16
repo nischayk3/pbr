@@ -18,28 +18,34 @@ const { Item } = Form;
 const Data = [
 	{
 		key: 1,
-		MetaData: "custom mete data",
-		KeyData: "Data1",
-		ValueData: "Value1",
-		selectDrop: true,
-		Allowedit: false,
+			MetaData: "",
+			KeyData: "",
+			ValueData: "",
+			selectDrop: false,
+			Allowedit: false
+		// key: 1,
+		// MetaData: "",
+		// KeyData: "Data1",
+		// ValueData: "Value1",
+		// selectDrop: true,
+		// Allowedit: false,
 	},
-	{
-		key: 2,
-		MetaData: "custom mete data",
-		KeyData: "Data2",
-		ValueData: "Value2",
-		selectDrop: true,
-		Allowedit: true,
-	},
-	{
-		key: 3,
-		MetaData: "Site",
-		KeyData: "Site",
-		ValueData: "Value3",
-		selectDrop: true,
-		Allowedit: false,
-	},
+	// {
+	// 	key: 2,
+	// 	MetaData: "custom mete data",
+	// 	KeyData: "Data2",
+	// 	ValueData: "Value2",
+	// 	selectDrop: true,
+	// 	Allowedit: true,
+	// },
+	// {
+	// 	key: 3,
+	// 	MetaData: "Site",
+	// 	KeyData: "Site",
+	// 	ValueData: "Value3",
+	// 	selectDrop: true,
+	// 	Allowedit: false,
+	// },
 ]
 
 const EbookStep = () => {
@@ -66,7 +72,7 @@ const EbookStep = () => {
 			title:"Meta data",
 			data: <div className="form-wrapper">
 
-			<div className="metadata-subheader ">
+			{/* <div className="metadata-subheader ">
 				<div className="button-layout">
 					<div className="layout-button">
 						<span className="data-button">
@@ -82,13 +88,14 @@ const EbookStep = () => {
 						className="custom-secondary-btn"
 						type="primary"
 						onClick={(e) => handleNext(e)}
+						disabled = {state.length > 1 ? false : true}
 					>
 						Next
 					</Button>
 					</div>
 					
 				</div>
-			</div>
+			</div> */}
 
 
 			<div>
@@ -141,6 +148,7 @@ const EbookStep = () => {
 							className={newform === false ? "custom-primary-btn":"custom-secondary-btn"}
 							type="primary"
 							onClick={(e) => handleNext(e)}
+							disabled
 						>
 							Save form
 						</Button>
@@ -148,6 +156,7 @@ const EbookStep = () => {
 							className={newform === false ? "pbbutton custom-primary-btn":"pbbutton custom-secondary-btn"}
 							type="primary"
 							onClick={(e) => handleNext(e)}
+							disabled
 						>
 							Publish form
 						</Button>
@@ -193,7 +202,7 @@ const EbookStep = () => {
 			title:"Meta data",
 			data: <div className="form-wrapper">
 
-			<div className="metadata-subheader ">
+			{/* <div className="metadata-subheader ">
 				<div className="button-layout">
 					<div className="layout-button">
 						<span className="data-button">
@@ -215,7 +224,7 @@ const EbookStep = () => {
 					</div>
 					
 				</div>
-			</div>
+			</div> */}
 
 
 			<div>
