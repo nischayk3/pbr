@@ -14,7 +14,7 @@ import {
 } from 'antd';
 import React, { useEffect, useState } from 'react';
 import ImageMapper from 'react-image-mapper';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams,useRouteMatch,useHistory } from 'react-router-dom';
 
 import {
 	DeleteOutlined, LeftOutlined, MinusSquareTwoTone, MonitorOutlined, PlusSquareTwoTone, RightOutlined
@@ -111,7 +111,8 @@ function PaperBatchRecordsTemplate() {
     ];
     const modesValues = [{label:"Word",value:"word"},{label:"Line",value:"line"},{label:"Key-Value",value:"key_value"},{label:"Selection Element",value:"selection_element"},
     { label:"Cell",value:"cell"},{label:"Parameters",value:"parameters"}]
-
+    const match = useRouteMatch();
+    let history = useHistory();
     const mat_batch = useSelector((state) => state?.pbrReducer?.matBatchInfo)
     const location = useLocation()
     const { id } = useParams()
@@ -1990,16 +1991,18 @@ function PaperBatchRecordsTemplate() {
                                         className='custom-primary-btn'
                                         style={{ marginRight: 10 }}
                                         onClick={() => {
-                                            setIsPublish(true);
-                                            setApproveReject("R");
+                                            // setIsPublish(true);
+                                            // setApproveReject("R");
+                                            history.push(`/dashboard/signature_module?status=R&dispId=${templateId}&version=${templateVersion}`);
                                         }}>
                                         Reject
                                     </Button>
                                     <Button className='custom-primary-btn'
                                         style={{ marginRight: 10 }}
                                         onClick={() => {
-                                            setIsPublish(true);
-                                            setApproveReject("A");
+                                            history.push(`/dashboard/signature_module?status=A&dispId=${templateId}&version=${templateVersion}`);
+                                            // setIsPublish(true);
+                                            // setApproveReject("A");
                                         }}
                                     >Approve</Button>
                                     <Button style={{ marginRight: 10 }} className='custom-secondary-btn'
