@@ -303,8 +303,8 @@ const ViewPageAnalysis = () => {
 									setIsPublish(true);
 									setApproveReject("P");
 								}}
-								disabled
-							// disabled={selectedViewData.viewData.pipeline_status === 'AWAP' || selectedViewData.viewData.pipeline_status === 'APRD'}
+
+								disabled={selectedViewData.viewData.pipeline_status === 'AWAP' || selectedViewData.viewData.pipeline_status === 'APRD'}
 							>
 								<CloudUploadOutlined />
 								Publish
@@ -348,11 +348,11 @@ const ViewPageAnalysis = () => {
 			<Signature
 				isPublish={isPublish}
 				handleClose={handleClose}
-				screenName="Analysis"
+				screenName="Analytics"
 				PublishResponse={PublishResponse}
 				appType="ANALYSIS"
 				dispId={selectedViewData.viewData.pipeline_id}
-				// version={postChartData.data && postChartData.data[0].chart_version}
+				version='1'
 				status={approveReject}
 			/>
 			{executedModel && <ModalComponent isModalVisible={executedModel} closable={false} centered>

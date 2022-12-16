@@ -1,208 +1,209 @@
 .content-cards {
-    margin-top: 20px;
-    margin-left: 15px;
-    height: 100vh;
+	margin-top: 20px;
+	margin-left: 15px;
+	height: 100vh;
 }
 
 .download-button {
-    height: 28px;
-    width: 139px;
-    background: #FFFFFF;
-    border-radius: 4px;
-    border: 1px solid #162154;
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 22px;
-    margin-left: 16px;
+	height: 28px;
+	width: 139px;
+	background: #FFFFFF;
+	border-radius: 4px;
+	border: 1px solid #162154;
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 22px;
+	margin-left: 16px;
 }
 
 .download-button-small {
-    height: 24px;
-    width: 24px;
-    background: #FFFFFF;
-    border-radius: 4px;
-    border: 1px solid #162154;
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 22px;
-    margin-left: 16px;
-    margin-left: 16px;
+	height: 24px;
+	width: 24px;
+	background: #FFFFFF;
+	border-radius: 4px;
+	border: 1px solid #162154;
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 22px;
+	margin-left: 16px;
+	margin-left: 16px;
 }
 
 .use-template {
-    width: 242px;
-    height: 32px;
-    color: white;
-    background: #093185;
-    border-radius: 4px;
-    margin-top: 17px;
-    margin-left: 32px;
+	width: 242px;
+	height: 32px;
+	color: white;
+	background: #093185;
+	border-radius: 4px;
+	margin-top: 17px;
+	margin-left: 32px;
 
 }
 
 .empty-temp {
-    margin-left: 30%;
-    margin-top: 15%;
+	margin-left: 30%;
+	margin-top: 15%;
 
 }
 
 .selected_mol {
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 22px;
-    /* identical to box height, or 138% */
-    margin-left: 15px;
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 500;
+	font-size: 16px;
+	line-height: 22px;
+	/* identical to box height, or 138% */
+	margin-left: 15px;
 
 
-    color: #7E7E7E;
+	color: #7E7E7E;
 }
 
 .head-input {
-    width: 300px;
-    float: right;
+	width: 300px;
+	float: right;
 }
 
 
 .empty-text {
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 300;
-    font-size: 18px;
-    line-height: 22px;
-    text-align: center;
-    color: #000000;
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 300;
+	font-size: 18px;
+	line-height: 22px;
+	text-align: center;
+	color: #000000;
 }
 
 .content-card {
-    margin-left: 15px;
-
-    .ant-card-head {
-        background-color: white !important;
-        min-height: 10px !important;
-        height: auto !important;
-        padding: 0px;
-        margin-left: 30px;
-        margin-top: 20px;
-    }
-
-    .ant-card-body {
-        margin-left: 30px;
-        margin-bottom: 30px;
-    }
-
-    .ant-tabs-ink-bar {
-        color: #162154;
-
-    }
+	margin-left: 15px;
 
 
-    .ant-tabs-tab-btn {
-        font-family: 'Roboto';
-        font-style: normal;
-        font-weight: 500;
-        font-size: 14px;
-        line-height: 22px;
-        color: #000000;
-    }
+	.ant-card-head {
+		background-color: white !important;
+		min-height: 10px !important;
+		height: auto !important;
+		padding: 0px;
+		margin-left: 30px;
+		margin-top: 20px;
+	}
+
+	.ant-card-body {
+		margin-left: 30px;
+		margin-bottom: 30px;
+	}
+
+	.ant-tabs-ink-bar {
+		color: #162154;
+
+	}
 
 
-    .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
-        color: var(--primary-color);
-    }
+	.ant-tabs-tab-btn {
+		font-family: 'Roboto';
+		font-style: normal;
+		font-weight: 500;
+		font-size: 14px;
+		line-height: 22px;
+		color: #000000;
+	}
 
-    .ant-tabs-ink-bar {
-        background: var(--primary-color);
-        border: none;
-    }
 
-    .ant-tabs-tab:hover {
-        color: #486b69 !important;
-    }
+	.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+		color: var(--primary-color);
+	}
 
-    .template-card-div {
-        height: 241px;
-        width: 306px;
-        border-radius: 10px;
-        background: rgba(255, 0, 0, 0.1);
-        border-radius: 10px;
-        margin-top: 25px;
-    }
+	.ant-tabs-ink-bar {
+		background: var(--primary-color);
+		border: none;
+	}
 
-    .template-card-heading {
+	.ant-tabs-tab:hover {
+		color: #486b69 !important;
+	}
 
-        font-family: 'Roboto';
-        font-style: normal;
-        font-weight: 500;
-        font-size: 20px;
-        line-height: 22px;
-        margin-left: 32px;
-        margin-bottom: 33px;
-        color: #162154;
-    }
+	.template-card-div {
+		height: 241px;
+		width: 306px;
+		border-radius: 10px;
+		background: rgba(255, 0, 0, 0.1);
+		border-radius: 10px;
+		margin-top: 25px;
+	}
 
-    .template-card-status-circle {
-        height: 14px;
-        top: 10%;
-        width: 14px;
-        border-radius: 0px;
-        background: #A4F588;
-        border-radius: 50%;
-        margin-left: 43px;
-        margin-top: 10px;
-    }
+	.template-card-heading {
 
-    .template-card-content {
-        margin-top: 23px;
-    }
+		font-family: 'Roboto';
+		font-style: normal;
+		font-weight: 500;
+		font-size: 20px;
+		line-height: 22px;
+		margin-left: 32px;
+		margin-bottom: 33px;
+		color: #162154;
+	}
 
-    .template-card-subheading {
-        margin-top: 12px;
-        font-family: 'Roboto';
-        font-style: normal;
-        font-weight: 500;
-        font-size: 16px;
-        line-height: 22px;
-        margin-left: 32px;
-        color: #262626;
-    }
+	.template-card-status-circle {
+		height: 14px;
+		top: 10%;
+		width: 14px;
+		border-radius: 0px;
+		background: #A4F588;
+		border-radius: 50%;
+		margin-left: 43px;
+		margin-top: 10px;
+	}
 
-    .template-card-subheading-data {
-        font-family: 'Roboto';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 16px;
-        line-height: 22px;
-        margin-left: 22px;
-        color: #262626;
-    }
+	.template-card-content {
+		margin-top: 23px;
+	}
 
-    .template-card-subheading-data-inside {
-        font-family: 'Roboto';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 12px;
-        line-height: 22px;
-        margin-left: 22px;
-        color: #262626;
-    }
+	.template-card-subheading {
+		margin-top: 12px;
+		font-family: 'Roboto';
+		font-style: normal;
+		font-weight: 500;
+		font-size: 16px;
+		line-height: 22px;
+		margin-left: 32px;
+		color: #262626;
+	}
 
-    .approved-bar {
-        height: 22px;
-        width: 67px;
-        left: 164px;
-        top: 237px;
-        border-radius: 2px;
-        padding: 1px 8px 1px 8px;
-        background: #F6FFED;
-        /* Polar Green / 3 */
+	.template-card-subheading-data {
+		font-family: 'Roboto';
+		font-style: normal;
+		font-weight: 400;
+		font-size: 16px;
+		line-height: 22px;
+		margin-left: 22px;
+		color: #262626;
+	}
 
-        border: 1px solid #B7EB8F;
-        border-radius: 2px;
-    }
+	.template-card-subheading-data-inside {
+		font-family: 'Roboto';
+		font-style: normal;
+		font-weight: 400;
+		font-size: 12px;
+		line-height: 22px;
+		margin-left: 22px;
+		color: #262626;
+	}
+
+	.approved-bar {
+		height: 22px;
+		width: 67px;
+		left: 164px;
+		top: 237px;
+		border-radius: 2px;
+		padding: 1px 8px 1px 8px;
+		background: #F6FFED;
+		/* Polar Green / 3 */
+
+		border: 1px solid #B7EB8F;
+		border-radius: 2px;
+	}
 }

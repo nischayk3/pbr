@@ -18,7 +18,6 @@ const ElogBook = () => {
 			<div className="custom-content-layout">
 				{/* <Landing /> */}
 				<DataEntryForm />
-
 			</div>
 		</div>
 	)

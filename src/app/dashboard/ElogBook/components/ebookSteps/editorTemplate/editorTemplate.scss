@@ -13,77 +13,88 @@
 		color: #4D4D4D;
 	}
 }
+
 .content-layouts {
 	background: #ffffff;
 	padding: 35px;
 }
+
 .ant-layout-content .custom-wrapper .custom-content-layouts {
-    padding: 8px 12px;
-    min-height: calc(100vh - 120px);
-    overflow-y: scroll;
-    height: calc(100vh - 120px);
+	padding: 8px 12px;
+	min-height: calc(100vh - 120px);
+	overflow-y: scroll;
+	height: calc(100vh - 120px);
 
 }
+
 .flex-container {
-    display: flex;
-    // flex-wrap: wrap;
-    flex-direction: row;
-    // position: absolute;
-width: 100%;
-height: 43px;
-left: 78px;
-top: 144px;
-padding: 3px;
-background: #E1E1E1;
-// padding-left: 16px
-  }
-
-  .flex-container > div {
-    padding-right: 0px;  
-    font-family: 'Maven Pro';
-font-style: normal;
-font-weight: 500;
-font-size: 16px;
-line-height: 34px;
-color: #000000;
-display: flex;
+	display: flex;
+	// flex-wrap: wrap;
+	flex-direction: row;
+	// position: absolute;
+	width: 100%;
+	height: 43px;
+	left: 78px;
+	top: 144px;
+	padding: 3px;
+	background: #E1E1E1;
+	// padding-left: 16px
 }
 
-.right-layout{
-    padding-left: 146px;
+.flex-container>div {
+	padding-right: 0px;
+	font-family: 'Maven Pro';
+	font-style: normal;
+	font-weight: 500;
+	font-size: 16px;
+	line-height: 34px;
+	color: #000000;
+	display: flex;
 }
+
+.right-layout {
+	padding-left: 146px;
+}
+
 .editor-part {
-    background-color: #EDECFF;
-    height: 501px;
-// left: 78px;
-// top: 187px;
-position: relative;
+	background-color: #EDECFF;
+	height: 501px;
+	// left: 78px;
+	// top: 187px;
+	position: relative;
 }
-.ant-dropdown-button>.anticon.anticon-down, .ant-dropdown-link>.anticon.anticon-down, .ant-dropdown-trigger>.anticon.anticon-down {
-    padding-left: 7px;
-    font-size: 11px;
+
+.ant-dropdown-button>.anticon.anticon-down,
+.ant-dropdown-link>.anticon.anticon-down,
+.ant-dropdown-trigger>.anticon.anticon-down {
+	padding-left: 7px;
+	font-size: 11px;
 }
-.ant-dropdown-menu{
-    top: 9px;
-    width: 95px;
-height: 100px
-} 
+
+.ant-dropdown-menu {
+	top: 9px;
+	width: 95px;
+	height: 100px
+}
+
 .ant-dropdown-menu-title-content {
-  font-family: 'Roboto';
-font-style: normal;
-font-weight: 400;
-font-size: 14px;
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
 }
-.rigth-control-panel{
-    position: absolute;
-    width: 278px;
-    height: 502px;
-    left: 914px;
-    top: 0px;
-    
-    background: #FFFFFF;
-    border: 1px solid #C2C2C2;
+
+.rigth-control-panel {
+	position: absolute;
+	width: 278px;
+	height: 502px;
+	left: 914px;
+	top: 0px;
+
+	background: #FFFFFF;
+	border: 1px solid #C2C2C2;
 }
+
 // .ant-btn>span {
 //     display: inline-block;
 //     font-family: 'Maven Pro';
@@ -93,173 +104,185 @@ font-size: 14px;
 //     line-height: 22px;
 //     color: #000000;
 // }
-.right-screen{
-    display: flex;
-text-align: end;
-margin-right: 18px;
+.right-screen {
+	display: flex;
+	text-align: end;
+	margin-right: 18px;
 
 }
-.left-screen{
-    padding-left: 14px;
-    width: 100%;
-    // text-align: right;
-    font-family: 'Maven Pro'; 
-     font-style: normal; 
-     font-weight: 500; 
-     font-size: 16px; 
-     line-height: 34px; 
-     color: #000000;
-     display: flex;
+
+.left-screen {
+	padding-left: 14px;
+	width: 100%;
+	// text-align: right;
+	font-family: 'Maven Pro';
+	font-style: normal;
+	font-weight: 500;
+	font-size: 16px;
+	line-height: 34px;
+	color: #000000;
+	display: flex;
 
 }
-.title-text{
-    font-family: 'Maven Pro';
-font-style: normal;
-font-weight: 500;
-font-size: 16px;
-line-height: 22px;
+
+.title-text {
+	font-family: 'Maven Pro';
+	font-style: normal;
+	font-weight: 500;
+	font-size: 16px;
+	line-height: 22px;
 }
 
-.last-dropdown{
-    background-color: #ffffff;
-    
+.last-dropdown {
+	background-color: #ffffff;
+
 }
+
 .dropdown-text {
-    font-family: 'Inter';
-font-style: normal;
-font-weight: 400;
-font-size: 14px;
-line-height: 22px;
-color: #8F8F8F;
+	font-family: 'Inter';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 22px;
+	color: #8F8F8F;
 }
+
 .screen-one {
-    position: absolute;
-    /* width: 1209px; */
-    height: 314px;
-    left: 20px;
-    top: 20px;
-    right: 20px;
-    border: 1px dashed #486BC9;
-    border-radius: 5px;
+	position: absolute;
+	/* width: 1209px; */
+	height: 314px;
+	left: 20px;
+	top: 20px;
+	right: 20px;
+	border: 1px dashed #486BC9;
+	border-radius: 5px;
 }
-.last-dropdown >.ant-select:not(.ant-select-customize-input) .ant-select-selector {
-    width: 121px;
+
+.last-dropdown>.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+	width: 121px;
 }
-.screen-two{
-    padding: 5px;
+
+.screen-two {
+	padding: 5px;
 }
-.column-one{
-    position: absolute;
-    width: 47%;
-    height: 375px;
-    left: 20px;
-    top: 20px;
-    border: 1px dashed #486BC9;
-    border-radius: 5px;
+
+.column-one {
+	position: absolute;
+	width: 47%;
+	height: 375px;
+	left: 20px;
+	top: 20px;
+	border: 1px dashed #486BC9;
+	border-radius: 5px;
 }
-.column-two{
-    position: absolute;
-    width: 47%;
-    height: 375px;
-    left: 591px;
-    top: 20px;
-    border: 1px dashed #486BC9;
-    border-radius: 5px;
+
+.column-two {
+	position: absolute;
+	width: 47%;
+	height: 375px;
+	left: 591px;
+	top: 20px;
+	border: 1px dashed #486BC9;
+	border-radius: 5px;
 }
-.dropdown-menu{
-    
-    padding-left: 9px;
-    padding-right: 9px;
+
+.dropdown-menu {
+
+	padding-left: 9px;
+	padding-right: 9px;
 
 }
 
-.slider-layout{
-    height: 480px;
-    background: transparent;
+.slider-layout {
+	height: 480px;
+	background: transparent;
 }
 
-.slider-main{
-    // position: absolute;
-    // width: 200px;
-    // height: 518px;
-    // top: 0px;
-    // background: #FFFFFF;
-    // border: 5px solid #ADC6FF;
-    // box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
-    // border-radius: 4px 0px 0px 4px;
+.slider-main {
+	// position: absolute;
+	// width: 200px;
+	// height: 518px;
+	// top: 0px;
+	// background: #FFFFFF;
+	// border: 5px solid #ADC6FF;
+	// box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
+	// border-radius: 4px 0px 0px 4px;
 
-    position: absolute;
-    width: 188px;
-    left: 12px;
-    height: 400px;
-    top: 0px;
-    background: #FFFFFF;
-    border: 5px solid #ADC6FF;
-    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
-    border-radius: 4px 0px 0px 4px;
+	position: absolute;
+	width: 188px;
+	left: 12px;
+	height: 400px;
+	top: 0px;
+	background: #FFFFFF;
+	border: 5px solid #ADC6FF;
+	box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
+	border-radius: 4px 0px 0px 4px;
 }
 
-.slider-header{
-    // position: absolute;
-    // width: 190px;
-    // height: 41px;
-    // background: #F1F7FF;
+.slider-header {
+	// position: absolute;
+	// width: 190px;
+	// height: 41px;
+	// background: #F1F7FF;
 
-    position: absolute;
-    width: 178px;
-    height: 41px;
-    background: #F1F7FF;
+	position: absolute;
+	width: 178px;
+	height: 41px;
+	background: #F1F7FF;
+
+}
+
+.slider-text {
+	position: absolute;
+	width: 95px;
+	height: 22px;
+	left: 16px;
+	top: 9.5px;
+
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 22px;
+}
+
+.slider-button {
+	//     position: absolute;
+	// width: 14px;
+	// height: 66px;
+	// left: 14px;
+	// top: 66px;
+
+	// background: #ADC6FF;
+	border-radius: 16px;
+	position: absolute;
+	width: 42px;
+	height: 66px;
+	left: 0px;
+	top: 172px;
+	background: #ADC6FF;
 
 }
 
-.slider-text{
-    position: absolute;
-    width: 95px;
-    height: 22px;
-    left: 16px;
-    top: 9.5px;
-    
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 22px;
+.slide-total {
+	width: 100%;
+	height: 100%;
+	background: transparent;
 }
 
-.slider-button{
-//     position: absolute;
-// width: 14px;
-// height: 66px;
-// left: 14px;
-// top: 66px;
-
-// background: #ADC6FF;
-border-radius: 16px;
-position: absolute;
-width: 42px;
-height: 66px;
-left: 0px;
-top: 172px;
-background: #ADC6FF;
-
-}
-.slide-total{
-    width: 100%;
-    height: 100%;
-    background: transparent;
+.imgstyle {
+	width: 8px;
+	height: 16px;
+	padding-right: 0px;
+	margin-top: 25px;
 }
 
-.imgstyle{
-    width: 8px;
-    height: 16px;
-    padding-right: 0px;
-    margin-top: 25px;
-}
-.tab-main{
-    
-    padding-top: 30px;
+.tab-main {
+
+	padding-top: 30px;
 
 }
+
 // .tab-title{
 //     position: absolute;
 // width: 124px;
