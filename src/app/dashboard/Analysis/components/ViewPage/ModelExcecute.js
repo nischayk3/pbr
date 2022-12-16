@@ -38,7 +38,7 @@ const ModelExcecute = ({ getResultFunc, resultsData, jobId }) => {
         getResultFunc();
       }
     }
-      , 2000);
+      , 5000);
     getImg();
     return () => clearInterval(intervalId)
   }, [execPercent]);
@@ -64,13 +64,10 @@ const ModelExcecute = ({ getResultFunc, resultsData, jobId }) => {
       <img src={imgSrc} />
       <Progress percent={execPercent} />
       <p>{content}</p>
-      {execPercent === 100 ? (
-        <a>View results</a>
-      ) : (
+      {execPercent >= 50 &&
         <a href={`${MDH_AIRFLOW_ANALYTICS}/${id}_ANALYTICS_${jobId?.current}/grid?`} target="_blank">
           View Progress <ArrowRightOutlined />
-        </a>
-      )}
+        </a>}
     </div>
   );
 };

@@ -54,7 +54,6 @@ const Viewset = ({ isVisible, onCancel }) => {
 		let reqView = { vew_status: "APRD" };
 		let antdDataTable = [];
 		try {
-
 			const viewRes = await getViewList(reqView);
 			viewRes.Data.forEach((item, key) => {
 				let antdObj = {};
@@ -198,7 +197,7 @@ const Viewset = ({ isVisible, onCancel }) => {
 		searchViewData.current.forEach((ele) => {
 			if (ele.view_disp_id === record.view_disp_id) {
 				tempVersionList.push(ele.view_version);
-				tempVersionList = tempVersionList.sort((a, b) => a - b);
+				// tempVersionList = tempVersionList.sort((a, b) => a - b);
 				setVersionList(tempVersionList);
 			}
 		});

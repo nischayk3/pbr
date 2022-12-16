@@ -21,6 +21,7 @@ describe("Sharing", () => {
 					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Ik1paGlyICBCYWdnYSIsInVuaXhfdGltZXN0YW1wIjoxNjUwNDIyMDcyLjgzNTg5MSwidGltZXN0YW1wIjoiMjAvMDQvMjAyMiAwODowNDozMiIsImV4cCI6NDgwNDA0MTg3MiwiYWRfcm9sZSI6ZmFsc2UsIm1kaF9yb2xlIjoiVVNFUiIsImVtYWlsX2lkIjoibWloaXIuYmFnZ2FAbWFyZWFuYS5jb20iLCJjdXN0X2tleSI6IjEwMDAifQ.NpmhWhMBWtRcDkSBDdw-94Kqy9vuZyY1PSHbOpTyzMM"
 			})
 		);
+		cy.intercept('GET', '**/last-views-and-charts?limit=8', { fixture: 'approvedChart.json' })
 	});
 
 	beforeEach(() => {
@@ -41,20 +42,16 @@ describe("Sharing", () => {
 					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Ik1paGlyICBCYWdnYSIsInVuaXhfdGltZXN0YW1wIjoxNjUwNDIyMDcyLjgzNTg5MSwidGltZXN0YW1wIjoiMjAvMDQvMjAyMiAwODowNDozMiIsImV4cCI6NDgwNDA0MTg3MiwiYWRfcm9sZSI6ZmFsc2UsIm1kaF9yb2xlIjoiVVNFUiIsImVtYWlsX2lkIjoibWloaXIuYmFnZ2FAbWFyZWFuYS5jb20iLCJjdXN0X2tleSI6IjEwMDAifQ.NpmhWhMBWtRcDkSBDdw-94Kqy9vuZyY1PSHbOpTyzMM"
 			})
 		);
+		cy.intercept('GET', '**/last-views-and-charts?limit=8', { fixture: 'approvedChart.json' })
 	});
+
 	it('Load Chart Landing page Correctly', () => {
 		const url = Cypress.config().baseUrl
 		cy.visit(url + '/#/dashboard/chart_personalization')
 
 		cy.log('Load Landing Page')
 		cy.url().should('eq', url + '/#/dashboard/chart_personalization')
-	})
 
-	it('All Chart Render', () => {
-		cy.intercept('GET', '**/last-views-and-charts?limit=8', { fixture: 'approvedChart.json' })
-		cy.wait(2000)
-		const url = Cypress.config().baseUrl
-		cy.url().should('eq', url + '/#/dashboard/chart_personalization')
 		cy.wait(2000)
 		cy.log('Open Approved Chart')
 		cy.get('[href="#/dashboard/chart_personalization/C615&1"] > .ant-col > .chart-tiles').click()

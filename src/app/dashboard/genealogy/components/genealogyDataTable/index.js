@@ -108,7 +108,7 @@ function GenealogyDataTable(props) {
 						}}
 						searchWords={[searchText]}
 						autoEscape
-						textToHighlight={text.toString()}
+						textToHighlight={text?.toString()}
 					/>
 				) : (
 					text
@@ -184,19 +184,17 @@ function GenealogyDataTable(props) {
 			dataIndex: "equipment_id",
 			key: "3",
 			width: 80,
-			render: (text, record) => {
-				console.log("recordddddddd", toTimestamp(record.start_date), toTimestamp(record.end_date));
-				return (
-					<a
-						href={record.url1 + toTimestamp(record.start_date) + record.url2 + toTimestamp(record.end_date) + record.url3 + record.equipment_id + record.url4}
-						target="_blank"
-						rel="noreferrer"
-					>
-						{text}
-					</a>
-				);
-			},
-			...getColumnSearchProps('equipment_id')
+			...getColumnSearchProps('equipment_id'),
+			render: (text, record) => (
+				<a
+					href={record.url1 + toTimestamp(record.start_date) + record.url2 + toTimestamp(record.end_date) + record.url3 + record.equipment_id + record.url4}
+					target="_blank"
+					rel="noreferrer"
+				>
+					{text}
+				</a>
+			),
+			// ...getColumnSearchProps('equipment_id')
 		},
 		{ title: "Start Time", dataIndex: "start_date", key: "4", width: 80, ...getColumnSearchProps('start_date') },
 		{ title: "End Time", dataIndex: "end_date", key: "5", width: 80, ...getColumnSearchProps('end_date') }

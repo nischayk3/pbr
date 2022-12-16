@@ -42,7 +42,9 @@ const LandingPage = () => {
 			setChartData(chartResponse.last_created_or_changed_charts);
 			dispatch(hideLoader());
 		} catch (error) {
+			/* istanbul ignore next */
 			dispatch(hideLoader());
+			/* istanbul ignore next */
 			dispatch(showNotification("error", "Unable to fetch charts"));
 		}
 	};
@@ -56,7 +58,9 @@ const LandingPage = () => {
 			searchViewData.current = chartListRes.data;
 			dispatch(hideLoader());
 		} catch (err) {
+			/* istanbul ignore next */
 			dispatch(hideLoader());
+			/* istanbul ignore next */
 			dispatch(showNotification("error", "Unable to fetch chart list"));
 		}
 	};

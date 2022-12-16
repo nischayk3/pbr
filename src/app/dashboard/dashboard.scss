@@ -145,7 +145,28 @@
 	/* identical to box height, or 157% */
 	/* Gray / gray-9 */
 	color: #262626;
+}
 
+.custom-primary-edit-btn {
+	font-family: var(--primary-font-family) !important;
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 22px;
+	/* identical to box height, or 157% */
+	letter-spacing: 0.01em;
+	color: #3C58D8;
+}
+
+.custom-primary-delete-btn {
+	font-family: var(--primary-font-family) !important;
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 22px;
+	/* identical to box height, or 157% */
+	letter-spacing: 0.01em;
+	color: #EB0000;
 }
 
 .ant-btn-primary:focus,
@@ -295,6 +316,15 @@
 		svg {
 			pointer-events: none;
 			cursor: not-allowed;
+		}
+	}
+}
+
+#sidebar {
+	.ant-layout-sider-children {
+		>ul {
+			overflow: auto;
+			height: 90vh;
 		}
 	}
 }

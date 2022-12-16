@@ -10,6 +10,7 @@ import Sharing from '../../../../components/Sharing/sharing';
 import {
 	hideLoader, showLoader, showNotification
 } from "../../../../duck/actions/commonActions";
+import { useHistory } from "react-router";
 import { getChartList } from "../../../../services/chartPersonalizationService";
 import { saveDashboardData } from "../../../../services/dashboardServices";
 import { getChartPlotData } from "../../../../services/workSpaceServices";
@@ -21,6 +22,7 @@ import ChartPage from "./viewChart/viewChart";
 const DashboardScreen = () => {
 	const dispatch = useDispatch();
 	const location = useLocation();
+	const history = useHistory();
 	//to show landing page
 	const [showChartCard, setShowChartCard] = useState(false);
 	//to create the dashboard name
@@ -206,6 +208,8 @@ const DashboardScreen = () => {
 			if (res.statuscode == 200) {
 				dispatch(hideLoader());
 				setIsSave(true)
+				history.push(
+					`/dashboard/dashboard/${res.dashboard_id}?id=${res.dashboard_id}&version=${res.dashboard_version}`);
 				dispatch(
 					showNotification(
 						"success",

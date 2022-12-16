@@ -284,6 +284,8 @@ const ViewCreation = () => {
 		});
 		const _req = {
 			data: viewData[0],
+			save_type: 'saveas'
+
 		};
 		/* istanbul ignore next */
 		viewCreate(_req);

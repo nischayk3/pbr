@@ -1,0 +1,196 @@
+.button--delete {
+    background-color: orange;
+}
+
+.ant-tabs-tab-btn {
+    font-family: var(--primary-font-family);
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    color: black;
+}
+
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+    font-family: var(--primary-font-family);
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    color: #093185;
+}
+
+
+.ant-tabs-ink-bar {
+    background: #093185;
+}
+
+
+.header-buttons {
+    gap: 8px;
+    width: 144px;
+    height: 32px;
+    background: #093185;
+    border-radius: 4px;
+    color: white;
+}
+
+.edit_input {
+    width: 200px;
+    font-family: 'Maven Pro';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 22px;
+    color: #4D4D4D;
+}
+
+.form-head-ing {
+    font-family: 'Maven Pro';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 22px;
+    /* identical to box height, or 138% */
+
+
+    color: #4D4D4D;
+}
+
+.see-all {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 22px;
+    /* identical to box height, or 157% */
+    margin-left: 31px;
+
+    color: #093185;
+}
+
+.divider {
+    width: 100%;
+    background-color: #ACACAC;
+}
+
+.delete-btn {
+    width: 100px;
+    height: 30px;
+    background: #FFFFFF;
+    border: 1px solid black;
+    align-items: center;
+    border-radius: 2px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    color: #262626;
+    align-items: center;
+    padding: 1px 8px;
+    border-radius: 4px;
+    gap: 8px;
+    margin-right: 12px;
+
+}
+
+.save-btn {
+    align-items: center;
+    padding: 1px 8px;
+    gap: 8px;
+    width: 86px;
+    height: 48px;
+    background: #093185;
+    border: 1px solid black;
+    border-radius: 2px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+
+    line-height: 22px;
+    color: #262626;
+    margin-right: 12px;
+    border-radius: 4px;
+
+}
+
+.buttons-head {
+    float: right;
+}
+
+.publish-btn {
+    padding: 1px 8px;
+    gap: 8px;
+    width: 100px;
+    height: 30px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    background: #162154;
+    border-radius: 4px;
+    color: white;
+}
+
+.add_new_row {
+    padding: 1px 18px;
+    gap: 8px;
+    width: 140px;
+    // left: 10%;
+    height: 28px;
+    color: white;
+    background: #093185;
+    border-radius: 4px;
+}
+
+.ant-table-cell {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 22px;
+    letter-spacing: 0.01em;
+    color: #6D6D6D;
+
+}
+
+.first-Table {
+    margin-top: 10px;
+
+    .ant-table-cell {
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 22px;
+        letter-spacing: 0.01em;
+        color: #6D6D6D;
+
+    }
+}
+
+.template-card-subheading-data-inside {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 22px;
+    margin-left: 22px;
+    color: #262626;
+}
+
+.approved-bar {
+    height: 22px;
+    width: 67px;
+    left: 164px;
+    top: 237px;
+    border-radius: 2px;
+    padding: 1px 8px 1px 8px;
+    background: #FFEED2;
+    /* Polar Green / 3 */
+
+    border: 1px solid orange;
+    border-radius: 2px;
+}

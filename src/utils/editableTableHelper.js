@@ -89,6 +89,7 @@ export const EditableCell = ({
 }
 
 export const addRow = state => {
+
 	let { dataSource, rowInitialData, count } = JSON.parse(JSON.stringify(state))
 	dataSource.unshift(rowInitialData)
 	count++

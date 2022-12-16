@@ -887,6 +887,7 @@ class Uploader extends Component {
 												action={
 													<Space direction='horizontal'>
 														<Button
+															id='digital-signature'
 															type='primary'
 															onClick={() =>
 																this.showDigitalSignaturePopup()
@@ -911,6 +912,7 @@ class Uploader extends Component {
 												action={
 													<Space direction='horizontal'>
 														<Button
+															id='digital-signature-popup'
 															type='primary'
 															onClick={() =>
 																this.showDigitalSignaturePopup()
@@ -935,6 +937,7 @@ class Uploader extends Component {
 												action={
 													<Space direction='horizontal'>
 														<Button
+															id='digital-sign'
 															type='primary'
 															onClick={() =>
 																this.showDigitalSignaturePopup()
@@ -960,6 +963,7 @@ class Uploader extends Component {
 												action={
 													<Space direction='horizontal'>
 														<Button
+															id='digital-sign-popup'
 															type='primary'
 															onClick={() =>
 																this.showDigitalSignaturePopup1()
@@ -1258,6 +1262,7 @@ class Uploader extends Component {
 												action={
 													<Space direction='horizontal'>
 														<Button
+															id='signature-popup'
 															type='primary'
 															onClick={() =>
 																this.showDigitalSignaturePopup2()

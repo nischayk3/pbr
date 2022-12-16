@@ -62,6 +62,11 @@ const Profile = lazy(() => import("./profile"));
 const CrossBatchComparison = lazy(() => import("./crossBatchComparison"));
 const DataScienceStudio = lazy(() => import("./DataScienceStudio"));
 const TargetVariable = lazy(() => import("./DataScienceStudio/components/targetVariable/TargetVariable"));
+const ElogBook = lazy(() => import("./ElogBook/components/entryLanding/entryLanding"))
+const ElogBookEntry = lazy(() => import("./ElogBook/components/dataEntryForm/dataEntryForm"))
+const EBookStep = lazy(() => import("./ElogBook/components/ebookSteps/eBookStep"))
+const ELogBookTemplate = lazy(() => import("./ElogBook/components/landingPage/Landing"))
+
 const { Content } = Layout;
 
 const Dashboard = () => {
@@ -84,7 +89,7 @@ const Dashboard = () => {
 			setTimeout(() => {
 				history.push('/user/login');
 				window.location.reload()
-			}, 1000)
+			}, 3000)
 		}
 	}, []);
 
@@ -432,6 +437,51 @@ const Dashboard = () => {
 												path={`${url}/target_variable`}
 												authorised={authorised}
 												component={TargetVariable}
+											/>
+
+
+										</>
+									)}
+								/>
+								<Route
+									path={`${match.url}/elog_book_template`}
+									render={({ match: { url } }) => (
+										<>
+											<PrivateRoute
+												key={"elog_book_template"}
+												path={`${url}/`}
+												component={ELogBookTemplate}
+												exact
+												authorised={authorised}
+											/>
+											<PrivateRoute
+												key={"new-template"}
+												path={`${url}/new-template`}
+												component={EBookStep}
+												exact
+												authorised={authorised}
+											/>
+
+										</>
+									)}
+								/>
+
+
+								<Route
+									path={`${match.url}/elog_book_data_entry`}
+									render={({ match: { url } }) => (
+										<>
+											<PrivateRoute
+												key={"elog_book"}
+												path={`${url}/`}
+												component={ElogBook}
+												exact
+												authorised={authorised}
+											/>
+											<PrivateRoute
+												path={`${url}/data_entry_forms`}
+												component={ElogBookEntry}
+												authorised={authorised}
 											/>
 										</>
 									)}

@@ -31,9 +31,7 @@ const { TabPane } = Tabs;
 const Workflow = () => {
 	const [itemCount, setItemCount] = useState();
 	const [cardTitle, setCardTitle] = useState("");
-	//const [indexCount, setIndexCount] = useState(0);
 	const [isPublish, setIsPublish] = useState(false);
-	//const [resultDate, setResultDate] = useState("");
 	const [tilesData, setTilesData] = useState([]);
 	const [activeDiv, setActiveDiv] = useState("");
 	const [applicationType, setApplicationType] = useState("");
@@ -73,18 +71,32 @@ const Workflow = () => {
 			try {
 				dispatch(showLoader());
 				const tableResponse = await getTableData(req);
+				/* istanbul ignore next */
+				dispatch(hideLoader());
+				/* istanbul ignore next */
 				if (tableResponse["status-code"] === 200) {
+					/* istanbul ignore next */
 					setColumns(tableResponse.Data.config);
+					/* istanbul ignore next */
 					setDataSource(tableResponse.Data.data);
-					dispatch(hideLoader());
+
 				} else if (tableResponse["status-code"] === 404) {
 					setColumns(tableResponse.Data.config);
 					setDataSource(tableResponse.Data.data);
-					dispatch(hideLoader());
+					dispatch(showNotification("error", tableResponse.Message));
+				} else if (tableResponse["status-code"] === 400) {
+					setColumns([]);
+					setDataSource([]);
+					dispatch(showNotification("error", tableResponse.Message));
+				} else {
+					setColumns([]);
+					setDataSource([]);
 					dispatch(showNotification("error", tableResponse.Message));
 				}
 			} catch (error) {
+				/* istanbul ignore next */
 				dispatch(hideLoader());
+				/* istanbul ignore next */
 				dispatch(showNotification("error", error.Message));
 			}
 		}
@@ -98,7 +110,9 @@ const Workflow = () => {
 			setTilesData(tilesResponse["Data"]);
 			dispatch(hideLoader());
 		} catch (error) {
+			/* istanbul ignore next */
 			dispatch(hideLoader());
+			/* istanbul ignore next */
 			dispatch(showNotification("error", error.message));
 		}
 	};
@@ -164,7 +178,9 @@ const Workflow = () => {
 			}
 			dispatch(hideLoader());
 		} catch (error) {
+			/* istanbul ignore next */
 			dispatch(hideLoader());
+			/* istanbul ignore next */
 			dispatch(showNotification("error", "No data found"));
 		}
 	};
@@ -183,7 +199,9 @@ const Workflow = () => {
 			}
 			dispatch(hideLoader());
 		} catch (error) {
+			/* istanbul ignore next */
 			dispatch(hideLoader());
+			/* istanbul ignore next */
 			dispatch(showNotification("error", "No data found"));
 		}
 	};
@@ -244,6 +262,7 @@ const Workflow = () => {
 											style={{ cursor: "pointer" }}
 										>
 											<DashCard
+												id={index}
 												count={item.item_count}
 												desc={item.text}
 												active={activeDiv}

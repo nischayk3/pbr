@@ -61,9 +61,7 @@ describe("Render View Creation Load Error Log", () => {
 			cy.log('Load Landing Page')
 			cy.url().should('eq', url + '/#/dashboard/view_creation')
 		})
-	})
 
-	it('Load View Landing Page Correctly', () => {
 		cy.log('Create a New View Creation')
 		cy.get('.create-new > .anticon > svg').click({ force: true });
 		cy.intercept('POST', '**/molecules3', { fixture: 'moleculeError401.json' })

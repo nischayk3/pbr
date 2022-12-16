@@ -1,9 +1,8 @@
 import {
 	AppstoreAddOutlined, AppstoreOutlined, AreaChartOutlined, BarChartOutlined, BlockOutlined,
-	CheckCircleOutlined, ClusterOutlined, CodeOutlined, DeploymentUnitOutlined, DiffOutlined, FileDoneOutlined,
+	CheckCircleOutlined, CloudUploadOutlined, ClusterOutlined, CodeOutlined, DeploymentUnitOutlined, DiffOutlined, FileDoneOutlined,
 	FileProtectOutlined, FileSearchOutlined, FileSyncOutlined, FundOutlined, FundProjectionScreenOutlined,
-	NodeIndexOutlined, PartitionOutlined, SisternodeOutlined, TeamOutlined, UploadOutlined, UserOutlined,
-	CloudUploadOutlined
+	NodeIndexOutlined, PartitionOutlined, SisternodeOutlined, TeamOutlined, UploadOutlined, UserOutlined
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import React, { useState } from "react";
@@ -48,7 +47,7 @@ const cpvMenu = [
 const Sidebar = () => {
 	const [collapsed, setCollapsed] = useState(true);
 	const [openKeys, setOpenKeys] = useState([]);
-	const rootKeys = ["sub2", "sub3", "sub4", "sub5", "sub6"];
+	const rootKeys = ["sub2", "sub3", "sub4", "sub5", "sub6", "sub7"];
 	const mouseHover = () => {
 		setCollapsed(false);
 	};
@@ -222,7 +221,30 @@ const Sidebar = () => {
 					id="user-roles-and-access"
 				>
 					<Link to="/dashboard/user-roles-and-access">Roles and Access</Link>
+
 				</Menu.Item>
+				<SubMenu
+					key="sub7"
+					mode="inline"
+					icon={<CheckCircleOutlined className="menu-icons" />}
+					title="ELog-book"
+				>
+					<Menu.Item
+						key="elog-boook"
+						icon={<CheckCircleOutlined className="menu-icons" />}
+						id="elog-book"
+					>
+						<Link to="/dashboard/elog_book_data_entry">Data Entry</Link>
+					</Menu.Item>
+					<Menu.Item
+						key="elog-book_template"
+						icon={<CheckCircleOutlined className="menu-icons" />}
+						id="elog-book_template"
+					>
+						<Link to="/dashboard/elog_book_template">Template Creation</Link>
+					</Menu.Item>
+
+				</SubMenu>
 				<Menu.Item
 					key="data-access-service"
 					icon={<TeamOutlined className="menu-icons" />}

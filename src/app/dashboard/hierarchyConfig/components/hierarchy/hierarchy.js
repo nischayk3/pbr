@@ -4,20 +4,18 @@
  * @Mareana - CPV Product
  * @version 1
  * @Last Modified - 22 April, 2022
- * @Last Changed By - @Mihir 
+ * @Last Changed By - @Mihir
  */
-import "./hierStyle.scss";
-import { DeleteTwoTone, PlusOutlined, InfoCircleOutlined } from "@ant-design/icons";
-import { Button, Card, Col, Input, Modal, Popconfirm, Row, Select, Table, Tabs, Popover } from "antd";
+import { DeleteTwoTone, InfoCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { Button, Card, Col, Input, Modal, Popconfirm, Popover, Row, Select, Table, Tabs } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Banner from "../../../../../assets/images/Popup-Side.svg";
 import BreadCrumbWrapper from "../../../../../components/BreadCrumbWrapper";
 import { hideLoader, showLoader, showNotification } from "../../../../../duck/actions/commonActions";
-import { getProcessStep, getProcessStepMap, putMolecule, putProcessStep, putProcessStepMap, getAllViews } from "../../../../../services/viewHierarchyServices";
-// import Display from "../display/display";
-import { sendDrugSub } from '../../../../../duck/actions/viewHierarchyAction'
-
+import { sendDrugSub } from '../../../../../duck/actions/viewHierarchyAction';
+import { getAllViews, getProcessStep, getProcessStepMap, putMolecule, putProcessStep, putProcessStepMap } from "../../../../../services/viewHierarchyServices";
+import "./hierStyle.scss";
 
 const { TabPane } = Tabs;
 
@@ -28,20 +26,17 @@ function Hierarchy() {
 	const [stepData, setStepData] = useState([]);
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [stepArray, setStepArray] = useState([]);
-	// const [show, setShow] = useState(false);
 	const [count, setCount] = useState(1);
 	const [stepCount, setStepCount] = useState(1);
 	const [tableData, setTableData] = useState([]);
 	const [activeTab, setActiveTab] = useState("Plant and molecules");
 	const [onceSaved, setOnceSaved] = useState(false);
 	const [stepSaved, setStepSaved] = useState(false);
-
 	const [del, setDel] = useState([])
 	const [deleted, setDeleted] = useState([])
 	const dispatch = useDispatch();
 	const hier_name = useSelector((state) => state.viewHierarchy.drugName);
 	const load_drug = useSelector((state) => state.viewHierarchy.drugLoad);
-
 
 	useEffect(() => {
 		handleAdd();
@@ -77,13 +72,14 @@ function Hierarchy() {
 			let req = { ds_name: name }
 			let res = await getAllViews(req)
 			let res_step = await getProcessStep(req)
-
+			/* istanbul ignore next */
 			if (res['status-code'] == 200) {
 				let data_molecule = [...res.Data]
 				data_molecule = data_molecule.map((v, index) => ({ ...v, key: index + 1 }))
 				setCount(Math.max(...data_molecule.map(o => o.key)) + 1)
 				setMoleculeData(data_molecule)
 			}
+			/* istanbul ignore next */
 			if (res_step['statuscode'] == 200) {
 				let data_step = [...res_step.data]
 				data_step = data_step.map((v, index) => ({ ...v, key: index + 1 }))
@@ -124,6 +120,7 @@ function Hierarchy() {
 				return false
 		}
 	}
+
 	const plantMoleculeColumns =
 		[
 			{
@@ -236,16 +233,12 @@ function Hierarchy() {
 			}
 		];
 
+	/* istanbul ignore next */
 	const handleProcessStepChange = (text, index, rec) => {
 		dispatch(showLoader());
 		let newAggrValue = [...tableData];
 		newAggrValue[rec.index].process_step = text ? text.value : "";
-		// const aggJson = [...parameters];
-		// aggJson[index].aggregation = value.value !== undefined ? value.value : "";
-		// setParameters(aggJson);
-
 		setTableData(newAggrValue);
-		// setAggregationValue(value.value !== undefined ? value.value : "");
 		dispatch(hideLoader());
 	};
 
@@ -377,10 +370,9 @@ function Hierarchy() {
 		obj[`${record.product_num}`] = record.site_code
 		deleted_data.push(obj)
 		setDel(deleted_data)
-
-
 	};
 
+	/* istanbul ignore next */
 	const handleStepDelete = (key, record) => {
 		const dataSource = [...stepData];
 		let deleted_data = [...deleted]
@@ -403,11 +395,6 @@ function Hierarchy() {
 			setActiveTab("Process steps");
 	};
 
-	// const handleNew = (name) => {
-	// 	setShow(false);
-	// 	setHierarchyName(name);
-	// };
-
 	const handleSave = async () => {
 		if (activeTab == "Plant and molecules") {
 			let req = {
@@ -417,6 +404,7 @@ function Hierarchy() {
 				delete_row: !onceSaved && !load_drug ? [] : del.length > 0 ? del : []
 			};
 			let response = await putMolecule(req);
+			/* istanbul ignore next */
 			if (response["statuscode"] == 200) {
 				dispatch(showNotification('success', "Saved"))
 				setDeleted([])
@@ -435,6 +423,7 @@ function Hierarchy() {
 				delete_row: !stepSaved && !load_drug ? [] : deleted.length > 0 ? deleted : []
 			};
 			let response = await putProcessStep(req);
+			/* istanbul ignore next */
 			if (response["statuscode"] == 200) {
 				dispatch(showNotification('success', "Saved"))
 				setDeleted([])
@@ -456,6 +445,7 @@ function Hierarchy() {
 			};
 
 			let response = await putProcessStepMap(req);
+			/* istanbul ignore next */
 			if (response["statuscode"] == 200) {
 				dispatch(showNotification('success', "Saved"))
 				setOnceSaved(true)
@@ -516,27 +506,17 @@ function Hierarchy() {
 							<p className="tab-title">Enter the process step for {hierarchyName}</p>
 							<div className="map-grid">
 								<Table className="hierarchy-map-table" columns={mappingColumns} dataSource={tableData} />
-								{ /* <div className="map-box">
-                                        <p className="map-box-text">Process steps available</p>
-                                        {stepArray && stepArray.map((i) =>
-                                            <div className="map-box-tile">
-                                                <p className="map-box-tile-text">{i}</p>
-                                            </div>
-                                        )}
-                                    </div> */ }
 							</div>
 						</TabPane>
 
 					</Tabs>
 				</Card>
-				{/* :
-					  <Display handleNew={handleNew} /> 
-					// }*/}
+
 				<Modal
 					className="landing-modal"
 					title="Create New Dashboard"
 					visible={isModalVisible}
-					//onOk={handleOk} 
+					//onOk={handleOk}
 					onCancel={handleCancel}
 					footer={[
 						<Button className="custom-secondary-button" onClick={() =>

@@ -1,0 +1,39 @@
+.form-wrap {
+	display: flex;
+	background: #EDECFF;
+	padding: 19px 26px;
+
+	.left-panel {
+		padding-right: 35px;
+        width: 100%;
+	}
+
+	.right-panel {
+		background: #fff;
+		border-radius: 12px;
+		height: auto;
+		
+		padding: 32px;
+	}
+}
+
+.form-field {
+    padding-top: 10px;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  
+//   li {
+//     float: left;
+//   }
+  
+  li a {
+
+    padding: 8px;
+   
+  }

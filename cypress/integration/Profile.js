@@ -52,11 +52,6 @@ describe("Render User Profile", () => {
 			cy.log('Load Landing Page')
 			cy.url().should('eq', url + '/#/dashboard/profile')
 		})
-	})
-
-	it('should verify username', () => {
-		const url = Cypress.config().baseUrl
-		cy.url().should('eq', url + '/#/dashboard/profile')
 
 		cy.log('verify login username')
 		cy.wait(2000)
@@ -66,8 +61,6 @@ describe("Render User Profile", () => {
 
 		cy.get('.submenu > :nth-child(1)').click()
 		cy.wait(2000)
-
-		cy.log('verify basic information')
 	})
 
 	it('should verify Password', () => {

@@ -1,0 +1,155 @@
+.main-text {
+	font-family: "Maven Pro";
+	font-size: "16px";
+}
+
+.add-row {
+	margin-left: "-55px";
+	margin-right: "-40px";
+}
+
+
+.hierarchy-table {
+	margin-top: 30px;
+
+	.ant-table {
+		.ant-table-container {
+			.ant-table-content {
+				.ant-table-thead {
+					.ant-table-cell {
+						background: #E8E8E8 !important;
+						padding-left: 16px;
+					}
+				}
+			}
+		}
+	}
+}
+
+
+
+.ant-table-cell {
+	font-family: var(--primary-font-family);
+	font-style: normal;
+	font-weight: 100;
+	font-size: 14px;
+	line-height: 22px;
+	color: #141414;
+}
+
+.map-grid {
+	display: grid;
+	grid-template-columns: 1.3fr 1fr;
+	grid-gap: 24px;
+}
+
+.map-box {
+	width: 200px;
+	height: 351px;
+	background: rgba(72, 107, 201, 0.73);
+	border: 1px solid #486bc9;
+	box-sizing: border-box;
+	border-radius: 4px;
+	margin-top: 10px;
+}
+
+.map-box-text {
+	font-family: var(--primary-font-family);
+	font-style: normal;
+	font-weight: 500;
+	font-size: 16px;
+	line-height: 22px;
+	align-items: center;
+	margin-left: 15px;
+	margin-top: 10px;
+
+	color: #ffffff;
+}
+
+.map-box-tile {
+	align-items: center;
+	padding: 1px 8px 1px 16px;
+	width: 150px;
+	height: 32px;
+	background: #ffffff;
+	border-radius: 25px;
+	margin-left: 20px;
+	margin-top: 10px;
+}
+
+.map-box-tile-text {
+	font-family: var(--primary-font-family);
+	font-style: normal;
+	font-weight: 300;
+	font-size: 14px;
+	line-height: 20px;
+	/* identical to box height, or 143% */
+	margin-top: 5px;
+
+	color: #000000;
+}
+
+.add-button {
+	width: 100%;
+	height: 51px;
+	background: #fff;
+	padding: 5px;
+}
+
+.add-row-button {
+	align-items: center;
+	padding: 5px 16px;
+	width: 146px;
+	height: 32px;
+	/* Gray / gray-1 */
+	background: #ffffff;
+	/* Gray / gray-5 */
+	border: 1px dashed #d9d9d9;
+	box-sizing: border-box;
+	border-radius: 2px;
+	margin-left: 45%;
+	margin-top: 0.5%;
+	font-family: var(--primary-font-family);
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 22px;
+	/* identical to box height, or 157% */
+
+	color: var(--primary-color);
+}
+
+.metadata-subheader {
+	display: flex;
+	justify-content: space-between;
+}
+
+.deleteButton {
+	color: #9B0000;
+}
+
+// .Selectdata {
+// 	width: 180px;
+// }
+.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+	width: 180px;
+}
+
+.save-button {
+	padding-right: 10px;
+}
+
+.ant-table-thead>tr>th:not(:last-child):not(.ant-table-selection-column):not(.ant-table-row-expand-icon-cell):not([colspan]):before {
+	background-color: #a59494;
+}
+
+.delete-button {
+	text-align: start;
+}
+
+.ant-tabs-bottom>.ant-tabs-nav,
+.ant-tabs-bottom>div>.ant-tabs-nav,
+.ant-tabs-top>.ant-tabs-nav,
+.ant-tabs-top>div>.ant-tabs-nav {
+	margin-block-end: auto;
+}

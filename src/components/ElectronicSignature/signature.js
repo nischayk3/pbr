@@ -144,10 +144,11 @@ const Signature = (props) => {
 		let headers = {
 			"content-type": "application/json",
 			"resource-name":
-				props.appType == "REPORT" ? "REPORT_DESIGNER" : props.appType,
+				props.appType == "REPORT" ? "REPORT_DESIGNER" : props.appType == "ANALYSIS" ? "ANALYTICS" : props.appType,
 			"x-access-token": login_response.token ? login_response.token : ""
-
 		};
+
+		console.log("digital", req);
 		try {
 			let esign_response = await eSign(req, headers);
 
@@ -181,7 +182,7 @@ const Signature = (props) => {
 				if (props.eSignId) {
 					props.eSignId(esign_response.primary_id);
 				}
-				console.log("reqssssssss", reqs);
+				console.log("publishEvent", reqs);
 				let publish_response =
 					Object.keys(params).length > 0 && params.fromScreen !== "Workspace"
 						? await approveRecord(req1)
@@ -196,8 +197,10 @@ const Signature = (props) => {
 				} else {
 					dispatch(showNotification("error", publish_response.msg));
 				}
+			} else if (esign_response.Status == 403) {
+				dispatch(showNotification("error", esign_response.Message));
 			} else {
-				dispatch(showNotification("error", esign_response.message));
+				dispatch(showNotification("error", esign_response.Message));
 			}
 		} catch {
 			dispatch(showNotification("error", "Error Occured"));
