@@ -39,12 +39,18 @@ describe("Analysis", () => {
 		cy.intercept("POST", "**/chart-object", {
 			fixture: "analysisPostChart.json",
 		});
+		cy.intercept("GET", "**/analysis-result?pipelineid=P360", {
+			fixture: "analysisResults.json",
+		});
 		cy.intercept("PUT", "**/pipelines", { fixture: "putPipeline.json" });
 		cy.intercept("POST", "**/model-data", {
 			fixture: "analysisPostModal.json",
 		});
+		cy.intercept("POST", "**/jobs", {
+			fixture: "analysisExecute.json",
+		});
 	});
-
+	
 	afterEach(() => {
 		cy.viewport(1366, 768);
 		localStorage.setItem("test_enabled", true);
@@ -81,6 +87,9 @@ describe("Analysis", () => {
 		cy.intercept("POST", "**/chart-object", {
 			fixture: "analysisPostChart.json",
 		});
+		cy.intercept("GET", "**/analysis-result?pipelineid=P360", {
+			fixture: "analysisResults.json",
+		});
 		cy.intercept("PUT", "**/pipelines", { fixture: "putPipeline.json" });
 		cy.intercept("POST", "**/model-data", {
 			fixture: "analysisPostModal.json",
@@ -115,7 +124,7 @@ describe("Analysis", () => {
 		).click({ force: true });
 		cy.get(
 			".header-title > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input"
-		).type("v238{enter}", { force: true });
+		).type("v475{enter}", { force: true });
 		cy.get(".ant-table-row > :nth-child(1)").click({ force: true });
 
 		cy.log("Click Ok");
@@ -141,9 +150,10 @@ describe("Analysis", () => {
 		cy.log("Landing");
 		cy.get(".button-gap > .custom-secondary-btn").click({ force: true });
 	});
-
+	
 	it("Preprocessing Tab", () => {
 		cy.log("Preprocessing Tab");
+		cy.wait(10000);
 		cy.get(".ant-select-selection-overflow").click({ force: true });
 		cy.wait(1000);
 		cy.log("Select Option from  Tab");
@@ -152,7 +162,11 @@ describe("Analysis", () => {
 		).click({ force: true });
 		cy.get(":nth-child(2) > .ant-col > .ant-btn > span").click({ force: true });
 		cy.wait(1000);
+		cy.get('.ant-select-clear > .anticon > svg > path').click({ force: true });
+		cy.get(":nth-child(2) > .ant-col > .ant-btn > span").click({ force: true });
+		cy.wait(1000);
 		cy.log("Select checkbox in preprocess Tab");
+		cy.get('.ant-table-selection-extra > .ant-dropdown-trigger').click({ force: true })
 		cy.get(
 			".ant-table-selection-column > .ant-checkbox-wrapper > .ant-checkbox > .ant-checkbox-input"
 		).check({ force: true });
@@ -166,20 +180,77 @@ describe("Analysis", () => {
 			"modal tab is the response from the api itself no function of the tab"
 		);
 		cy.wait(5000);
-	});
-
-	it("Modal Feature Union Node", () => {
 		cy.get(".ant-tabs-nav-list > :nth-child(3)").click();
-		cy.wait(5000);
-		cy.get('.react-flow__node-FeatureUninonNode > [style="text-align: center;"] > [style="display: flex; flex-direction: column; align-items: center;"] > button').click();
-		cy.get('.drawer-details > .ant-btn > span').click();
 	});
 
 	it("Modal Estimator Node  ", () => {
-		cy.wait(2000);
+		cy.wait(10000);
 		cy.get('.react-flow__node-EstimatorNode > [style="text-align: center;"] > [style="display: flex; flex-direction: column; align-items: center;"] > button').click()
-		cy.get('.panelImg').click()
+		cy.get('.select_field > .ant-select > .ant-select-selector > .ant-select-selection-item').click();
+		cy.get(
+			".ant-select-item-option-active > .ant-select-item-option-content"
+		).click({ force: true, multiple: true });
+		cy.get(':nth-child(3) > .ant-select-selector > .ant-select-selection-item').click();
+		cy.get(
+			".ant-select-item-option-active > .ant-select-item-option-content"
+		).rightclick({ force: true, multiple: true });
+		cy.get('center').click();
+		cy.get(
+			".ant-select-item-option-active > .ant-select-item-option-content"
+		).click({ force: true, multiple: true });
+		cy.get('.metrics > .ant-col > .ant-select > .ant-select-selector > .ant-select-selection-overflow').click();
+		cy.get(
+			".ant-select-item-option-active > .ant-select-item-option-content"
+		).click({ force: true, multiple: true });
+		cy.get('.ant-col > .ant-checkbox-wrapper > .ant-checkbox > .ant-checkbox-input').click();
+		cy.wait(5000)
+		cy.get('[data-row-key="1"] > :nth-child(4) > .ant-input').type('mean')
+		cy.get('[data-row-key="2"] > :nth-child(4) > .ant-input').type(10)
+		cy.get('[data-row-key="3"] > :nth-child(4) > .ant-input').type(2.0)
+		cy.get('.ant-modal-footer > .ant-btn').click();
+		cy.get('.button-save > :nth-child(1)').click();
 	});
+
+	it("Modal Simple Imputer Node", () => {
+		// cy.wait(10000);
+		cy.get('[data-testid="rf__node-imp-5"] > [style="text-align: center;"] > [style="display: flex; flex-direction: column; align-items: center;"] > button').click();
+		cy.get(':nth-child(3) > .ant-select > .ant-select-selector').click();
+		cy.get(
+			".ant-select-item-option-active > .ant-select-item-option-content"
+		).rightclick({ force: true, multiple: true });
+		cy.get('center').click();
+		cy.get(
+			".ant-select-item-option-active > .ant-select-item-option-content"
+		).click({ force: true, multiple: true });
+		cy.get('.drawer-details > .ant-btn').click();
+	})
+
+	it("Modal Encoder Node", () => {
+		cy.get('[data-testid="rf__node-enco-1"] > [style="text-align: center;"] > [style="display: flex; flex-direction: column; align-items: center;"] > button').click();
+		cy.get(':nth-child(2) > .ant-select > .ant-select-selector').click();
+		cy.get(
+			".ant-select-item-option-active > .ant-select-item-option-content"
+		).rightclick({ force: true, multiple: true });
+		cy.get('center').click();
+		cy.get(
+			".ant-select-item-option-active > .ant-select-item-option-content"
+		).click({ force: true, multiple: true });
+		cy.get('.drawer-details > .ant-btn > span').click();
+	});
+
+	it("Modal Feature Union Node", () => {
+		cy.get('.react-flow__node-FeatureUninonNode > [style="text-align: center;"] > [style="display: flex; flex-direction: column; align-items: center;"] > button').click();
+		cy.get('.ant-select-selector > .ant-select-selection-item').click();
+		cy.get(
+			".ant-select-item-option-active > .ant-select-item-option-content"
+		).rightclick({ force: true, multiple: true });
+		cy.get('center').click();
+		cy.get(
+			".ant-select-item-option-active > .ant-select-item-option-content"
+		).click({ force: true, multiple: true });
+		cy.get('.drawer-details > .ant-btn > span').click();
+	});
+
 
 	it("Modal CARB_NORMAL Node  ", () => {
 		cy.wait(2000);
@@ -194,7 +265,19 @@ describe("Analysis", () => {
 
 	});
 
+	it("Results Screen", () => {
+		cy.get('#rc-tabs-0-tab-5').click();
+		cy.get(':nth-child(1) > .ant-collapse-header').click();
+		cy.get(':nth-child(2) > .ant-collapse-header').click();
+	})
+
+	it("Save Pipeline", ()=> {
+		cy.get('.btns > div > :nth-child(3)').click();
+		cy.wait(5000);
+	})
+	
 	// it("Transformations", () => {
+	// 	cy.wait(5000);
 	// 	cy.get(".ant-tabs-nav-list > :nth-child(4)").click();
 	// 	cy.get("#rc-tabs-1-panel-1 > :nth-child(1) > ul > :nth-child(1)").trigger(
 	// 		"mousedown",
@@ -205,10 +288,11 @@ describe("Analysis", () => {
 	// 	).click();
 	// });
 
-	// it("Excutes", () => {
-	// 	cy.get(".btns > div > :nth-child(4)").click();
-	// 	cy.wait(35000);
-	// });
+	it("Execute Pipeline", ()=> {
+		cy.get('.btns > div > .ant-dropdown-trigger').click();
+		cy.get('li > :nth-child(1)').click({ force: true, multiple: true });
+		cy.wait(60000);
+	}) 
 
 	it("Search in Analysis Landing Page", () => {
 		const url = Cypress.config().baseUrl;
@@ -225,8 +309,12 @@ describe("Analysis", () => {
 		).clear({ force: true });
 		cy.get(
 			".ant-col-12 > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input-affix-wrapper > .ant-input"
-		).type("P6{enter}", { force: true });
+		).type("P352{enter}", { force: true });
 		cy.log("Click on the created pipeline");
 		cy.get(".ant-table-row > :nth-child(1)").click({ force: true });
+		cy.wait(10000);
+		cy.get('#rc-tabs-0-tab-2').click();
+		cy.get('.btns > div > :nth-child(1)').trigger('mouseover')
+		cy.get('.btns > div > :nth-child(1)').trigger('mouseleave')
 	});
 });

@@ -39,6 +39,8 @@ function TableIdentifier(props) {
 		setSelectedColRows(formTableData[tableActiveKey]?.tableData?.selectedColRows ? formTableData[tableActiveKey]?.tableData?.selectedColRows : [])
 		setSelectedRowRows(formTableData[tableActiveKey]?.tableData?.selectedRowRows ? formTableData[tableActiveKey]?.tableData?.selectedRowRows : [])
 		setTableIdentifierValues(formTableData[tableActiveKey]?.tableData?.table_identifier)
+		setColumnData(formTableData[tableActiveKey]?.tableData?.selectedColValues ? formTableData[tableActiveKey]?.tableData?.selectedColValues : [])
+		setrowData(formTableData[tableActiveKey]?.tableData?.selectedRowValues ? formTableData[tableActiveKey]?.tableData?.selectedRowValues : [])
 	}, [tableActiveKey])
 
 	useEffect(() => {
@@ -317,22 +319,22 @@ function TableIdentifier(props) {
 		}
 	}
 
-    const genTableExtra = (val, values) => (
-        <div style={{ display: "flex", justifyContent: "space-between" }} onClick={e => e.stopPropagation()}>
-            <p style={{ marginBottom: 0 }}>{val}</p>
-            {/* <Switch size='medium' style={{ marginLeft: val == "Row Identifier" ? 35 : 10 }} /> */}
-            <div style={{ marginTop: -5, marginLeft: val == "Row Identifier" ? 53 : 30 }}>
-                <span style={{ fontSize: 13 }}>Start Index</span><Input disabled={columnData.length > 0 ? "" : params?.temp_disp_id ? newEditTemplate ? "disabled" : "" : "disabled"} value={values?.start}  style={{ width: 60, marginLeft: 10 }} onChange={(e) => handleInputChange(e.target.value, "start", val)} />
-            </div>
-            <div style={{ marginTop: -5,marginLeft:20 }}>
-                <span style={{ fontSize: 13 }}>Stop Index</span><Input disabled={columnData.length > 0 ? "" : params?.temp_disp_id ? newEditTemplate ? "disabled" : "" : "disabled"} value={values?.stop}  style={{ width: 60, marginLeft: 10 }} onChange={(e) => handleInputChange(e.target.value, "stop", val)} />
-            </div>
-            <div style={{ marginTop: -5,marginLeft:20 }}>
-                <span style={{ fontSize: 13 }}>{val == "Row Identifier" ? "PK Col Index" : ' PK Row Index'}</span><Input disabled={columnData.length > 0 ? "" : params?.temp_disp_id ? newEditTemplate ? "disabled" : "" : "disabled"} value={values?.pk_index}  style={{ width: 60, marginLeft: val == "Row Identifier" ? 19 : 10 }} onChange={(e) => handleInputChange(e.target.value, "pk_index", val)} />
-            </div>
-            {/*  */}
-        </div>
-    )
+	const genTableExtra = (val, values) => (
+		<div style={{ display: "flex", justifyContent: "space-between" }} onClick={e => e.stopPropagation()}>
+			<p style={{ marginBottom: 0 }}>{val}</p>
+			{/* <Switch size='medium' style={{ marginLeft: val == "Row Identifier" ? 35 : 10 }} /> */}
+			<div style={{ marginTop: -5, marginLeft: val == "Row Identifier" ? 53 : 30 }}>
+				<span style={{ fontSize: 13 }}>Start Index</span><Input disabled={columnData?.length > 0 ? "" : params?.temp_disp_id ? newEditTemplate ? "disabled" : "" : "disabled"} value={values?.start} style={{ width: 60, marginLeft: 10 }} onChange={(e) => handleInputChange(e.target.value, "start", val)} />
+			</div>
+			<div style={{ marginTop: -5, marginLeft: 20 }}>
+				<span style={{ fontSize: 13 }}>Stop Index</span><Input disabled={columnData?.length > 0 ? "" : params?.temp_disp_id ? newEditTemplate ? "disabled" : "" : "disabled"} value={values?.stop} style={{ width: 60, marginLeft: 10 }} onChange={(e) => handleInputChange(e.target.value, "stop", val)} />
+			</div>
+			<div style={{ marginTop: -5, marginLeft: 20 }}>
+				<span style={{ fontSize: 13 }}>{val == "Row Identifier" ? "PK Col Index" : ' PK Row Index'}</span><Input disabled={columnData?.length > 0 ? "" : params?.temp_disp_id ? newEditTemplate ? "disabled" : "" : "disabled"} value={values?.pk_index} style={{ width: 60, marginLeft: val == "Row Identifier" ? 19 : 10 }} onChange={(e) => handleInputChange(e.target.value, "pk_index", val)} />
+			</div>
+			{/*  */}
+		</div>
+	)
 
 
 	const ColumnTable = () => (
@@ -357,13 +359,13 @@ function TableIdentifier(props) {
 		}
 
 	}
-
+	console.log("formTableData", formTableData)
 	return (
 		<Collapse
 			accordion
 			expandIconPosition='right'
 			style={{ marginTop: 20 }}
-			collapsible={columnData.length > 0 ? "" : params?.temp_disp_id ? newEditTemplate ? "disabled" : "" : "disabled"}
+			collapsible={columnData?.length > 0 ? "" : params?.temp_disp_id ? newEditTemplate ? "disabled" : "" : "disabled"}
 			onChange={handleIdentifierChange}
 		>
 			<Panel id="columns" header={genTableExtra("Column Identifier", colPanelValue)} key='1' >

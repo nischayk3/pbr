@@ -1,45 +1,10 @@
 {
     "data": [
         {
-            "created_by": "mihir.bagga@mareana.com",
-            "created_on": "2022-08-10T06:47:25.644860+00:00",
-            "pipeline_disp_id": "P6",
-            "pipeline_name": "Pipe",
-            "pipeline_status": "DRFT"
-        },
-        {
-            "created_by": "vinay.reddy@mareana.com",
-            "created_on": "2022-08-05T06:32:40.744434+00:00",
-            "pipeline_disp_id": "P5",
-            "pipeline_name": "P3",
-            "pipeline_status": "DRFT"
-        },
-        {
-            "created_by": "vinay.reddy@mareana.com",
-            "created_on": "2022-08-05T06:31:14.639608+00:00",
-            "pipeline_disp_id": "P4",
-            "pipeline_name": "P3",
-            "pipeline_status": "DRFT"
-        },
-        {
-            "created_by": "dinesh.jinjala@mareana.com",
-            "created_on": "2022-08-05T05:46:18.502133+00:00",
-            "pipeline_disp_id": "P3",
-            "pipeline_name": "Test pipeline",
-            "pipeline_status": "DRFT"
-        },
-        {
-            "created_by": "krishnatheja.vanka@mareana.com",
-            "created_on": "2022-05-11T15:52:07.009114+00:00",
-            "pipeline_disp_id": "P2",
-            "pipeline_name": "Test Pipeline",
-            "pipeline_status": "DRFT"
-        },
-        {
-            "created_by": "someswara.rao@mareana.com",
-            "created_on": "2022-04-28T05:22:12.265859+00:00",
-            "pipeline_disp_id": "P1",
-            "pipeline_name": "Test Pipeline",
+            "created_by": "nagaraju@mareana.com",
+            "created_on": "2022-12-09T14:35:10.355633+00:00",
+            "pipeline_disp_id": "P352",
+            "pipeline_name": "Elixir_ML_Model2",
             "pipeline_status": "DRFT"
         }
     ],
