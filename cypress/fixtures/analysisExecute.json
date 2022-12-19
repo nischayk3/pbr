@@ -1,0 +1,19 @@
+{
+    "app_data":"ANALYTICS",
+    "dag_id":" ",
+    "created_by":"Vinay",
+    "app_type":"ANALYTICS",
+    "app_id":"P352",
+    "email_config":{
+       
+    },
+    "frequency":"Once",
+    "frequency_unit":"Once",
+    "job_status":"scheduled",
+    "job_type":"event",
+    "notify_emails":[
+       
+    ],
+    "scheduled_start":"2022-12-18",
+    "scheduled_end":"2022-12-18"
+ }

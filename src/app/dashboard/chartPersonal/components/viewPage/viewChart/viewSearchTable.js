@@ -39,7 +39,9 @@ const ViewSearchTable = ({
 
 	const onDeepSearch = () => {
 		setDeepSearch(true);
-		deepSearch1.current = true;
+		if (deepSearch1) {
+		 deepSearch1.current = true;
+		}
 		setViewSearch(false);
 	};
 
