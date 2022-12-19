@@ -17,7 +17,7 @@ import {
 	hideLoader, showLoader, showNotification
 } from "../../../../../../duck/actions/commonActions";
 import {
-	addRow, adjustColumnWidths, changeInput,
+	addRows, adjustColumnWidths, changeInput,
 	changeSelectInput,
 	changeToggleInput, checkDeleteButtonDisabledState, deleteRow, deleteRowCheck, EditableCell, EditableRow, selectAllRowsForDeletion
 } from "../../../../../../utils/editableTableHelper";
@@ -295,7 +295,7 @@ class DataFormFirst extends Component {
 	onDeleteRows = () => this.setState({ visible: true });
 
 	onAddRow = () => {
-		const { dataSource, count } = addRow(this.state);
+		const { dataSource, count } = addRows(this.state);
 		this.setState({ currentPage: 1 });
 		this.setState({ dataSource, count }, () => {
 			this.initializeTableRender();
