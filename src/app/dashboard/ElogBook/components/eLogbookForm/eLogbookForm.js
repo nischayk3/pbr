@@ -70,7 +70,6 @@ function ElogForm({ isTemplateModal }) {
 	const data = ["Hour", "Minutes", "Seconds"];
 
 	return (
-
 		<Modal
 			className="landing-modal"
 			title="Basic details - New template [Draft]"

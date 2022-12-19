@@ -31,10 +31,10 @@ export default function FormEntryLanding() {
                     sourceClass="dashboard-landing"
                 />
                 <Row>
-                    <Col span={5}>
+                    <Col span={6}>
                         <DataEntryFormTabs setId={setId} />
                     </Col>
-                    <Col span={19}>
+                    <Col span={18}>
                         <DataEntryCardArea id={id} />
                     </Col>
                 </Row>

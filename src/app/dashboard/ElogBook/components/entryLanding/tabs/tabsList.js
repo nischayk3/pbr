@@ -17,6 +17,12 @@ export default function DataEntryFormTabs(props) {
     const [filterData, setFilterData] = useState([])
     const dispatch = useDispatch();
 
+    useEffect(() => {
+        dispatch(sendSelectedMolecule(''))
+        dispatch(sendTemplateTiles([]))
+
+    }, [])
+
     const getMoleculeTemplates = async (mol) => {
         dispatch(showLoader())
         let req = {
@@ -31,7 +37,7 @@ export default function DataEntryFormTabs(props) {
             }
         }
         else {
-            dispatch(showNotification('error', 'No data present for selected molecule'))
+            dispatch(showNotification('error', 'No data present for selected product'))
             dispatch(hideLoader())
         }
     }
@@ -86,22 +92,25 @@ export default function DataEntryFormTabs(props) {
     }, [])
 
     return (
-        <div >
+        <div  >
             <Input.Search className="tabs-search" placeholder="Search a product" onSearch={searchMolecule} />
-            {
-                filterData && filterData.length > 0 && filterData.map((i, idx) => {
-                    return (
-                        <div className={i.selected ? 'approval-cards-active' : 'approval-cards'} key={idx} onClick={() => handleClick(i.title)} >
-                            <div className={'circle_icon'} >
-                                {i.icon}
+            <div className="tab_area">
+                {
+                    filterData && filterData.length > 0 && filterData.map((i, idx) => {
+                        return (
+                            <div className={i.selected ? 'approval-cards-active' : 'approval-cards'} key={idx} onClick={() => handleClick(i.title)} >
+                                <div className={'circle_icon'} >
+                                    {i.icon}
+                                </div>
+                                <div className={'card_desc'}>
+                                    <p className={'approve-desc'}>{i.title}</p>
+                                </div>
                             </div>
-                            <div className={'card_desc'}>
-                                <p className={'approve-desc'}>{i.title}</p>
-                            </div>
-                        </div>
-                    )
-                })
-            }
+                        )
+                    })
+                }
+            </div>
+
 
         </div>
     )
