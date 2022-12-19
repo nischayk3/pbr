@@ -25,6 +25,9 @@ class Service {
 				if (error.response.status === 401) {
 					Store.dispatch(checkAuth(false));
 				}
+				// else if (error.response.status === 500) {
+				// 	Store.dispatch(checkNetworkError(true));
+				// }
 				return Promise.reject(error);
 			}
 		);

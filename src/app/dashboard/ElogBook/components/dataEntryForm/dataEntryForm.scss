@@ -12,7 +12,6 @@
 
 .data_entry_panel {
 
-	// margin-right: 20px;
 	.trigger-panel_closed {
 		position: absolute;
 		left: 215px;
@@ -56,7 +55,7 @@
 
 	.record_list {
 		width: 100%;
-		height: 37px;
+		height: auto;
 		left: 6px;
 		top: 64px;
 		border: 1px solid #F0F0F0;
@@ -67,17 +66,12 @@
 		font-size: 14px;
 		line-height: 22px;
 		background: white;
-
-
-		/* identical to box height, or 157% */
-
-
 		color: #353535;
 	}
 
 	.record_list_selected {
 		width: 100%;
-		height: 37px;
+		height: auto;
 		left: 6px;
 		top: 64px;
 		border: 1px solid #F0F0F0;
@@ -94,32 +88,30 @@
 	.ant-layout-sider {
 		background-color: #fff;
 		width: 247px !important;
-		height: 455px;
+		height: 425px;
 		flex: 0 0 247px !important;
 		max-width: 247px !important;
 		min-width: 247px !important;
-		min-height: 455px;
-		// position: absolute;
+		min-height: 425px;
 		border: 2px solid #ADC6FF;
-
+		position: absolute;
+		transition: 0.2s;
+		// white-space: nowrap;
 		// float: left;
 		z-index: 1000;
-		opacity: 0.9;
 	}
 
-	.data_form_first {
-		left: 60px;
-	}
+
 
 	.create_new_record {
 		padding: 5px 18px;
 		gap: 8px;
-		position: absolute;
-		width: 243px;
+		// position: absolute;
+		width: 247px;
 		height: 32px;
 		background: #EDECFF;
 		z-index: 1000;
-		border-radius: 0px 0px 4px 4px;
+		border-radius: 4px 4px 0px 0px;
 		border: 1px solid black;
 	}
 
@@ -134,7 +126,7 @@
 		// overflow: scroll;
 		overflow-y: scroll;
 		// min-height: 300px;
-		// height: 490px;
+		height: 350px;
 		border: none;
 	}
 
@@ -145,7 +137,7 @@
 		flex: 0 0 12px !important;
 		max-width: 40px !important;
 		min-width: 40px !important;
-		height: 455px;
+		height: 425px;
 		background-color: #ADC6FF;
 		border: 2px solid #ADC6FF;
 
@@ -189,8 +181,16 @@
 	margin: 10px 0;
 }
 
+.data_form_first {
+	margin-left: 205px;
+}
+
+.data_form_first_collapsed {
+	margin-left: 0px;
+}
+
 .table-wrapper {
-	position: relative;
+	// position: relative;
 
 	.table-head {
 
@@ -230,10 +230,10 @@
 	border-radius: 4px;
 	padding: 20px;
 	min-height: 455px;
-	position: inherit;
-	margin-left: 10px;
 
 	.form-details {
+
+
 		.form-heading {
 			font-family: 'Roboto';
 			font-style: normal;
@@ -245,7 +245,6 @@
 		}
 
 		.form-btn {
-			float: right;
 
 			// margin-bottom: 50px;
 			button {

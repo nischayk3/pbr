@@ -2,6 +2,10 @@
     background-color: orange;
 }
 
+.ant-card-body {
+    padding: 10px !important;
+}
+
 .ant-tabs-tab-btn {
     font-family: var(--primary-font-family);
     font-style: normal;
@@ -118,6 +122,12 @@
 
 .buttons-head {
     float: right;
+}
+
+.content_area_scroll {
+    width: 100%;
+    max-height: 555px;
+    overflow-y: scroll;
 }
 
 .publish-btn {

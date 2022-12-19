@@ -20,7 +20,7 @@ import "./styles.scss";
 const { Option } = Select;
 
 const Signature = (props) => {
-	console.log("propssssss", props);
+
 	const location = useLocation();
 	const params = queryString.parse(location.search);
 	// eslint-disable-next-line react/prop-types
