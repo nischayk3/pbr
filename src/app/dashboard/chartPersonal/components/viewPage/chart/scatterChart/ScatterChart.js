@@ -214,6 +214,8 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 				ele.chart_mapping.transform = transform;
 			} else {
 				ele.chart_mapping.transform = undefined;
+				ele.ppk_cpk_data = {};
+				ele.layout.title.text = "";
 			}
 			/* istanbul ignore next */
 			if (axisValues.chartType === "Process Capability") {

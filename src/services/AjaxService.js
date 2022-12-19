@@ -1,5 +1,5 @@
 import axios from "axios";
-import { checkAuth, checkNetworkError, hideLoader } from "../duck/actions/commonActions";
+import { checkAuth, hideLoader } from "../duck/actions/commonActions";
 import { Store } from "../duck/store";
 class Service {
 	constructor() {
@@ -24,9 +24,10 @@ class Service {
 			function (error) {
 				if (error.response.status === 401) {
 					Store.dispatch(checkAuth(false));
-				} else if (error.response.status === 500) {
-					Store.dispatch(checkNetworkError(true));
 				}
+				// else if (error.response.status === 500) {
+				// 	Store.dispatch(checkNetworkError(true));
+				// }
 				return Promise.reject(error);
 			}
 		);
