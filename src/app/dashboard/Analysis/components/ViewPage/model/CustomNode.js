@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { Handle } from "react-flow-renderer";
 
-/* istanbul ignore next */
 export default (props) => {
 	const {
 		data,
@@ -13,9 +12,6 @@ export default (props) => {
 		setSelectedImputeValue,
 		saveTransformationValues,
 	} = props;
-	useEffect(() => {
-		if (selected) console.log("I've been selected!");
-	}, [selected]);
 
 	const handleClick = (event) => {
 		event.stopPropagation();

@@ -22,9 +22,10 @@ import Model from "./model/Model";
 import ModelData from "./ModelData";
 import ModelExcecute from './ModelExcecute';
 import Preprocess from "./preproccessing/Preprocess";
+// import Transformation from "./transformations";
 import Results from "./results/Results";
 
-/* istanbul ignore next */
+
 const ViewPageAnalysis = () => {
 	const [isPublish, setIsPublish] = useState(false);
 	const [publishResponse, setPublishResponse] = useState({});
@@ -117,8 +118,11 @@ const ViewPageAnalysis = () => {
 			setExectStart(true);
 			dispatch(showNotification("success", "Model saved successfully"));
 		} else {
+			 /* istanbul ignore next */
 			dispatch(hideLoader());
+			/* istanbul ignore next */
 			setExectStart(false);
+			/* istanbul ignore next */
 			dispatch(showNotification("error", "Model saving failed"));
 		}
 	};
@@ -156,16 +160,18 @@ const ViewPageAnalysis = () => {
 			setExecutedModal(true)
 			dispatch(showNotification("success", "Model execution started successfully"));
 		} else {
+			/* istanbul ignore next */
 			dispatch(hideLoader());
+			/* istanbul ignore next */
 			dispatch(showNotification("error", "Model execution failed"));
 		}
 	};
 
-	const onSchedule = () => {
-		const date = moment(exectLaterDate).format("YYYY-MM-DD");
-		onExecuteClick(date);
-		setExectLater(false);
-	};
+	// const onSchedule = () => {
+	// 	const date = moment(exectLaterDate).format("YYYY-MM-DD");
+	// 	onExecuteClick(date);
+	// 	setExectLater(false);
+	// };
 
 	const getPipelineList = async () => {
 		let req = {
@@ -193,6 +199,7 @@ const ViewPageAnalysis = () => {
 			setFinalModelJson(data?.data?.pipeline_data[0])
 			dispatch(hideLoader());
 		} else {
+			 /* istanbul ignore next */
 			dispatch(hideLoader());
 		}
 	}
@@ -222,7 +229,9 @@ const ViewPageAnalysis = () => {
 			}
 			setResultsData(apiResponse.data);
 		} else {
+			 /* istanbul ignore next */
 			dispatch(hideLoader());
+			 /* istanbul ignore next */
 			showNotification("error", "Unable to get results");
 		}
 	};
@@ -234,13 +243,13 @@ const ViewPageAnalysis = () => {
 		}
 	}, []);
 
-	const handleClose = () => {
-		setIsPublish(false);
-	};
+	// const handleClose = () => {
+	// 	setIsPublish(false);
+	// };
 
-	const PublishResponse = (res) => {
-		setPublishResponse(res);
-	};
+	// const PublishResponse = (res) => {
+	// 	setPublishResponse(res);
+	// };
 
 	const ViewDetails = () => {
 		return (
@@ -269,18 +278,18 @@ const ViewPageAnalysis = () => {
 						parameters.fromScreen !== "Workspace" ? (
 						<>
 							<Button
-								onClick={() => {
-									setIsPublish(true);
-									setApproveReject("R");
-								}}
+								// onClick={() => {
+								// 	setIsPublish(true);
+								// 	setApproveReject("R");
+								// }}
 							>
 								Reject
 							</Button>
 							<Button
-								onClick={() => {
-									setIsPublish(true);
-									setApproveReject("A");
-								}}
+								// onClick={() => {
+								// 	setIsPublish(true);
+								// 	setApproveReject("A");
+								// }}
 							>
 								Approve
 							</Button>
@@ -303,8 +312,8 @@ const ViewPageAnalysis = () => {
 									setIsPublish(true);
 									setApproveReject("P");
 								}}
-								disabled
-							// disabled={selectedViewData.viewData.pipeline_status === 'AWAP' || selectedViewData.viewData.pipeline_status === 'APRD'}
+
+								disabled={selectedViewData.viewData.pipeline_status === 'AWAP' || selectedViewData.viewData.pipeline_status === 'APRD'}
 							>
 								<CloudUploadOutlined />
 								Publish
@@ -345,16 +354,16 @@ const ViewPageAnalysis = () => {
 					</TabPane>}
 				</Tabs>
 			</div>
-			<Signature
+			{/* <Signature
 				isPublish={isPublish}
 				handleClose={handleClose}
-				screenName="Analysis"
+				screenName="Analytics"
 				PublishResponse={PublishResponse}
 				appType="ANALYSIS"
 				dispId={selectedViewData.viewData.pipeline_id}
-				// version={postChartData.data && postChartData.data[0].chart_version}
+				version='1'
 				status={approveReject}
-			/>
+			/> */}
 			{executedModel && <ModalComponent isModalVisible={executedModel} closable={false} centered>
 				<ModelExcecute jobId={jobId} getResultFunc={getResultFunc} resultsData={resultsData} results={results} />
 			</ModalComponent>}
@@ -380,7 +389,7 @@ const ViewPageAnalysis = () => {
 						justifyContent: "flex-end",
 					}}
 				>
-					<Button className="custom-primary-btn" onClick={onSchedule}>
+					<Button className="custom-primary-btn">
 						Schedule
 					</Button>
 				</div>

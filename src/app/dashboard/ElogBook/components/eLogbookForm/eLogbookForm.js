@@ -6,7 +6,7 @@
 import {
 	Button, Modal
 } from 'antd';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory, useRouteMatch } from "react-router-dom";
 import Banner from '../../../../../assets/images/Popup-Side.svg';
 import InputField from '../../../../../components/InputField/InputField';

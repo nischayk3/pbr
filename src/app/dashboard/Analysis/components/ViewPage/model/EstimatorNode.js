@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Handle } from "react-flow-renderer";
 
-/* istanbul ignore next */
+
 export default ({
 	data,
 	selected,

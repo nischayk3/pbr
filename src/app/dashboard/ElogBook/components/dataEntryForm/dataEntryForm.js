@@ -64,7 +64,6 @@ const DataEntryForm = () => {
 
 	const addForm = async (x, index_) => {
 		dispatch(showLoader())
-
 		let dummy_req = {
 			name: x ? x.form_name : "",
 			version: x ? x.version : 1,
@@ -96,8 +95,8 @@ const DataEntryForm = () => {
 			dispatch(showNotification('error', 'Error in adding form'))
 		}
 		finally {
-			handleChange(1, 0)
-			handleChange(1, 0)
+			handleChange(2, index_)
+			handleChange(1, index_)
 			dispatch(hideLoader())
 		}
 	}

@@ -4,6 +4,7 @@ import { Redirect, Route, Switch, useRouteMatch } from "react-router-dom";
 import Loading from "../components/Loading";
 import Notification from "../components/Notification";
 import SuspenseWrapper from "../components/SuspenseWrapper";
+import ErrorPage from "./errorPage";
 import ProctectedRoute from "./PrivateRoute";
 import TokenExpired from "./tokenexpired";
 
@@ -17,6 +18,9 @@ const App = () => {
 	const authenticated = useSelector(
 		(state) => state.commonReducer.isAuthenticated
 	);
+	const error = useSelector(
+		(state) => state.commonReducer.isError
+	);
 
 	return (
 		<>
@@ -29,10 +33,14 @@ const App = () => {
 							path={`${match.url}dashboard`}
 							key="dashboard"
 							authorised={authenticated}
+							errorStatus={error}
 							component={Dashboard}
 						/>
 						<Route path={`${match.url}tokenexpired`} key="tokenexpired">
 							<TokenExpired />
+						</Route>
+						<Route path={`${match.url}error`} key="error">
+							<ErrorPage />
 						</Route>
 						<Route path={`${match.url}user`} key="user">
 							<Account />

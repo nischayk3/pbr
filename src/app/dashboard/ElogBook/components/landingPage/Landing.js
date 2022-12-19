@@ -1,15 +1,13 @@
-import { Button, Collapse, Pagination, Table, Tag } from "antd";
+import { Avatar, Button, Collapse, Pagination, Table, Tag } from "antd";
 import React, { lazy, useState } from "react";
 import illustrations from "../../../../../assets/images/elogbook-landing.png";
+import BreadCrumbWrapper from "../../../../../components/BreadCrumbWrapper";
 import SelectField from "../../../../../components/SelectField/SelectField";
 import ElogForm from "../eLogbookForm/eLogbookForm";
 import "./styles.scss";
 const ScreenHeader = lazy(() =>
 	import("../../../../../components/ScreenHeader/screenHeader")
 );
-import { UserOutlined } from '@ant-design/icons';
-import { Avatar, Image } from 'antd';
-
 
 export default function Landing() {
 	const [isViewsetVisible, setIsViewsetVisible] = useState(false);
@@ -78,72 +76,74 @@ export default function Landing() {
 
 	];
 	return (
-		<div>
-			<ScreenHeader
-				bannerbg={{
-					background:
-						"linear-gradient(180deg, #E7E5FF 0%, #FFF4F4 100%)",
-				}}
-				title={`Howdy ${localStorage.getItem("username")},`}
-				description="In the mood to create some templates today?"
-				source={illustrations}
-				sourceClass="geanealogy-image"
-			/>
-			<div className="landing-card-wrapper">
-				<div className="panel-header">
-					<Button
-						className="custom-secondary-btn"
-						type="primary"
-						onClick={(e) => {
-							setIsTemplateModal(true)
-						}}
-					>
-						Create new template
-					</Button>
+		<div className='custom-wrapper'>
+			<BreadCrumbWrapper />
+			<div className='custom-content-layout'>
+				<ScreenHeader
+					bannerbg={{
+						background:
+							"linear-gradient(180deg, #E7E5FF 0%, #FFF4F4 100%)",
+					}}
+					title={`Howdy ${localStorage.getItem("username")},`}
+					description="In the mood to create some templates today?"
+					source={illustrations}
+					sourceClass="geanealogy-image"
+				/>
+				<div className="landing-card-wrapper">
+					<div className="panel-header">
+						<Button
+							className="custom-secondary-btn"
+							type="primary"
+							onClick={(e) => {
+								setIsTemplateModal(true)
+							}}
+						>
+							Create new template
+						</Button>
 
-					<div className="filter-tab">
-						<div className="filter">
-							<p>Show</p>
-							<SelectField
-							defaultValue="Newest first"
-								selectList={filterList}
-								// selectedValue={filterData}
-								onChangeSelect={(e) =>
-									setFilterData(e)
-								}
+						<div className="filter-tab">
+							<div className="filter">
+								<p>Show</p>
+								<SelectField
+									defaultValue="Newest first"
+									selectList={filterList}
+									// selectedValue={filterData}
+									onChangeSelect={(e) =>
+										setFilterData(e)
+									}
+								/>
+							</div>
+
+							<Pagination
+								total={20}
+								showTotal={(total, range) => `${range[0]}-${range[1]} of ${total}`}
+								defaultPageSize={20}
+								defaultCurrent={1}
 							/>
 						</div>
-
-						<Pagination
-							total={20}
-							showTotal={(total, range) => `${range[0]}-${range[1]} of ${total}`}
-							defaultPageSize={20}
-							defaultCurrent={1}
-						/>
 					</div>
+					<Collapse bordered={false}
+					// defaultActiveKey={['1']}
+					>
+						<Panel header={
+							(<Tag color="yellow">In progress</Tag>)
+						} key="1">
+							<Table bordered={false} columns={columns} dataSource={data} className="elog-table" />
+						</Panel>
+						<Panel header={
+							(<Tag color="green">Approved</Tag>)
+						} key="2">
+							<Table bordered={false} columns={columns} dataSource={data} className="elog-table" />
+						</Panel>
+						<Panel header={
+							(<Tag color="red">Rejected</Tag>)
+						} key="3">
+							<Table bordered={false} columns={columns} dataSource={data} className="elog-table" />
+						</Panel>
+					</Collapse>
+					<ElogForm isTemplateModal={isTemplateModal} />
 				</div>
-				<Collapse bordered={false} 
-				// defaultActiveKey={['1']}
-				>
-					<Panel header={
-						(<Tag color="yellow">In progress</Tag>)
-					} key="1">
-						<Table bordered={false} columns={columns} dataSource={data} className="elog-table" />
-					</Panel>
-					<Panel header={
-						(<Tag color="green">Approved</Tag>)
-					} key="2">
-						<Table bordered={false} columns={columns} dataSource={data} className="elog-table" />
-					</Panel>
-					<Panel header={
-						(<Tag color="red">Rejected</Tag>)
-					} key="3">
-						<Table bordered={false} columns={columns} dataSource={data} className="elog-table" />
-					</Panel>
-				</Collapse>
-				<ElogForm isTemplateModal={isTemplateModal} />
 			</div>
-
 		</div >
 
 	);

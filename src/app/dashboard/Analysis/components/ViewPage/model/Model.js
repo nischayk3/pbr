@@ -28,7 +28,7 @@ import "./model.scss";
 import NodeDetails from "./NodeDetails";
 import Transformation from "./Transformations";
 
-/* istanbul ignore next */
+
 const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, modelType, encoderData, setEncoderData }) => {
 	const selectedViewData = useSelector(
 		(state) => state.analyticsReducer.viewData
