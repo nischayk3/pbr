@@ -150,7 +150,6 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			}
 		}
 
-
 		let xAxis = {};
 		let yAxis = {};
 		let zAxis = {};
@@ -264,6 +263,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 					dispatch(showNotification("success", `Best Transformation : ${viewRes.data[0].ppk_cpk_data?.best_transformer}`));
 				} else {
 					setShowPpk(false)
+					setPpkData({})
 				}
 			} else {
 				setShowPpk(false)
@@ -285,6 +285,10 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 	};
 
 	const handleChartType = (e) => {
+		if (e !== 'Process Capability') {
+			setPpkData({});
+			setShowPpk(false);
+		}
 		if (e === "Bubble" || e === "Error") {
 			setShowZAxis(true);
 		} else {
@@ -375,9 +379,11 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 							dispatch(showNotification("success", `Best Transformation : ${ele.ppk_cpk_data?.best_transformer}`));
 						} else {
 							setShowPpk(false)
+							setPpkData({})
 						}
 					} else {
 						setShowPpk(false)
+						setPpkData({})
 					}
 					setAxisValues({
 						...axisValues,
