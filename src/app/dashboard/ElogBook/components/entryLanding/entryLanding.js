@@ -1,6 +1,6 @@
 import { Col, Row } from "antd";
 import React, { useState } from "react";
-import illustrations from "../../../../../assets/images/ChartBanner.svg";
+import illustrations from "../../../../../assets/images/undraw_fill_form_re_cwyf.png";
 import BreadCrumbWrapper from "../../../../../components/BreadCrumbWrapper";
 import ScreenHeader from "../../../../../components/ScreenHeader/screenHeader";
 import DataEntryCardArea from "./cardArea/cardArea";
@@ -22,7 +22,7 @@ export default function FormEntryLanding() {
 				<ScreenHeader
 					bannerbg={{
 						background:
-							"linear-gradient(180deg, #E7E5FF 0%, #FFF4F4 100%)",
+							"linear-gradient(180deg, rgba(255, 226, 124, 0.72) 0%, #FFF4F4 100%)",
 					}}
 					title={`Howdy ${localStorage.getItem("username")},`}
 					description="Filling in some data for products today?
