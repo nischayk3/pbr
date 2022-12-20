@@ -1,10 +1,11 @@
 import { DownOutlined } from '@ant-design/icons';
-import { Button, Dropdown, Layout, Menu, Select, Tabs } from 'antd';
+import { Button, Dropdown, Layout, Menu, Select, Tabs, Steps } from 'antd';
 import React, { useState } from 'react';
 import rightarrow from '../../../../../../assets/editornew/rightarrow.png';
 import "../editorTemplate/editorTemplate.scss";
 const { Header, Sider, Content } = Layout;
 const { TabPane } = Tabs;
+const { Step } = Steps;
 
 const items = [
 	{
@@ -494,6 +495,42 @@ function editorTemplate() {
 
 	}
 	return (
+        <div className='main-editortemp'>
+            <div className="metadata-subheader ">
+					<div className="title-layout">
+						<p>Design form</p>
+					</div>
+					<div className="stepper-layout">
+						<Steps
+							size="small"
+							current={0}
+						>
+							{/* <Step key={0} title="Meta data" /> */}
+							<Step key={0} title="Design form" />
+							<Step key={1} title="Script editor" />
+	
+						</Steps>
+					</div>
+					<div className="button-layout">
+						<Button
+							className={"custom-primary-btn"}
+							type="primary"
+							onClick={(e) => handleNext(e)}
+							disabled
+						>
+							Save form
+						</Button>
+						<Button
+							className={"pbbutton custom-primary-btn"}
+							type="primary"
+							onClick={(e) => handleNext(e)}
+							disabled
+						>
+							Publish form
+						</Button>
+					</div>
+				
+        </div>
 		<Layout>
 			<Layout>
 				<div className="flex-container">
@@ -689,6 +726,7 @@ function editorTemplate() {
 
 			</Sider>
 		</Layout>
+        </div>
 	)
 }
 

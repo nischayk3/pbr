@@ -1,3 +1,8 @@
+.main-metadata{
+	height: 600px;
+    background-color: #EDECFF;
+    border-radius: 10px;
+}
 .main-text {
 	font-family: "Maven Pro";
 	font-size: "16px";
@@ -11,7 +16,7 @@
 
 .hierarchy-table {
 	margin-top: 30px;
-
+	margin-inline: 30px;
 	.ant-table {
 		.ant-table-container {
 			.ant-table-content {
@@ -90,10 +95,11 @@
 }
 
 .add-button {
-	width: 100%;
+	width: 94.8%;
 	height: 51px;
 	background: #fff;
 	padding: 5px;
+	margin-inline: 30px;
 }
 
 .add-row-button {
@@ -122,6 +128,8 @@
 .metadata-subheader {
 	display: flex;
 	justify-content: space-between;
+	padding-top: 20px;
+	
 }
 
 .deleteButton {
@@ -132,7 +140,7 @@
 // 	width: 180px;
 // }
 .ant-select:not(.ant-select-customize-input) .ant-select-selector {
-	width: 180px;
+	width: 240px;
 }
 
 .save-button {

@@ -6,8 +6,12 @@ let login_response = JSON.parse(localStorage.getItem("login_details"));
 const request_headers = {
     "content-type": "application/json",
     "x-access-token": login_response.token ? login_response.token : "",
-    "resource-name": "REPORT_DESIGNER"
+    "resource-name": "REPORT_DESIGNER",
 };
+
+const params = {
+    'product': 'BELATACEPT',
+}
 
 export const getTemplatesList = (request) => {
     return Service.get(
@@ -60,6 +64,36 @@ export const getDummyTemplate = (request) => {
         BMS_APP_PYTHON_SERVICE + "/elogbook-form-template",
         request,
         request_headers
+    ).then(
+        (response) => {
+            return response.data;
+        },
+        (error) => {
+            return error.response.data;
+        }
+    );
+};
+
+export const getFormList = (request) => {
+    return Service.get(
+        BMS_APP_PYTHON_SERVICE + "/elogbook-forms-list",
+        request,
+        request_headers
+    ).then(
+        (response) => {
+            return response.data;
+        },
+        (error) => {
+            return error.response.data;
+        }
+    );
+};
+
+export const getMetadata = (request) => {
+    return Service.get(
+        BMS_APP_PYTHON_SERVICE + "/elogbook-metadata",
+        request,
+        request_headers,
     ).then(
         (response) => {
             return response.data;

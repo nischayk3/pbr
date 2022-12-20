@@ -5,6 +5,7 @@ import "./metaData.scss";
 import {
 	hideLoader, showLoader, showNotification
 } from "../../../../../../duck/actions/commonActions";
+import { getMetadata } from "../../../../../../../src/services/eLogBookService"
 
 const Data = 
         {
@@ -118,7 +119,21 @@ const Data =
 function metaData({ sendDataToParent, Alldata }) {
 	const [form] = Form.useForm();
 	const [check, setCheck] = useState(false)
-	const [moleculeData, setMoleculeData] = useState(Alldata);
+	const [moleculeData, setMoleculeData] = useState([
+		{
+			key: 1,
+				MetaData: "",
+				KeyData: "",
+				ValueData: "",
+				selectDrop: false,
+				Allowedit: false
+			// key: 1,
+			// MetaData: "",
+			// KeyData: "Data1",
+			// ValueData: "Value1",
+			// selectDrop: true,
+			// Allowedit: false,
+		}]);
 	const [selectData, setSelectData] = useState({ Add: false })
 	const [formData, setFormData] = useState({
 		key: '',
@@ -130,10 +145,28 @@ function metaData({ sendDataToParent, Alldata }) {
 	})
 	const [val, setVal] = useState('');
 	const [count, setCount] = useState(1);
-console.log(Data);
+
 	const [data, setData] = useState({ label: '' })
 	const [editingKey, setEditingKey] = useState('');
 	const[alowEdit, setAllowEdit] = useState(false);
+	const [metaDataopt, setMetaDataopt] = useState([])
+
+	useEffect(() => {
+		getMetadataLists()
+	}, [])
+
+	const getMetadataLists = async () => {
+		let req = {
+			 "product" : "BELATACEPT",
+			 "product_num": "1322454",
+			 "site": "1255"
+		}
+		let metaData_list = await getMetadata(req)
+		setMetaDataopt(metaData_list);
+	
+		console.log(metaData_list);
+	}
+
 	const isEditing = (record) => record.key === editingKey;
 	const edit = (record) => {
 		console.log(record);
@@ -202,6 +235,7 @@ const EditableCell =
 	children,
 	...restProps
 }) => {
+	
 				switch (inputType) {
 					case "checkbox":
 						return (
@@ -252,7 +286,7 @@ const EditableCell =
 						value={record.MetaData || formData.MetaData}
 						onChange={(event) => handleChange(event, record)}
 						// onChange={(e) => setFormData({...formData, MetaData : e})}
-						options={Data.metaData}
+						options={Data.metaData }
 					/>
 							
 							</Form.Item>
@@ -261,6 +295,35 @@ const EditableCell =
 						)}
 					</td>
 					);
+					case "valueselect":
+						return (
+							<td {...restProps}>
+			                   {editing ? (
+							<Form.Item
+							name={dataIndex}
+							style={{
+								margin: 0,
+							}}
+							rules={[
+								{
+									required: false,
+									message: `Please Input ${title}!`,
+								},
+							]}
+							>
+					
+						<Select>
+						{(record.MetaData === "Site" ? metaDataopt.sites : record.MetaData === "Batch" ? metaDataopt.batches : record.MetaData === "Material" ? metaDataopt.product_num : '' ).map((option, index) => (
+						  <Select.Option key={index} value={option}>{option}</Select.Option>
+						))}
+					  </Select>
+					
+							</Form.Item>
+						): (
+							children
+						)}
+					</td>
+						);
 					default:
 						return (
 							<td {...restProps}>
@@ -292,7 +355,7 @@ const EditableCell =
 };
 
 
-console.log(formData);
+console.log(formData, metaDataopt);
 	const handleChang = (e, cdata) => {
 		console.log(cdata);
 		// setCheck(!check)
@@ -366,6 +429,41 @@ console.log(formData);
 		setFormData({
 			key: edata.key,
 			MetaData: event,
+			KeyData: event === "Site" ? "Site" : event === "Batch" ? "Batch" :  event === "Material" ? "Material" : '',
+			ValueData: "",
+			selectDrop: true,
+			Allowedit: check
+		})
+		setMoleculeData(moleculeData.map(user => (user.key === edata.key ?
+			{
+				key: edata.key,
+				MetaData: event,
+				KeyData:event === "Site" ? "Site" : event === "Batch" ? "Batch" :  event === "Material" ? "Material" : '',
+				ValueData: '',
+				selectDrop: true,
+				Allowedit: check,
+			}
+			: user)));
+		sendDataToParent(moleculeData);
+		form.setFieldsValue({
+				MetaData: event,
+				KeyData: event === "Site" ? "Site" : event === "Batch" ? "Batch" :  event === "Material" ? "Material" : '',
+				ValueData: '',
+				Allowedit: '',
+
+			...formData,
+		});
+		setEditingKey(edata.key);
+	};
+
+	const handleChanged = (event, edata) => {
+		// setCheck(!check)
+		setSelectData({ Add: true });
+		setData({ label: event })
+		
+		setFormData({
+			key: edata.key,
+			MetaData: event,
 			KeyData: event === "Site" ? "Site" : "",
 			ValueData: "",
 			selectDrop: true,
@@ -383,24 +481,25 @@ console.log(formData);
 			: user)));
 		sendDataToParent(moleculeData);
 		form.setFieldsValue({
-				MetaData: event,
-				KeyData: event === "Site" ? "Site" : '',
+			MetaData: event,
+			KeyData: event === "Site" ? "Site" : "",
 				ValueData: '',
 				Allowedit: '',
 
 			...formData,
 		});
 		setEditingKey(edata.key);
+		
 	};
-
 
 	useEffect(() => {
 		setSelectData(selectData)
-		// setMoleculeData(moleculeData)
-		sendDataToParent(moleculeData)
+		setMoleculeData(moleculeData)
+	
 
 		setFormData(formData)
-
+		setEditingKey('')
+       
 	}, [moleculeData,formData])
 
 	const handleAdd = () => {
@@ -500,6 +599,12 @@ console.log(moleculeData);
 				const editable = isEditing(record);
 				return record.selectDrop === false ? '' :
 				editable  ? 
+				record.MetaData === "Site" || record.MetaData === "Batch" || record.MetaData === "Material" ?
+				<Select>
+						{record.MetaData === "Site" ? metaDataopt.sites : record.MetaData === "Batch" ? metaDataopt.batches : record.MetaData === "Material" ? metaDataopt.product_num : '' .map((option) => (
+						  <Select.Option key={option} value={option}>{option}</Select.Option>
+						))}
+					  </Select> :
 						<Input
 							type="text"
 							placeholder="To be filled by rendered"
@@ -582,6 +687,7 @@ console.log(moleculeData);
 		console.log(Data);
 	return (
 		<>
+		<div className="main-metadata">
 		 <div className="metadata-subheader ">
 				<div className="button-layout">
 					<div className="layout-button">
@@ -616,7 +722,7 @@ console.log(moleculeData);
 							...col,
 							onCell: (record) => ({
 								record,
-								inputType: col.dataIndex === 'MetaData' ? 'select' : col.dataIndex === 'Allowedit' ? "checkbox" : "text",
+								inputType: col.dataIndex === 'MetaData' ? 'select' : col.dataIndex === 'Allowedit' ? "checkbox" : col.dataIndex === "KeyData" ? "text" : col.dataIndex === " ValueData" || record.MetaData === "Batch" || record.MetaData === "Site" || record.MetaData === "Material" ? "valueselect"  : "text" ,
 								dataIndex: col.dataIndex,
 								title: col.title,
 								editing: isEditing(record)
@@ -644,7 +750,7 @@ console.log(moleculeData);
 					Add new row
 				</Button>
 			</div>
-
+			</div>
 		</>
 	)
 }

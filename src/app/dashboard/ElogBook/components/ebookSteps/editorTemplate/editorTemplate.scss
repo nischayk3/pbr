@@ -1,3 +1,10 @@
+.main-editortemp{
+	background-color: #EDECFF;
+    height: 501px;
+    position: relative;
+    border-radius: 7px;
+}
+
 .template-header {
 	background: #F1F7FF;
 	padding: 12px 32px;
@@ -62,6 +69,7 @@
 	// left: 78px;
 	// top: 187px;
 	position: relative;
+	border-radius: 7px;
 }
 
 .ant-dropdown-button>.anticon.anticon-down,
