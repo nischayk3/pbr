@@ -20,7 +20,7 @@ import "./styles.scss";
 const { Option } = Select;
 
 const Signature = (props) => {
-	console.log("propssssss", props);
+
 	const location = useLocation();
 	const params = queryString.parse(location.search);
 	// eslint-disable-next-line react/prop-types
@@ -30,6 +30,7 @@ const Signature = (props) => {
 	const [reason, setReason] = useState("");
 	const [isauth, setIsAuth] = useState("");
 	const [loginStatus, setLoginStatus] = useState("");
+	const [checkRejectReason, setCheckRejectReason] = useState(false);
 
 
 	const dispatch = useDispatch();
@@ -226,14 +227,19 @@ const Signature = (props) => {
 							<Button
 								className="custom-primary-btn"
 								key="2"
-								onClick={() => handleClose()}
+								onClick={() => {
+									handleClose();
+									setIsAuth("");
+								}}
 							>
 								Cancel
 							</Button>,
 							<Button
 								className="custom-secondary-btn"
 								key="1"
-								onClick={() => handleConfirm()}
+								onClick={() => {
+									handleConfirm();
+								}}
 							>
 								Confirm
 							</Button>
@@ -295,6 +301,11 @@ const Signature = (props) => {
 								<Select
 									onChange={(e, value) => {
 										let reason_value = value.value ? value.value : "";
+										if(reason_value === 'Other Reason') {
+											setCheckRejectReason(true)
+										} else {
+											setCheckRejectReason(false)
+										}
 										setReason(reason_value);
 									}}
 									className="sign-select"
@@ -309,7 +320,7 @@ const Signature = (props) => {
 							</div>
 						)}
 
-					{isauth === "R" && props.status === "R" && (
+					{(isauth === "R" && props.status === "R") || (checkRejectReason) ? (
 						<div>
 							<p>Comment</p>
 							<Input.TextArea
@@ -321,7 +332,7 @@ const Signature = (props) => {
 								}}
 							/>
 						</div>
-					)}
+					) : ''}
 				</div>
 			</Modal >
 		</div >

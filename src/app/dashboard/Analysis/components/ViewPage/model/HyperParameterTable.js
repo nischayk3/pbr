@@ -2,7 +2,6 @@ import { Input, Table } from 'antd'
 import React from 'react'
 import './model.scss'
 
-/* istanbul ignore next */
 const HyperParameterTable = (props) => {
 	const { dataSource, setDataSource } = props
 

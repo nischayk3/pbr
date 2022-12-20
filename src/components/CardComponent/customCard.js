@@ -10,7 +10,7 @@ import React from 'react';
 import './styles.scss';
 
 const customCard = (props) => {
-	console.log("propsssssss", props);
+
 	return (
 		<div id={'approval-cards-' + props.id} key={props.id} className={props.count === 0 ? 'approval-cards-disabled' : props.active === props.desc ? 'approval-card-active' : 'approval-card'} >
 			<div className={props.count === 0 ? 'circle_icon-disabled' : 'circle_icon'} >

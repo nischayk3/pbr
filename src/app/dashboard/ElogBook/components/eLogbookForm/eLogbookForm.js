@@ -71,7 +71,6 @@ function ElogForm({ isTemplateModal }) {
 	const data = ["Product1", "Product2", "Product3"];
 
 	return (
-
 		<Modal
 			className="landing-modal"
 			title="Basic details - New template [Draft]"
