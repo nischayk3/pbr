@@ -1,5 +1,5 @@
 import React from "react";
-import TokenExpiredImg from "../../assets/images/TokenExpired.svg";
+import InternalServerError from "../../assets/images/internal_server-error.png";
 import ErrorScreen from "../../components/ErrorScreen";
 
 const ErrorPage = () => {
@@ -10,7 +10,7 @@ const ErrorPage = () => {
 	return (
 		<div>
 			<ErrorScreen
-				img={TokenExpiredImg}
+				img={InternalServerError}
 				title="Uh oh!"
 				content="Looks like the server encountered an unexpected condition.
 				Please login again and try after some time."
