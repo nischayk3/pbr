@@ -22,8 +22,28 @@ export default function landingPage(props) {
 	const [resultDate, setResultDate] = useState("");
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [chartSearch, setChartSearch] = useState(false);
+	const [searchTableData, setSearchTableData] = useState([]);
 	const [dashboardData, setDashboardData] = useState([]);
-	const [dashboardTilesData, setDashboardTilesData] = useState([]);
+	const [dashboardTilesData, setDashboardTilesData] = useState([
+		{
+			dashboard_disp_id: "R1",
+			dashboard_name: "Live sensor monitor",
+			static: true,
+			dashboard_version: 1,
+		},
+		{
+			dashboard_disp_id: "R2",
+			dashboard_name: "Live sensor monitor",
+			static: true,
+			dashboard_version: 1,
+		},
+		{
+			dashboard_disp_id: "R3",
+			dashboard_name: "Live sensor monitor",
+			static: true,
+			dashboard_version: 1,
+		},
+	]);
 	const [searchedLanding, setSearchedLanding] = useState(false);
 	const [filterTableLanding, setFilterTableLanding] = useState(null);
 	const ref = useRef(null);
@@ -109,7 +129,6 @@ export default function landingPage(props) {
 				obj["dashboard_name"] = el.dashboard_name;
 				obj["dashboard_status"] = el.dashboard_status;
 				obj["created_by"] = el.created_by;
-				obj["dashboard_version"] = el.dashboard_version;
 				arr.push(obj);
 			});
 			const filterTable = arr.filter((o) =>
@@ -140,6 +159,7 @@ export default function landingPage(props) {
 		updateDate();
 		dashboardRes();
 		dashboardTiles();
+		// document.addEventListener("mousedown", closeTableView);
 	}, []);
 
 	const updateDate = () => {
@@ -170,7 +190,12 @@ export default function landingPage(props) {
 		try {
 			dispatch(showLoader());
 			const dashboardRes = await getDashboard(req);
-			setDashboardTilesData(dashboardRes.data);
+			const tempDashList = [...dashboardTilesData];
+			dashboardRes?.data?.forEach((ele) => {
+				ele.static = false;
+				tempDashList.push(ele);
+			});
+			setDashboardTilesData(tempDashList);
 			dispatch(hideLoader());
 		} catch (error) {
 			dispatch(hideLoader());
@@ -185,9 +210,56 @@ export default function landingPage(props) {
 	const onFocusRemove = (value) => {
 		setChartSearch(value);
 	};
+	//function for closing view table result on click of outside.
+	const closeTableView = (e) => {
+		if (ref.current && !ref.current.contains(e.target)) {
+			setChartSearch(false);
+			props.setSearchTableData(props.searchData.current);
+		}
+	};
 
 	const handleDashboardName = (e) => {
 		props.dashboarNameFunction(e.target.value);
+	};
+
+	//on search value changes
+	// const onSearchChange = (e) => {
+	//     if (e.target.value === '') {
+	//         setSearchTableData(searchViewData.current);
+	//     }
+	//     setViewData({ ...viewData, searchValue: e.target.value });
+	// }
+
+	//function to handle search
+	// const searchTable = (value) => {
+	//     const filterData = searchViewData.current.filter((o) =>
+	//         Object.keys(o).some((k) =>
+	//             String(o[k]).toLowerCase().includes(viewData.searchValue.toLowerCase())
+	//         )
+	//     );
+	//     setSearchTableData(filterData)
+	// };
+
+	const onClickTile = (staticValue, dashboard_disp_id, dashboard_version) => {
+		if (staticValue) {
+			let url =
+				"https://mdh-dashboard.mareana.com/d/eAnr4N74z/this-dashboard-is-for-elixir-190?orgId=1&refresh=15m&from=now-2d&to=now&var-batch=EEC0049-REF&var-reactor=NJ1_08541_R1&var-interval=$__auto_interval_interval";
+			if (dashboard_disp_id === "R2") {
+				url =
+					"https://mdh-dashboard.mareana.com/d/eAnr4N74z/this-dashboard-is-for-elixir-190?orgId=1&refresh=5s&from=now-2d&to=now&var-batch=EEC0049-REF&var-reactor=NJ1_08542_R2&var-interval=$__auto_interval_interval"
+			}
+			if (dashboard_disp_id === "R3") {
+				url =
+					"https://mdh-dashboard.mareana.com/d/eAnr4N74z/this-dashboard-is-for-elixir-190?orgId=1&refresh=5s&from=now-30m&to=now&var-batch=EEC0049-REF&var-reactor=NJ1_08543_R3&var-interval=$__auto_interval_interval";
+			}
+			const newWindow = window.open(url, "_blank");
+			if (newWindow) newWindow.opener = null;
+		} else {
+			history.push(
+				`/dashboard/dashboard/${dashboard_disp_id}?id=${dashboard_disp_id}&version=${dashboard_version}`
+			);
+			window.location.reload();
+		}
 	};
 
 	return (
@@ -229,7 +301,8 @@ export default function landingPage(props) {
 											return {
 												onClick: (event) => {
 													history.push(
-														`/dashboard/dashboard/${record.dashboard_disp_id}?id=${record.dashboard_disp_id}&version=${record.dashboard_version}`);
+														`/dashboard/dashboard/${record.dashboard_disp_id}?id=${record.dashboard_disp_id}&version=${record.dashboard_version}`
+													);
 													window.location.reload();
 												}, // click row
 											};
@@ -263,18 +336,19 @@ export default function landingPage(props) {
 											return (
 												<Col
 													className="gutter-row"
-													span={6}
+													//span={6}
 													style={{ marginTop: "10px" }}
 													key={index}
 												>
 													<div
 														className="chart-tiles"
-														onClick={() => {
-															history.push(
-																`/dashboard/dashboard/${el.dashboard_disp_id}?id=${el.dashboard_disp_id}&version=${el.dashboard_version}`
-															);
-															window.location.reload();
-														}}
+														onClick={() =>
+															onClickTile(
+																el.static,
+																el.dashboard_disp_id,
+																el.dashboard_version
+															)
+														}
 													>
 														<p className="cid">{el.dashboard_disp_id}</p>
 														<p className="chartName">{el.dashboard_name}</p>
@@ -344,6 +418,38 @@ export default function landingPage(props) {
 										/>
 									)}
 								</Row>
+								{/* {props.viewData.chartDispId && (
+									<Row className='chart-view'>
+										<Col span={12}>
+											<p className='chart-preview-text'>
+												{props.viewData.chartDispId}
+											</p>
+											<p className='chart-preview-text'>
+												{props.viewData.chartName}
+											</p>
+											<p
+												className='chart-preview-text'
+												style={{ display: 'inline-flex' }}>
+												<Avatar
+													className='avatar-icon'
+													style={{ backgroundColor: '#52679F' }}>
+													{props.viewData.createdBy?.split('')[0].toUpperCase()}{' '}
+												</Avatar>
+												<span style={{ marginLeft: '5px', marginTop: '6px' }}>
+													{props.viewData.createdBy}
+												</span>
+											</p>
+										</Col>
+										<Col span={12}>
+											<div style={{ width: '146px', height: '84px' }}>
+												<ScatterPlot
+													data={props.plotData}
+													layout={props.plotLayout}
+												/>
+											</div>
+										</Col>
+									</Row>
+								)} */}
 							</Col>
 						</Row>
 					</div>
