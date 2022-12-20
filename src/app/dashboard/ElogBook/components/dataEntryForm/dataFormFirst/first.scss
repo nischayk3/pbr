@@ -79,6 +79,7 @@
 }
 
 .delete-btn {
+    display: inline-block;
     width: 100px;
     height: 30px;
     background: #FFFFFF;
@@ -91,7 +92,6 @@
     font-size: 16px;
     line-height: 22px;
     color: #262626;
-    align-items: center;
     padding: 1px 8px;
     border-radius: 4px;
     gap: 8px;
@@ -100,6 +100,7 @@
 }
 
 .save-btn {
+    vertical-align: top;
     align-items: center;
     padding: 1px 8px;
     gap: 8px;
@@ -120,17 +121,49 @@
 
 }
 
+.status_box {
+    display: inline-block;
+    vertical-align: middle;
+    height: 14px;
+    width: 14px;
+    border-radius: 50%;
+    background: #A4F588;
+    margin-left: 26px;
+    // margin-top: 29px;
+
+}
+
+.status_line_box {
+    text-align: center;
+    display: inline-block;
+
+}
+
+.status_line {
+    vertical-align: middle;
+
+    display: inline-block;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    margin-left: 10px;
+    color: #232323;
+}
+
 .buttons-head {
     float: right;
+    text-align: center;
 }
 
 .content_area_scroll {
     width: 100%;
     max-height: 555px;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .publish-btn {
+    display: inline-block;
     padding: 1px 8px;
     gap: 8px;
     width: 100px;
@@ -139,7 +172,7 @@
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
-    background: #162154;
+    background: #093185;
     border-radius: 4px;
     color: white;
 }
@@ -177,6 +210,7 @@
         line-height: 22px;
         letter-spacing: 0.01em;
         color: #6D6D6D;
+
 
     }
 }

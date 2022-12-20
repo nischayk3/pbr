@@ -8,8 +8,8 @@
  * @Last Changed By - Mihir
  */
 
-import { PlusOutlined, DeleteTwoTone, EditOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Input, Select, Switch, Table, Drawer } from "antd";
+import { PlusOutlined, DeleteTwoTone, EditOutlined, EllipsisOutlined } from "@ant-design/icons";
+import { Button, Checkbox, Input, Select, Switch, Table, Drawer, Dropdown, Menu } from "antd";
 import { Component } from "react";
 import { connect } from "react-redux";
 import { v1 as uuid } from "uuid";
@@ -28,6 +28,17 @@ import { putFormData } from "../../../../../../services/eLogBookService";
 
 const { Option } = Select;
 
+
+const menu = (
+	<Menu>
+		<Menu.Item >
+			Download form
+		</Menu.Item>
+		<Menu.Item >
+			Upload form
+		</Menu.Item>
+	</Menu>
+);
 class DataFormFirst extends Component {
 	state = {
 		tableDataChanged: false,
@@ -421,16 +432,34 @@ class DataFormFirst extends Component {
 		return (
 			<div className="custom-table-wrapper">
 				<div className="form-details">
-					<span>
+					<span className="status_line_box">
 						<span className="form-heading">
-							<span>&nbsp;&nbsp;&nbsp;&bull;
-							</span>
-							{this.props.status}</span>
-						<span className="buttons-head">
-							<Button className="delete-btn" onClick={() => this.onSaveTable(true)} icon={<DeleteTwoTone twoToneColor="red" />} />
-							<Button className="delete-btn">Publish</Button>
-							<Button className="publish-btn" onClick={() => this.onSaveTable(false)}>Save</Button>
-						</span>  </span>
+							Record {this.props.batch}
+						</span>
+						<canvas className="status_box" />
+						<span className="status_line">
+							{this.props.status}
+						</span>
+					</span>
+					<span className="buttons-head">
+						<DeleteTwoTone onClick={() => this.onSaveTable(true)} twoToneColor="red" style={{ fontSize: '25px', marginRight: '24px', top: '2%', verticalAlign: 'top' }} />
+						<Button className="delete-btn">Publish</Button>
+						<Button className="publish-btn" onClick={() => this.onSaveTable(false)}>Save</Button>
+						<Dropdown
+							overlay={menu}
+							placement='bottomLeft'
+							arrow={{ pointAtCenter: true }}>
+							<EllipsisOutlined
+								style={{
+									transform: 'rotate(-90deg)',
+									fontSize: '24px',
+									verticalAlign: 'top',
+									height: '30px',
+									marginLeft: '6px'
+								}}
+							/>
+						</Dropdown>
+					</span>
 				</div >
 				<div className="form-details">
 
@@ -478,7 +507,7 @@ class DataFormFirst extends Component {
 												position: ['bottomRight'],
 												size: 'small'
 											}}
-											scroll={dataSource.length > 0 && { x: 800 }}
+										// scroll={dataSource.length > 0 && { x: 800 }}
 										/>
 									</div>
 								</div>

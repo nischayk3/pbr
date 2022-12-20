@@ -74,7 +74,7 @@ export default function DataEntryCardArea(props) {
 	return (
 
 		<Card className="content-cards">
-			<div>
+			<div className="heading_search">
 				{templateData.length > 0 && selectedMolecule && <span className="selected_mol">{selectedMolecule} - Templates</span>}
 				{templateData.length > 0 && selectedMolecule && <Input.Search className="head-input" placeholder="Search a form or template" onSearch={searchTemplate} />}
 				{/* {templateData.length > 0 && selectedMolecule && <Button className="download-button" icon={<DownloadOutlined />} >Download all</Button>}
@@ -87,7 +87,7 @@ export default function DataEntryCardArea(props) {
 							<div className="template-card-div" >
 								<br />
 								<div className="template-card-head">
-									<p className="template-card-heading" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{i.template_disp_id + '_' + i.version}
+									<p className="template-card-heading" >{i.template_disp_id + '_' + i.version}
 										{/* <Button className="download-button-small" icon={<DownloadOutlined />} />
                                       <Button className="download-button-small" icon={<UploadOutlined />} /> */}
 									</p>

@@ -1,5 +1,5 @@
 import {
-	FileDoneOutlined
+	InboxOutlined
 } from '@ant-design/icons';
 import { Input } from "antd";
 import React, { useEffect, useState } from "react";
@@ -66,7 +66,7 @@ export default function DataEntryFormTabs(props) {
 			let tabs_list_data = molecule_list.Data.hierarchy
 			tabs_list_data.forEach(v => {
 				v.title = v.ds_name;
-				v.icon = <FileDoneOutlined style={{ color: "#162154" }} />;
+				v.icon = <InboxOutlined style={{ color: "#162154" }} />;
 				v.selected = false;
 			});
 			setTabsList(tabs_list_data)

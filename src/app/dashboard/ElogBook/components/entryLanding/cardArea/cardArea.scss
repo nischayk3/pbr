@@ -4,6 +4,10 @@
 	height: 100vh;
 }
 
+.heading_search {
+	margin-top: 44px;
+}
+
 .download-button {
 	height: 28px;
 	width: 139px;
@@ -57,7 +61,7 @@
 	font-size: 16px;
 	line-height: 22px;
 	/* identical to box height, or 138% */
-	margin-left: 15px;
+	margin-left: 38px;
 
 
 	color: #7E7E7E;
@@ -66,6 +70,7 @@
 .head-input {
 	width: 300px;
 	float: right;
+	margin-right: 34px;
 }
 
 
@@ -80,7 +85,8 @@
 }
 
 .content-card {
-	margin-left: 15px;
+	margin-left: 38px;
+	margin-top: 25px;
 
 
 	.ant-card-head {
@@ -159,7 +165,7 @@
 	}
 
 	.template-card-content {
-		margin-top: 23px;
+		margin-top: 20px;
 	}
 
 	.template-card-subheading {
