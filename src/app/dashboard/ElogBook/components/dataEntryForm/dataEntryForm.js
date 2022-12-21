@@ -12,15 +12,17 @@ import React, { useEffect, useState } from 'react';
 import panelRightImg from "../../../../../assets/images/panel-leftIcon.svg";
 import "./dataEntryForm.scss";
 import DataFormFirst from "./dataFormFirst/dataFormFirst";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, ArrowLeftOutlined } from "@ant-design/icons";
 import BreadCrumbWrapper from "../../../../../components/BreadCrumbWrapper";
 import { useDispatch, useSelector } from "react-redux";
 import { showLoader, hideLoader, showNotification } from "../../../../../duck/actions/commonActions";
 import { getDummyTemplate, getTemplateData } from "../../../../../services/eLogBookService";
 import Sider from "antd/lib/layout/Sider";
+import { useHistory } from "react-router-dom";
 const DataEntryForm = () => {
 
 	const dispatch = useDispatch()
+	const history = useHistory()
 	const selectedMolecule = useSelector(state => state.elogReducer.selectedMolecule)
 	const selectedSite = useSelector(state => state.elogReducer.selectedProductSite)
 	const templateReq = useSelector(state => state.elogReducer.templateReq)
@@ -121,14 +123,15 @@ const DataEntryForm = () => {
 			dispatch(hideLoader())
 		}
 	}
+
 	return (
 		<div className="custom-wrapper bread-wrap">
 			<div className="sub-header">
 				<BreadCrumbWrapper />
 			</div>
-			<div className="custom-content-layout">
+			<div className="content_tabs">
 				<Card
-					title={`E-log Book ${selectedMolecule}-${selectedSite}`}
+					title={<span><ArrowLeftOutlined className="arrow_icon" />E-log Book {selectedMolecule}-{selectedSite}</span>}
 					bordered={false}
 				>
 					<Tabs defaultActiveKey={templateData && templateData[0] && templateData[0].form_name} onChange={handleTabChange}>
@@ -138,20 +141,11 @@ const DataEntryForm = () => {
 									<Col span={1}>
 										<div className="data_entry_panel">
 											<span >{!drawervisible ? <PlusOutlined onClick={() => { addForm(i, _idx) }} className="plus-outlined" /> : <Button className="create_new_record" onClick={() => { addForm(i, _idx) }} icon={<PlusOutlined />}>Create New Record</Button>}</span>
-
 											{i.form_data && i.form_data.length > 0 && <Sider
 												trigger={null}
 												collapsible
 												collapsed={!drawervisible}
 											>
-												<span
-													className={drawervisible ? "trigger-panel_closed " : "trigger-panel"}
-													onClick={() => setDrawerVisible(!drawervisible)}
-												>
-													<img src={panelRightImg} />
-												</span>
-												<br />
-												<br />
 												{/* {drawervisible && <Button className="panel_button" onClick={() => { addForm(i, _idx) }}>Create new record</Button>} */}
 												<div className={!drawervisible ? "records_view" : i.form_data && i.form_data.length <= 8 ? "records_view" : "records_view_scroll"} >
 													{drawervisible && i.form_data && i.form_data.length > 0 && i.form_data.map((idx, index) => (
@@ -161,6 +155,12 @@ const DataEntryForm = () => {
 													))
 													}
 												</div>
+												<span
+													className={drawervisible ? "trigger-panel_closed " : "trigger-panel"}
+													onClick={() => setDrawerVisible(!drawervisible)}
+												>
+													<img src={panelRightImg} />
+												</span>
 											</Sider>
 											}
 										</div>

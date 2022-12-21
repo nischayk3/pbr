@@ -190,7 +190,29 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			function_id: null,
 		};
 
+		const annotations = [
+			{
+				text: "This chart contains unapproved data",
+				font: {
+					size: 13,
+					color: "rgb(116, 101, 130)",
+				},
+				showarrow: false,
+				align: "left",
+				x: 0,
+				y: 1.16,
+				xref: "paper",
+				yref: "paper",
+			},
+		];
+
 		newArr.forEach((ele) => {
+			if (ele.data_filter.unapproved_data === 1) {
+				ele.layout.annotations = annotations;
+			} else {
+				ele.layout.annotations = [];
+			}
+
 			ele.chart_type =
 				axisValues.chartType === "Scatter Plot"
 					? "scatter"
@@ -215,7 +237,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			} else {
 				ele.chart_mapping.transform = undefined;
 				ele.ppk_cpk_data = {};
-				ele.layout.title.text = "";
+				// ele.layout.title.text = "";
 			}
 			/* istanbul ignore next */
 			if (axisValues.chartType === "Process Capability") {

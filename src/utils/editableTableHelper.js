@@ -95,6 +95,13 @@ export const addRow = state => {
 	count++
 	return { dataSource, count }
 }
+export const addRows = state => {
+
+	let { dataSource, rowInitialData, count } = JSON.parse(JSON.stringify(state))
+	dataSource.push(rowInitialData)
+	count++
+	return { dataSource, count }
+}
 
 export const changeInput = (row, state) => {
 	const dataSource = [...state.dataSource];
