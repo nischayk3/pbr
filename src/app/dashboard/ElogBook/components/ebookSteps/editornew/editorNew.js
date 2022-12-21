@@ -7,7 +7,7 @@ import ImportForm from '../importForms/importForm';
 import './editoeNew.scss';
 const { Step } = Steps;
 
-function EditorNew({ Sdata }) {
+function EditorNew({ selecteddata, CreateNew }) {
     const [state, setState] = useState(false)
     const [isTemplateModal, setIsTemplateModal] = useState(false);
     const [current, setCurrent] = useState(1);
@@ -16,77 +16,66 @@ function EditorNew({ Sdata }) {
     const handleNext = (e) => {
         e.preventDefault()
         setState(true);
-        // sendDataToParent(state)
     }
-    const sendDataToParent = (index) => { // callback
-        
-		Sdata(index)
-		
-	};
-    const handleCreate = () =>{
+    const sendDataToParent = (index) => { // callback       
+        selecteddata(index)
+    };
+    const handleCreate = () => {
+        CreateNew("3")
+    }
 
-    }
-    // useEffect(() => {
-    //     // setIsTemplateModal(false)
-    // },[isTemplateModal])
     return (
         <div>
             <div className='editor-part'>
-            <div className="metadata-subheader ">
-                <div className="title-layout">
-                    <p>Design form</p>
-                </div>
-                <div className="stepper-layout">
-                    <Steps
-                        size="small"
-                        current={0}
-                    >
-                        <Step key={0} title="Design form" />
-                        <Step key={1} title="Script editor" />
-
-                    </Steps>
-                    <div>
-
-
-                        {current === 0 && (
-                            <div>
-
-                            </div>
-
-                        )}
-
-                        {current < 1 && (
-                            <div style={{ textAlign: "center" }}>
-                                
-                            </div>
-                        )}
+                <div className="metadata-subheader ">
+                    <div className="title-layout">
+                        <p>Design form</p>
                     </div>
+                    <div className="stepper-layout">
+                        <Steps
+                            size="small"
+                            current={0}
+                        >
+                            <Step key={0} title="Design form" />
+                            <Step key={1} title="Script editor" />
+
+                        </Steps>
+                        <div>
+                            {current === 0 && (
+                                <div>
+                                </div>
+
+                            )}
+                            {current < 1 && (
+                                <div style={{ textAlign: "center" }}>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                    <div className="button-layout">
+                        <Button
+                            className={"custom-primary-btn"}
+                            type="primary"
+                            onClick={(e) => handleNext(e)}
+                            // disabled
+                        >
+                            Save form
+                        </Button>
+                        <Button
+                            className={"pbbutton custom-primary-btn"}
+                            type="primary"
+                            onClick={(e) => handleNext(e)}
+                            // disabled
+                        >
+                            Publish form
+                        </Button>
+                    </div>
+
+
+
                 </div>
-                <div className="button-layout">
-                <Button
-                    className={"custom-secondary-btn"}
-                    type="primary"
-                    onClick={(e) => handleNext(e)}
-                    disabled
-                >
-                    Save form
-                </Button>
-                <Button
-                    className={"pbbutton custom-secondary-btn"}
-                    type="primary"
-                    onClick={(e) => handleNext(e)}
-                    disabled
-                >
-                    Publish form
-                </Button>
-            </div>
 
-
-           
-            </div>
-            
                 <div className="empty-box">
-                    {/* <Empty description={false} imageStyle={{ size:"large"}} className="empty-box" /> */}
                     <img src={Emptyimage} alt="Emptyimage" className='emty-img' />
                 </div>
                 <div className="button-layouts">

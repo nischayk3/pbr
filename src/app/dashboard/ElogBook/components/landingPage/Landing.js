@@ -141,7 +141,7 @@ export default function Landing() {
 							className="custom-secondary-btn"
 							type="primary"
 							onClick={(e) => {
-								setIsTemplateModal(true)
+								setIsTemplateModal(!isTemplateModal)
 							}}
 						>
 							Create new template

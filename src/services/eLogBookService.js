@@ -104,4 +104,17 @@ export const getMetadata = (request) => {
     );
 };
 
-
+export const getformtemplate = (request) => {
+    return Service.get(
+        BMS_APP_PYTHON_SERVICE + "/elogbook-form-template",
+        request,
+        request_headers,
+    ).then(
+        (response) => {
+            return response.data;
+        },
+        (error) => {
+            return error.response.data;
+        }
+    );
+};
