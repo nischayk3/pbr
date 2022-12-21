@@ -5,7 +5,8 @@ import "./metaData.scss";
 import {
 	hideLoader, showLoader, showNotification
 } from "../../../../../../duck/actions/commonActions";
-import { getMetadata } from "../../../../../../../src/services/eLogBookService"
+import { getMetadata, updatealldata } from "../../../../../../../src/services/eLogBookService";
+import { useDispatch } from 'react-redux';
 
 
 const Opt = [
@@ -27,8 +28,9 @@ const Opt = [
 	},
 ]
 
-function metaData({ sendDataToParentTab }) {
+function metaData({ sendDataToParentTab, tempName }) {
 	const [form] = Form.useForm();
+	const dispatch = useDispatch();
 	const [check, setCheck] = useState(false)
 	const [moleculeData, setMoleculeData] = useState([
 		{
@@ -57,9 +59,26 @@ function metaData({ sendDataToParentTab }) {
 	const [metaDataopt, setMetaDataopt] = useState([])
 
 	useEffect(() => {
-		getMetadataLists()
+		getMetadataLists();
+		
 	}, [])
 
+	const updatemetadata = async (data) => {
+	
+		dispatch(showLoader());
+		try {
+		const metaDataupdate = await updatealldata(data);
+			dispatch(hideLoader());
+			if (metaDataupdate.Status === 200) {
+				dispatch(showNotification('success', "updated succesfully"));
+			} else {
+				dispatch(showNotification('error', "Error"));
+			}
+		} catch (error) {
+			dispatch(hideLoader());
+			dispatch(showNotification('error', error));
+		}
+	}
 	const getMetadataLists = async () => {
 		let req = {
 			"product": "BELATACEPT",
@@ -450,7 +469,17 @@ function metaData({ sendDataToParentTab }) {
 		];
 
 	const handleSave = (data) => {
-		showLoader()
+		showLoader();
+		let req = {
+			"form_ids": [
+				
+			  ],
+			  "meta_data": {"moleculeData": data},
+			  "molecule": tempName.Pname,
+			  "site": "",
+			  "template_name": tempName.Tname,
+		}
+		updatemetadata(req);
 	}
 	const handleNext = (e) => {
 		sendDataToParentTab("2")

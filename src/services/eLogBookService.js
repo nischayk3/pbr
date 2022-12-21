@@ -118,3 +118,18 @@ export const getformtemplate = (request) => {
         }
     );
 };
+
+export const updatealldata = request => {
+	return Service.put(
+		BMS_APP_PYTHON_SERVICE + '/elogbook-save-template',
+		request,
+		request_headers,
+	).then(
+		response => {
+			return response.data;
+		},
+		error => {
+			return error.response.data;
+		}
+	);
+};

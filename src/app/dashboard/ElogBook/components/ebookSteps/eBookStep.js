@@ -115,7 +115,7 @@ const EbookStep = () => {
 									</span>
 								}
 								key={i.key} >
-								{i.sticky == "Meta data" ? <MetaData sendDataToParentTab={sendDataToParentTab} /> : i.sticky == "Form" ? <EditorNew selecteddata={selecteddata} CreateNew={CreateNew} /> : i.sticky == "New form" ? <EditorTemplate /> : (<div>forms</div>)}
+								{i.sticky == "Meta data" ? <MetaData sendDataToParentTab={sendDataToParentTab} tempName={location.formData} /> : i.sticky == "Form" ? <EditorNew selecteddata={selecteddata} CreateNew={CreateNew} /> : i.sticky == "New form" ? <EditorTemplate /> : (<div>forms</div>)}
 							</TabPane>
 						)}
 
