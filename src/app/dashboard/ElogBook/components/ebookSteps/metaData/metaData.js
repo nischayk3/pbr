@@ -12,7 +12,7 @@ import { useDispatch } from 'react-redux';
 const Opt = [
 	{
 		value: 'custom meta data',
-		label: 'Add custom mete data',
+		label: 'Add custom meta data',
 	},
 	{
 		value: 'Site',
@@ -314,8 +314,6 @@ function metaData({ sendDataToParentTab, tempName }) {
 	useEffect(() => {
 		setSelectData(selectData)
 		setMoleculeData(moleculeData)
-
-
 		setFormData(formData)
 		setEditingKey('')
 
@@ -373,7 +371,7 @@ function metaData({ sendDataToParentTab, tempName }) {
 							<Input
 
 								type="text"
-								placeholder="Enter mete data field name"
+								placeholder="Enter meta data field name"
 								name="KeyData"
 								value={record.KeyData || formData.KeyData}
 								onChange={(e) => setFormData({ ...formData, KeyData: e.target.value })}
