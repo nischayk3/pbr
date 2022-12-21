@@ -148,6 +148,9 @@ function ImportForm({ isTemplateModal, sendDataToParent }) {
         sendDataToParent(filteredArray);
         setIsModalVisible(false)
     }
+    const handleBack = () => {
+        setIsModalVisible(false)
+    }
 
     return (
         <Modal
@@ -168,7 +171,7 @@ function ImportForm({ isTemplateModal, sendDataToParent }) {
 
                     <Button
                         className="custom-primary-btn back-button"
-                        // onClick={onCancel}
+                        onClick={handleBack}
                         id='back-btn'
                     >
                         Back

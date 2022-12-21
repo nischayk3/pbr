@@ -478,6 +478,7 @@ function metaData({ sendDataToParentTab, tempName }) {
 			  "molecule": tempName.Pname,
 			  "site": "",
 			  "template_name": tempName.Tname,
+			  "version": 1
 		}
 		updatemetadata(req);
 	}
