@@ -41,6 +41,7 @@ function ElogForm({ isTemplateModal }) {
 			parameters: {}
 		}
 		let molecule_list = await getMoleculeList(req)
+		console.log(molecule_list);
 		if (molecule_list.Data && molecule_list.Data.hierarchy) {
 			let tabs_list_data = molecule_list.Data.hierarchy
 			let tabs_list_array = []
@@ -67,7 +68,7 @@ function ElogForm({ isTemplateModal }) {
 		setIsModalVisible(false);
 	}
 
-	const data = ["Hour", "Minutes", "Seconds"];
+	const data = ["Product1", "Product2", "Product3"];
 
 	return (
 		<Modal

@@ -1,22 +1,52 @@
 import { Avatar, Button, Collapse, Pagination, Table, Tag } from "antd";
-import React, { lazy, useState } from "react";
+import React, { lazy, useState, useEffect } from "react";
 import illustrations from "../../../../../assets/images/elogbook-landing.png";
 import BreadCrumbWrapper from "../../../../../components/BreadCrumbWrapper";
 import SelectField from "../../../../../components/SelectField/SelectField";
 import ElogForm from "../eLogbookForm/eLogbookForm";
 import "./styles.scss";
+import { getTemplatesList } from "../../../../../../src/services/eLogBookService";
+import * as moment from 'moment'
 const ScreenHeader = lazy(() =>
 	import("../../../../../components/ScreenHeader/screenHeader")
 );
 
 export default function Landing() {
+	const [templateList, setTemplateList] = useState([])
 	const [isViewsetVisible, setIsViewsetVisible] = useState(false);
 	const [isTemplateModal, setIsTemplateModal] = useState(false);
 	const [filterData, setFilterData] = useState("");
+	const [isProgress, setIsProgress] = useState([]);
+	const [isApproved, setIsApproved] = useState([]);
+	const [isRejected, setIsRejected] = useState([]);
 
 	const { Panel } = Collapse;
 
 	const filterList = ["Newest first"]
+
+	useEffect(() => {
+		getTemplateLists()
+		
+	}, [])
+
+	const getTemplateLists = async () => {
+		let req = {
+			data: {},
+			parameters: {}
+		}
+		let template_list = await getTemplatesList(req)
+		
+			setTemplateList(template_list.Data)
+			template_list.Data.map((i) => 
+			i.status === "DRFT" ? 
+			isProgress.push(i) : i.status === "APPROVED" ? isApproved.push(i) :  isRejected.push(i)
+	   )
+		console.log(template_list.Data);
+
+			
+	}
+
+	console.log(templateList, isApproved, isProgress, isRejected);
 
 	const onCancel = () => {
 		setIsViewsetVisible(false)
@@ -40,10 +70,13 @@ export default function Landing() {
 	const columns = [
 		{
 			title: 'Date of creation',
-			dataIndex: 'doc',
+			dataIndex: 'created_on',
 			key: 'doc',
 			width: 40,
-
+			render: (text, record) =>{
+				return (<p>{moment(record.created_on).format("DD MMM YYYY")}</p>)
+				}
+			
 		},
 		{
 			title: 'Name',
@@ -56,6 +89,19 @@ export default function Landing() {
 			dataIndex: 'cont',
 			key: 'cont',
 			width: 20,
+			render: (text, record) =>{
+				return (
+					<Avatar
+                              style={{
+                                backgroundColor: "#0CE7CC",
+                              }}
+                            
+                            >
+                              {record.created_by.split("")[0]?.toUpperCase()}
+                            </Avatar>
+				)
+				}
+			
 		},
 		{
 			title: 'Version',
@@ -95,7 +141,7 @@ export default function Landing() {
 							className="custom-secondary-btn"
 							type="primary"
 							onClick={(e) => {
-								setIsTemplateModal(true)
+								setIsTemplateModal(!isTemplateModal)
 							}}
 						>
 							Create new template
@@ -125,20 +171,21 @@ export default function Landing() {
 					<Collapse bordered={false}
 					// defaultActiveKey={['1']}
 					>
+						
 						<Panel header={
 							(<Tag color="yellow">In progress</Tag>)
 						} key="1">
-							<Table bordered={false} columns={columns} dataSource={data} className="elog-table" />
+							<Table bordered={false} columns={columns} dataSource={isProgress} className="elog-table" />
 						</Panel>
 						<Panel header={
 							(<Tag color="green">Approved</Tag>)
 						} key="2">
-							<Table bordered={false} columns={columns} dataSource={data} className="elog-table" />
+							<Table bordered={false} columns={columns} dataSource={isApproved} className="elog-table" />
 						</Panel>
 						<Panel header={
 							(<Tag color="red">Rejected</Tag>)
 						} key="3">
-							<Table bordered={false} columns={columns} dataSource={data} className="elog-table" />
+							<Table bordered={false} columns={columns} dataSource={isRejected} className="elog-table" />
 						</Panel>
 					</Collapse>
 					<ElogForm isTemplateModal={isTemplateModal} />
