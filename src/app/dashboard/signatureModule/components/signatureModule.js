@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Button, Input, Modal, Select } from "antd";
+import { Button, Input, Modal, Select, Card } from "antd";
 import queryString from "query-string";
 import { useDispatch } from "react-redux";
 import { useLocation } from "react-router";
-import { useRouteMatch,useHistory } from 'react-router-dom';
+import BMS_LOGO from '../../../../assets/BMS.jfif'
+import { useRouteMatch, useHistory } from 'react-router-dom';
 import {
     hideLoader,
     showLoader,
@@ -31,6 +32,7 @@ function SignatureModule() {
     const [reason, setReason] = useState("");
     const [isauth, setIsAuth] = useState("");
     const [loginStatus, setLoginStatus] = useState("");
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
 
     useEffect(() => {
@@ -58,6 +60,7 @@ function SignatureModule() {
                 dispatch(showNotification("error", "Incorrect credentials"));
                 handleClose();
             } else {
+                setIsModalOpen(true);
                 setIsAuth(params?.status);
             }
             dispatch(hideLoader());
@@ -82,6 +85,7 @@ function SignatureModule() {
                 dispatch(showNotification("error", "Incorrect credentials"));
                 handleClose();
             } else {
+                setIsModalOpen(true);
                 setIsAuth(params.status);
             }
             dispatch(hideLoader());
@@ -107,6 +111,7 @@ function SignatureModule() {
             } else {
                 // eslint-disable-next-line react/prop-types
                 setIsAuth(params.status);
+                setIsModalOpen(true);
             }
             dispatch(hideLoader());
         } catch (error) {
@@ -133,14 +138,14 @@ function SignatureModule() {
         req["reason"] = reason;
         req["user_id"] = username;
         // eslint-disable-next-line react/prop-types
-        req["screen"] = "Pbr Creation";
+        req["screen"] = params?.screenName;
         req["first_name"] = "first_name";
         req["last_name"] = "last_name";
         let login_response = JSON.parse(localStorage.getItem("login_details"));
         let headers = {
             "content-type": "application/json",
             "resource-name":
-                "PBR" == "REPORT" ? "REPORT_DESIGNER" : "PBR",
+                params?.appType == "REPORT" ? "REPORT_DESIGNER" : params?.appType == "ANALYSIS" ? "ANALYTICS" : params?.appType,
             "x-access-token": login_response.token ? login_response.token : ""
 
         };
@@ -158,13 +163,13 @@ function SignatureModule() {
                 let user_details = JSON.parse(localStorage.getItem("login_details"));
                 let user = user_details["email_id"] ? user_details["email_id"] : "";
 
-                reqs["application_type"] = "PBR";
+                reqs["application_type"] = params?.appType;
                 reqs["created_by"] = user;
                 reqs["esign_id"] = esign_response.primary_id;
                 reqs["disp_id"] = params.dispId;
                 reqs["version"] = parseInt(params.version);
 
-                req1["applicationType"] = "PBR";
+                req1["applicationType"] = params?.appType;
                 req1["esignId"] = esign_response.primary_id.toString();
                 req1["resourceDispId"] = params.dispId;
 
@@ -196,118 +201,188 @@ function SignatureModule() {
             } else {
                 dispatch(showNotification("error", esign_response.message));
             }
-        } catch (err){
+        } catch (err) {
             dispatch(showNotification("error", "Error Occured"));
         }
     };
 
-    return (
-        <div>
-            <div className="electronic">
-                <div className="sign">
-                    <div>
-                        <p style={{ margin: "8px 0px" }}>User ID</p>
-                        <Input
-                            value={username}
-                            disabled
-                            onChange={(e) => setUsername(e.target.value)}
-                        />
-                    </div>
-                    <div>
-                        <p style={{ margin: "8px 0px" }}>Password</p>
-                        <Input
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                    </div>
-                    {((isauth === "A" && params.status === "A") ||
-                        (isauth === "P" && params.status === "P")) && (
-                            <div>
-                                <p style={{ margin: "8px 0px" }}>Signing</p>
-                                <Select
-                                    onChange={(e, value) => {
-                                        let reason_value = value.value ? value.value : "";
-                                        setReason(reason_value);
-                                    }}
-                                    style={{width:300}}
-                                    className="sign-select"
-                                >
-                                    <Option key="Signing on behalf of team mate">
-                                        Signing on behalf of team mate
-                                    </Option>
-                                    <Option key="I am an approver">I am an approver</Option>
-                                    <Option key="I am the author">I am the author</Option>
-                                    <Option key="Other Reason">Other Reason</Option>
-                                </Select>
-                            </div>
-                        )}
 
-                    {isauth === "R" && (
-                        <div>
-                            <p>Comment</p>
-                            <Input.TextArea
-                                rows={3}
-                                value={reason}
-                                style={{ width: "450px" }}
-                                onChange={(e) => {
-                                    setReason(e.target.value);
-                                }}
-                            />
-                        </div>
-                    )}
-                    {(isauth === "A" || isauth === "R" || isauth === "P")
-                        ? (<div className="authenticte_button">
-                            <Button
-                                className="custom-primary-btn"
-                                key="2"
-                                onClick={() => handleClose()}
-                                style={{marginRight:10}}
-                            >
-                                Cancel
-                            </Button>,
-                            <Button
-                                className="custom-secondary-btn"
-                                key="1"
-                                onClick={() => handleConfirm()}
-                            >
-                                Confirm
-                            </Button>
-                        </div>) : (<div className="authenticte_button">
-                            {loginStatus == "WITH_AD" ? (
-                                <Button
-                                    className="custom-secondary-btn"
-                                    key="3"
-                                    onClick={() => authenticateUser()}
-                                    disabled={username == '' || password == ''}
-                                >
-                                    Authenticate with AD
-                                </Button>
-                            ) : loginStatus == "WITHOUT_AD" ? (
-                                <Button
-                                    className="custom-secondary-btn"
-                                    key="3"
-                                    disabled={username == '' || password == ''}
-                                    onClick={() => authenticateUserWithoutAD()}
-                                >
-                                    Authenticate without AD
-                                </Button>
-                            ) : loginStatus == "WITH_LDAP" ? (
-                                <Button
-                                    className="custom-secondary-btn"
-                                    key="3"
-                                    disabled={username == '' || password == ''}
-                                    onClick={() => authenticateWithLdap()}
-                                >
-                                    Authenticate with LDAP
-                                </Button>
-                            ) : null}</div>)}
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
+   
+    return (
+        <div className="p-28">
+            <Card bordered={false}>
+                <div className="electronic">
+                    {!isModalOpen && <div className="sign">
+                        <Card
+                            style={{ background: "#F3F0F0" }}
+                        >
+                            <img style={{ width: 314, marginLeft: -5 }} src={BMS_LOGO} />
+                            <div className="cardText"><p>This resource is restricted to authorised users</p></div>
+                            <div>
+                                {/* <p style={{ margin: "8px 0px" }}>User ID</p> */}
+                                <Input
+                                    className="cardInput"
+                                    value={username}
+                                    disabled
+                                    onChange={(e) => setUsername(e.target.value)}
+                                />
+                            </div>
+                            <div>
+                                {/* <p style={{ margin: "8px 0px" }}>Password</p> */}
+                                <Input
+                                    className="cardInput1"
+                                    type="password"
+                                    value={password}
+                                    placeholder="BMS Password"
+                                    onChange={(e) => setPassword(e.target.value)}
+                                />
+                            </div>
+                            {/* {((isauth === "A" && params.status === "A") ||
+                                (isauth === "P" && params.status === "P")) && (
+                                    <div>
+                                        <p style={{ margin: "8px 0px" }}>Signing</p>
+                                        <Select
+                                            onChange={(e, value) => {
+                                                let reason_value = value.value ? value.value : "";
+                                                setReason(reason_value);
+                                            }}
+                                            style={{ width: 300 }}
+                                            className="sign-select"
+                                        >
+                                            <Option key="Signing on behalf of team mate">
+                                                Signing on behalf of team mate
+                                            </Option>
+                                            <Option key="I am an approver">I am an approver</Option>
+                                            <Option key="I am the author">I am the author</Option>
+                                            <Option key="Other Reason">Other Reason</Option>
+                                        </Select>
+                                    </div>
+                                )} */}
+
+                            {/* {isauth === "R" && (
+                                <div>
+                                    <p>Comment</p>
+                                    <Input.TextArea
+                                        rows={3}
+                                        value={reason}
+                                        style={{ width: "450px" }}
+                                        onChange={(e) => {
+                                            setReason(e.target.value);
+                                        }}
+                                    />
+                                </div>
+                            )} */}
+                            <div className="authenticte_button">
+                                {loginStatus == "WITH_AD" ? (
+                                    <Button
+                                        className="cardButton"
+                                        key="3"
+                                        onClick={() => authenticateUser()}
+                                    // disabled={username == '' || password == ''}
+                                    >
+                                        Sign In
+                                    </Button>
+                                ) : loginStatus == "WITHOUT_AD" ? (
+                                    <Button
+                                        className="cardButton"
+                                        key="3"
+                                        disabled={username == '' || password == ''}
+                                        onClick={() => authenticateUserWithoutAD()}
+                                    >
+                                        Authenticate without AD
+                                    </Button>
+                                ) : loginStatus == "WITH_LDAP" ? (
+                                    <Button
+                                        className="cardButton"
+                                        key="3"
+                                        disabled={username == '' || password == ''}
+                                        onClick={() => authenticateWithLdap()}
+                                    >
+                                        Authenticate with LDAP
+                                    </Button>
+                                ) : null}</div>
+                            {/* {(isauth === "A" || isauth === "R" || isauth === "P")
+                                ? (<div className="authenticte_button">
+                                    <Button
+                                        className="custom-primary-btn"
+                                        key="2"
+                                        onClick={() => handleClose()}
+                                        style={{ marginRight: 10 }}
+                                    >
+                                        Cancel
+                                    </Button>,
+                                    <Button
+                                        className="custom-secondary-btn"
+                                        key="1"
+                                        onClick={() => handleConfirm()}
+                                    >
+                                        Confirm
+                                    </Button>
+                                </div>) : (<div className="authenticte_button">
+                                    {loginStatus == "WITH_AD" ? (
+                                        <Button
+                                            className="cardButton"
+                                            key="3"
+                                            onClick={() => authenticateUser()}
+                                        // disabled={username == '' || password == ''}
+                                        >
+                                            Sign In
+                                        </Button>
+                                    ) : loginStatus == "WITHOUT_AD" ? (
+                                        <Button
+                                            className="cardButton"
+                                            key="3"
+                                            disabled={username == '' || password == ''}
+                                            onClick={() => authenticateUserWithoutAD()}
+                                        >
+                                            Authenticate without AD
+                                        </Button>
+                                    ) : loginStatus == "WITH_LDAP" ? (
+                                        <Button
+                                            className="cardButton"
+                                            key="3"
+                                            disabled={username == '' || password == ''}
+                                            onClick={() => authenticateWithLdap()}
+                                        >
+                                            Authenticate with LDAP
+                                        </Button>
+                                    ) : null}</div>)} */}
+                        </Card>
+                    </div>}
                 </div>
 
+            </Card>
+            <div>
+                <Modal className="signatureModal" title="Lets Confirm you action" visible={isModalOpen}
+                    onOk={() => handleConfirm()}
+                    onCancel={handleCancel}
+                    footer={[
+                        <Button onClick={handleCancel} key="back" >
+                            Cancle
+                        </Button>,
+                        <Button className="modalButton" onClick={() => handleConfirm()} type="primary" >
+                            confirm
+                        </Button>,
 
-
+                    ]}>
+                    <p>Comment</p>
+                    <Input.TextArea
+                        rows={3}
+                        value={reason}
+                        style={{ width: "550px" }}
+                        onChange={(e) => {
+                            setReason(e.target.value);
+                        }}
+                    />
+                </Modal>
             </div>
-        </div>
+
+
+        </div >
+
     )
 }
 
