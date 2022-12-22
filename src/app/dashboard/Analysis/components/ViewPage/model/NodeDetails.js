@@ -8,7 +8,8 @@ import {
 } from "../../../../../../duck/actions/commonActions";
 import { getViewNodeDetails } from "../../../../../../services/analyticsService";
 import "./model.scss";
-/* istanbul ignore next */
+
+
 const NodeDetails = (props) => {
 	const {
 		addEstimator,

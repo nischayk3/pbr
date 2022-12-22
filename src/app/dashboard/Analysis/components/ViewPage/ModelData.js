@@ -20,12 +20,13 @@ const ModelData = ({ modelData, setModelData, editFinalJson }) => {
 			},
 		};
 		const apiResponse = await savePreprocessing(req);
-		const data = await apiResponse;
 		if (apiResponse.Status === 200) {
 			dispatch(hideLoader());
-			setModelData(data.html_string);
+			setModelData(apiResponse.html_string);
 		} else {
+		    /* istanbul ignore next */
 			dispatch(hideLoader());
+			 /* istanbul ignore next */
 			dispatch(showNotification("error", "Unable to get model data"));
 		}
 	};

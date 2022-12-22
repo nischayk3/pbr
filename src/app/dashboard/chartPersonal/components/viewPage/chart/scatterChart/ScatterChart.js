@@ -150,7 +150,6 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			}
 		}
 
-
 		let xAxis = {};
 		let yAxis = {};
 		let zAxis = {};
@@ -191,7 +190,29 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			function_id: null,
 		};
 
+		const annotations = [
+			{
+				text: "This chart contains unapproved data",
+				font: {
+					size: 13,
+					color: "rgb(116, 101, 130)",
+				},
+				showarrow: false,
+				align: "left",
+				x: 0,
+				y: 1.16,
+				xref: "paper",
+				yref: "paper",
+			},
+		];
+
 		newArr.forEach((ele) => {
+			if (ele.data_filter.unapproved_data === 1) {
+				ele.layout.annotations = annotations;
+			} else {
+				ele.layout.annotations = [];
+			}
+
 			ele.chart_type =
 				axisValues.chartType === "Scatter Plot"
 					? "scatter"
@@ -215,6 +236,8 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 				ele.chart_mapping.transform = transform;
 			} else {
 				ele.chart_mapping.transform = undefined;
+				ele.ppk_cpk_data = {};
+				// ele.layout.title.text = "";
 			}
 			/* istanbul ignore next */
 			if (axisValues.chartType === "Process Capability") {
@@ -264,6 +287,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 					dispatch(showNotification("success", `Best Transformation : ${viewRes.data[0].ppk_cpk_data?.best_transformer}`));
 				} else {
 					setShowPpk(false)
+					setPpkData({})
 				}
 			} else {
 				setShowPpk(false)
@@ -285,6 +309,10 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 	};
 
 	const handleChartType = (e) => {
+		if (e !== 'Process Capability') {
+			setPpkData({});
+			setShowPpk(false);
+		}
 		if (e === "Bubble" || e === "Error") {
 			setShowZAxis(true);
 		} else {
@@ -375,9 +403,11 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 							dispatch(showNotification("success", `Best Transformation : ${ele.ppk_cpk_data?.best_transformer}`));
 						} else {
 							setShowPpk(false)
+							setPpkData({})
 						}
 					} else {
 						setShowPpk(false)
+						setPpkData({})
 					}
 					setAxisValues({
 						...axisValues,
