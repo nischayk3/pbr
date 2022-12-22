@@ -7,6 +7,7 @@ import { userLogin } from "../../../api/login";
 import SuccessfulImage from "../../../assets/icons/Success_image.png";
 import Banner from "../../../assets/images/dashboard_login_1.png";
 import microsoft from "../../../assets/images/icons8-microsoft-48.png";
+import ldapIcon from "../../../assets/images/ldap-icon.png";
 import { adenabled } from "../../../config/config";
 import { MDH_APP_PYTHON_SERVICE } from "../../../constants/apiBaseUrl";
 import {
@@ -27,6 +28,8 @@ const Login = () => {
 	const [visible, setVisible] = useState(false);
 	const [forgotPasswordFlag, setForgotPasswordFlag] = useState(false);
 	const [successfulAccountCreationFlag, setSuccessfulAccountCreationFlag] = useState(false);
+	const [isSSOEnable, setIsSSOEnable] = useState(false);
+
 	const dispatch = useDispatch();
 	const history = useHistory();
 	useEffect(() => {
@@ -195,7 +198,16 @@ const Login = () => {
 	return (
 		<>
 			<div className="login-wrapper bg-img">
-				<div className="login-split ">
+				{isSSOEnable ? (<div>
+					<div className="sso-login">
+						<p className="login-head">Login</p>
+						<p className="login-desc">
+							Welcome Back!
+						</p>
+
+						<Button className="login-btn">Login with SSO</Button>
+					</div>
+				</div>) : (<div className="login-split ">
 					<div className="login-left">
 						<img
 							src={Banner}
@@ -244,14 +256,19 @@ const Login = () => {
 
 						<Button className="login-btn" onClick={() => handleLogin()}>Log In</Button>
 						<p className="or">Or</p>
-						<Button
+						{/* <Button
 							className="login-btn" onClick={() => handleLoginLdap()} >
 							Sign In with LDAP
-						</Button>
+						</Button> */}
 
-						<p className="signup-text">
-							Don't have an account? <span className="sign-up" onClick={showModal}>Sign up</span>
-						</p>
+						<Button
+							className="microsoft-btn"
+							onClick={() => handleLoginLdap()}>
+							<span>
+								<img src={ldapIcon} />
+							</span>
+							Sign In with LDAP
+						</Button>
 
 						<div className="card card-white card-changes">
 							<div className="card-content card-container-change">
@@ -306,8 +323,12 @@ const Login = () => {
 								</Form>
 							</div>
 						</div>
+						<p className="signup-text">
+							Don't have an account? <span className="sign-up" onClick={showModal}>Sign up</span>
+						</p>
 					</div>
-				</div>
+				</div>)}
+
 			</div>
 			<div>
 				<Modal
