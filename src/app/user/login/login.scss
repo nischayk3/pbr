@@ -132,7 +132,7 @@
 
 .microsoft-btn {
 	width: 100%;
-	margin: 0px 0px;
+	margin: 10px 0px 0 0;
 	font-family: var(--primary-font-family);
 	font-style: normal;
 	font-weight: 400;
@@ -342,27 +342,46 @@
 				}
 			}
 		}
-
-		.login-btn {
-			width: 100%;
-			margin: 23px 0px 10px 0px;
-			padding: 8px 12px;
-			font-family: var(--primary-font-family) !important;
-			font-weight: 400 !important;
-			font-size: 14px !important;
-			color: #fff !important;
-			display: inline-flex !important;
-			align-items: center !important;
-			justify-content: center !important;
-			border-radius: 4px !important;
-			border: 1px solid var(--primary-color) !important;
-			background: var(--primary-color) !important;
-			height: 40px;
-		}
 	}
+}
+
+.login-btn {
+	width: 100%;
+	margin: 23px 0px 10px 0px;
+	padding: 8px 12px;
+	font-family: var(--primary-font-family) !important;
+	font-weight: 400 !important;
+	font-size: 14px !important;
+	color: #fff !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	border-radius: 4px !important;
+	border: 1px solid var(--primary-color) !important;
+	background: var(--primary-color) !important;
+	height: 40px;
 }
 
 .or {
 	text-align: center;
 	margin: 0px;
+}
+
+.card-container-change {
+	.ant-form-item {
+		margin: 0 0 10px;
+	}
+}
+
+.sso-login {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 360px;
+
+	>p {
+		display: grid;
+		text-align: center;
+	}
 }
