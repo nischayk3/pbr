@@ -1993,14 +1993,14 @@ function PaperBatchRecordsTemplate() {
                                         onClick={() => {
                                             // setIsPublish(true);
                                             // setApproveReject("R");
-                                            history.push(`/dashboard/signature_module?status=R&dispId=${templateId}&version=${templateVersion}`);
+                                            history.push(`/dashboard/signature_module?status=R&dispId=${templateId}&version=${templateVersion}&screenName=Pbr Creation&appType=PBR`);
                                         }}>
                                         Reject
                                     </Button>
                                     <Button className='custom-primary-btn'
                                         style={{ marginRight: 10 }}
                                         onClick={() => {
-                                            history.push(`/dashboard/signature_module?status=A&dispId=${templateId}&version=${templateVersion}`);
+                                            history.push(`/dashboard/signature_module?status=A&dispId=${templateId}&version=${templateVersion}&screenName=Pbr Creation&appType=PBR`);
                                             // setIsPublish(true);
                                             // setApproveReject("A");
                                         }}
