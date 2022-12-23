@@ -1,15 +1,13 @@
 /**
  * @author Mihir
  * @Mareana - CPV Product
- * @version  1
- * @Last Modified - 08 Nov, 2022
- * @Last Changed By - Mihir
- * @Last Modified - 15-11-2022
+ * @version  3.6.1
+ * @Last Modified - 22 Dec, 2022
  * @Last Changed By - Mihir
  */
 
-import { PlusOutlined, DeleteTwoTone, EditOutlined, EllipsisOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Input, Select, Switch, Table, Drawer, Dropdown, Menu } from "antd";
+import { PlusOutlined, DeleteTwoTone, EllipsisOutlined } from "@ant-design/icons";
+import { Button, Checkbox, Input, Select, Switch, Table, Dropdown, Menu } from "antd";
 import { Component } from "react";
 import { connect } from "react-redux";
 import { v1 as uuid } from "uuid";
@@ -17,11 +15,9 @@ import {
 	hideLoader, showLoader, showNotification
 } from "../../../../../../duck/actions/commonActions";
 import {
-	addRows, adjustColumnWidths, changeInput,
-	changeSelectInput,
-	changeToggleInput, checkDeleteButtonDisabledState, deleteRow, deleteRowCheck, EditableCell, EditableRow, selectAllRowsForDeletion
+	addRows, adjustColumnWidths, changeSelectInput, changeToggleInput, checkDeleteButtonDisabledState, deleteRowCheck, EditableCell, EditableRow, selectAllRowsForDeletion
 } from "../../../../../../utils/editableTableHelper";
-import './first.scss'
+import './dataRecords.scss'
 import InputField from "../../../../../../components/InputField/InputField";
 import { putFormData } from "../../../../../../services/eLogBookService";
 
@@ -55,15 +51,17 @@ class DataFormFirst extends Component {
 		open: false
 	};
 
+	componentDidMount() {
+		this.loadTableData();
+	}
+
 	showDrawer = () => {
 		this.setState({ open: true });
 	};
+
 	onClose = () => {
 		this.setState({ open: false });
 	};
-
-
-
 
 	inputChange = (a, b, c) => {
 		var item = [...c]
@@ -76,29 +74,10 @@ class DataFormFirst extends Component {
 		this.setState({ formDetails: item })
 	}
 
-	editClick = () => {
-		this.setState({ edit: !this.state.edit })
-		if (this.props.getTableData) {
-			this.props.getTableData['edit_name'] = this.props.getTableData['edit_name'] ? false : true
-		}
-	}
-
-	editName = (_name) => {
-		if (this.props.getTableData) {
-			this.props.getTableData['name'] = _name
-		}
-		this.setState({ name: _name })
-	}
-
-	componentDidMount() {
-		this.loadTableData();
-	}
-
 	loadTableData = async () => {
 		this.props.showLoader();
 		try {
 			const response = await this.props.getTableData;
-
 			const { name } = response
 			const { rowInitialData, dataSource, deleteActionColumn, columns } = response.table;
 			const { formDetails } = response.form;
@@ -116,8 +95,6 @@ class DataFormFirst extends Component {
 					this.initializeTableRender();
 				}
 			);
-			// this.props.showNotification("success", `${this.props.title} Loaded`);
-
 		} catch (err) {
 			this.props.showNotification("error", 'Data format is different');
 		} finally {
@@ -164,7 +141,6 @@ class DataFormFirst extends Component {
 		this.renderTableColumns(columns);
 
 	};
-
 	renderTableColumns = (columns) => {
 		columns.forEach((column) => {
 			switch (column.type) {
@@ -212,7 +188,6 @@ class DataFormFirst extends Component {
 					});
 				case "button":
 					return (column.render = (_, record) => {
-
 						return (
 							<div className="table-btn">
 								<Button
@@ -232,8 +207,6 @@ class DataFormFirst extends Component {
 							</div >
 						);
 					}, column.fixed = 'right', column.width = '150px');
-
-
 				case "parent":
 					this.renderTableColumns(column.children);
 			}
@@ -487,15 +460,16 @@ class DataFormFirst extends Component {
 							<div className="table-wrapper">
 								<div className="table-head">
 									<div style={{ display: 'inline-block' }}>
-										<p className="table-heading"><Button
-											className="add_new_row"
-											onClick={this.onAddRow}
-											icon={<PlusOutlined />}
-											style={{ float: 'right' }}
-											id="editable-table-button-add-new-user"
-										>
-											Add new row
-										</Button>
+										<p className="table-heading">
+											<Button
+												className="add_new_row"
+												onClick={this.onAddRow}
+												icon={<PlusOutlined />}
+												style={{ float: 'right' }}
+												id="editable-table-button-add-new-user"
+											>
+												Add new row
+											</Button>
 										</p>
 										<Table
 											className="first-Table"
@@ -506,9 +480,7 @@ class DataFormFirst extends Component {
 											pagination={{
 												position: ['bottomRight'],
 												size: 'small'
-											}}
-										// scroll={dataSource.length > 0 && { x: 800 }}
-										/>
+											}} />
 									</div>
 								</div>
 							</div>}
