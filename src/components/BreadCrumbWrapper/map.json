@@ -38,5 +38,7 @@
 	"/dashboard/data_science_studio/target_variable": "Target Variable",
 	"/dashboard/elog_book_data_entry": "E-Log Book",
 	"/dashboard/elog_book_data_entry/data_entry_forms": "Data entry form",
+	"/dashboard/elog_book_template": "E-Log Book Template",
+	"/dashboard/elog_book_template/new-template": "New template",
 	"/dashboard/data-access-service": "Data Access Service"
 }

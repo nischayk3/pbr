@@ -24,7 +24,9 @@ const ModelExcecute = ({ getResultFunc, resultsData, jobId }) => {
       setImgSrc(ModelExcecuteImg3);
       setContent("Running...");
     } else if (execPercent === 100) {
+       /* istanbul ignore next */
       setImgSrc(ModelExcecuteImg2);
+      /* istanbul ignore next */
       setContent("Execution complete");
     }
   };
@@ -47,6 +49,7 @@ const ModelExcecute = ({ getResultFunc, resultsData, jobId }) => {
 
   const results = resultsData;
 
+  /* istanbul ignore next */
   useEffect(() => {
     if (execPercent === 90) {
       const intervalId = (results.run_status === "Pending" || results.run_status === "Not Executed") && setInterval(() => {

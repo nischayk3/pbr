@@ -2,6 +2,31 @@
 	display: flex;
 }
 
+.content_tabs {
+	.arrow_icon {
+		margin-right: 11px;
+	}
+
+	.ant-card-head {
+		height: 46px !important;
+		padding: 3px 1px;
+	}
+
+	.ant-card-head-title {
+		margin-left: 61px;
+		font-family: 'Maven Pro';
+		font-style: normal;
+		font-weight: 500;
+		font-size: 16px;
+		line-height: 22px;
+		color: #4D4D4D;
+	}
+
+	.ant-card-body {
+		margin-left: 51px;
+	}
+}
+
 
 .plus-outlined {
 	width: 40px;
@@ -12,11 +37,10 @@
 
 .data_entry_panel {
 
-	// margin-right: 20px;
 	.trigger-panel_closed {
 		position: absolute;
-		left: 215px;
-		top: 4%;
+		left: 225px;
+		top: 93%;
 		transform: rotate(180deg);
 		z-index: 1000;
 		cursor: grabbing;
@@ -25,7 +49,7 @@
 	.trigger-panel {
 		position: absolute;
 		left: 15px;
-		top: 3%;
+		top: 93%;
 		z-index: 1000;
 		cursor: grab;
 	}
@@ -48,7 +72,6 @@
 		gap: 8px;
 		margin-top: 5px;
 		left: 39%;
-		// position: fixed;
 		background: #162154;
 		border-radius: 2px;
 		color: white;
@@ -56,8 +79,9 @@
 
 	.record_list {
 		width: 100%;
-		height: 37px;
+		height: auto;
 		left: 6px;
+		word-wrap: break-word;
 		top: 64px;
 		border: 1px solid #F0F0F0;
 		padding: 1px 8px;
@@ -67,17 +91,13 @@
 		font-size: 14px;
 		line-height: 22px;
 		background: white;
-
-
-		/* identical to box height, or 157% */
-
-
 		color: #353535;
 	}
 
 	.record_list_selected {
+		word-wrap: break-word;
 		width: 100%;
-		height: 37px;
+		height: auto;
 		left: 6px;
 		top: 64px;
 		border: 1px solid #F0F0F0;
@@ -94,64 +114,53 @@
 	.ant-layout-sider {
 		background-color: #fff;
 		width: 247px !important;
-		height: 455px;
+		height: 425px;
 		flex: 0 0 247px !important;
 		max-width: 247px !important;
 		min-width: 247px !important;
-		min-height: 455px;
-		// position: absolute;
+		min-height: 425px;
 		border: 2px solid #ADC6FF;
-
-		// float: left;
+		border-top: none;
+		position: absolute;
+		transition: 0.2s;
 		z-index: 1000;
-		opacity: 0.9;
-	}
-
-	.data_form_first {
-		left: 60px;
 	}
 
 	.create_new_record {
 		padding: 5px 18px;
 		gap: 8px;
-		position: absolute;
-		width: 243px;
+		width: 247px;
 		height: 32px;
 		background: #EDECFF;
 		z-index: 1000;
-		border-radius: 0px 0px 4px 4px;
-		border: 1px solid black;
+		border-radius: 4px 4px 0px 0px;
+		border: 2px solid #ADC6FF;
+		border-bottom: none;
 	}
 
 	.records_view {
-		// overflow: scroll;
+		margin-top: 6px;
 		min-height: 300px;
 		height: 390px;
 		border: none;
 	}
 
 	.records_view_scroll {
-		// overflow: scroll;
+		margin-top: 6px;
 		overflow-y: scroll;
-		// min-height: 300px;
-		// height: 490px;
+		height: 350px;
 		border: none;
 	}
-
-	.ant-layout-sider-children {}
 
 	.ant-layout-sider-collapsed {
 		width: 40px !important;
 		flex: 0 0 12px !important;
 		max-width: 40px !important;
 		min-width: 40px !important;
-		height: 455px;
+		height: 425px;
 		background-color: #ADC6FF;
 		border: 2px solid #ADC6FF;
-
 	}
-
-
 
 	.panel_img {
 		margin-right: 100%;
@@ -189,28 +198,29 @@
 	margin: 10px 0;
 }
 
+.data_form_first {
+	margin-left: 205px;
+}
+
+.data_form_first_collapsed {
+	margin-left: 0px;
+}
+
 .table-wrapper {
-	position: relative;
-
 	.table-head {
-
-		// display: grid;
 		.table-heading {
 			font-family: 'Roboto';
 			font-style: normal;
 			font-weight: 400;
 			font-size: 12px;
 			line-height: 22px;
-			/* identical to box height, or 183% */
 			letter-spacing: 0.01em;
 			color: #6D6D6D;
 			margin: 0px;
-
 		}
 
 		#editable-table-button-add-new-user {
 			margin-bottom: 2px;
-
 		}
 	}
 
@@ -221,7 +231,10 @@
 	gap: 12px;
 	margin: 40px 0px 30px 0;
 
-	.dynamic-form-input {}
+	.dynamic-form-input {
+		width: 227px;
+		height: 40px;
+	}
 
 }
 
@@ -230,24 +243,20 @@
 	border-radius: 4px;
 	padding: 20px;
 	min-height: 455px;
-	position: inherit;
-	margin-left: 10px;
 
 	.form-details {
+
 		.form-heading {
 			font-family: 'Roboto';
 			font-style: normal;
 			font-weight: 500;
 			font-size: 18px;
 			line-height: 22px;
-			/* identical to box height, or 122% */
 			color: #6D6D6D;
+			vertical-align: middle;
 		}
 
 		.form-btn {
-			float: right;
-
-			// margin-bottom: 50px;
 			button {
 				margin-left: 24px;
 			}
