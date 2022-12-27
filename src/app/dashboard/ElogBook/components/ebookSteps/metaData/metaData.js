@@ -1,5 +1,5 @@
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Col, Form, Input, Popconfirm, Row, Select, Table, Typography } from "antd";
+import { Button, Col, Input, Popconfirm, Row, Select, Table, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import "./metaData.scss";
 import {
@@ -7,6 +7,7 @@ import {
 } from "../../../../../../duck/actions/commonActions";
 import { getMetadata, updatealldata } from "../../../../../../../src/services/eLogBookService";
 import { useDispatch } from 'react-redux';
+import { v1 as uuid } from "uuid";
 
 
 const Opt = [
@@ -28,46 +29,31 @@ const Opt = [
 	},
 ]
 
+
 function metaData({ sendDataToParentTab, tempName }) {
-	const [form] = Form.useForm();
 	const dispatch = useDispatch();
-	const [check, setCheck] = useState(false)
+	const [metaDataopt, setMetaDataopt] = useState([])
 	const [moleculeData, setMoleculeData] = useState([
 		{
-			key: 1,
-			MetaData: "",
+			key: uuid(),
+			MetaData: "Add custom meta data",
 			KeyData: "",
 			ValueData: "",
-			selectDrop: false,
-			Allowedit: false
+			Allowedit: false,
+			editable: true
 		}]);
-	const [selectData, setSelectData] = useState({ Add: false })
-	const [formData, setFormData] = useState({
-		key: '',
-		MetaData: "",
-		KeyData: "",
-		ValueData: "",
-		selectDrop: false,
-		Allowedit: check
-	})
-	const [val, setVal] = useState('');
-	const [count, setCount] = useState(1);
 
-	const [data, setData] = useState({ label: '' })
-	const [editingKey, setEditingKey] = useState('');
-	const [alowEdit, setAllowEdit] = useState(false);
-	const [metaDataopt, setMetaDataopt] = useState([])
+	const [count, setCount] = useState(1);
 
 	useEffect(() => {
 		getMetadataLists();
-		
 	}, [])
 
+
 	const updatemetadata = async (data) => {
-	
 		dispatch(showLoader());
 		try {
-		const metaDataupdate = await updatealldata(data);
+			const metaDataupdate = await updatealldata(data);
 			dispatch(hideLoader());
 			if (metaDataupdate.Status === 200) {
 				dispatch(showNotification('success', "updated succesfully"));
@@ -79,9 +65,12 @@ function metaData({ sendDataToParentTab, tempName }) {
 			dispatch(showNotification('error', error));
 		}
 	}
+
+
+
 	const getMetadataLists = async () => {
 		let req = {
-			"product": "BELATACEPT",
+			"product": tempName.Pname,
 			"product_num": "1322454",
 			"site": "1255"
 		}
@@ -90,246 +79,53 @@ function metaData({ sendDataToParentTab, tempName }) {
 
 	}
 
-	const isEditing = (record) => record.key === editingKey;
-	const edit = (record) => {
-		form.setFieldsValue({
-			MetaData: '',
-			KeyData: '',
-			ValueData: '',
-			Allowedit: '',
-
-			...record,
-		});
-		setEditingKey(record.key);
-	};
-	const cancel = () => {
-		setEditingKey('');
-	};
-	const save = async (key) => {
-		try {
-			const row = await form.validateFields();
-			const newData = [...moleculeData];
-			const index = newData.findIndex((item) => key.key === item.key);
-			if (index > -1) {
-				const item = newData[index];
-				newData.splice(index, 1, {
-					...item,
-					...row,
-				});
-				setMoleculeData(newData);
-				setEditingKey('');
-			} else {
-				newData.push(row);
-				setMoleculeData(newData);
-				setEditingKey('');
-			}
-		} catch (errInfo) {
-			console.log('Validate Failed:', errInfo);
+	const handleValue = (col, event, record) => {
+		let molecule_data = [...moleculeData]
+		var foundIndex = molecule_data.findIndex(x => x.key == record.key);
+		switch (col) {
+			case 'user_edit':
+				molecule_data[foundIndex]['Allowedit'] = !record.Allowedit
+				break;
+			case 'key':
+				molecule_data[foundIndex]['KeyData'] = event
+				break;
+			case 'value':
+				molecule_data[foundIndex]['ValueData'] = event
+				break;
+			case 'select':
+				molecule_data[foundIndex]['ValueData'] = event
+				break;
 		}
-	};
-
-	const EditableCell =
-		({
-			editing,
-			dataIndex,
-			title,
-			inputType,
-			record,
-			index,
-			children,
-			...restProps
-		}) => {
-
-			switch (inputType) {
-				case "checkbox":
-					return (
-						<td {...restProps}>
-							{editing ? (
-								<Form.Item
-									name={dataIndex}
-									style={{
-										margin: 0,
-									}}
-									rules={[
-										{
-											required: false,
-											message: `Please Input ${title}!`,
-										},
-									]}
-									valuePropName="checked"
-								>
-									<Checkbox />
-								</Form.Item>
-							) : (
-								children
-							)}
-						</td>
-					)
-
-				case "select":
-					return (
-						<td {...restProps}>
-							{editing ? (
-								<Form.Item
-									name={dataIndex}
-									style={{
-										margin: 0,
-									}}
-									rules={[
-										{
-											required: false,
-											message: `Please Input ${title}!`,
-										},
-									]}
-								>
-
-									<Select
-										placeholder="Select"
-										defaultValue="Add Custom meta data"
-										className="Selectdata"
-										value={record.MetaData || formData.MetaData}
-										onChange={(event) => handleChange(event, record)}
-										// onChange={(e) => setFormData({...formData, MetaData : e})}
-										options={Opt}
-									/>
-
-								</Form.Item>
-							) : (
-								children
-							)}
-						</td>
-					);
-				case "valueselect":
-					return (
-						<td {...restProps}>
-							{editing ? (
-								<Form.Item
-									name={dataIndex}
-									style={{
-										margin: 0,
-									}}
-									rules={[
-										{
-											required: false,
-											message: `Please Input ${title}!`,
-										},
-									]}
-								>
-
-									<Select>
-										{(record.MetaData === "Site" ? metaDataopt.sites : record.MetaData === "Batch" ? metaDataopt.batches : record.MetaData === "Material" ? metaDataopt.product_num : '').map((option, index) => (
-											<Select.Option key={index} value={option}>{option}</Select.Option>
-										))}
-									</Select>
-
-								</Form.Item>
-							) : (
-								children
-							)}
-						</td>
-					);
-				default:
-					return (
-						<td {...restProps}>
-							{editing ? (
-								<Form.Item
-									name={dataIndex}
-									style={{
-										margin: 0,
-									}}
-									rules={[
-										{
-											required: false,
-											message: `Please Input ${title}!`,
-										},
-									]}
-								>
-									<Input placeholder="To be filled by renderer" />
-								</Form.Item>
-							) : (
-								children
-							)}
-						</td>
-					);
+		setMoleculeData(molecule_data)
+	}
+	const handleChange = (event, record) => {
+		let molecule_data = [...moleculeData]
+		var foundIndex = molecule_data.findIndex(x => x.key == record.key);
+		if (foundIndex > -1) {
+			molecule_data[foundIndex]['MetaData'] = event
+			if (event == 'Site' || event == 'Batch' || event == 'Material') {
+				molecule_data[foundIndex]['KeyData'] = event
+				molecule_data[foundIndex]['ValueData'] = ''
 			}
-
-		};
-
-	const onChange = (e, cdata) => {
-		setCheck(e.target.checked)
-		setFormData({
-			key: cdata.key,
-			MetaData: formData.MetaData,
-			KeyData: formData.MetaData === "Site" ? "Site" : formData.KeyData,
-			ValueData: formData.ValueData,
-			selectDrop: true,
-			Allowedit: e.target.checked
-		})
-		setMoleculeData(moleculeData.map(user => (user.key === cdata.key ?
-			{
-				key: cdata.key,
-				MetaData: formData.MetaData,
-				KeyData: formData.KeyData,
-				ValueData: formData.ValueData,
-				selectDrop: true,
-				Allowedit: formData.Allowedit,
-			} : user)));
-
-	};
-
-
-	const handleChange = (event, edata) => {
-		setSelectData({ Add: true });
-		setData({ label: event })
-
-		setFormData({
-			key: edata.key,
-			MetaData: event,
-			KeyData: event === "Site" ? "Site" : event === "Batch" ? "Batch" : event === "Material" ? "Material" : '',
-			ValueData: "",
-			selectDrop: true,
-			Allowedit: check
-		})
-		setMoleculeData(moleculeData.map(user => (user.key === edata.key ?
-			{
-				key: edata.key,
-				MetaData: event,
-				KeyData: event === "Site" ? "Site" : event === "Batch" ? "Batch" : event === "Material" ? "Material" : '',
-				ValueData: '',
-				selectDrop: true,
-				Allowedit: check,
+			else {
+				molecule_data[foundIndex]['KeyData'] = ''
+				molecule_data[foundIndex]['ValueData'] = ''
 			}
-			: user)));
-		form.setFieldsValue({
-			MetaData: event,
-			KeyData: event === "Site" ? "Site" : event === "Batch" ? "Batch" : event === "Material" ? "Material" : '',
-			ValueData: '',
-			Allowedit: '',
-
-			...formData,
-		});
-		setEditingKey(edata.key);
-	};
-
-	useEffect(() => {
-		setSelectData(selectData)
-		setMoleculeData(moleculeData)
-		setFormData(formData)
-		setEditingKey('')
-
-	}, [moleculeData, formData])
+		}
+		setMoleculeData(molecule_data)
+	}
 
 	const handleAdd = () => {
+		moleculeData.forEach(v => v.editable = false)
 		const newData = {
-			key: moleculeData.length + 1,
-			MetaData: "",
+			key: uuid(),
+			MetaData: "Add custom meta data",
 			KeyData: "",
 			ValueData: "",
-			selectDrop: false,
 			Allowedit: false,
+			editable: true
 
 		};
-		setSelectData({ Add: false });
 		setMoleculeData([...moleculeData, newData]);
 		setCount(count + 1);
 	};
@@ -338,91 +134,97 @@ function metaData({ sendDataToParentTab, tempName }) {
 		setMoleculeData(moleculeData.filter(user => user.key !== i.key));
 	};
 
+	const recordSave = (record) => {
+		let molecule_data = [...moleculeData]
+		var foundIndex = molecule_data.findIndex(x => x.key == record.key);
+		if (foundIndex > -1)
+			molecule_data[foundIndex]['editable'] = !record.editable
+		setMoleculeData(molecule_data)
+	};
+
+	const handleCancel = (record) => {
+		let molecule_data = [...moleculeData]
+		var foundIndex = molecule_data.findIndex(x => x.key == record.key);
+		if (foundIndex > -1) {
+			molecule_data[foundIndex]['ValueData'] = ''
+			molecule_data[foundIndex]['KeyData'] = ''
+			molecule_data[foundIndex]['Allowedit'] = false
+		}
+		setMoleculeData(molecule_data)
+
+	}
 	const plantMoleculeColumns =
 		[
 			{
 				title: "Meta data",
 				dataIndex: "MetaData",
-				width: "20%",
 				editable: true,
-				render: (_, record) => (
-					<Select
-						placeholder="Select"
-						defaultValue="Add Custom meta data"
-						className="Selectdata"
-						value={record.MetaData || formData.MetaData}
-						onChange={(event) => handleChange(event, record)}
-						options={Opt}
-					/>
-				)
+				width: '20%',
+				render: (_, record) => {
+					return !record.editable ? <p className="input_content">{record.MetaData}</p> :
+						<Select
+							placeholder="Select"
+							defaultValue="Add Custom meta data"
+							className="Selectdata"
+							value={record.MetaData}
+							onChange={(event) => handleChange(event, record)}
+							options={Opt}
+						/>
+				}
 			},
-
 			{
 				title: "Key",
 				dataIndex: "KeyData",
 				key: "KeyData",
-				width: "25%",
 				editable: true,
+				width: '20%',
 				render: (text, record) => {
-					const editable = isEditing(record);
-					return record.selectDrop === false ? '' :
-
-						editable ?
-							<Input
-
-								type="text"
-								placeholder="Enter meta data field name"
-								name="KeyData"
-								value={record.KeyData || formData.KeyData}
-								onChange={(e) => setFormData({ ...formData, KeyData: e.target.value })}
-							/>
-							:
-							<p>{record.KeyData}</p>
-
+					return record.editable == true ?
+						<Input
+							type="text"
+							placeholder="To be filled by the renderer"
+							name="KeyData"
+							onChange={(event) => handleValue('key', event.target.value, record)}
+							value={record.KeyData}
+						/> :
+						<p className="input_content">{record.KeyData}</p>
 				}
 			},
 			{
 				title: "Value",
 				dataIndex: "ValueData",
 				key: "ValueData",
-				width: "25%",
+				width: '20%',
 				editable: true,
 				render: (text, record) => {
-
-					const editable = isEditing(record);
-					return record.selectDrop === false ? '' :
-						editable ?
-							record.MetaData === "Site" || record.MetaData === "Batch" || record.MetaData === "Material" ?
-								<Select>
-									{record.MetaData === "Site" ? metaDataopt.sites : record.MetaData === "Batch" ? metaDataopt.batches : record.MetaData === "Material" ? metaDataopt.product_num : ''.map((option) => (
-										<Select.Option key={option} value={option}>{option}</Select.Option>
-									))}
-								</Select> :
-								<Input
-									type="text"
-									placeholder="To be filled by renderer"
-									name="ValueData"
-									value={record.ValueData || formData.ValueData}
-									onChange={(e) => setFormData({ ...formData, ValueData: e.target.value })}
-								/>
-							: <p>{record.ValueData}</p>
+					let option_map = record.MetaData === "Site" ? metaDataopt && metaDataopt.sites : record.MetaData === "Batch" ? metaDataopt && metaDataopt.batches : metaDataopt && metaDataopt.product_num
+					return record.editable == true ?
+						record.MetaData === "Site" || record.MetaData === "Batch" || record.MetaData === "Material" ?
+							<Select onChange={(event) => handleValue('select', event, record)} value={record.ValueData}>
+								{option_map && option_map.map((option) => (
+									<Select.Option key={option} value={option}>{option}</Select.Option>
+								))}
+							</Select> :
+							< Input
+								type="text"
+								placeholder="To be filled by the renderer"
+								name="ValueData"
+								value={record.ValueData}
+								onChange={(event) => handleValue('value', event.target.value, record)}
+							/>
+						: <p className="input_content">{record.ValueData}</p>
 				}
 			},
 			{
 				title: "Allow user to edit",
 				dataIndex: "Allowedit",
 				key: "Allowedit",
-				width: "15%",
+				width: '12%',
 				editable: true,
 				render: (text, record) => {
-					const editable = isEditing(record);
-					return record.selectDrop === false ? '' :
-
-						<input type="checkbox" checked={record.Allowedit || check}
-							disabled={editable ? false : true}
-							onChange={(e) => onChange(e, record)}
-
-						/>
+					return <input className="input_content" type="checkbox" checked={record.Allowedit}
+						disabled={!record.editable} onChange={(e) => handleValue('user_edit', e.target.value, record)}
+					/>
 				}
 			},
 			{
@@ -430,35 +232,33 @@ function metaData({ sendDataToParentTab, tempName }) {
 				dataIndex: "action",
 				width: "20%",
 				render: (index, record) => {
-					const editable = isEditing(record);
 					return record.selectDrop === false ? '' :
 						<Row>
 							<Col span={12} >
-								{editable ? (
+								{record.editable ? (
 									<span>
 										<Popconfirm title="Sure to Save?"
-											onConfirm={() => save(record)}
 											style={{
 												marginRight: 8,
 											}}
+											onConfirm={() => recordSave(record)}
+											onCancel={() => handleCancel(record)}
 										>
 											<a className="save-button">Save</a>
 										</Popconfirm>
 									</span>
 								) : (
-									<Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
+									<Typography.Link onClick={() => recordSave(record)} >
 										Edit
 									</Typography.Link>
 								)}
 							</Col>
-							<Col span={12} >
-
+							<Col span={12}>
 								<div className="delete-button">
-									<Popconfirm title="Sure to delete?" className="deleteButton" onConfirm={() => handleDelete(record)}>
+									<Popconfirm title="Sure to delete?" className="deleteButton" onConfirm={() => handleDelete(record)} >
 										<a>Delete</a>
 									</Popconfirm>
 								</div>
-
 							</Col>
 						</Row>
 				}
@@ -470,19 +270,19 @@ function metaData({ sendDataToParentTab, tempName }) {
 		showLoader();
 		let req = {
 			"form_ids": [
-				
-			  ],
-			  "meta_data": {"moleculeData": data},
-			  "molecule": tempName.Pname,
-			  "site": "",
-			  "template_name": tempName.Tname,
-			  "version": 1
+			],
+			"meta_data": { "moleculeData": data },
+			"molecule": tempName.Pname ? tempName.Pname : '',
+			"site": "",
+			"template_name": tempName.Tname ? tempName.Tname : '',
+			"version": 1
 		}
 		updatemetadata(req);
 	}
 	const handleNext = (e) => {
 		sendDataToParentTab("2")
 	}
+
 	return (
 		<>
 			<div className="main-metadata">
@@ -506,37 +306,13 @@ function metaData({ sendDataToParentTab, tempName }) {
 								Next
 							</Button>
 						</div>
-
 					</div>
 				</div>
-				<Form form={form} component={false}>
-					<Table className="hierarchy-table"
-						columns={plantMoleculeColumns.map((col) => {
-							if (!col.editable) {
-								return col;
-							}
-							return {
-								...col,
-								onCell: (record) => ({
-									record,
-									inputType: col.dataIndex === 'MetaData' ? 'select' : col.dataIndex === 'Allowedit' ? "checkbox" : col.dataIndex === "KeyData" ? "text" : col.dataIndex === " ValueData" || record.MetaData === "Batch" || record.MetaData === "Site" || record.MetaData === "Material" ? "valueselect" : "text",
-									dataIndex: col.dataIndex,
-									title: col.title,
-									editing: isEditing(record)
-
-								})
-							};
-						})}
-
-						components={{
-							body: {
-								cell: EditableCell,
-							},
-						}}
-
-						rowClassName="editable-row" dataSource={moleculeData} pagination={false} />
-				</Form>
-
+				<Table className="hierarchy-table"
+					columns={plantMoleculeColumns}
+					dataSource={moleculeData}
+					pagination={false}
+				/>
 				<div className="add-button">
 					<Button
 						onClick={() => handleAdd()}
