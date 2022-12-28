@@ -39,9 +39,9 @@
             "site": null,
             "start_date": null,
             "unapprove_data": false,
-            "view_disp_id": "V238",
-            "view_id": "V238",
-            "view_name": "CARB_NORMAL_HEAVY_2_FUNCTION",
+            "view_disp_id": "V475",
+            "view_id": "V475",
+            "view_name": "YieldData",
             "view_status": "APRD",
             "view_version": 1,
             "violations": []

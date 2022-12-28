@@ -134,13 +134,15 @@ export const EditableUsersTable = props => {
 	const handleMethodChange = (val, index, field) => {
 		let newTableData = selectedRowValues
 		let newData = selectedTableData
-		newData.forEach(item => {
+		let data = newData.map(item => {
 			if (item.key == index) {
-				item[field] = val
+				return {...item,[field]:val}
+			}else{
+				return{...item}
 			}
 		})
-		setSelectedTableData(newData)
-		setSelectedRowValues(newData)
+		setSelectedTableData(data)
+		setSelectedRowValues(data)
 	}
 	return (
 		<div style={{ height: 200, overflowY: "scroll", border: "" }}>
@@ -151,7 +153,7 @@ export const EditableUsersTable = props => {
 				}}
 				className='tableIdentifier'
 				columns={columns}
-				dataSource={selectedTableData}
+				dataSource={[...selectedTableData]}
 				pagination={{ defaultPageSize: 100, showSizeChanger: true, pageSizeOptions: ['200', '300', '500'] }}
 			/>
 		</div>

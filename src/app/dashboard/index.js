@@ -31,6 +31,7 @@ const PaperBatchRecordsTemplate = lazy(() => import("./paperBatchRecordsTemplate
 const FileUpload = lazy(() => import("./pbrFileUpload"));
 const PbrReviewer = lazy(() => import("./pbrReviewer"));
 const pbrTableUpdate = lazy(() => import("./pbrTableReviewer"));
+const signatureModule = lazy(() => import("./signatureModule"));
 const UnAuthorisedScreen = lazy(() => import("./unAuthorised"));
 const ManualDataUpload = lazy(() => import("./manualDataUpload"));
 const ChartPersonal = lazy(() => import("./chartPersonal"));
@@ -136,6 +137,8 @@ const Dashboard = () => {
 		} else if (location.pathname.includes("paper_batch_records")) {
 			view = "PBR";
 		} else if (location.pathname.includes("pbr_reviewer")) {
+			view = "PBR";
+		}else if (location.pathname.includes("signature_module")) {
 			view = "PBR";
 		} else if (location.pathname.includes("user-roles-and-access")) {
 			view = "CONFIGURATION";
@@ -278,6 +281,12 @@ const Dashboard = () => {
 									component={PbrReviewer}
 									authorised={authorised}
 									path={`${match.url}/pbr_reviewer`}
+								/>
+								<PrivateRoute
+									key="signatureModule"
+									component={signatureModule}
+									authorised={authorised}
+									path={`${match.url}/signature_module`}
 								/>
 								<PrivateRoute
 									key="pbr_table_reviewer"

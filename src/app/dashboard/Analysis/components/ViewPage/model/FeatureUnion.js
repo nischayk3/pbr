@@ -5,7 +5,8 @@ import './context.scss';
 import urlJson from './urls.json';
 
 const { Option } = Select;
-/* istanbul ignore next */
+
+
 const FeatureUnion = ({
 	onCreateClick,
 	scalerList,
@@ -77,6 +78,26 @@ const FeatureUnion = ({
 		top: y + 10,
 		left: x + 10,
 	}
+
+	useEffect(() => {
+		const tempObj = JSON.parse(JSON.stringify(finalModelJson));
+		let variableList = [];
+		let variableListNames = [];
+		Object.entries(tempObj.feature_union_mapping).forEach(([key, value]) => {
+			if (value.type === "Scaler") {
+				variableList = JSON.parse(JSON.stringify(value.variable_list))
+			}
+		});
+		tempObj?.variable_mapping.forEach((sca) => {
+			variableList.forEach((ele) => {
+				if (sca.variable_id === ele) {
+					variableListNames.push(sca.variable_name)
+				}
+			})
+		})
+		setScalerListSelected(variableListNames);
+	}, [finalModelJson])
+
 	return (
 		<div>
 			{

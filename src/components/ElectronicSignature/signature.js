@@ -20,7 +20,7 @@ import "./styles.scss";
 const { Option } = Select;
 
 const Signature = (props) => {
-	console.log("propssssss", props);
+
 	const location = useLocation();
 	const params = queryString.parse(location.search);
 	// eslint-disable-next-line react/prop-types
@@ -30,6 +30,7 @@ const Signature = (props) => {
 	const [reason, setReason] = useState("");
 	const [isauth, setIsAuth] = useState("");
 	const [loginStatus, setLoginStatus] = useState("");
+	const [checkRejectReason, setCheckRejectReason] = useState(false);
 
 
 	const dispatch = useDispatch();
@@ -144,10 +145,11 @@ const Signature = (props) => {
 		let headers = {
 			"content-type": "application/json",
 			"resource-name":
-				props.appType == "REPORT" ? "REPORT_DESIGNER" : props.appType,
+				props.appType == "REPORT" ? "REPORT_DESIGNER" : props.appType == "ANALYSIS" ? "ANALYTICS" : props.appType,
 			"x-access-token": login_response.token ? login_response.token : ""
-
 		};
+
+		console.log("digital", req);
 		try {
 			let esign_response = await eSign(req, headers);
 
@@ -181,7 +183,7 @@ const Signature = (props) => {
 				if (props.eSignId) {
 					props.eSignId(esign_response.primary_id);
 				}
-				console.log("reqssssssss", reqs);
+				console.log("publishEvent", reqs);
 				let publish_response =
 					Object.keys(params).length > 0 && params.fromScreen !== "Workspace"
 						? await approveRecord(req1)
@@ -196,8 +198,10 @@ const Signature = (props) => {
 				} else {
 					dispatch(showNotification("error", publish_response.msg));
 				}
+			} else if (esign_response.Status == 403) {
+				dispatch(showNotification("error", esign_response.Message));
 			} else {
-				dispatch(showNotification("error", esign_response.message));
+				dispatch(showNotification("error", esign_response.Message));
 			}
 		} catch {
 			dispatch(showNotification("error", "Error Occured"));
@@ -223,14 +227,19 @@ const Signature = (props) => {
 							<Button
 								className="custom-primary-btn"
 								key="2"
-								onClick={() => handleClose()}
+								onClick={() => {
+									handleClose();
+									setIsAuth("");
+								}}
 							>
 								Cancel
 							</Button>,
 							<Button
 								className="custom-secondary-btn"
 								key="1"
-								onClick={() => handleConfirm()}
+								onClick={() => {
+									handleConfirm();
+								}}
 							>
 								Confirm
 							</Button>
@@ -292,6 +301,11 @@ const Signature = (props) => {
 								<Select
 									onChange={(e, value) => {
 										let reason_value = value.value ? value.value : "";
+										if(reason_value === 'Other Reason') {
+											setCheckRejectReason(true)
+										} else {
+											setCheckRejectReason(false)
+										}
 										setReason(reason_value);
 									}}
 									className="sign-select"
@@ -306,7 +320,7 @@ const Signature = (props) => {
 							</div>
 						)}
 
-					{isauth === "R" && props.status === "R" && (
+					{(isauth === "R" && props.status === "R") || (checkRejectReason) ? (
 						<div>
 							<p>Comment</p>
 							<Input.TextArea
@@ -318,7 +332,7 @@ const Signature = (props) => {
 								}}
 							/>
 						</div>
-					)}
+					) : ''}
 				</div>
 			</Modal >
 		</div >

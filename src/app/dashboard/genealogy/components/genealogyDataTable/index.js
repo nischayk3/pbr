@@ -5,10 +5,12 @@
  * @Last Modified - 15 March, 2022
  * @Last Changed By - Dinesh Kumar
  */
-import { SearchOutlined } from '@ant-design/icons';
+import { SearchOutlined, ManOutlined } from '@ant-design/icons';
 import { Button, Collapse, Input, Space, Table } from "antd";
 import React, { useEffect, useState } from "react";
+import { useHistory } from 'react-router-dom';
 import Highlighter from "react-highlight-words";
+import navigate from "../../../../../assets/navigate.png"
 /* istanbul ignore next */
 function GenealogyDataTable(props) {
 	const [batchData, setbatchData] = useState({});
@@ -22,7 +24,7 @@ function GenealogyDataTable(props) {
 	const [searchText, setSearchText] = useState("");
 
 	const { Panel } = Collapse;
-
+	let history = useHistory();
 	/* istanbul ignore next */
 	function getColumnSearchProps(dataIndex) {
 		return {
@@ -184,16 +186,17 @@ function GenealogyDataTable(props) {
 			dataIndex: "equipment_id",
 			key: "3",
 			width: 80,
+			...getColumnSearchProps('equipment_id'),
 			render: (text, record) => (
-					<a
-						href={record.url1 + toTimestamp(record.start_date) + record.url2 + toTimestamp(record.end_date) + record.url3 + record.equipment_id + record.url4}
-						target="_blank"
-						rel="noreferrer"
-					>
-						{text}
-					</a>
-				),
-			...getColumnSearchProps('equipment_id')
+				<a
+					href={record.url1 + toTimestamp(record.start_date) + record.url2 + toTimestamp(record.end_date) + record.url3 + record.equipment_id + record.url4}
+					target="_blank"
+					rel="noreferrer"
+				>
+					{text}
+				</a>
+			),
+			// ...getColumnSearchProps('equipment_id')
 		},
 		{ title: "Start Time", dataIndex: "start_date", key: "4", width: 80, ...getColumnSearchProps('start_date') },
 		{ title: "End Time", dataIndex: "end_date", key: "5", width: 80, ...getColumnSearchProps('end_date') }
@@ -235,6 +238,13 @@ function GenealogyDataTable(props) {
 	const callback = (key) => {
 		props.setCollapseKey(key);
 	};
+
+	const handleNavigation = (item) => {
+		history.push(`/dashboard/pbr_update?id=${item?.tran_pbr_id}&temp_disp_id=${item?.template_id}&version=${item?.template_version}&param_name=${item?.parameter_name}`);
+	}
+	const handleTableNavigation = (item) => {
+		history.push(`/dashboard/pbr_table_reviewer?id=${item?.tran_pbr_id}&temp_disp_id=${item?.template_id}&version=${item?.template_version}&param_name=${item?.table_name}`);
+	}
 
 	return (
 		<Collapse
@@ -472,7 +482,7 @@ function GenealogyDataTable(props) {
 					}
 					key="6"
 				>
-					<Table
+					{/* <Table
 						rowClassName={(record, index) =>
 							index % 2 === 0 ? "table-row-light" : "table-row-dark"
 						}
@@ -481,7 +491,40 @@ function GenealogyDataTable(props) {
 						dataSource={pbrDetails}
 						scroll={{ x: 1600, y: 350 }}
 						pagination={false}
-					/>
+					/> */}
+					<Collapse className={props.className} bordered={false} accordion>
+						<Panel header={
+							<div className="panel-header">
+								<p>Parameters</p>
+							</div>
+						} key="1">
+							<div style={{ height: 220, overflowY: "scroll" }}>
+								{pbrDetails?.Parameter?.map(item => (
+									<div className='pbrData' style={{ display: "flex", justifyContent: "space-between", font: "Roboto", fontSize: 14, fontWeight: 400 }}>
+										<p>{item.parameter_name.toUpperCase()} | {item.tran_pbr_id}</p>
+										{/* <ManOutlined style={{marginRight:20}}/> */
+											<img src={navigate} style={{ width: "19px", height: "20px", marginRight: 15, cursor: "pointer" }} onClick={() => handleNavigation(item)} />
+										}
+									</div>
+								))}
+							</div>
+						</Panel>
+						<Panel header={
+							<div className="panel-header">
+								<p>Tables</p>
+							</div>
+						} key="2">
+							<div style={{ height: 220, overflowY: "scroll" }}>
+								{pbrDetails?.Table?.map(item => (
+									<div style={{ display: "flex", justifyContent: "space-between", font: "Roboto", fontSize: 14, fontWeight: 400 }}>
+										<p>{item.table_name.toUpperCase()} | {item.tran_pbr_id}</p>
+										{/* <ManOutlined /> */}
+										<img src={navigate} style={{ width: "19px", height: "20px", marginRight: 15, cursor: "pointer" }} onClick={() => handleTableNavigation(item)} />
+									</div>
+								))}
+							</div>
+						</Panel>
+					</Collapse>
 				</Panel>
 			) : (
 				<></>

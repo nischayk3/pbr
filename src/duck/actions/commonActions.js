@@ -1,6 +1,6 @@
 import {
 	AUTHENTICATED, HIDE_LOADING,
-	HIDE_NOTIFICATION, SHOW_LOADING,
+	HIDE_NOTIFICATION, NETWORK_ERROR, SHOW_LOADING,
 	SHOW_NOTIFICATION
 } from "../types/types";
 
@@ -21,6 +21,13 @@ export const checkAuth = () => (dispatch) => {
 	dispatch({
 		type: AUTHENTICATED,
 		payload: false,
+	});
+};
+
+export const checkNetworkError = () => (dispatch) => {
+	dispatch({
+		type: NETWORK_ERROR,
+		payload: true,
 	});
 };
 export const showNotification = (type, message, description) => (dispatch) => {

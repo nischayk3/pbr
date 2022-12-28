@@ -156,8 +156,8 @@ const LandingPage = () => {
 				<Col span={24}>
 					<Card bordered={false}>
 						<Row>
-							<Col span={6} />
-							<Col span={12} className="p36 table-data" ref={ref}>
+							<Col span={4} />
+							<Col span={16} className="p36 table-data" ref={ref}>
 								<Search
 									placeholder="Search by model name or ID"
 									allowClear
@@ -183,22 +183,22 @@ const LandingPage = () => {
 									/>
 								)}
 							</Col>
-							<Col span={6} />
+							<Col span={4} />
 						</Row>
 						<Row>
-							<Col span={6} />
-							<Col span={12} className="p36">
+							<Col span={4} />
+							<Col span={16} className="p36">
 								<div className="create-new" onClick={onClickAdd}>
 									<PlusOutlined />
 									<p>Create new model</p>
 								</div>
 							</Col>
-							<Col span={6} />
+							<Col span={4} />
 						</Row>
 						{pipelineList && pipelineList.length !== 0 && (
 							<Row className="recent-charts">
-								<Col span={6} />
-								<Col span={12} className="p36">
+								<Col span={4} />
+								<Col span={16} className="p36">
 									<Row gutter={16} className="title">
 										<Col span={8}>
 											<h3>Recently created models</h3>
@@ -260,7 +260,7 @@ const LandingPage = () => {
 											})}
 									</Row>
 								</Col>
-								<Col span={6} />
+								<Col span={4} />
 							</Row>
 						)}
 					</Card>

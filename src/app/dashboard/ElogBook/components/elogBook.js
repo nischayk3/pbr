@@ -16,9 +16,7 @@ const ElogBook = () => {
 		<div className="custom-wrapper">
 			<BreadCrumbWrapper />
 			<div className="custom-content-layout">
-				{/* <Landing /> */}
 				<DataEntryForm />
-
 			</div>
 		</div>
 	)

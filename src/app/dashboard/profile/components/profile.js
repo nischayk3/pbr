@@ -38,6 +38,8 @@ const Profile = () => {
 	const [activeTab, setActiveTab] = useState("1");
 	const [approverCheck, setApproverCheck] = useState(false);
 	const [statusCheck, setStatusCheck] = useState(false);
+	const [fileList, setFileList] = useState([]);
+
 
 	useEffect(() => {
 		getProfile();
@@ -186,13 +188,34 @@ const Profile = () => {
 	}
 
 
-	const handleChange = ({ fileList: newFileList }) => {
-		var formData = new FormData();
-		formData.append('file', newFileList[0].originFileObj);
-		formData.append("email_address", loginDetails && loginDetails.email_id);
-		setImagePrev(true);
-		setIsUserIcon("");
-		userProfile(formData)
+	const handleChange = (info) => {
+		const nextState = {};
+		if (info.file.status === "uploading") {
+			setFileList(info.fileList)
+			nextState.fileList = [info.file];
+			/* istanbul ignore next */
+		} else if (info.file.status === "done") {
+			/* istanbul ignore next */
+			const formData = new FormData();
+			formData.append('file', info.file.originFileObj);
+			formData.append("email_address", loginDetails && loginDetails.email_id);
+			setImagePrev(true);
+			setIsUserIcon("");
+			userProfile(formData)
+			setFileList(info.fileList)
+			nextState.fileList = [info.file];
+			/* istanbul ignore next */
+		} else if (info.file.status === "removed") {
+			/* istanbul ignore next */
+			nextState.fileList = []
+			setFileList([])
+		}
+		// var formData = new FormData();
+		// formData.append('file', newFileList[0].originFileObj);
+		// formData.append("email_address", loginDetails && loginDetails.email_id);
+		// setImagePrev(true);
+		// setIsUserIcon("");
+		// userProfile(formData)
 	};
 
 
@@ -259,6 +282,13 @@ const Profile = () => {
 			setStatusCheck(checked)
 		}
 	};
+
+	const dummyRequest = ({ file, onSuccess }) => {
+		setTimeout(() => {
+			onSuccess("ok");
+		}, 0);
+	};
+
 	return (
 		<div className="custom-wrapper">
 			<BreadCrumbWrapper />
@@ -275,8 +305,9 @@ const Profile = () => {
 											<img src={imgRes} alt="dummy" width="300" height="300" />
 											<Upload
 												listType="picture"
-
+												customRequest={dummyRequest}
 												onChange={handleChange}
+												fileList={fileList}
 												maxCount={1}
 											>
 												{uploadButton}
@@ -297,8 +328,9 @@ const Profile = () => {
 
 											<Upload
 												listType="picture"
-
+												customRequest={dummyRequest}
 												onChange={handleChange}
+												fileList={fileList}
 												maxCount={1}
 											>
 												{uploadButton}

@@ -77,7 +77,9 @@ const Preprocess = ({ setModelData, setTableKey, editFinalJson }) => {
       }
       dispatch(hideLoader());
     } else {
+       /* istanbul ignore next */
       dispatch(hideLoader());
+       /* istanbul ignore next */
       dispatch(showNotification("error", "Unable to fetch preprocessing data"));
     }
   };
@@ -122,14 +124,6 @@ const Preprocess = ({ setModelData, setTableKey, editFinalJson }) => {
     ],
   };
 
-  const increaseProgressPer = () => {
-    console.log("inside")
-    if (progressBarPercentage !== 90) {
-
-      progress.current = progress.current + 10
-      setProgressbarPercentage(progress.current)
-    }
-  }
 
   const counterValid = progressBarPercentage < 90;
   useEffect(() => {
@@ -174,8 +168,11 @@ const Preprocess = ({ setModelData, setTableKey, editFinalJson }) => {
         setTableKey("2");
       }
     } else {
+       /* istanbul ignore next */
       setShowProgressBar(false);
+       /* istanbul ignore next */
       setProgressbarPercentage(10)
+       /* istanbul ignore next */
       dispatch(showNotification("error", "Unable to save preprocessing data"));
       }
     }

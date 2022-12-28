@@ -319,3 +319,12 @@
 		}
 	}
 }
+
+#sidebar {
+	.ant-layout-sider-children {
+		>ul {
+			overflow: auto;
+			height: 90vh;
+		}
+	}
+}

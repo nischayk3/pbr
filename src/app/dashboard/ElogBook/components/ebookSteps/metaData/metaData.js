@@ -1,410 +1,328 @@
 import { PlusOutlined } from "@ant-design/icons";
-import { Form, Button, Col, Input, Popconfirm, Row, Select, Table, Typography, Checkbox } from "antd";
+import { Button, Col, Input, Popconfirm, Row, Select, Table, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import "./metaData.scss";
+import {
+	hideLoader, showLoader, showNotification
+} from "../../../../../../duck/actions/commonActions";
+import { getMetadata, updatealldata } from "../../../../../../../src/services/eLogBookService";
+import { useDispatch } from 'react-redux';
+import { v1 as uuid } from "uuid";
 
-const EditableCell = ({
-	editing,
-	dataIndex,
-	title,
-	inputType,
-	record,
-	index,
-	children,
-	...restProps
-}) => {
-	const [values, setValue] = useState(false)
-	const onhandleChange = e => {
-		setValue(e.target.checked)
-	}
-	const inputNode = inputType === 'select' ? <Select options={[
+
+const Opt = [
+	{
+		value: 'custom meta data',
+		label: 'Add custom meta data',
+	},
+	{
+		value: 'Site',
+		label: 'Site',
+	},
+	{
+		value: 'Batch',
+		label: 'Batch',
+	},
+	{
+		value: 'Material',
+		label: 'Material',
+	},
+]
+
+
+function metaData({ sendDataToParentTab, tempName }) {
+	const dispatch = useDispatch();
+	const [metaDataopt, setMetaDataopt] = useState([])
+	const [moleculeData, setMoleculeData] = useState([
 		{
-			value: 'custom mete data',
-			label: 'Add custom mete data',
-		},
-		{
-			value: 'Site',
-			label: 'Site',
-		},
-		{
-			value: 'Batch',
-			label: 'Batch',
-		},
-		{
-			value: 'Material',
-			label: 'Material',
-		},
-	]} /> : inputType === 'checkbox' ? <Checkbox onChange={(e) => onhandleChange(e)} /> : <Input />;
-	return (
-		<td {...restProps}>
-			{editing ? (
-				<Form.Item
-					name={dataIndex}
-					style={{
-						margin: 0,
-					}}
-					rules={[
-						{
-							required: true,
-							message: `Please Input ${title}!`,
-						},
-					]}
-				>
-					{inputNode}
-				</Form.Item>
-			) : (
-				children
-			)}
-		</td>
-	);
-};
-
-
-function metaData({ sendDataToParent, Alldata }) {
-	const [form] = Form.useForm();
-	const [check, setCheck] = useState(false)
-	const [moleculeData, setMoleculeData] = useState(Alldata);
-	const [selectData, setSelectData] = useState({ Add: false })
-	const [formData, setFormData] = useState({
-		key: '',
-		MetaData: "",
-		KeyData: "",
-		ValueData: "",
-		selectDrop: false,
-		Allowedit: ''
-	})
-	const [val, setVal] = useState('');
-	const [count, setCount] = useState(1);
-
-	const [data, setData] = useState({ label: '' })
-	const [editingKey, setEditingKey] = useState('');
-	const isEditing = (record) => record.key === editingKey;
-	const edit = (record) => {
-		form.setFieldsValue({
-			MetaData: '',
-			KeyData: '',
-			ValueData: '',
-			Allowedit: '',
-
-			...record,
-		});
-		setEditingKey(record.key);
-	};
-	const cancel = () => {
-		setEditingKey('');
-	};
-	const save = async (key) => {
-				try {
-			const row = await form.validateFields();
-			const newData = [...moleculeData];
-			const index = newData.findIndex((item) => key.key === item.key);
-			if (index > -1) {
-				const item = newData[index];
-				newData.splice(index, 1, {
-					...item,
-					...row,
-				});
-				setMoleculeData(newData);
-				sendDataToParent(moleculeData)
-				setEditingKey('');
-			} else {
-				newData.push(row);
-				setMoleculeData(newData);
-				sendDataToParent(moleculeData)
-				setEditingKey('');
-			}
-		} catch (errInfo) {
-			console.log('Validate Failed:', errInfo);
-		}
-	};
-
-	const handleChang = (e, cdata) => {
-		setCheck(!check)
-		setVal(e.target.value)
-		setMoleculeData(moleculeData.map(user => (user.key === cdata.key ?
-			{
-				key: cdata.key,
-				MetaData: formData.MetaData,
-				KeyData: formData.KeyData,
-				ValueData: e.target.value,
-				selectDrop: true,
-				Allowedit: false,
-			} : user)));
-
-		sendDataToParent(moleculeData)
-	}
-
-	const onChange = (e, cdata) => {
-		setCheck(e.target.checked)
-		setMoleculeData(moleculeData.map(user => (user.key === cdata.key ?
-			{
-				key: cdata.key,
-				MetaData: formData.MetaData,
-				KeyData: formData.KeyData,
-				ValueData: val,
-				selectDrop: true,
-				Allowedit: check,
-			} : user)));
-
-		sendDataToParent(moleculeData)
-
-	};
-
-
-	const handleChange = (event, edata) => {
-		setCheck(!check)
-		setSelectData({ Add: true });
-		setData({ label: event })
-
-		setFormData({
-			key: edata.key,
-			MetaData: event,
-			KeyData: event === "Site" ? "Site" : "",
-			ValueData: "",
-			selectDrop: true,
-			Allowedit: false
-		})
-		setMoleculeData(moleculeData.map(user => (user.key === edata.key ?
-			{
-				key: edata.key,
-				MetaData: event,
-				KeyData: event === "Site" ? "Site" : '',
-				ValueData: '',
-				selectDrop: true,
-				Allowedit: false,
-			}
-			: user)));
-		sendDataToParent(moleculeData);
-	};
-
-
-	useEffect(() => {
-		setSelectData(selectData)
-		setMoleculeData(moleculeData)
-		sendDataToParent(moleculeData)
-
-		setFormData(formData)
-
-	}, [moleculeData, formData])
-
-	const handleAdd = () => {
-		const newData = {
-			key: moleculeData.length + 1,
-			MetaData: "",
+			key: uuid(),
+			MetaData: "Add custom meta data",
 			KeyData: "",
 			ValueData: "",
-			selectDrop: false,
-			Allowedit: false
+			Allowedit: false,
+			editable: true
+		}]);
+
+	const [count, setCount] = useState(1);
+
+	useEffect(() => {
+		getMetadataLists();
+	}, [])
+
+
+	const updatemetadata = async (data) => {
+		dispatch(showLoader());
+		try {
+			const metaDataupdate = await updatealldata(data);
+			dispatch(hideLoader());
+			if (metaDataupdate.Status === 200) {
+				dispatch(showNotification('success', "updated succesfully"));
+			} else {
+				dispatch(showNotification('error', "Error"));
+			}
+		} catch (error) {
+			dispatch(hideLoader());
+			dispatch(showNotification('error', error));
+		}
+	}
+
+
+
+	const getMetadataLists = async () => {
+		let req = {
+			"product": tempName.Pname,
+			"product_num": "1322454",
+			"site": "1255"
+		}
+		let metaData_list = await getMetadata(req)
+		setMetaDataopt(metaData_list);
+
+	}
+
+	const handleValue = (col, event, record) => {
+		let molecule_data = [...moleculeData]
+		var foundIndex = molecule_data.findIndex(x => x.key == record.key);
+		switch (col) {
+			case 'user_edit':
+				molecule_data[foundIndex]['Allowedit'] = !record.Allowedit
+				break;
+			case 'key':
+				molecule_data[foundIndex]['KeyData'] = event
+				break;
+			case 'value':
+				molecule_data[foundIndex]['ValueData'] = event
+				break;
+			case 'select':
+				molecule_data[foundIndex]['ValueData'] = event
+				break;
+		}
+		setMoleculeData(molecule_data)
+	}
+	const handleChange = (event, record) => {
+		let molecule_data = [...moleculeData]
+		var foundIndex = molecule_data.findIndex(x => x.key == record.key);
+		if (foundIndex > -1) {
+			molecule_data[foundIndex]['MetaData'] = event
+			if (event == 'Site' || event == 'Batch' || event == 'Material') {
+				molecule_data[foundIndex]['KeyData'] = event
+				molecule_data[foundIndex]['ValueData'] = ''
+			}
+			else {
+				molecule_data[foundIndex]['KeyData'] = ''
+				molecule_data[foundIndex]['ValueData'] = ''
+			}
+		}
+		setMoleculeData(molecule_data)
+	}
+
+	const handleAdd = () => {
+		moleculeData.forEach(v => v.editable = false)
+		const newData = {
+			key: uuid(),
+			MetaData: "Add custom meta data",
+			KeyData: "",
+			ValueData: "",
+			Allowedit: false,
+			editable: true
 
 		};
-		setSelectData({ Add: false });
 		setMoleculeData([...moleculeData, newData]);
-		// sendDataToParent()
 		setCount(count + 1);
 	};
-
-
 
 	const handleDelete = (i) => {
 		setMoleculeData(moleculeData.filter(user => user.key !== i.key));
 	};
 
-	const Opt = [
-		{
-			value: 'custom mete data',
-			label: 'Add custom mete data',
-		},
-		{
-			value: 'Site',
-			label: 'Site',
-		},
-		{
-			value: 'Batch',
-			label: 'Batch',
-		},
-		{
-			value: 'Material',
-			label: 'Material',
-		},
-	]
+	const recordSave = (record) => {
+		let molecule_data = [...moleculeData]
+		var foundIndex = molecule_data.findIndex(x => x.key == record.key);
+		if (foundIndex > -1)
+			molecule_data[foundIndex]['editable'] = !record.editable
+		setMoleculeData(molecule_data)
+	};
 
+	const handleCancel = (record) => {
+		let molecule_data = [...moleculeData]
+		var foundIndex = molecule_data.findIndex(x => x.key == record.key);
+		if (foundIndex > -1) {
+			molecule_data[foundIndex]['ValueData'] = ''
+			molecule_data[foundIndex]['KeyData'] = ''
+			molecule_data[foundIndex]['Allowedit'] = false
+		}
+		setMoleculeData(molecule_data)
+
+	}
 	const plantMoleculeColumns =
 		[
 			{
 				title: "Meta data",
 				dataIndex: "MetaData",
-				width: "20%",
 				editable: true,
-				render: (_, record) => (
-					<Select
-						placeholder="Select"
-						defaultValue="Add Custom mete data"
-						className="Selectdata"
-						value={record.MetaData || formData.MetaData}
-						onChange={(event) => handleChange(event, record)}
-						// onChange={(e) => setFormData({...formData, MetaData : e})}
-						options={[
-							{
-								value: 'custom mete data',
-								label: 'Add custom mete data',
-							},
-							{
-								value: 'Site',
-								label: 'Site',
-							},
-							{
-								value: 'Batch',
-								label: 'Batch',
-							},
-							{
-								value: 'Material',
-								label: 'Material',
-							},
-						]}
-					/>
-				)
+				width: '20%',
+				render: (_, record) => {
+					return !record.editable ? <p className="input_content">{record.MetaData}</p> :
+						<Select
+							placeholder="Select"
+							defaultValue="Add Custom meta data"
+							className="Selectdata"
+							value={record.MetaData}
+							onChange={(event) => handleChange(event, record)}
+							options={Opt}
+						/>
+				}
 			},
-
 			{
 				title: "Key",
 				dataIndex: "KeyData",
 				key: "KeyData",
-				width: "25%",
 				editable: true,
-				render: (text, record) =>
-					record.selectDrop === false ? '' :
-
+				width: '20%',
+				render: (text, record) => {
+					return record.editable == true ?
 						<Input
 							type="text"
-							placeholder="Enter mete data field name"
+							placeholder="To be filled by the renderer"
 							name="KeyData"
-							value={record.KeyData || formData.KeyData}
-							// onChange={(e) => handleChang(e,record)}
-							onChange={(e) => setFormData({ ...formData, KeyData: e.target.value })}
-						/>
-
-
+							onChange={(event) => handleValue('key', event.target.value, record)}
+							value={record.KeyData}
+						/> :
+						<p className="input_content">{record.KeyData}</p>
+				}
 			},
 			{
 				title: "Value",
 				dataIndex: "ValueData",
 				key: "ValueData",
-				width: "25%",
+				width: '20%',
 				editable: true,
-				render: (text, record) =>
-					record.selectDrop === false ? '' :
-
-						<Input
-							type="text"
-							placeholder="To be filled by rendered"
-							name="ValueData"
-							value={record.ValueData || formData.ValueData}
-							onChange={(e) => handleChang(e, record)}
-						// onChange={(e) => setFormData({...formData, ValueData : e.target.value})}
-						// disabled={record.ValueData ? true : true}
-						/>
-
+				render: (text, record) => {
+					let option_map = record.MetaData === "Site" ? metaDataopt && metaDataopt.sites : record.MetaData === "Batch" ? metaDataopt && metaDataopt.batches : metaDataopt && metaDataopt.product_num
+					return record.editable == true ?
+						record.MetaData === "Site" || record.MetaData === "Batch" || record.MetaData === "Material" ?
+							<Select onChange={(event) => handleValue('select', event, record)} value={record.ValueData}>
+								{option_map && option_map.map((option) => (
+									<Select.Option key={option} value={option}>{option}</Select.Option>
+								))}
+							</Select> :
+							< Input
+								type="text"
+								placeholder="To be filled by the renderer"
+								name="ValueData"
+								value={record.ValueData}
+								onChange={(event) => handleValue('value', event.target.value, record)}
+							/>
+						: <p className="input_content">{record.ValueData}</p>
+				}
 			},
 			{
 				title: "Allow user to edit",
 				dataIndex: "Allowedit",
 				key: "Allowedit",
-				width: "15%",
+				width: '12%',
 				editable: true,
-				render: (text, record) =>
-					record.selectDrop === false ? '' :
-						<Checkbox name="Allowedit" checked={record.Allowedit || formData.Allowedit}
-							onChange={(e) => onChange(e, record)}
-						// onChange={(e) => setFormData({...formData, Allowedit : e.target.checked})}
-
-						></Checkbox>
-
+				render: (text, record) => {
+					return <input className="input_content" type="checkbox" checked={record.Allowedit}
+						disabled={!record.editable} onChange={(e) => handleValue('user_edit', e.target.value, record)}
+					/>
+				}
 			},
 			{
 				title: "Action",
 				dataIndex: "action",
 				width: "20%",
 				render: (index, record) => {
-					const editable = isEditing(record);
 					return record.selectDrop === false ? '' :
 						<Row>
 							<Col span={12} >
-								{editable ? (
+								{record.editable ? (
 									<span>
 										<Popconfirm title="Sure to Save?"
-											onConfirm={() => save(record)}
 											style={{
 												marginRight: 8,
 											}}
+											onConfirm={() => recordSave(record)}
+											onCancel={() => handleCancel(record)}
 										>
 											<a className="save-button">Save</a>
-											{/* </Typography.Link> */}
 										</Popconfirm>
-										{/* <Typography.Link  onClick={cancel}>
-											<a>Cancel</a>
-										</Typography.Link> */}
 									</span>
 								) : (
-									<Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
+									<Typography.Link onClick={() => recordSave(record)} >
 										Edit
 									</Typography.Link>
 								)}
 							</Col>
-							<Col span={12} >
-
+							<Col span={12}>
 								<div className="delete-button">
-									<Popconfirm title="Sure to delete?" className="deleteButton" onConfirm={() => handleDelete(record)}>
+									<Popconfirm title="Sure to delete?" className="deleteButton" onConfirm={() => handleDelete(record)} >
 										<a>Delete</a>
 									</Popconfirm>
 								</div>
-
 							</Col>
 						</Row>
-					// :''
 				}
 			},
 
 		];
+
+	const handleSave = (data) => {
+		showLoader();
+		let req = {
+			"form_ids": [
+			],
+			"meta_data": { "moleculeData": data },
+			"molecule": tempName.Pname ? tempName.Pname : '',
+			"site": "",
+			"template_name": tempName.Tname ? tempName.Tname : '',
+			"version": 1
+		}
+		updatemetadata(req);
+	}
+	const handleNext = (e) => {
+		sendDataToParentTab("2")
+	}
+
 	return (
 		<>
-			<Form form={form} component={false}>
+			<div className="main-metadata">
+				<div className="metadata-subheader ">
+					<div className="button-layout">
+						<div className="layout-button">
+							<span className="data-button">
+								<Button
+									className="custom-secondary-btn "
+									type="primary"
+									onClick={(e) => handleSave(moleculeData)}
+								>
+									Save meta data
+								</Button>
+							</span>
+							<Button
+								className="custom-secondary-btn"
+								type="primary"
+								onClick={(e) => handleNext(e)}
+							>
+								Next
+							</Button>
+						</div>
+					</div>
+				</div>
 				<Table className="hierarchy-table"
-					columns={plantMoleculeColumns.map((col) => {
-						if (!col.editable) {
-							return col;
-						}
-						return {
-							...col,
-							onCell: (record) => ({
-								record,
-								inputType: col.dataIndex === 'MetaData' ? 'select' : col.dataIndex === 'Allowedit' ? "checkbox" : "text",
-								dataIndex: col.dataIndex,
-								title: col.title,
-								editing: isEditing(record)
-
-							})
-						};
-					})}
-
-					components={{
-						body: {
-							cell: EditableCell,
-						},
-					}}
-
-					rowClassName="editable-row" dataSource={moleculeData} pagination={false} />
-			</Form>
-
-			<div className="add-button">
-				<Button
-					onClick={() => handleAdd()}
-					className="add-row-button"
-				>
-					<PlusOutlined />
-					Add new row
-				</Button>
+					columns={plantMoleculeColumns}
+					dataSource={moleculeData}
+					pagination={false}
+				/>
+				<div className="add-button">
+					<Button
+						onClick={() => handleAdd()}
+						className="add-row-button"
+					>
+						<PlusOutlined />
+						Add new row
+					</Button>
+				</div>
 			</div>
-
 		</>
 	)
 }
