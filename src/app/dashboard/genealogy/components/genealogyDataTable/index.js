@@ -493,25 +493,33 @@ function GenealogyDataTable(props) {
 						pagination={false}
 					/> */}
 					<Collapse className={props.className} bordered={false} accordion>
-						<Panel header="Parameters" key="1">
-							<div style={{height:220,overflowY:"scroll"}}>
+						<Panel header={
+							<div className="panel-header">
+								<p>Parameters</p>
+							</div>
+						} key="1">
+							<div style={{ height: 220, overflowY: "scroll" }}>
 								{pbrDetails?.Parameter?.map(item => (
-									<div className='pbrData' style={{ display: "flex", justifyContent: "space-between",font:"Roboto",fontSize:14,fontWeight:400 }}>
+									<div className='pbrData' style={{ display: "flex", justifyContent: "space-between", font: "Roboto", fontSize: 14, fontWeight: 400 }}>
 										<p>{item.parameter_name.toUpperCase()} | {item.tran_pbr_id}</p>
 										{/* <ManOutlined style={{marginRight:20}}/> */
-										<img src={navigate} style={{width:"19px",height:"20px",marginRight:15,cursor:"pointer"}} onClick={()=>handleNavigation(item)}/>
+											<img src={navigate} style={{ width: "19px", height: "20px", marginRight: 15, cursor: "pointer" }} onClick={() => handleNavigation(item)} />
 										}
 									</div>
 								))}
 							</div>
 						</Panel>
-						<Panel header="Tables" key="2">
-							<div style={{height:220,overflowY:"scroll"}}>
+						<Panel header={
+							<div className="panel-header">
+								<p>Tables</p>
+							</div>
+						} key="2">
+							<div style={{ height: 220, overflowY: "scroll" }}>
 								{pbrDetails?.Table?.map(item => (
-									<div style={{ display: "flex", justifyContent: "space-between",font:"Roboto",fontSize:14,fontWeight:400 }}>
+									<div style={{ display: "flex", justifyContent: "space-between", font: "Roboto", fontSize: 14, fontWeight: 400 }}>
 										<p>{item.table_name.toUpperCase()} | {item.tran_pbr_id}</p>
 										{/* <ManOutlined /> */}
-										<img src={navigate} style={{width:"19px",height:"20px",marginRight:15,cursor:"pointer"}} onClick={()=>handleTableNavigation(item)}/>
+										<img src={navigate} style={{ width: "19px", height: "20px", marginRight: 15, cursor: "pointer" }} onClick={() => handleTableNavigation(item)} />
 									</div>
 								))}
 							</div>
