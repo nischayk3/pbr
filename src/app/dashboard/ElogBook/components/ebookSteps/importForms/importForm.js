@@ -10,8 +10,11 @@ function ImportForm({ isTemplateModal, sendDataToParent }) {
     const [formList, setFormList] = useState([])
     const [isModalVisible, setIsModalVisible] = useState(false);
     const { Option } = Select;
-    const [selectedLimit, setSelectedLimit] = useState("Nevest first");
+    const [selectedLimit, setSelectedLimit] = useState("Newest first");
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+    const [data, setData] = useState([])
+    const [selectedRowData, setSelectedRowData] = useState([]);
+
 
     useEffect(() => {
         getFormLists()
@@ -26,60 +29,6 @@ function ImportForm({ isTemplateModal, sendDataToParent }) {
         setFormList(form_list.Data)
     }
 
-    const JJ = [
-        {
-            key: 11,
-            sticky: "New form",
-            title: "New form",
-            dateofcreation: "12 Jan 2022",
-            formname: "Ravi",
-            creator: ["Adfd", "Bfdger"]
-        },
-        {
-            key: 12,
-            sticky: "New form",
-            title: "New form",
-            dateofcreation: "13 Mar 2022",
-            formname: "Ravii",
-            creator: ["Ardtfu", "Brdytfuyg", "Krdtfugy", "Hzxcv", "Pdfg"]
-        },
-        {
-            key: 13,
-            sticky: "New form",
-            title: "New form",
-            dateofcreation: "14 Jan 2022",
-            formname: "Raviii",
-            creator: ["Adfd", "Bfdger"]
-        },
-        {
-            key: 14,
-            sticky: "New form",
-            title: "New form",
-            dateofcreation: "15 Mar 2022",
-            formname: "Raviiii",
-            creator: ["Ardtfu", "Brdytfuyg", "Krdtfugy", "Hzxcv", "Pdfg"]
-        },
-        {
-            key: 15,
-            sticky: "New form",
-            title: "New form",
-            dateofcreation: "16 Jan 2022",
-            formname: "Raviiiii",
-            creator: ["Adfd", "Bfdger"]
-        },
-        {
-            key: 16,
-            sticky: "New form",
-            title: "New form",
-            dateofcreation: "17 Mar 2022",
-            formname: "Raviiiiii",
-            creator: ["Ardtfu", "Brdytfuyg", "Krdtfugy", "Hzxcv", "Pdfg"]
-
-        }
-    ]
-
-    const [data, setData] = useState([])
-
 
     useEffect(() => {
         setIsModalVisible(isTemplateModal)
@@ -92,12 +41,12 @@ function ImportForm({ isTemplateModal, sendDataToParent }) {
     const handleCancel = () => {
         setIsModalVisible(false);
     };
-    const onSelectChange = (newSelectedRowKeys) => {
+    const onSelectChange = (newSelectedRowKeys, selectedRows) => {
         setSelectedRowKeys(newSelectedRowKeys);
+        setSelectedRowData(selectedRows)
     };
     const rowSelection = {
         selectedRowKeys,
-
         onChange: onSelectChange,
     };
 
@@ -142,15 +91,16 @@ function ImportForm({ isTemplateModal, sendDataToParent }) {
     ]
 
     const handleTemplate = () => {
-        var filteredArray = formList.filter(function (item) {
-            return selectedRowKeys.indexOf(item.form_disp_id) !== -1;
-        });
-        sendDataToParent(filteredArray);
+        // var filteredArray = formList.filter(function (item) {
+        //     return selectedRowKeys.indexOf(item.form_disp_id) !== -1;
+        // });
+        sendDataToParent(selectedRowData);
         setIsModalVisible(false)
     }
     const handleBack = () => {
         setIsModalVisible(false)
     }
+
 
     return (
         <Modal

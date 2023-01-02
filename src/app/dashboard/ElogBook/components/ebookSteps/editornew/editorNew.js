@@ -17,7 +17,8 @@ function EditorNew({ selecteddata, CreateNew }) {
         e.preventDefault()
         setState(true);
     }
-    const sendDataToParent = (index) => { // callback       
+    const sendDataToParent = (index) => { // callback   
+        console.log(index, 'EditorNew')
         selecteddata(index)
     };
     const handleCreate = () => {
@@ -57,7 +58,7 @@ function EditorNew({ selecteddata, CreateNew }) {
                             className={"custom-primary-btn"}
                             type="primary"
                             onClick={(e) => handleNext(e)}
-                            // disabled
+                        // disabled
                         >
                             Save form
                         </Button>
@@ -65,7 +66,7 @@ function EditorNew({ selecteddata, CreateNew }) {
                             className={"pbbutton custom-primary-btn"}
                             type="primary"
                             onClick={(e) => handleNext(e)}
-                            // disabled
+                        // disabled
                         >
                             Publish form
                         </Button>
