@@ -8,7 +8,7 @@ import {
 import moment from 'moment';
 import queryString from "query-string";
 import React, {
-	forwardRef, useEffect, useImperativeHandle, useState
+	forwardRef, useEffect, useImperativeHandle, useState, useRef
 } from 'react';
 import Plot from 'react-plotly.js';
 import { useDispatch } from 'react-redux';
@@ -32,6 +32,7 @@ const ViewChart = (props, ref) => {
 	const [tempPanels, setTempPanels] = useState([]);
 	const [tempCard, setTempCard] = useState({});
 	const [isEditable, setIsEditable] = useState(null);
+	const chartPannels = useRef([]);
 
 	useImperativeHandle(
 		ref,
@@ -57,6 +58,12 @@ const ViewChart = (props, ref) => {
 		fetchDataFromUrl();
 		getSiteGlobalFilter();
 	}, []);
+
+	useEffect(() => {
+	   chartPannels.current = JSON.parse(JSON.stringify(tempPanels))
+	}, [tempPanels])
+	
+
 	useEffect(() => {
 		let info = JSON.parse(JSON.stringify(dashboardInfo));
 		info.dashboard_name = props.dashboardName;
@@ -547,7 +554,7 @@ const ViewChart = (props, ref) => {
 
 		if (data && data.points) {
 			let points = data.points.map((item, index) => item.text);
-			let panels = JSON.parse(JSON.stringify(tempPanels));
+			let panels = JSON.parse(JSON.stringify(chartPannels.current));
 			points &&
 				points.map(point => {
 					panels.map((el, i) => {
