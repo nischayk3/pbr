@@ -93,16 +93,32 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 									ele.chart_type === "process control"
 										? ele.chart_mapping.y.function_name
 										: `(${ele.chart_mapping.x.function_name},${ele.chart_mapping.y.function_name})`,
-								testDate:
+								testDate: new Date(
+									el["recorded_date_" + ele.chart_mapping.y.function_name]
+								).toLocaleDateString(),
+							});
+						}
+					});
+					ele?.violations.forEach((item) => {
+						if (item.batch_num === data.text) {
+							setExclusionValues({
+								...exclusionValues,
+								batchId: data.text,
+								productCode: ele.view_name,
+								parameterValue:
 									ele.chart_type === "process control"
-										? new Date(
-											el["recorded_date_" + ele.chart_mapping.y.function_name]
-										).toLocaleDateString()
-										: `(${new Date(
-											el["recorded_date_" + ele.chart_mapping.x.function_name]
-										).toLocaleDateString()},${new Date(
-											el["recorded_date_" + ele.chart_mapping.y.function_name]
-										).toLocaleDateString()})`,
+										? data.y
+										: `(${data.x},${data.y})`,
+								notes: "",
+								unit: item.uom_code,
+								excludeRecord: false,
+								parameterName:
+									ele.chart_type === "process control"
+										? ele.chart_mapping.y.function_name
+										: `(${ele.chart_mapping.x.function_name},${ele.chart_mapping.y.function_name})`,
+								testDate: new Date(
+									item["recorded_date"]
+								).toLocaleDateString(),
 							});
 						}
 					});
