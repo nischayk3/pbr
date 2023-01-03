@@ -27,7 +27,7 @@ const cpvMenu = [
 	{
 		key: "chart_configuration",
 		icon: <FundProjectionScreenOutlined className="menu-icons" />,
-		title: "Chart Configuration",
+		title: "Dashboard",
 		linkTo: "/dashboard/dashboard",
 	},
 	{
@@ -74,7 +74,7 @@ const Sidebar = () => {
 					icon={<AppstoreOutlined className="menu-icons" />}
 					id="workspace"
 				>
-					<Link to="/dashboard/workspace">Dashboard</Link>
+					<Link to="/dashboard/workspace">Workspace</Link>
 				</Menu.Item>
 				<SubMenu
 					key="sub2"

@@ -185,9 +185,15 @@ export const genealogyDataUpload = request => {
 };
 
 export const pbrApproval = request => {
+	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	const request_headers = {
+		'x-access-token': login_response?.token ? login_response?.token : '',
+		'resource-name': 'PBR'
+	};
 	return Service.get(
-		MDH_APP_PYTHON_SERVICE + '/pbr/udh/pbr_approval',
+		MDH_APP_PYTHON_SERVICE + '/pbr/udh/approved_data',
 		request,
+		request_headers
 	).then(
 		response => {
 			return response.data;

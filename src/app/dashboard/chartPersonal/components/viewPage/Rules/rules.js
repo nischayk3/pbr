@@ -31,19 +31,17 @@ const rules = ({ postChartData, setPostChartData }) => {
     try {
       const rulesResponse = await getRuleList();
       const newArr = JSON.parse(JSON.stringify(postChartData));
-      if (Number(id) !== 0) {
-        Object.entries(rulesResponse.rules_list).map(([key, value]) => {
-          value.map((ele) => {
-            newArr.data[0].rules &&
-              newArr.data[0].rules.map((el) => {
-                if (el.rule_id === ele.rule_id) {
-                  ele.default_params = el.default_params;
-                  ele.applied = true;
-                }
-              });
-          });
+      Object.entries(rulesResponse.rules_list).map(([key, value]) => {
+        value.map((ele) => {
+          newArr.data[0].rules &&
+            newArr.data[0].rules.map((el) => {
+              if (el.rule_id === ele.rule_id) {
+                ele.default_params = el.default_params;
+                ele.applied = true;
+              }
+            });
         });
-      }
+      });
       setRuleList(rulesResponse.rules_list);
     } catch (error) {
       dispatch(showNotification("error", "Unable to fetch rules"));
