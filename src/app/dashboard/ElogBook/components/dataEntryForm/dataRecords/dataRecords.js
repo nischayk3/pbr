@@ -547,7 +547,9 @@ class DataFormFirst extends Component {
           screenName="ELOGBOOK-READING"
           PublishResponse={this.PublishResponse}
           appType="ELOGBOOK-READING"
-          dispId={this.props.recording_id.toString()}
+          dispId={
+            this.props.recording_id ? this.props.recording_id.toString() : ""
+          }
           version={this.props.form_version}
           status={this.state.publishStatus}
         />
