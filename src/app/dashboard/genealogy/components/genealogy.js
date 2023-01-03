@@ -32,7 +32,8 @@ import {
 	getProcessInfo,
 	pbrApproval,
 	pbrFileUpload,
-	updateGoldenBatch
+	updateGoldenBatch,
+	getElogbook
 } from '../../../../services/genealogyService';
 import GenealogyDrawer from '../components/genealogyDrawer/index.js';
 import GenealogyDataTable from './genealogyDataTable';
@@ -77,7 +78,7 @@ function Genealogy() {
 	const [fileMessage, setFileMessage] = useState('');
 	const [fileUploadResponse, setFileUploadResponse] = useState('');
 	const [batchEquData, setBatchEquData] = useState([]);
-
+	const [elogBookData, setElogBookData] = useState([]);
 
 	const dispatch = useDispatch();
 
@@ -145,10 +146,15 @@ function Genealogy() {
 				let _reqBatchEqu = {
 					batch_no: node.nodeData.batchNo
 				}
-
+				let _reqElogbook = {
+					site: node.nodeData.plant,
+					product: node.nodeData.matNo,
+					batch: node.nodeData.batchNo
+				}
 				getNodeBatchInfo(_reqBatchInfo);
 				getPBRData(_reqPbrBatch);
 				batchEquipment(_reqBatchEqu)
+				getElogBookRecords(_reqElogbook)
 			} else if (node.nodeType === 'Process Order') {
 				setNodeType(node.nodeType);
 				let _reqProcessInput = {
@@ -164,12 +170,16 @@ function Genealogy() {
 				let _reqBatchEqu = {
 					process_order: node.nodeData.poNo
 				}
-
+				let _reqElogbook = {
+					site: node.nodeData.plant,
+					product: node.nodeData.matNo,
+					batch: node.nodeData.batchNo
+				}
 				setNodeTitle(node.nodeData.poNo);
 				setIsDrawerOpen(true);
-
 				setNodeType(node.nodeType);
 				batchEquipment(_reqBatchEqu)
+				getElogBookRecords(_reqElogbook)
 				getNodeProcessInput(_reqProcessInput);
 				getNodeProcessOutput(_reqProcessOutput);
 			} else if (node.nodeType === 'Purchase Order') {
@@ -672,6 +682,47 @@ function Genealogy() {
 			dispatch(showNotification('error', error));
 		}
 	}
+
+	const getElogBookRecords = async _elogReq => {
+		dispatch(showLoader());
+		try {
+			// const elogResponse = await getElogbook(_elogReq);
+			const elogResponse = {
+				"Status": 200,
+				"recording_ids": [
+				  {
+					"batch": "ABL2261-01",
+					"molecule": "BELATACEPT",
+					"recording_id": 66,
+					"status": "DRFT",
+					"template_disp_id": "T1",
+					"version": 1
+				  },
+				  {
+					"batch": "ABL2261-01",
+					"molecule": "BELATACEPT",
+					"recording_id": 67,
+					"status": "DRFT",
+					"template_disp_id": "T1",
+					"version": 1
+				  }
+				]
+			  }
+			dispatch(hideLoader())
+			if (elogResponse.Status === 200) {
+				setElogBookData(elogResponse.recording_ids)
+			} else {
+				setElogBookData([])
+				dispatch(hideLoader());
+			}
+
+		} catch (error) {
+			dispatch(hideLoader());
+			/* istanbul ignore next */
+			dispatch(showNotification('error', error));
+		}
+	}
+
 	return (
 		<div className='custom-wrapper'>
 			<BreadCrumbWrapper />
@@ -738,6 +789,7 @@ function Genealogy() {
 								processInput={processInput}
 								processOutput={processOutput}
 								batchEquData={batchEquData}
+								elogBookData={elogBookData}
 								//fileDownload={downloadFile}
 								productCode={productCode}
 								nodeTitle={nodeTitle}
@@ -853,6 +905,7 @@ function Genealogy() {
 								processInput={processInput}
 								processOutput={processOutput}
 								batchEquData={batchEquData}
+								elogBookData={elogBookData}
 								collapseKey={collapseKey}
 								setCollapseKey={setCollapseKey}
 							/>

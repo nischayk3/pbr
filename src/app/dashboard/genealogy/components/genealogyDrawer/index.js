@@ -76,6 +76,7 @@ function GenealogyDrawer(props) {
 				collapseKey={props.collapseKey}
 				setCollapseKey={props.setCollapseKey}
 				batchEquData={props.batchEquData}
+				elogBookData={props.elogBookData}
 			/>
 		</Drawer>
 	);

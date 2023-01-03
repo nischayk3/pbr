@@ -518,6 +518,25 @@ function GenealogyDataTable(props) {
 			) : (
 				<></>
 			)}
+			{props.type === "Material" ? (
+				<Panel
+					header={
+						<div className="panel-header">
+							<p>e-Log Book Forms</p>
+						</div>
+					}
+					key="8"
+				>
+	           {props?.elogBookData?.map((ele) => {
+				return (<div className='elog_data'>
+				  <p>{ele?.batch}</p>
+				  <p>View Record</p>
+				</div>)
+			   })}
+				</Panel>
+			) : (
+				<></>
+			)}
 		</Collapse>
 	);
 }
