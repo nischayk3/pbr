@@ -245,6 +245,9 @@ function GenealogyDataTable(props) {
 	const handleTableNavigation = (item) => {
 		history.push(`/dashboard/pbr_table_reviewer?id=${item?.tran_pbr_id}&temp_disp_id=${item?.template_id}&version=${item?.template_version}&param_name=${item?.table_name}`);
 	}
+	const handleNavigateElogbook = (item) => {
+		history.push(`/dashboard/elog_book_data_entry/data_entry_forms?molecule=${item.molecule}&template_disp_id=${item.template_disp_id}&version=${item.version}&site=${item.site}&recording_id=${item.recording_id}`)
+	}
 
 	return (
 		<Collapse
@@ -571,8 +574,8 @@ function GenealogyDataTable(props) {
 				>
 	           {props?.elogBookData?.map((ele) => {
 				return (<div className='elog_data'>
-				  <p>{ele?.batch}</p>
-				  <p>View Record</p>
+				  <p>{`${ele?.process_step ? `${ele?.process_step}_` : ''}${ele?.batch}`}</p>
+				  <p onClick={() => handleNavigateElogbook(ele)}>View Record</p>
 				</div>)
 			   })}
 				</Panel>

@@ -686,30 +686,12 @@ function Genealogy() {
 	const getElogBookRecords = async _elogReq => {
 		dispatch(showLoader());
 		try {
-			// const elogResponse = await getElogbook(_elogReq);
-			const elogResponse = {
-				"Status": 200,
-				"recording_ids": [
-				  {
-					"batch": "ABL2261-01",
-					"molecule": "BELATACEPT",
-					"recording_id": 66,
-					"status": "DRFT",
-					"template_disp_id": "T1",
-					"version": 1
-				  },
-				  {
-					"batch": "ABL2261-01",
-					"molecule": "BELATACEPT",
-					"recording_id": 67,
-					"status": "DRFT",
-					"template_disp_id": "T1",
-					"version": 1
-				  }
-				]
-			  }
+			const elogResponse = await getElogbook(_elogReq);
 			dispatch(hideLoader())
 			if (elogResponse.Status === 200) {
+				elogResponse.recording_ids?.forEach((resp) => {
+					resp.site = _elogReq.site
+				})
 				setElogBookData(elogResponse.recording_ids)
 			} else {
 				setElogBookData([])
