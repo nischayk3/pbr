@@ -216,3 +216,21 @@
 .ant-collapse-borderless {
 	background-color: #fff !important;
 }
+
+.elog_data {
+	display: flex;
+    padding: 8px 10px;
+    justify-content: space-between;
+	p{
+		margin-bottom: 0px !important;
+		font-family: 'Roboto';
+        font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 22px;
+	}
+	p:nth-child(2) {
+		color: #2F54EB;
+		cursor: pointer;
+	}
+}
