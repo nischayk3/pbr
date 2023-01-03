@@ -239,3 +239,19 @@ export const getBatchEquipment = request => {
 		}
 	);
 };
+
+// get elog book
+export const getElogbook = (request) => {
+    return Service.get(
+        BMS_APP_PYTHON_SERVICE + "/elogbook-record-list",
+        request,
+        request_headers
+    ).then(
+        (response) => {
+            return response.data;
+        },
+        (error) => {
+            return error.response.data;
+        }
+    );
+};
