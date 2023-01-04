@@ -22,6 +22,7 @@ const App = () => {
 		(state) => state.commonReducer.isError
 	);
 
+	console.log("${match.url}", match.url, 'user/customer-login')
 	return (
 		<>
 			<Loading show={showLoading} />
@@ -45,6 +46,7 @@ const App = () => {
 						<Route path={`${match.url}user`} key="user">
 							<Account />
 						</Route>
+
 						<Route exact path="/" key="login">
 							<Redirect to={"/user/login"} />
 						</Route>

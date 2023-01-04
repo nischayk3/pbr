@@ -28,10 +28,14 @@ const Login = () => {
 	const [visible, setVisible] = useState(false);
 	const [forgotPasswordFlag, setForgotPasswordFlag] = useState(false);
 	const [successfulAccountCreationFlag, setSuccessfulAccountCreationFlag] = useState(false);
-	const [isSSOEnable, setIsSSOEnable] = useState(false);
+	// const [isSSOEnable, setIsSSOEnable] = useState(false);
 
 	const dispatch = useDispatch();
 	const history = useHistory();
+
+	// useEffect(() => {
+	// 	setIsSSOEnable(CUSTOMER_LOGIN)
+	// }, [CUSTOMER_LOGIN])
 	useEffect(() => {
 		if (localStorage.getItem("test_enabled") == null) {
 			localStorage.removeItem('login_details');
@@ -198,16 +202,22 @@ const Login = () => {
 	return (
 		<>
 			<div className="login-wrapper bg-img">
-				{isSSOEnable ? (<div>
+				{/* {isSSOEnable ? (<div>
 					<div className="sso-login">
 						<p className="login-head">Login</p>
 						<p className="login-desc">
 							Welcome Back!
 						</p>
-
-						<Button className="login-btn">Login with SSO</Button>
+						<Button
+							className="login-btn"
+							onClick={() => {
+								history.push(`/user/customer-login`);
+							}}>
+							Login with SSO
+						</Button>
 					</div>
-				</div>) : (<div className="login-split ">
+				</div>) : ( */}
+				<div className="login-split ">
 					<div className="login-left">
 						<img
 							src={Banner}
@@ -255,6 +265,13 @@ const Login = () => {
 						</div>
 
 						<Button className="login-btn" onClick={() => handleLogin()}>Log In</Button>
+						<Button
+							className="login-btn"
+							onClick={() => {
+								history.push(`/user/customer-login`);
+							}}>
+							Login with SSO
+						</Button>
 						<p className="or">Or</p>
 						{/* <Button
 							className="login-btn" onClick={() => handleLoginLdap()} >
@@ -327,7 +344,7 @@ const Login = () => {
 							Don't have an account? <span className="sign-up" onClick={showModal}>Sign up</span>
 						</p>
 					</div>
-				</div>)}
+				</div>
 
 			</div>
 			<div>
@@ -359,7 +376,6 @@ const Login = () => {
 								</div>
 							</>
 						) : (
-
 							<div className='signup-center'>
 								<div>
 									<img
@@ -375,7 +391,6 @@ const Login = () => {
 									type="success"
 									showIcon
 								/>
-
 							</div>
 						)}
 				</Modal>
