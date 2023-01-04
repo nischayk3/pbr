@@ -243,13 +243,13 @@ const ViewPageAnalysis = () => {
 		}
 	}, []);
 
-	// const handleClose = () => {
-	// 	setIsPublish(false);
-	// };
+	const handleClose = () => {
+		setIsPublish(false);
+	};
 
-	// const PublishResponse = (res) => {
-	// 	setPublishResponse(res);
-	// };
+	const PublishResponse = (res) => {
+		setPublishResponse(res);
+	};
 
 	const ViewDetails = () => {
 		return (
@@ -278,18 +278,18 @@ const ViewPageAnalysis = () => {
 						parameters.fromScreen !== "Workspace" ? (
 						<>
 							<Button
-								// onClick={() => {
-								// 	setIsPublish(true);
-								// 	setApproveReject("R");
-								// }}
+								onClick={() => {
+									setIsPublish(true);
+									setApproveReject("R");
+								}}
 							>
 								Reject
 							</Button>
 							<Button
-								// onClick={() => {
-								// 	setIsPublish(true);
-								// 	setApproveReject("A");
-								// }}
+								onClick={() => {
+									setIsPublish(true);
+									setApproveReject("A");
+								}}
 							>
 								Approve
 							</Button>
@@ -354,7 +354,7 @@ const ViewPageAnalysis = () => {
 					</TabPane>}
 				</Tabs>
 			</div>
-			{/* <Signature
+			<Signature
 				isPublish={isPublish}
 				handleClose={handleClose}
 				screenName="Analytics"
@@ -363,7 +363,7 @@ const ViewPageAnalysis = () => {
 				dispId={selectedViewData.viewData.pipeline_id}
 				version='1'
 				status={approveReject}
-			/> */}
+			/>
 			{executedModel && <ModalComponent isModalVisible={executedModel} closable={false} centered>
 				<ModelExcecute jobId={jobId} getResultFunc={getResultFunc} resultsData={resultsData} results={results} />
 			</ModalComponent>}

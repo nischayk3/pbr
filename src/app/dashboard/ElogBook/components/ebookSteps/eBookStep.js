@@ -12,28 +12,6 @@ const { TabPane } = Tabs;
 const { Step } = Steps;
 const { Item } = Form;
 
-const TabsData = [
-	{
-		key: "1",
-		sticky: "Meta data",
-		title: "Meta data",
-
-	},
-	{
-		key: "2",
-		sticky: "Form",
-		title: "Form",
-		sercolor: "Draft",
-
-	},
-	{
-		key: "3",
-		sticky: "New form",
-		title: "New form",
-		data: <h5>In progressing...</h5>
-	},
-
-];
 
 const ServicesColor = [
 	{
@@ -59,16 +37,13 @@ const ServicesColor = [
 ];
 
 const EbookStep = () => {
-	const [current, setCurrent] = useState("1");
-	const [state, setState] = useState(TabsData)
-	const [form] = Form.useForm();
 
-	const location = useLocation();
 	const sendDataToParentTab = (i) => {
 		setCurrent(i)
 	}
 	const selecteddata = (index) => { // callback
 		state.splice.apply(state, [2, 0].concat(index));
+		setCurrent(2)
 	};
 
 	const CreateNew = (i) => {
@@ -78,6 +53,37 @@ const EbookStep = () => {
 	const changeTab = activeKey => {
 		setCurrent(activeKey)
 	};
+	const location = useLocation();
+	const TabsData = [
+		{
+			key: "1",
+			sticky: "Meta data",
+			form_name: "Meta data",
+			data: <MetaData sendDataToParentTab={sendDataToParentTab} tempName={location.formData} />
+
+		},
+		{
+			key: "2",
+			sticky: "Form",
+			form_name: "Form",
+			sercolor: "Draft",
+			data: <EditorNew selecteddata={selecteddata} CreateNew={CreateNew} />
+
+		},
+		{
+			key: "3",
+			sticky: "New form",
+			form_name: "New form",
+			data: <EditorTemplate />
+		},
+
+	];
+
+	const [current, setCurrent] = useState("1");
+	const [state, setState] = useState(TabsData)
+	const [form] = Form.useForm();
+
+
 
 	useEffect(() => {
 		setState(state)
@@ -90,6 +96,7 @@ const EbookStep = () => {
 		)}
 	</div>;
 
+	console.log(state)
 	return (
 		<div className="custom-wrapper">
 			<BreadCrumbWrapper />
@@ -111,11 +118,12 @@ const EbookStep = () => {
 								tab={
 									<span className="tab-title">
 										{<StatusInd className={i.sercolor} />}
-										<span className="tab-name">{i.title}</span>
+										<span className="tab-name">{i.form_name}</span>
 									</span>
 								}
 								key={i.key} >
-								{i.sticky == "Meta data" ? <MetaData sendDataToParentTab={sendDataToParentTab} tempName={location.formData} /> : i.sticky == "Form" ? <EditorNew selecteddata={selecteddata} CreateNew={CreateNew} /> : i.sticky == "New form" ? <EditorTemplate /> : (<div>forms</div>)}
+								{i.data}
+								{/* == "Meta data" ? : i.sticky == "Form" ? <EditorNew selecteddata={selecteddata} CreateNew={CreateNew} /> : i.sticky == "New form" ? <EditorTemplate /> : (<div>forms</div>)} */}
 							</TabPane>
 						)}
 
