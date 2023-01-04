@@ -20,6 +20,7 @@ import {
   Table,
   Dropdown,
   Menu,
+  Popconfirm,
 } from "antd";
 import { Component } from "react";
 import { connect } from "react-redux";
@@ -222,6 +223,7 @@ class DataFormFirst extends Component {
                     type="link"
                     className="custom-primary-edit-btn"
                     onClick={() => this.onChangeEdit(record)}
+                    disabled={this.props.disableScreen}
                   >
                     {record.edit ? "Save" : "Edit"}
                   </Button>
@@ -229,6 +231,7 @@ class DataFormFirst extends Component {
                     type="link"
                     onClick={() => this.handleOk(record.key)}
                     className="custom-primary-delete-btn"
+                    disabled={this.props.disableScreen}
                   >
                     Delete
                   </Button>
@@ -381,6 +384,17 @@ class DataFormFirst extends Component {
       template_id: this.props.template_disp_id,
       version: this.props.form_version,
       form_id: this.props.form_id,
+      record_name:
+        batch &&
+        batch[0] &&
+        batch[0].value &&
+        process &&
+        process[0] &&
+        process[0].value
+          ? batch[0].value + "_" + process[0].value
+          : batch && batch[0] && batch[0].value
+          ? batch[0].value
+          : "",
     };
     if (this.props.recording_id)
       save_req["recording_id"] = this.props.recording_id;
@@ -389,7 +403,9 @@ class DataFormFirst extends Component {
       const resp = await putFormData(save_req);
       if (resp.Status === 200) {
         this.setState({ tableDataChanged: false });
-        this.props.showNotification("success", "Form Data Saved");
+        if (!boolean_value)
+          this.props.showNotification("success", "Form Data Saved");
+        else this.props.showNotification("success", "Record deleted");
       }
       if (resp.status === 400) {
         this.props.showNotification("error", resp?.message);
@@ -441,45 +457,53 @@ class DataFormFirst extends Component {
             <canvas className="status_box" />
             <span className="status_line">{status}</span>
           </span>
-          <span className="buttons-head">
-            <DeleteTwoTone
-              onClick={() => this.onSaveTable(true)}
-              twoToneColor="red"
-              style={{
-                fontSize: "25px",
-                marginRight: "24px",
-                top: "2%",
-                verticalAlign: "top",
-              }}
-            />
-            <Button
-              className="delete-btn"
-              onClick={() => this.setState({ isPublish: true })}
-            >
-              Publish
-            </Button>
-            <Button
-              className="publish-btn"
-              onClick={() => this.onSaveTable(false)}
-            >
-              Save
-            </Button>
-            <Dropdown
-              overlay={menu}
-              placement="bottomLeft"
-              arrow={{ pointAtCenter: true }}
-            >
-              <EllipsisOutlined
-                style={{
-                  transform: "rotate(-90deg)",
-                  fontSize: "24px",
-                  verticalAlign: "top",
-                  height: "30px",
-                  marginLeft: "6px",
-                }}
-              />
-            </Dropdown>
-          </span>
+          {!this.props.disableScreen ? (
+            <span className="buttons-head">
+              <Popconfirm
+                onConfirm={() => this.onSaveTable(true)}
+                title="Are you sure?"
+              >
+                <DeleteTwoTone
+                  twoToneColor="red"
+                  style={{
+                    fontSize: "25px",
+                    marginRight: "24px",
+                    top: "2%",
+                    verticalAlign: "top",
+                  }}
+                />
+              </Popconfirm>
+              <Button
+                className="delete-btn"
+                onClick={() => this.setState({ isPublish: true })}
+              >
+                Publish
+              </Button>
+              <Button
+                className="publish-btn"
+                onClick={() => this.onSaveTable(false)}
+              >
+                Save
+              </Button>
+              <Dropdown
+                overlay={menu}
+                placement="bottomLeft"
+                arrow={{ pointAtCenter: true }}
+              >
+                <EllipsisOutlined
+                  style={{
+                    transform: "rotate(-90deg)",
+                    fontSize: "24px",
+                    verticalAlign: "top",
+                    height: "30px",
+                    marginLeft: "6px",
+                  }}
+                />
+              </Dropdown>
+            </span>
+          ) : (
+            <></>
+          )}
         </div>
         <div className="form-details">
           {this.state.deleteActionColumnAdded && (
@@ -505,6 +529,7 @@ class DataFormFirst extends Component {
                       onChangeInput={(e) =>
                         this.inputChange(e, item.id, formDetails)
                       }
+                      disabled={this.props.disableScreen}
                     />
                   </div>
                 ))}
@@ -513,17 +538,21 @@ class DataFormFirst extends Component {
               <div className="table-wrapper">
                 <div className="table-head">
                   <div style={{ display: "inline-block" }}>
-                    <p className="table-heading">
-                      <Button
-                        className="add_new_row"
-                        onClick={this.onAddRow}
-                        icon={<PlusOutlined />}
-                        style={{ float: "right" }}
-                        id="editable-table-button-add-new-user"
-                      >
-                        Add new row
-                      </Button>
-                    </p>
+                    {!this.props.disableScreen ? (
+                      <p className="table-heading">
+                        <Button
+                          className="add_new_row"
+                          onClick={this.onAddRow}
+                          icon={<PlusOutlined />}
+                          style={{ float: "right" }}
+                          id="editable-table-button-add-new-user"
+                        >
+                          Add new row
+                        </Button>
+                      </p>
+                    ) : (
+                      <></>
+                    )}
                     <Table
                       className="first-Table"
                       rowClassName={() => "editable-row"}
