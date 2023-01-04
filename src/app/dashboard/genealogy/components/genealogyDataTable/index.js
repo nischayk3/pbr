@@ -572,12 +572,16 @@ function GenealogyDataTable(props) {
 					}
 					key="8"
 				>
-	           {props?.elogBookData?.map((ele) => {
-				return (<div className='elog_data'>
-				  <p>{`${ele?.process_step ? `${ele?.process_step}_` : ''}${ele?.batch}`}</p>
-				  <p onClick={() => handleNavigateElogbook(ele)}>View Record</p>
-				</div>)
-			   })}
+					<div className='elog_data'>
+						{props?.elogBookData?.length ? props?.elogBookData?.map((ele) => {
+							return (<>
+								<p>{ele?.record_name}</p>
+								<p onClick={() => handleNavigateElogbook(ele)}>View Record</p>
+							</>)
+						}) : <>
+							<p>There are no elogbook forms associated with this material</p>
+						</>}
+					</div>
 				</Panel>
 			) : (
 				<></>

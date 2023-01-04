@@ -23,8 +23,10 @@ export const MDH_AIRFLOW = `${process.env.REACT_APP_URL}/airflow/login/?next=${p
 
 export const MDH_AIRFLOW_DAGS = `${process.env.REACT_APP_URL}/airflow/login/?next=+ ${process.env.REACT_APP_URL} + "&airflow&dags"`
 
-export const MDH_AIRFLOW_ANALYTICS= `${process.env.REACT_APP_URL}/airflow/dags`
+export const MDH_AIRFLOW_ANALYTICS = `${process.env.REACT_APP_URL}/airflow/dags`
 
 export const GRAFANA_API = `${process.env.REACT_APP_GRAFANA_APP_URL}`;
 
 export const JUPYTER_APP = `${process.env.REACT_APP_JUPYTER_APP_URL}`
+
+export const CUSTOMER_LOGIN = `${process.env.REACT_CUSTOMER_LOGIN}`
