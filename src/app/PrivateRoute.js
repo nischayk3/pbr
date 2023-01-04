@@ -8,17 +8,6 @@ const ProctectedRoute = ({ authorised, errorStatus, component: Component, ...res
 		<Route
 			{...rest}
 			render={(props) => {
-				// if (authorised) {
-				// 	return <Component {...props} />;
-				// } else {
-				// 	return (
-				// 		<Redirect
-				// 			to={{
-				// 				pathname: `/tokenexpired`,
-				// 			}}
-				// 		/>
-				// 	);
-				// }
 				if (!authorised) {
 					return (
 						<Redirect

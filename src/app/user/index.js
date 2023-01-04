@@ -1,6 +1,7 @@
 import React, { lazy } from 'react';
-import { Route, useRouteMatch, Switch } from 'react-router-dom';
+import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import SuspenseWrapper from '../../components/SuspenseWrapper';
+import CustomerLogin from './login/customerLogin';
 
 const Login = lazy(() => import('./login'));
 
@@ -11,6 +12,9 @@ const User = () => {
 			<Switch>
 				<Route path={`${match.url}/login`}>
 					<Login />
+				</Route>
+				<Route path={`${match.url}/customer-login`} >
+					<CustomerLogin />
 				</Route>
 			</Switch>
 		</SuspenseWrapper>
