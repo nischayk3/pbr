@@ -49,6 +49,7 @@ const DataEntryForm = () => {
   const templateReq = useSelector((state) => state.elogReducer.templateReq);
   const [drawervisible, setDrawerVisible] = useState(true);
   const [templateData, setTemplateData] = useState([]);
+  const [disableScreen, setDisableScreen] = useState(false);
 
   let template_Data = useSelector((state) => state.elogReducer.templateData);
 
@@ -96,9 +97,13 @@ const DataEntryForm = () => {
 
   useEffect(() => {
     const params = queryString.parse(location.search);
-    console.log(params);
     if (Object.keys(params).length > 0) {
       unloadUrl(params);
+      if (params.recording_id) {
+        setDisableScreen(true);
+      } else {
+        setDisableScreen(false);
+      }
     }
   }, []);
 
@@ -205,82 +210,87 @@ const DataEntryForm = () => {
                     <Col span={1}>
                       <div className="data_entry_panel">
                         <span>
-                          {!drawervisible ? (
-                            <PlusOutlined
-                              onClick={() => {
-                                addForm(i, _idx);
-                              }}
-                              className="plus-outlined"
-                            />
-                          ) : (
-                            <Button
-                              className="create_new_record"
-                              onClick={() => {
-                                addForm(i, _idx);
-                              }}
-                              icon={<PlusOutlined />}
-                            >
-                              Create New Record
-                            </Button>
-                          )}
+                          {!disableScreen &&
+                            (!drawervisible ? (
+                              <PlusOutlined
+                                onClick={() => {
+                                  addForm(i, _idx);
+                                }}
+                                className="plus-outlined"
+                              />
+                            ) : (
+                              <Button
+                                className="create_new_record"
+                                onClick={() => {
+                                  addForm(i, _idx);
+                                }}
+                                icon={<PlusOutlined />}
+                              >
+                                Create New Record
+                              </Button>
+                            ))}
                         </span>
-                        {i.form_data && i.form_data.length > 0 && (
-                          <Sider
-                            trigger={null}
-                            collapsible
-                            collapsed={!drawervisible}
-                          >
-                            <div
-                              className={
-                                !drawervisible
-                                  ? "records_view"
-                                  : i.form_data && i.form_data.length <= 8
-                                  ? "records_view"
-                                  : "records_view_scroll"
-                              }
+                        {i.form_data &&
+                          !disableScreen &&
+                          i.form_data.length > 0 && (
+                            <Sider
+                              trigger={null}
+                              collapsible
+                              collapsed={!drawervisible}
                             >
-                              {drawervisible &&
-                                i.form_data &&
-                                i.form_data.length > 0 &&
-                                i.form_data.map((idx, index) => (
-                                  <div
-                                    className={
-                                      i.selected - 1 == index
-                                        ? "record_list_selected"
-                                        : "record_list"
-                                    }
-                                  >
-                                    <p
-                                      onClick={() =>
-                                        handleChange(index + 1, _idx)
+                              <div
+                                className={
+                                  !drawervisible
+                                    ? "records_view"
+                                    : i.form_data && i.form_data.length <= 8
+                                    ? "records_view"
+                                    : "records_view_scroll"
+                                }
+                              >
+                                {drawervisible &&
+                                  i.form_data &&
+                                  i.form_data.length > 0 &&
+                                  i.form_data.map((idx, index) => (
+                                    <div
+                                      className={
+                                        i.selected - 1 == index
+                                          ? "record_list_selected"
+                                          : "record_list"
                                       }
                                     >
-                                      {" "}
-                                      {idx.batch
-                                        ? idx.batch + "_" + idx.process_step
-                                        : "New Record"}{" "}
-                                    </p>
-                                  </div>
-                                ))}
-                            </div>
-                            <span
-                              className={
-                                drawervisible
-                                  ? "trigger-panel_closed "
-                                  : "trigger-panel"
-                              }
-                              onClick={() => setDrawerVisible(!drawervisible)}
-                            >
-                              <img src={panelRightImg} />
-                            </span>
-                          </Sider>
-                        )}
+                                      <p
+                                        onClick={() =>
+                                          handleChange(index + 1, _idx)
+                                        }
+                                      >
+                                        {" "}
+                                        {idx.record_name
+                                          ? idx.record_name
+                                          : "New Record"}{" "}
+                                      </p>
+                                    </div>
+                                  ))}
+                              </div>
+                              <span
+                                className={
+                                  drawervisible
+                                    ? "trigger-panel_closed "
+                                    : "trigger-panel"
+                                }
+                                onClick={() => setDrawerVisible(!drawervisible)}
+                              >
+                                <img src={panelRightImg} />
+                              </span>
+                            </Sider>
+                          )}
                       </div>
                     </Col>
-                    <Col span={23}>
+                    <Col span={disableScreen ? 24 : 23}>
                       <div
                         className={
-                          drawervisible
+                          disableScreen
+                            ? "data_form_first_collapsed"
+                            : drawervisible
                             ? "data_form_first"
                             : "data_form_first_collapsed"
                         }
@@ -310,12 +320,9 @@ const DataEntryForm = () => {
                                   size={i.form_data.length}
                                   setDrawerVisible={setDrawerVisible}
                                   drawervisible={drawervisible}
-                                  batch={
-                                    idx.batch
-                                      ? idx.batch + "_" + idx.process_step
-                                      : ""
-                                  }
+                                  batch={idx.record_name ? idx.record_name : ""}
                                   reloadData={reloadData}
+                                  disableScreen={disableScreen}
                                 />
                               )
                           )}
