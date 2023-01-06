@@ -15,7 +15,7 @@ import { getAuthorisedPermission } from "../../../../../services/authProvider";
 import { getAllViews } from "../../../../../services/viewHierarchyServices";
 import "./landingStyle.scss";
 
-export default function Landing(props) {
+export default function LandingPage(props) {
 	const [searched, setSearched] = useState(false);
 	const [viewList, setViewList] = useState([]);
 	const [filterTable, setFilterTable] = useState(null);
@@ -288,9 +288,9 @@ export default function Landing(props) {
 										<Input
 											placeholder="Enter Name"
 											onChange={(e) => {
-												setHierarchyName(e.target.value),
-													dispatch(sendDrugSub(e.target.value)),
-													dispatch(loadDrug(false));
+												setHierarchyName(e.target.value);
+												dispatch(sendDrugSub(e.target.value));
+												dispatch(loadDrug(false));
 											}}
 											value={hierarchyName}
 										/>

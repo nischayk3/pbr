@@ -1,40 +1,6 @@
-.workflow-table {
-	// th:first-of-type {
-	//     padding-left: 25px !important;
-
-	// }
-	// th:last-of-type {
-	//     padding-right: 25px !important;
-
-	// }
-	// td:first-of-type {
-	//     padding-left: 25px !important;
-
-	// }
-	// td:last-of-type {
-	//     padding-right: 25px !important;
-
-	// }
-}
-
 .approval-table {
-	// th:first-of-type {
-	//     padding-left: 25px !important;
 
-	// }
-	// th:last-of-type {
-	//     padding-right: 25px !important;
-
-	// }
-	// td:first-of-type {
-	//     padding-left: 25px !important;
-
-	// }
-	// td:last-of-type {
-	//     padding-right: 25px !important;
-
-	// }
-	.ant-table .ant-table-thead > tr > th {
+	.ant-table .ant-table-thead>tr>th {
 		font-family: var(--primary-font-family);
 		font-style: normal;
 		font-weight: 500;
@@ -46,15 +12,14 @@
 		padding: 10px;
 	}
 
-	.ant-table-tbody > tr > td {
+	.ant-table-tbody>tr>td {
 		font-family: var(--primary-font-family);
 		font-style: normal;
 		font-weight: 400;
 		font-size: 14px;
 		line-height: 22px;
 		color: #000000;
-		// border: none;
-		// border-bottom: 1px solid #d9d9d9;
+
 		padding: 10px;
 	}
 }
@@ -63,8 +28,19 @@
 	color: #ffff;
 	background-color: #728c69;
 }
+
 .avatar-text {
-	padding: 0px 10px;
+	padding: 6px 0px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	margin-left: 6px;
+}
+
+.creator {
+	display: flex;
+	vertical-align: middle;
+
 }
 
 .review-submission {

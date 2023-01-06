@@ -9,7 +9,7 @@ import Banner from "../../../assets/images/dashboard_login_1.png";
 import microsoft from "../../../assets/images/icons8-microsoft-48.png";
 import ldapIcon from "../../../assets/images/ldap-icon.png";
 import { adenabled } from "../../../config/config";
-import { MDH_APP_PYTHON_SERVICE } from "../../../constants/apiBaseUrl";
+import { LDAP_LOGIN, MDH_APP_PYTHON_SERVICE, SSO_LOGIN, WITHOUT_AD_LOGIN, WITH_AD_LOGIN } from "../../../constants/apiBaseUrl";
 import {
 	hideLoader,
 	showLoader,
@@ -28,14 +28,10 @@ const Login = () => {
 	const [visible, setVisible] = useState(false);
 	const [forgotPasswordFlag, setForgotPasswordFlag] = useState(false);
 	const [successfulAccountCreationFlag, setSuccessfulAccountCreationFlag] = useState(false);
-	// const [isSSOEnable, setIsSSOEnable] = useState(false);
 
 	const dispatch = useDispatch();
 	const history = useHistory();
 
-	// useEffect(() => {
-	// 	setIsSSOEnable(CUSTOMER_LOGIN)
-	// }, [CUSTOMER_LOGIN])
 	useEffect(() => {
 		if (localStorage.getItem("test_enabled") == null) {
 			localStorage.removeItem('login_details');
@@ -264,28 +260,32 @@ const Login = () => {
 							<p onClick={forgotPassword} style={{ cursor: 'pointer' }}>Forgot your password?</p>
 						</div>
 
-						<Button className="login-btn" onClick={() => handleLogin()}>Log In</Button>
-						<Button
-							className="login-btn"
-							onClick={() => {
-								history.push(`/user/customer-login`);
-							}}>
-							Login with SSO
-						</Button>
-						<p className="or">Or</p>
-						{/* <Button
-							className="login-btn" onClick={() => handleLoginLdap()} >
-							Sign In with LDAP
-						</Button> */}
+						{WITHOUT_AD_LOGIN === 'true' ? (
+							<Button className="login-btn" onClick={() => handleLogin()}>Log In</Button>
+						) : (<></>)}
 
-						<Button
-							className="microsoft-btn"
-							onClick={() => handleLoginLdap()}>
-							<span>
-								<img src={ldapIcon} />
-							</span>
-							Sign In with LDAP
-						</Button>
+						{LDAP_LOGIN === 'true' ? (
+							<Button
+								className="microsoft-btn"
+								onClick={() => handleLoginLdap()}>
+								<span>
+									<img src={ldapIcon} />
+								</span>
+								Sign In with LDAP
+							</Button>
+						) : (<></>)}
+
+						<p className="or">Or</p>
+
+						{SSO_LOGIN === 'true' ? (
+							<Button
+								className="login-btn"
+								onClick={() => {
+									history.push(`/user/customer-login`);
+								}}>
+								Login with SSO
+							</Button>
+						) : (<></>)}
 
 						<div className="card card-white card-changes">
 							<div className="card-content card-container-change">
@@ -326,17 +326,20 @@ const Login = () => {
 										<></>
 									)}
 
-									<Form.Item>
-										<Button
-											htmlType="submit"
-											id="login-btn"
-											className="microsoft-btn">
-											<span>
-												<img src={microsoft} height="25px" />
-											</span>
-											Sign In with Microsoft
-										</Button>
-									</Form.Item>
+									{WITH_AD_LOGIN === 'true' ? (
+										<Form.Item>
+											<Button
+												htmlType="submit"
+												id="login-btn"
+												className="microsoft-btn">
+												<span>
+													<img src={microsoft} height="25px" />
+												</span>
+												Sign In with Microsoft
+											</Button>
+										</Form.Item>
+									) : (<></>)}
+
 								</Form>
 							</div>
 						</div>
