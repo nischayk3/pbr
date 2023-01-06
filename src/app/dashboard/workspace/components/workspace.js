@@ -3,7 +3,7 @@ import {
 } from "@ant-design/icons";
 import {
 	Avatar, Card, Col, Divider,
-	Empty, Input, Row, Tabs
+	Empty, Row, Tabs
 } from "antd";
 import React, { useEffect, useState } from "react";
 import { FaCircle } from "react-icons/fa";
@@ -29,7 +29,6 @@ import DataQuality from "./dataQuality/dataQuality";
 import DeviationTable from "./deviationTable/deviationTable";
 import "./styles.scss";
 
-const { Search } = Input;
 const { TabPane } = Tabs;
 
 const Workspace = () => {
