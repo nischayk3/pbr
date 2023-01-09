@@ -236,7 +236,7 @@ const WorkflowTable = (props) => {
 										onClick={() =>
 											history.push(
 												history.push(
-													`${text}/${row.Id}&${row.version}?id=${row.Id}&version=${row.version}`
+													`${text}/${row.Id}`
 												)
 											)
 										}
