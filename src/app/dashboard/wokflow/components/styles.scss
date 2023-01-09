@@ -1,8 +1,10 @@
 .workflow_items {
 	margin-top: 30px;
-	display: flex;
+	display: grid;
 	gap: 0px 18px;
+	grid-template-columns: 22% 77%;
 }
+
 .approve-wrapper {
 	display: grid;
 	grid-gap: 19px 0px;
@@ -16,15 +18,18 @@
 	border-radius: 4px;
 	border: 1px solid #486bc9;
 	box-sizing: border-box;
-	height: 490px;
+	height: 515px;
+
 	.ant-card-head {
 		background: #ffffff !important;
 		height: 65px !important;
-		padding: 20px 7px !important ;
+		padding: 20px 7px !important;
 	}
+
 	.ant-card-head-title {
 		//padding: 12px 15px !important;
 	}
+
 	.ant-card-body {
 		padding: 0px 25px !important;
 	}
@@ -38,6 +43,7 @@
 	line-height: 22px;
 	color: #262626;
 }
+
 .workflow-tabs {
 	.ant-tabs-tab-btn {
 		font-family: Roboto;
@@ -47,6 +53,7 @@
 		line-height: 22px;
 		color: rgba(0, 0, 0, 0.85);
 	}
+
 	.ant-tabs-tab-active .ant-tabs-tab-btn {
 		font-family: Roboto;
 		font-style: normal;
@@ -55,6 +62,7 @@
 		line-height: 22px;
 		color: var(--primary-color) !important;
 	}
+
 	.ant-tabs-ink-bar {
 		background: var(--primary-color);
 	}
@@ -75,6 +83,7 @@
 
 .approval-table-block {
 	position: relative;
+
 	.card-arrow {
 		position: absolute;
 		width: 0;
@@ -87,34 +96,42 @@
 		left: -8px;
 		filter: drop-shadow(-3px 0px 0px #486ac9);
 	}
+
 	.arrow-step-0 {
 		top: 25px;
 	}
+
 	.arrow-step-1 {
 		top: 106px;
 	}
+
 	.arrow-step-2 {
 		top: 195px;
 	}
+
 	.arrow-step-3 {
 		top: 278px;
 	}
+
 	.arrow-step-4 {
 		top: 365px;
 	}
+
 	.arrow-step-5 {
 		top: 446px;
 	}
 }
 
-.workflow-right-block {
-	width: 75%;
-}
+// .workflow-right-block {
+// 	width: 75%;
+// }
 
 .data-empty {
 	margin: 30px 0;
+
 	.ant-empty-image {
 		height: 280px;
+
 		svg {
 			width: 100%;
 		}
