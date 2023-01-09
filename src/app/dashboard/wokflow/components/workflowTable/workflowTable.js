@@ -245,6 +245,21 @@ const WorkflowTable = (props) => {
 										Review Submission
 									</a>
 								);
+							} else if (text == "/dashboard/elog_book_template") {
+								return (
+									<a
+										onClick={() =>
+											history.push(
+												history.push(
+													`${text}/${row.template_disp_id}&${row.version}?id=${row.template_disp_id}&version=${row.version}`
+												)
+											)
+										}
+										className="review-submission"
+									>
+										Review Submission
+									</a>
+								);
 							} else {
 								return (
 									<a
