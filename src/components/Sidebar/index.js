@@ -12,9 +12,6 @@ import "./style.scss";
 const { Sider } = Layout;
 const { SubMenu } = Menu;
 
-
-
-
 const Sidebar = () => {
 	const [collapsed, setCollapsed] = useState(true);
 	const [openKeys, setOpenKeys] = useState([]);
@@ -29,35 +26,30 @@ const Sidebar = () => {
 			icon: <ClusterOutlined className="menu-icons" />,
 			title: "View Creation",
 			linkTo: "/dashboard/view_creation",
-
 		},
 		{
 			key: "chart_personalization",
 			icon: <BarChartOutlined className="menu-icons" />,
 			title: "Chart Personalization",
 			linkTo: "/dashboard/chart_personalization",
-
 		},
 		{
 			key: "chart_configuration",
 			icon: <FundProjectionScreenOutlined className="menu-icons" />,
 			title: "Dashboard",
 			linkTo: "/dashboard/dashboard",
-
 		},
 		{
 			key: "genealogy",
 			icon: <PartitionOutlined className="menu-icons" />,
 			title: "Genealogy",
 			linkTo: "/dashboard/genealogy",
-
 		},
 		{
 			key: "workflow",
 			icon: <FileDoneOutlined style={{ fontSize: "26px" }} />,
 			title: "Workflow",
 			linkTo: "/dashboard/workflow",
-
 		},
 	];
 
@@ -75,15 +67,12 @@ const Sidebar = () => {
 		}
 	};
 
-	cpvMenu.map((item, index) => {
-		console.log("itemmm", item.linkTo, path);
-	})
 
 	return (
 		<Sider
 			collapsed={collapsed}
 			onMouseOver={mouseHover}
-			onMouseLeave={() => setCollapsed(false)}
+			onMouseLeave={() => setCollapsed(true)}
 			id="sidebar"
 			className={!collapsed ? "collapse-side-bar" : ""}
 		>
