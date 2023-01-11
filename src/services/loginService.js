@@ -141,3 +141,15 @@ export const userProfileUpload = (request) => {
 		}
 	);
 };
+
+//customer-login BMS
+export const consumerSamlLogin = (request, header) => {
+	return Service.get(BMS_APP_LOGIN_PASS + "/saml-login", request, header).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};

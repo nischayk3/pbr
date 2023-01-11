@@ -8,6 +8,9 @@ const CustomerLogin = () => {
 	const [username, setUsername] = useState("");
 	console.log("customer login");
 
+
+
+
 	return (
 		<div className="p-28">
 			<Card bordered={false}>
@@ -35,7 +38,7 @@ const CustomerLogin = () => {
 						<Button
 							className="customer-button"
 							key="3"
-						//onClick={() => authenticateUser()}
+						//onClick={() => handleLogin()}
 						// disabled={username == '' || password == ''}
 						>
 							Sign In
