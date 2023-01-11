@@ -72,7 +72,7 @@ const Sidebar = () => {
 		<Sider
 			collapsed={collapsed}
 			onMouseOver={mouseHover}
-			onMouseLeave={() => setCollapsed(false)}
+			onMouseLeave={() => setCollapsed(true)}
 			id="sidebar"
 			className={!collapsed ? "collapse-side-bar" : ""}
 		>

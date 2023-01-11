@@ -16,7 +16,7 @@ import {
 	showNotification
 } from "../../../duck/actions/commonActions";
 import { sendLoginDetails } from "../../../duck/actions/loginAction";
-import { createAccount, getAuthenticateWithLdap, getAuthenticateWithoutAD, loginUrl } from "../../../services/loginService";
+import { consumerSamlLogin, createAccount, getAuthenticateWithLdap, getAuthenticateWithoutAD, loginUrl } from "../../../services/loginService";
 import Auth from "../../../utils/auth";
 import "./login.scss";
 
@@ -161,12 +161,12 @@ const Login = () => {
 		setForgotPasswordFlag(false);
 		setSuccessfulAccountCreationFlag(false)
 	};
-	const showModal = () => {
-		setUsername("");
-		setVisible(true);
-		setForgotPasswordFlag(false);
-		setSuccessfulAccountCreationFlag(false)
-	};
+	// const showModal = () => {
+	// 	setUsername("");
+	// 	setVisible(true);
+	// 	setForgotPasswordFlag(false);
+	// 	setSuccessfulAccountCreationFlag(false)
+	// };
 	const forgotPassword = () => {
 		setUsername("");
 		setVisible(true);
@@ -195,24 +195,28 @@ const Login = () => {
 			dispatch(showNotification("error", "Error while registering the user"));
 		}
 	};
+
+	const samlLogin = async () => {
+		let req = {
+			'redirect_url': 'https://mi-dev.mareana.com/#/user/login'
+		}
+		try {
+			dispatch(showLoader());
+			const res = await consumerSamlLogin(req);
+			console.log("login res", res);
+			dispatch(hideLoader());
+
+		} catch (error) {
+			dispatch(hideLoader());
+			dispatch(showNotification("error", "Incorrect credentials"));
+		}
+
+	}
+
 	return (
 		<>
 			<div className="login-wrapper bg-img">
-				{/* {isSSOEnable ? (<div>
-					<div className="sso-login">
-						<p className="login-head">Login</p>
-						<p className="login-desc">
-							Welcome Back!
-						</p>
-						<Button
-							className="login-btn"
-							onClick={() => {
-								history.push(`/user/customer-login`);
-							}}>
-							Login with SSO
-						</Button>
-					</div>
-				</div>) : ( */}
+
 				<div className="login-split ">
 					<div className="login-left">
 						<img
@@ -281,7 +285,8 @@ const Login = () => {
 							<Button
 								className="login-btn"
 								onClick={() => {
-									history.push(`/user/customer-login`);
+									samlLogin()
+									// history.push(`/user/customer-login`);
 								}}>
 								Login with SSO
 							</Button>
@@ -343,9 +348,9 @@ const Login = () => {
 								</Form>
 							</div>
 						</div>
-						<p className="signup-text">
+						{/* <p className="signup-text">
 							Don't have an account? <span className="sign-up" onClick={showModal}>Sign up</span>
-						</p>
+						</p> */}
 					</div>
 				</div>
 
