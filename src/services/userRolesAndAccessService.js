@@ -1,5 +1,6 @@
 import axios from 'axios';
-
+import Service from "./AjaxService";
+import { MDH_APP_PYTHON_SERVICE } from "../constants/apiBaseUrl";
 export const getRoleConfiguartions = () => {
 	let login_response = JSON.parse(localStorage.getItem('login_details'));
 	return axios.get('/services/v1/role-config', {
@@ -63,3 +64,43 @@ export const deleteUserConfiguartions = data => {
 		data: { data }
 	})
 }
+
+export const uploadUsers = (_queryParam) => {
+	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	const request_headers = {
+		'x-access-token': login_response?.token ? login_response?.token : '',
+		'resource-name': 'CONFIGURATION'
+	};
+	return Service.post(
+		MDH_APP_PYTHON_SERVICE + "/services/v1/upload-users",
+		_queryParam,
+		request_headers
+	).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};
+
+export const createUsers = (_queryParam) => {
+	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	const request_headers = {
+		'x-access-token': login_response?.token ? login_response?.token : '',
+		'resource-name': 'CONFIGURATION'
+	};
+	return Service.put(
+		MDH_APP_PYTHON_SERVICE + "/services/v1/create-users",
+		_queryParam,
+		request_headers
+	).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};
