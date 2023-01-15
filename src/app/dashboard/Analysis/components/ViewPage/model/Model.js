@@ -431,9 +431,7 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
 					},
 					position: { x: encoderConnections.length ? 620 : 470, y: 20 },
 				};
-				let tempScalerSelectedValues = [];
 				scalerConnections.forEach((scaler) => {
-					tempScalerSelectedValues.push(scaler.Source);
 					if (scaler.Source === "Imputer") {
 						const findObj = existingNodes.find(
 							(ext) => ext.Destination === "Scaler"
@@ -465,7 +463,6 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
 						edgesConnection.push(edge);
 					}
 				});
-				setScalerListSelected(tempScalerSelectedValues);
 				existingNodes.push(tempScalerNode);
 			}
 			const tempEstNode = {

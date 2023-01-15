@@ -58,7 +58,6 @@ production/documentation/*.html
 production/landing/*.html
 
 # misc
-package-lock.json
 .env.local
-.env
+
 .cypress.json

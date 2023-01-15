@@ -28,7 +28,7 @@ const currentDate = moment().toDate();
 const currentDateFormat = moment(currentDate).format('YYYY-MM-DD');
 const currentTimestamp = moment(currentDate).format('h:mm:ss');
 /* istanbul ignore next */
-class Uploader extends Component {
+class ManualDataUpload extends Component {
 	state = {
 		openPopup: false,
 		selectedIssueType: '',
@@ -1474,15 +1474,7 @@ class Uploader extends Component {
 								onClick={() => this.clearData()}>
 								Cancel
 							</Button>
-							{/* {this.state.currentStep === steps.length - 1 && (
-                    <Button
-                      style={{ margin: '0 8px', float: 'right' }}
-                      type="primary"
-                      onClick={() => message.success('Processing complete!')}
-                    >
-                      Done
-                    </Button>
-                  )} */}
+
 						</div>
 					</div>
 				</div>
@@ -1491,9 +1483,6 @@ class Uploader extends Component {
 	}
 }
 
-const mapStateToProps = state => {
-	return console.log('state', state);
-};
 
 const mapDispatchToProps = {
 	showNotification,
@@ -1502,6 +1491,6 @@ const mapDispatchToProps = {
 
 };
 
-Uploader = connect(null, mapDispatchToProps)(Uploader);
+ManualDataUpload = connect(null, mapDispatchToProps)(ManualDataUpload);
 
-export default Uploader;
+export default ManualDataUpload;

@@ -8,14 +8,14 @@
 
 import React from 'react';
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
-import Landing from '../components/landing/landingPage';
+import LandingPage from '../components/landing/landingPage';
 
 const ViewPage = () => {
 	return (
 		<div className='custom-wrapper'>
 			<BreadCrumbWrapper />
 			<div className='custom-content-layout'>
-				<Landing />
+				<LandingPage />
 			</div>
 		</div>
 	);

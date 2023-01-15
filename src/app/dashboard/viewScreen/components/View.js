@@ -41,7 +41,7 @@ import { MemoizedViewSummaryData } from "./viewSummary/index";
 
 const { Panel } = Collapse;
 
-const ViewCreation = () => {
+const View = () => {
 	const location = useLocation();
 	const history = useHistory();
 
@@ -80,9 +80,7 @@ const ViewCreation = () => {
 	const parameters = queryString.parse(location.search);
 
 	useEffect(() => {
-		if (Object.keys(parameters) &&
-			Object.keys(parameters).length > 0 &&
-			parameters.fromScreen !== "Workspace") {
+		if (parameters?.fromScreen !== "Workspace") {
 			setFromWorkflowScreen(true)
 		}
 
@@ -586,4 +584,4 @@ const ViewCreation = () => {
 	);
 };
 
-export default ViewCreation;
+export default View;

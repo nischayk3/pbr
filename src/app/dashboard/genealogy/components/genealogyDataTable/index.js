@@ -5,10 +5,12 @@
  * @Last Modified - 15 March, 2022
  * @Last Changed By - Dinesh Kumar
  */
-import { SearchOutlined } from '@ant-design/icons';
+import { SearchOutlined, ManOutlined } from '@ant-design/icons';
 import { Button, Collapse, Input, Space, Table } from "antd";
 import React, { useEffect, useState } from "react";
+import { useHistory } from 'react-router-dom';
 import Highlighter from "react-highlight-words";
+import navigate from "../../../../../assets/navigate.png"
 /* istanbul ignore next */
 function GenealogyDataTable(props) {
 	const [batchData, setbatchData] = useState({});
@@ -22,7 +24,7 @@ function GenealogyDataTable(props) {
 	const [searchText, setSearchText] = useState("");
 
 	const { Panel } = Collapse;
-
+	let history = useHistory();
 	/* istanbul ignore next */
 	function getColumnSearchProps(dataIndex) {
 		return {
@@ -236,6 +238,16 @@ function GenealogyDataTable(props) {
 	const callback = (key) => {
 		props.setCollapseKey(key);
 	};
+
+	const handleNavigation = (item) => {
+		history.push(`/dashboard/pbr_update?id=${item?.tran_pbr_id}&temp_disp_id=${item?.template_id}&version=${item?.template_version}&param_name=${item?.parameter_name}`);
+	}
+	const handleTableNavigation = (item) => {
+		history.push(`/dashboard/pbr_table_reviewer?id=${item?.tran_pbr_id}&temp_disp_id=${item?.template_id}&version=${item?.template_version}&param_name=${item?.table_name}`);
+	}
+	const handleNavigateElogbook = (item) => {
+		history.push(`/dashboard/elog_book_data_entry/data_entry_forms?molecule=${item.molecule}&template_disp_id=${item.template_disp_id}&version=${item.version}&site=${item.site}&recording_id=${item.recording_id}`)
+	}
 
 	return (
 		<Collapse
@@ -473,7 +485,7 @@ function GenealogyDataTable(props) {
 					}
 					key="6"
 				>
-					<Table
+					{/* <Table
 						rowClassName={(record, index) =>
 							index % 2 === 0 ? "table-row-light" : "table-row-dark"
 						}
@@ -482,7 +494,40 @@ function GenealogyDataTable(props) {
 						dataSource={pbrDetails}
 						scroll={{ x: 1600, y: 350 }}
 						pagination={false}
-					/>
+					/> */}
+					<Collapse className={props.className} bordered={false} accordion>
+						<Panel header={
+							<div className="panel-header">
+								<p>Parameters</p>
+							</div>
+						} key="1">
+							<div style={{ height: 220, overflowY: "scroll" }}>
+								{pbrDetails?.Parameter?.map(item => (
+									<div className='pbrData' style={{ display: "flex", justifyContent: "space-between", font: "Roboto", fontSize: 14, fontWeight: 400 }}>
+										<p>{item.parameter_name.toUpperCase()} | {item.tran_pbr_id}</p>
+										{/* <ManOutlined style={{marginRight:20}}/> */
+											<img src={navigate} style={{ width: "19px", height: "20px", marginRight: 15, cursor: "pointer" }} onClick={() => handleNavigation(item)} />
+										}
+									</div>
+								))}
+							</div>
+						</Panel>
+						<Panel header={
+							<div className="panel-header">
+								<p>Tables</p>
+							</div>
+						} key="2">
+							<div style={{ height: 220, overflowY: "scroll" }}>
+								{pbrDetails?.Table?.map(item => (
+									<div style={{ display: "flex", justifyContent: "space-between", font: "Roboto", fontSize: 14, fontWeight: 400 }}>
+										<p>{item.table_name.toUpperCase()} | {item.tran_pbr_id}</p>
+										{/* <ManOutlined /> */}
+										<img src={navigate} style={{ width: "19px", height: "20px", marginRight: 15, cursor: "pointer" }} onClick={() => handleTableNavigation(item)} />
+									</div>
+								))}
+							</div>
+						</Panel>
+					</Collapse>
 				</Panel>
 			) : (
 				<></>
@@ -514,6 +559,29 @@ function GenealogyDataTable(props) {
 						scroll={{ x: 1200, y: 350 }}
 						pagination={false}
 					/>
+				</Panel>
+			) : (
+				<></>
+			)}
+			{props.type === "Material" ? (
+				<Panel
+					header={
+						<div className="panel-header">
+							<p>e-Log Book Forms</p>
+						</div>
+					}
+					key="8"
+				>
+					<div className='elog_data'>
+						{props?.elogBookData?.length ? props?.elogBookData?.map((ele) => {
+							return (<>
+								<p>{ele?.record_name}</p>
+								<p onClick={() => handleNavigateElogbook(ele)}>View Record</p>
+							</>)
+						}) : <>
+							<p>There are no elogbook forms associated with this material</p>
+						</>}
+					</div>
 				</Panel>
 			) : (
 				<></>

@@ -9,14 +9,14 @@ import Banner from "../../../assets/images/dashboard_login_1.png";
 import microsoft from "../../../assets/images/icons8-microsoft-48.png";
 import ldapIcon from "../../../assets/images/ldap-icon.png";
 import { adenabled } from "../../../config/config";
-import { MDH_APP_PYTHON_SERVICE } from "../../../constants/apiBaseUrl";
+import { LDAP_LOGIN, MDH_APP_PYTHON_SERVICE, SSO_LOGIN, WITHOUT_AD_LOGIN, WITH_AD_LOGIN } from "../../../constants/apiBaseUrl";
 import {
 	hideLoader,
 	showLoader,
 	showNotification
 } from "../../../duck/actions/commonActions";
 import { sendLoginDetails } from "../../../duck/actions/loginAction";
-import { createAccount, getAuthenticateWithLdap, getAuthenticateWithoutAD, loginUrl } from "../../../services/loginService";
+import { consumerSamlLogin, createAccount, getAuthenticateWithLdap, getAuthenticateWithoutAD, loginUrl } from "../../../services/loginService";
 import Auth from "../../../utils/auth";
 import "./login.scss";
 
@@ -28,10 +28,10 @@ const Login = () => {
 	const [visible, setVisible] = useState(false);
 	const [forgotPasswordFlag, setForgotPasswordFlag] = useState(false);
 	const [successfulAccountCreationFlag, setSuccessfulAccountCreationFlag] = useState(false);
-	const [isSSOEnable, setIsSSOEnable] = useState(false);
 
 	const dispatch = useDispatch();
 	const history = useHistory();
+
 	useEffect(() => {
 		if (localStorage.getItem("test_enabled") == null) {
 			localStorage.removeItem('login_details');
@@ -161,12 +161,12 @@ const Login = () => {
 		setForgotPasswordFlag(false);
 		setSuccessfulAccountCreationFlag(false)
 	};
-	const showModal = () => {
-		setUsername("");
-		setVisible(true);
-		setForgotPasswordFlag(false);
-		setSuccessfulAccountCreationFlag(false)
-	};
+	// const showModal = () => {
+	// 	setUsername("");
+	// 	setVisible(true);
+	// 	setForgotPasswordFlag(false);
+	// 	setSuccessfulAccountCreationFlag(false)
+	// };
 	const forgotPassword = () => {
 		setUsername("");
 		setVisible(true);
@@ -195,19 +195,29 @@ const Login = () => {
 			dispatch(showNotification("error", "Error while registering the user"));
 		}
 	};
+
+	const samlLogin = async () => {
+		let req = {
+			'redirect_url': 'https://mi-dev.mareana.com/#/user/login'
+		}
+		try {
+			dispatch(showLoader());
+			const res = await consumerSamlLogin(req);
+			console.log("login res", res);
+			dispatch(hideLoader());
+
+		} catch (error) {
+			dispatch(hideLoader());
+			dispatch(showNotification("error", "Incorrect credentials"));
+		}
+
+	}
+
 	return (
 		<>
 			<div className="login-wrapper bg-img">
-				{isSSOEnable ? (<div>
-					<div className="sso-login">
-						<p className="login-head">Login</p>
-						<p className="login-desc">
-							Welcome Back!
-						</p>
 
-						<Button className="login-btn">Login with SSO</Button>
-					</div>
-				</div>) : (<div className="login-split ">
+				<div className="login-split ">
 					<div className="login-left">
 						<img
 							src={Banner}
@@ -254,21 +264,33 @@ const Login = () => {
 							<p onClick={forgotPassword} style={{ cursor: 'pointer' }}>Forgot your password?</p>
 						</div>
 
-						<Button className="login-btn" onClick={() => handleLogin()}>Log In</Button>
-						<p className="or">Or</p>
-						{/* <Button
-							className="login-btn" onClick={() => handleLoginLdap()} >
-							Sign In with LDAP
-						</Button> */}
+						{WITHOUT_AD_LOGIN === 'true' ? (
+							<Button className="login-btn" onClick={() => handleLogin()}>Log In</Button>
+						) : (<></>)}
 
-						<Button
-							className="microsoft-btn"
-							onClick={() => handleLoginLdap()}>
-							<span>
-								<img src={ldapIcon} />
-							</span>
-							Sign In with LDAP
-						</Button>
+						{LDAP_LOGIN === 'true' ? (
+							<Button
+								className="microsoft-btn"
+								onClick={() => handleLoginLdap()}>
+								<span>
+									<img src={ldapIcon} />
+								</span>
+								Sign In with LDAP
+							</Button>
+						) : (<></>)}
+
+						<p className="or">Or</p>
+
+						{SSO_LOGIN === 'true' ? (
+							<Button
+								className="login-btn"
+								onClick={() => {
+									samlLogin()
+									// history.push(`/user/customer-login`);
+								}}>
+								Login with SSO
+							</Button>
+						) : (<></>)}
 
 						<div className="card card-white card-changes">
 							<div className="card-content card-container-change">
@@ -309,25 +331,28 @@ const Login = () => {
 										<></>
 									)}
 
-									<Form.Item>
-										<Button
-											htmlType="submit"
-											id="login-btn"
-											className="microsoft-btn">
-											<span>
-												<img src={microsoft} height="25px" />
-											</span>
-											Sign In with Microsoft
-										</Button>
-									</Form.Item>
+									{WITH_AD_LOGIN === 'true' ? (
+										<Form.Item>
+											<Button
+												htmlType="submit"
+												id="login-btn"
+												className="microsoft-btn">
+												<span>
+													<img src={microsoft} height="25px" />
+												</span>
+												Sign In with Microsoft
+											</Button>
+										</Form.Item>
+									) : (<></>)}
+
 								</Form>
 							</div>
 						</div>
-						<p className="signup-text">
+						{/* <p className="signup-text">
 							Don't have an account? <span className="sign-up" onClick={showModal}>Sign up</span>
-						</p>
+						</p> */}
 					</div>
-				</div>)}
+				</div>
 
 			</div>
 			<div>
@@ -359,7 +384,6 @@ const Login = () => {
 								</div>
 							</>
 						) : (
-
 							<div className='signup-center'>
 								<div>
 									<img
@@ -375,7 +399,6 @@ const Login = () => {
 									type="success"
 									showIcon
 								/>
-
 							</div>
 						)}
 				</Modal>
