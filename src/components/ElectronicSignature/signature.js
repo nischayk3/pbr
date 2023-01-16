@@ -218,6 +218,13 @@ const Signature = (props) => {
     }
   };
 
+
+  useEffect(() => {
+	if(!isPublish) {
+		setReason("")
+	   }
+  }, [isPublish])
+
   return (
     <div>
       <Modal
@@ -245,6 +252,7 @@ const Signature = (props) => {
                 </Button>,
                 <Button
                   className="custom-secondary-btn"
+				  disabled={checkRejectReason && !reason}
                   key="1"
                   onClick={() => {
                     handleConfirm();
