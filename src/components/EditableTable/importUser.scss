@@ -1,0 +1,77 @@
+.internalUser{
+    border: 1px solid #DCDCDC;
+    border-radius: 4px;
+    /* position: absolute; */
+    width: 434px;
+    height: 177px;
+    margin-top: 32px;
+    padding: 20px;
+    // margin-left: 27px;
+}
+.pstyle{
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 22px;
+
+}
+.mainDiv{
+    display: flex;
+    justify-content: space-between;
+}
+.userModal{
+    .ant-modal-body{
+        height: 350px;
+    }
+    .iconSize{
+        font-size: 18px;
+    }
+}
+
+.progress{
+    width: 350px;
+    margin-top: 12px;
+    margin-left: 20px;
+}
+.elcelDiv{
+    display: flex;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+.errorUpload{
+    width: 402px;
+    position: absolute;
+    left: 50%;
+    top: 60%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.sign-form1 {
+	display: grid;
+	grid-template-rows: repeat(2, 1fr);
+	grid-gap: 20px 20px;
+	padding: 24px;
+}
+.sign-cols1 {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	grid-gap: 10px 20px;
+}
+.signature-modal {
+	overflow: hidden;
+	margin-top: 10px;
+	padding: 15px;
+	border-top: 1px solid #d9d9d9;
+	button {
+		float: right;
+		margin: 0px 10px;
+		border-radius: 4px;
+	}
+}
+.sign-select {
+	width: 200px;
+}
