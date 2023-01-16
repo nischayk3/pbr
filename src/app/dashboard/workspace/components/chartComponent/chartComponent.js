@@ -13,7 +13,7 @@ import './styles.scss';
 
 const chartComponent = (props) => {
 	const [workspaceChartData, setWorkSpaceChartData] = useState([]);
-	const [workspaceChartLayout, setWorkSpaceChartLayout] = useState([]);
+	// const [workspaceChartLayout, setWorkSpaceChartLayout] = useState([]);
 	const [workspaceChartLayoutXAxis, setWorkSpaceChartLayoutXAxis] = useState([]);
 	const [workspaceChartLayoutYAxis, setWorkSpaceChartLayoutYAxis] = useState([]);
 	const dispatch = useDispatch();
@@ -36,7 +36,7 @@ const chartComponent = (props) => {
 			const chartResponse = await getChartPlotData(req, headers);
 			//if(chartResponse.statuscode==200){
 			setWorkSpaceChartData(chartResponse.data[0].data);
-			setWorkSpaceChartLayout(chartResponse.data[0].layout)
+			//setWorkSpaceChartLayout(chartResponse.data[0].layout)
 			setWorkSpaceChartLayoutXAxis(chartResponse.data[0].layout.xaxis)
 			setWorkSpaceChartLayoutYAxis(chartResponse.data[0].layout.yaxis)
 			dispatch(hideLoader());

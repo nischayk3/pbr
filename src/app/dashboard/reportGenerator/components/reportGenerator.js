@@ -215,15 +215,15 @@ function ReportGenerator(props) {
 
 	const getTableData = (obj, rep_layout) => {
 		obj = obj.layout_info;
-		let headingList = [];
+		//let headingList = [];
 		let allSections = [];
-		let titleHeading =
-			obj['titlepage'] && obj['titlepage'].heading
-				? obj['titlepage'].heading
-				: '';
+		// let titleHeading =
+		// 	obj['titlepage'] && obj['titlepage'].heading
+		// 		? obj['titlepage'].heading
+		// 		: '';
 		let titleObj = obj && obj['titlepage'] ? obj['titlepage'] : '';
 
-		headingList.push(titleHeading);
+		// headingList.push(titleHeading);
 		allSections.push(titleObj);
 
 		let headingSection = obj['sections'] ? obj['sections'] : [];

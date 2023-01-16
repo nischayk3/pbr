@@ -2,13 +2,20 @@
 	.menu-icons {
 		font-size: 23px !important;
 	}
+
 	.ant-tooltip {
 		display: none !important;
-	  }
+	}
 }
+
 .collapse-side-bar {
 	flex: 0 0 240px !important;
 	max-width: 240px !important;
 	min-width: 240px !important;
 	width: 240px !important;
-	}
+}
+
+.remove-selected {
+	background-color: transparent !important;
+	color: #ffffffa6 !important;
+}

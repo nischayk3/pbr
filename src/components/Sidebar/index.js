@@ -6,51 +6,57 @@ import {
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import React, { useState } from "react";
+import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
 import "./style.scss";
 const { Sider } = Layout;
 const { SubMenu } = Menu;
 
-const cpvMenu = [
-	{
-		key: "view_creation",
-		icon: <ClusterOutlined className="menu-icons" />,
-		title: "View Creation",
-		linkTo: "/dashboard/view_creation",
-	},
-	{
-		key: "chart_personalization",
-		icon: <BarChartOutlined className="menu-icons" />,
-		title: "Chart Personalization",
-		linkTo: "/dashboard/chart_personalization",
-	},
-	{
-		key: "chart_configuration",
-		icon: <FundProjectionScreenOutlined className="menu-icons" />,
-		title: "Chart Configuration",
-		linkTo: "/dashboard/dashboard",
-	},
-	{
-		key: "genealogy",
-		icon: <PartitionOutlined className="menu-icons" />,
-		title: "Genealogy",
-		linkTo: "/dashboard/genealogy",
-	},
-	{
-		key: "workflow",
-		icon: <FileDoneOutlined style={{ fontSize: "26px" }} />,
-		title: "Workflow",
-		linkTo: "/dashboard/workflow",
-	},
-];
-
 const Sidebar = () => {
 	const [collapsed, setCollapsed] = useState(true);
 	const [openKeys, setOpenKeys] = useState([]);
 	const rootKeys = ["sub2", "sub3", "sub4", "sub5", "sub6", "sub7"];
+	const location = useLocation();
+	const locationSplit = location?.pathname?.split("/")
+	const path = `${'/' + locationSplit[1] + '/' + locationSplit[2]}`
+	//console.log("path", path);
+	const cpvMenu = [
+		{
+			key: "view_creation",
+			icon: <ClusterOutlined className="menu-icons" />,
+			title: "View Creation",
+			linkTo: "/dashboard/view_creation",
+		},
+		{
+			key: "chart_personalization",
+			icon: <BarChartOutlined className="menu-icons" />,
+			title: "Chart Personalization",
+			linkTo: "/dashboard/chart_personalization",
+		},
+		{
+			key: "chart_configuration",
+			icon: <FundProjectionScreenOutlined className="menu-icons" />,
+			title: "Dashboard",
+			linkTo: "/dashboard/dashboard",
+		},
+		{
+			key: "genealogy",
+			icon: <PartitionOutlined className="menu-icons" />,
+			title: "Genealogy",
+			linkTo: "/dashboard/genealogy",
+		},
+		{
+			key: "workflow",
+			icon: <FileDoneOutlined style={{ fontSize: "26px" }} />,
+			title: "Workflow",
+			linkTo: "/dashboard/workflow",
+		},
+	];
+
 	const mouseHover = () => {
 		setCollapsed(false);
 	};
+
 	// Open only one submenu at a time
 	const onOpenChange = items => {
 		const latestOpenKey = items.find(key => openKeys.indexOf(key) === -1);
@@ -60,6 +66,8 @@ const Sidebar = () => {
 			setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
 		}
 	};
+
+
 	return (
 		<Sider
 			collapsed={collapsed}
@@ -72,9 +80,11 @@ const Sidebar = () => {
 				<Menu.Item
 					key="workspace"
 					icon={<AppstoreOutlined className="menu-icons" />}
+					style={{ marginTop: 0 }}
 					id="workspace"
+					className={path === "/dashboard/workspace" ? 'ant-menu-item-selected' : 'remove-selected'}
 				>
-					<Link to="/dashboard/workspace">Dashboard</Link>
+					<Link to="/dashboard/workspace">Workspace</Link>
 				</Menu.Item>
 				<SubMenu
 					key="sub2"
@@ -89,11 +99,12 @@ const Sidebar = () => {
 								icon={item.icon}
 								id={item.key}
 								onClick={() => window.location.reload()}
+								className={item.linkTo == path ? 'ant-menu-item-selected' : 'remove-selected'}
 							>
 								<Link to={item.linkTo}>{item.title}</Link>
 							</Menu.Item>
 						) : (
-							<Menu.Item key={item.key} icon={item.icon} id={item.key}>
+							<Menu.Item key={item.key} icon={item.icon} id={item.key} className={item.linkTo == path ? 'ant-menu-item-selected' : 'remove-selected'}>
 								<Link to={item.linkTo}>{item.title}</Link>
 							</Menu.Item>
 						)
@@ -109,6 +120,7 @@ const Sidebar = () => {
 						key="hierarchy"
 						icon={<DeploymentUnitOutlined className="menu-icons" />}
 						id="hierarchy"
+						className={path === "/dashboard/molecule_hierarchy_configuration" ? 'ant-menu-item-selected' : 'remove-selected'}
 					>
 						<Link to="/dashboard/molecule_hierarchy_configuration">
 							Hierarchy Config
@@ -125,6 +137,7 @@ const Sidebar = () => {
 						key="audit"
 						icon={<FileSearchOutlined className="menu-icons" />}
 						id="audit"
+						className={path === "/dashboard/audit_trail_report" ? 'ant-menu-item-selected' : 'remove-selected'}
 					>
 						<Link to="/dashboard/audit_trail_report">Audit Trail</Link>
 					</Menu.Item>
@@ -132,6 +145,7 @@ const Sidebar = () => {
 						key="userTrail"
 						icon={<UserOutlined className="menu-icons" />}
 						id="user_trail"
+						className={path === "/dashboard/user_trail_report" ? 'ant-menu-item-selected' : 'remove-selected'}
 					>
 						<Link to="/dashboard/user_trail_report">User Log History</Link>
 					</Menu.Item>
@@ -139,6 +153,7 @@ const Sidebar = () => {
 						key="manual_data_upload"
 						icon={<UploadOutlined className="menu-icons" />}
 						id="manual_data_upload"
+						className={path === "/dashboard/manual_data_upload" ? 'ant-menu-item-selected' : 'remove-selected'}
 					>
 						<Link to="/dashboard/manual_data_upload">Manual Data Upload</Link>
 					</Menu.Item>
@@ -147,14 +162,15 @@ const Sidebar = () => {
 					key="report_designer"
 					icon={<AppstoreAddOutlined className="menu-icons" />}
 					id="1"
-				// onClick={() => window.location.reload()}
+					className={path === "/dashboard/report_designer" ? 'ant-menu-item-selected' : 'remove-selected'}
 				>
 					<Link to="/dashboard/report_designer">Report Designer</Link>
 				</Menu.Item>
 				<Menu.Item
 					key="report_generator"
 					icon={<BlockOutlined className="menu-icons" />}
-					id="1"
+					id="2"
+					className={path === "/dashboard/report_generator" ? 'ant-menu-item-selected' : 'remove-selected'}
 				>
 					<Link to="/dashboard/report_generator">Report Generator</Link>
 				</Menu.Item>
@@ -163,11 +179,13 @@ const Sidebar = () => {
 					mode="inline"
 					icon={<AreaChartOutlined className="menu-icons" />}
 					title="Analytics"
+
 				>
 					<Menu.Item
 						key="data_science_studio"
 						icon={<CodeOutlined className="menu-icons" />}
 						id="data_science_studio"
+						className={path === "/dashboard/data_science_studio" ? 'ant-menu-item-selected' : 'remove-selected'}
 					>
 						{/* <a href={JUPYTER_NOTEBOOK} target="_blank" >Data Science Studio</a> */}
 						<Link to="/dashboard/data_science_studio">Data Science Studio</Link>
@@ -176,6 +194,7 @@ const Sidebar = () => {
 						key="analysis"
 						icon={<FundOutlined className="menu-icons" />}
 						id="analysis"
+						className={path === "/dashboard/analysis" ? 'ant-menu-item-selected' : 'remove-selected'}
 					>
 						<Link to="/dashboard/analysis">Auto ML Analytics</Link>
 					</Menu.Item>
@@ -183,6 +202,7 @@ const Sidebar = () => {
 						key="cross batch comparison"
 						icon={<FundOutlined className="menu-icons" />}
 						id="analysis"
+						className={path === "/dashboard/cross_batch_comparison" ? 'ant-menu-item-selected' : 'remove-selected'}
 					>
 						<Link to="/dashboard/cross_batch_comparison">Cross Batch Comparison</Link>
 					</Menu.Item>
@@ -197,6 +217,7 @@ const Sidebar = () => {
 						key="pbr_file_upload"
 						icon={<CloudUploadOutlined className="menu-icons" />}
 						id="pbr file upload"
+						className={path === "/dashboard/pbr_file_upload" ? 'ant-menu-item-selected' : 'remove-selected'}
 					>
 						<Link to="/dashboard/pbr_file_upload">File Upload</Link>
 					</Menu.Item>
@@ -204,6 +225,7 @@ const Sidebar = () => {
 						key="paper-batch-records"
 						icon={<DiffOutlined className="menu-icons" />}
 						id="paper batch records"
+						className={path === "/dashboard/paper_batch_records" ? 'ant-menu-item-selected' : 'remove-selected'}
 					>
 						<Link to="/dashboard/paper_batch_records">Template</Link>
 					</Menu.Item>
@@ -211,6 +233,7 @@ const Sidebar = () => {
 						key="pbr_reviewer"
 						icon={<CheckCircleOutlined className="menu-icons" />}
 						id="pbr_reviewer"
+						className={path === "/dashboard/pbr_reviewer" ? 'ant-menu-item-selected' : 'remove-selected'}
 					>
 						<Link to="/dashboard/pbr_reviewer">Dashboard</Link>
 					</Menu.Item>
@@ -219,6 +242,7 @@ const Sidebar = () => {
 					key="user-roles-and-access"
 					icon={<TeamOutlined className="menu-icons" />}
 					id="user-roles-and-access"
+					className={path === "/dashboard/user-roles-and-access" ? 'ant-menu-item-selected' : 'remove-selected'}
 				>
 					<Link to="/dashboard/user-roles-and-access">Roles and Access</Link>
 
@@ -228,11 +252,13 @@ const Sidebar = () => {
 					mode="inline"
 					icon={<CheckCircleOutlined className="menu-icons" />}
 					title="ELog-book"
+
 				>
 					<Menu.Item
 						key="elog-boook"
 						icon={<CheckCircleOutlined className="menu-icons" />}
 						id="elog-book"
+						className={path === "/dashboard/elog_book_data_entry" ? 'ant-menu-item-selected' : 'remove-selected'}
 					>
 						<Link to="/dashboard/elog_book_data_entry">Data Entry</Link>
 					</Menu.Item>
@@ -240,6 +266,7 @@ const Sidebar = () => {
 						key="elog-book_template"
 						icon={<CheckCircleOutlined className="menu-icons" />}
 						id="elog-book_template"
+						className={path === "/dashboard/elog_book_template" ? 'ant-menu-item-selected' : 'remove-selected'}
 					>
 						<Link to="/dashboard/elog_book_template">Template Creation</Link>
 					</Menu.Item>
@@ -249,11 +276,12 @@ const Sidebar = () => {
 					key="data-access-service"
 					icon={<TeamOutlined className="menu-icons" />}
 					id="data-access-service"
+					className={path === "/dashboard/data-access-service" ? 'ant-menu-item-selected' : 'remove-selected'}
 				>
 					<Link to="/dashboard/data-access-service">Data Access Services</Link>
 				</Menu.Item>
 			</Menu>
-		</Sider>
+		</Sider >
 	);
 };
 

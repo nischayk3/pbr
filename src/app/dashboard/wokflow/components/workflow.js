@@ -6,7 +6,8 @@
  * @Last Changed By - binkita
  */
 import { DownloadOutlined } from "@ant-design/icons";
-import { Button, Card, Empty, Table, Tabs } from "antd";
+import { Avatar, Button, Card, Empty, Table, Tabs } from "antd";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import illustrations from "../../../../assets/images/Banner illustration.svg";
@@ -117,6 +118,11 @@ const Workflow = () => {
 		}
 	};
 
+	const getRandomColor = (index) => {
+		let colors = ["#56483F", "#728C69", "#c04000", "#c19578"];
+		return colors[index % 4];
+	};
+
 	const getUnApprovedParamData = async () => {
 		let _reqData = {
 			limit: 10,
@@ -155,14 +161,30 @@ const Workflow = () => {
 				dataIndex: "uom_code",
 			},
 			{
-				title: "Created By",
+				title: "Creator",
 				key: "created_by",
 				dataIndex: "created_by",
+				render: (text, row, index) => {
+					return (
+						<div className="creator">
+							<Avatar
+								className="avatar-icon"
+								style={{ backgroundColor: getRandomColor(index + 1) }}
+							>
+								{text.split("")[0].toUpperCase()}{" "}
+							</Avatar>
+							<span className="avatar-text">{text}</span>
+						</div>
+					);
+				}
 			},
 			{
-				title: "Date",
+				title: "Creation Date",
 				key: "recorded_date",
 				dataIndex: "recorded_date",
+				render: (text, row, index) => {
+					return <>{moment(text.split("T")[0]).format("DD/MM/YYYY")}</>;
+				},
 			},
 		];
 

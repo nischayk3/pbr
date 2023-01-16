@@ -19,6 +19,7 @@ const { Search } = Input;
 function PbrReviewer() {
 	const dispatch = useDispatch();
 	const [templateData, setTemplateData] = useState([])
+	const [tableLoading, setTableLoading] = useState(false)
 	const [searchedColumn, setSearchedColumn] = useState('');
 	const [arr, setArr] = useState([]);
 	const [searchedLanding, setSearchedLanding] = useState(false);
@@ -56,15 +57,18 @@ function PbrReviewer() {
 				...reviewerReq,
 				template_id: selectedTemplateArray
 			}
+			setTableLoading(true)
 			const tableResponse = await getPbrReviewerData(val ? val : req);
 			if (tableResponse['status-code'] === 200) {
 				setTemplateData(tableResponse.Data);
+				setTableLoading(false)
 				dispatch(hideLoader());
 			}
 			/* istanbul ignore next */
 			else if (tableResponse['status-code'] === 404) {
 				dispatch(hideLoader());
 				setTemplateData(tableResponse.Data);
+				setTableLoading(false)
 				dispatch(showNotification('error', tableResponse.Message));
 				/* istanbul ignore next */
 			} else {
@@ -73,6 +77,7 @@ function PbrReviewer() {
 		}
 		/* istanbul ignore next */
 		catch (error) {
+			setTableLoading(false)
 			dispatch(hideLoader());
 			dispatch(showNotification('error', error.Message));
 		}
@@ -101,8 +106,10 @@ function PbrReviewer() {
 		let obj = {
 			...reviewerReq, status: value.toLowerCase(), template_id: selectedTemplateArray
 		}
+		setTableLoading(true)
 		let res = await getPbrReviewerData(obj)
 		setTemplateData(res.Data);
+		setTableLoading(false)
 		setReviewerReq(obj)
 		dispatch(hideLoader());
 	};
@@ -113,8 +120,10 @@ function PbrReviewer() {
 		let obj = {
 			...reviewerReq, confidence: value, template_id: selectedTemplateArray
 		}
+		setTableLoading(true)
 		let res = await getPbrReviewerData(obj)
 		setTemplateData(res.Data);
+		setTableLoading(false)
 		setReviewerReq(obj)
 		dispatch(hideLoader());
 
@@ -614,8 +623,10 @@ function PbrReviewer() {
 	const resetConfidence = async () => {
 		dispatch(showLoader());
 		let obj = { ...reviewerReq, confidence: null }
+		setTableLoading(true)
 		let res = await getPbrReviewerData(obj)
 		setTemplateData(res.Data);
+		setTableLoading(false)
 		setReviewerReq(obj)
 		setShowResetConfidence(false)
 		dispatch(hideLoader());
@@ -625,8 +636,10 @@ function PbrReviewer() {
 	const resetStatus = async () => {
 		dispatch(showLoader());
 		let obj = { ...reviewerReq, status: null }
+		setTableLoading(true)
 		let res = await getPbrReviewerData(obj)
 		setTemplateData(res.Data);
+		setTableLoading(false)
 		setReviewerReq(obj)
 		setShowReset(false)
 		// setShowResetConfidence(false)
@@ -766,6 +779,7 @@ function PbrReviewer() {
 								</div>
 								<div >
 									<Table
+										loading={tableLoading}
 										columns={columns2}
 										className="pbr_reviewer_table"
 										dataSource={filterTableLanding === null

@@ -6,7 +6,7 @@ import Highlighter from "react-highlight-words";
 import { useHistory } from "react-router-dom";
 import "./styles.scss";
 
-function WorkflowTable(props) {
+const WorkflowTable = (props) => {
 	const [searchText, setSearchText] = useState("");
 	const [searchedColumn, setSearchedColumn] = useState("");
 	const [newColumns, setNewColumns] = useState([]);
@@ -163,9 +163,8 @@ function WorkflowTable(props) {
 						dataIndex: field_name,
 						key: i.field_name,
 						width:
-							field_name == "Id" || field_name == "event_id"
-								? "110px"
-								: "165px",
+							field_name == "Id" || field_name == "event_id" || field_name == "version"
+								? "90px" : field_name == "created_by" ? "200px" : "165px",
 						...getColumnSearchProps(
 							field_name,
 							refSearchInput,
@@ -191,6 +190,7 @@ function WorkflowTable(props) {
 					if (i.field_name === "appl_url") {
 						obj.fixed = "left";
 						obj.render = (text, row, index) => {
+							console.log("texttttttttttttt", text);
 							if (text == "/dashboard/chart_personalization") {
 								return (
 									<a
@@ -230,6 +230,36 @@ function WorkflowTable(props) {
 										Review Submission
 									</a>
 								);
+							} else if (text == "/dashboard/analysis") {
+								return (
+									<a
+										onClick={() =>
+											history.push(
+												history.push(
+													`${text}/${row.Id}`
+												)
+											)
+										}
+										className="review-submission"
+									>
+										Review Submission
+									</a>
+								);
+							} else if (text == "/dashboard/elog_book_template") {
+								return (
+									<a
+										onClick={() =>
+											history.push(
+												history.push(
+													`${text}/${row.template_disp_id}&${row.version}?id=${row.template_disp_id}&version=${row.version}`
+												)
+											)
+										}
+										className="review-submission"
+									>
+										Review Submission
+									</a>
+								);
 							} else {
 								return (
 									<a
@@ -251,7 +281,7 @@ function WorkflowTable(props) {
 					if (i.field_name === "created_by") {
 						obj.render = (text, row, index) => {
 							return (
-								<div>
+								<div className="creator">
 									<Avatar
 										className="avatar-icon"
 										style={{ backgroundColor: getRandomColor(index + 1) }}

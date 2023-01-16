@@ -2,7 +2,7 @@ import { Component } from "react";
 import { connect } from "react-redux";
 import { v1 as uuid } from "uuid";
 import { Table, Button, Select, Switch, Checkbox, Modal, Input } from "antd";
-import { PlusOutlined, DeleteTwoTone } from "@ant-design/icons";
+import { PlusOutlined, DeleteTwoTone, FileExcelFilled } from "@ant-design/icons";
 import {
   EditableRow,
   EditableCell,
@@ -16,6 +16,7 @@ import {
   selectAllRowsForDeletion,
   checkDeleteButtonDisabledState,
 } from "../../utils/editableTableHelper";
+import ImportUser from "./importUser";
 import {
   showLoader,
   hideLoader,
@@ -35,7 +36,8 @@ class EditableTable extends Component {
     confirmLoading: false,
     currentPage: 1,
     dataSourcePer: [],
-    searchValue:''
+    searchValue: '',
+    importUserModal : false
   };
 
   componentDidMount() {
@@ -89,15 +91,15 @@ class EditableTable extends Component {
     this.setState({ columns });
   }
 
- //function to handle search
+  //function to handle search
   searchTable = (value) => {
-      const filterData = this.state.dataSourcePer.filter((o) =>
-        Object.keys(o).some((k) =>
-          String(o[k]).toLowerCase().includes(this.state.searchValue.toLowerCase())
-        )
-      );
-      this.setState({dataSource: filterData})
-    };
+    const filterData = this.state.dataSourcePer.filter((o) =>
+      Object.keys(o).some((k) =>
+        String(o[k]).toLowerCase().includes(this.state.searchValue.toLowerCase())
+      )
+    );
+    this.setState({ dataSource: filterData })
+  };
 
   onChangeSearchValue = (e) => {
     if (!e.target.value) {
@@ -223,6 +225,8 @@ class EditableTable extends Component {
 
   handleCancel = () => this.setState({ visible: false });
 
+  handleUserCancle = () => this.setState({importUserModal:false})
+
   onDeleteRows = () => this.setState({ visible: true });
 
   onAddRow = () => {
@@ -327,6 +331,16 @@ class EditableTable extends Component {
     return (
       <div className="custom-table-wrapper">
         <Button
+          // type="dashed"
+          // className="button-dashed__primary"
+          onClick={() => this.setState({importUserModal:true})}
+          icon={<FileExcelFilled />}
+          style={{ marginBottom: 16, marginRight: 10 }}
+          id="editable-table-button-add-new-user"
+        >
+          Import Users
+        </Button>
+        <Button
           type="dashed"
           className="button-dashed__primary"
           onClick={this.onAddRow}
@@ -337,12 +351,12 @@ class EditableTable extends Component {
           {this.props.screens === "Roles" ? "Add new role" : "Add new user"}
         </Button>
         <Search
-            placeholder="Search"
-            onSearch={this.searchTable}
-            value={this.state.searchValue}
-            onChange={(e) => this.onChangeSearchValue(e)}
-            allowClear
-            style={{ width: 200, float: 'right', marginLeft: '15px' }} />
+          placeholder="Search"
+          onSearch={this.searchTable}
+          value={this.state.searchValue}
+          onChange={(e) => this.onChangeSearchValue(e)}
+          allowClear
+          style={{ width: 200, float: 'right', marginLeft: '15px' }} />
         <Button
           type="primary"
           onClick={this.onSaveTable}
@@ -418,6 +432,7 @@ class EditableTable extends Component {
             </div>
           </div>
         </Modal>
+        <ImportUser openUserModal={this.state.importUserModal} handleUserCancle={this.handleUserCancle}/>
       </div>
     );
   }

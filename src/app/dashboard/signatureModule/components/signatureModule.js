@@ -1,9 +1,9 @@
-import { Button, Card, Input, Modal, Select } from "antd";
+import { Button, Card, Input, Modal } from "antd";
 import queryString from "query-string";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation } from "react-router";
-import { useHistory, useRouteMatch } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import BMS_LOGO from '../../../../assets/BMS.jfif';
 import {
 	hideLoader,
@@ -18,22 +18,17 @@ import {
 import { getAuthenticate, getAuthenticateWithLdap, getAuthenticateWithoutAD } from "../../../../services/loginService";
 import './styles.scss';
 
-const { Option } = Select;
-
 const SignatureModule = () => {
 	let history = useHistory();
-	const match = useRouteMatch();
 	const dispatch = useDispatch();
 	const location = useLocation();
 	const params = queryString.parse(location.search);
-	// const { isPublish, handleClose } = props;
 	const [password, setPassword] = useState("");
 	const [username, setUsername] = useState("");
 	const [reason, setReason] = useState("");
 	const [isauth, setIsAuth] = useState("");
 	const [loginStatus, setLoginStatus] = useState("");
 	const [isModalOpen, setIsModalOpen] = useState(false);
-
 
 	useEffect(() => {
 		const loginDetails = JSON.parse(localStorage.getItem("login_details"));
@@ -203,7 +198,6 @@ const SignatureModule = () => {
 		}
 	};
 
-
 	const handleCancel = () => {
 		setIsModalOpen(false);
 	};
@@ -219,7 +213,6 @@ const SignatureModule = () => {
 							<img style={{ width: 314, marginLeft: -5 }} src={BMS_LOGO} />
 							<div className="cardText"><p>This resource is restricted to authorised users</p></div>
 							<div>
-
 								<Input
 									className="cardInput"
 									value={username}
@@ -273,8 +266,8 @@ const SignatureModule = () => {
 						</Card>
 					</div>}
 				</div>
-
 			</Card>
+
 			<div>
 				<Modal className="signatureModal" title="Lets Confirm you action" visible={isModalOpen}
 					onOk={() => handleConfirm()}
@@ -299,8 +292,6 @@ const SignatureModule = () => {
 					/>
 				</Modal>
 			</div>
-
-
 		</div >
 
 	)
