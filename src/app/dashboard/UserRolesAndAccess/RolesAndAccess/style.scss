@@ -1,0 +1,226 @@
+.roles-wrapper {
+	grid-template-columns: 30% 69%;
+	display: grid;
+	gap: 0 18px;
+	height: 500px;
+	margin: 10px auto;
+
+	.roles,
+	.roles-details {
+		background: #FFFFFF;
+		box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1);
+		border-radius: 4px;
+		padding: 27px 27px;
+	}
+}
+
+.roles {
+
+	.roles-button {
+		padding-bottom: 25px;
+	}
+
+	.ant-list {
+		.ant-list-header {
+			padding: 0px;
+
+			.roles-head {
+				p {
+					background: #E7E5FF;
+					margin: 0;
+					padding: 12px 29px;
+					font-family: 'Roboto';
+					font-style: normal;
+					font-weight: 600;
+					font-size: 14px;
+					line-height: 22px;
+					/* identical to box height, or 157% */
+					letter-spacing: 0.01em;
+					color: #282828;
+				}
+
+				.create-role {
+					display: flex;
+					background: #CDCAFF;
+					padding: 8px 26px;
+					justify-content: space-between;
+
+					input {
+						width: 70%;
+					}
+				}
+			}
+		}
+
+		.ant-list-item {
+			background: #F7F7F7;
+			border-bottom: 1px solid #fff;
+			padding: 12px 27px;
+		}
+
+	}
+}
+
+.roles-details {
+	.roles-heading {
+		display: flex;
+
+		h1 {
+			font-family: 'Roboto';
+			font-style: normal;
+			font-weight: 500;
+			font-size: 22px;
+			line-height: 22px;
+			/* identical to box height, or 100% */
+			letter-spacing: 0.01em;
+			color: #000000;
+			margin: 0;
+		}
+
+		.sub-details {
+			display: flex;
+			padding: 2px 22px;
+
+			p {
+				font-family: 'Roboto';
+				font-style: normal;
+				font-weight: 400;
+				font-size: 14px;
+				line-height: 22px;
+				/* identical to box height, or 157% */
+				letter-spacing: 0.01em;
+				margin: 0px;
+				color: #282828;
+
+			}
+
+			.ant-switch {
+				margin-left: 10px;
+				margin-top: 3px;
+			}
+		}
+	}
+
+	.content {
+		font-family: 'Roboto';
+		font-style: normal;
+		font-weight: 300;
+		font-size: 16px;
+		line-height: 26px;
+		/* or 162% */
+		letter-spacing: 0.01em;
+		color: #282828;
+		margin: 0px;
+		padding-top: 23px;
+	}
+
+	.card-heading {
+		font-family: 'Roboto';
+		font-style: normal;
+		font-weight: 600;
+		font-size: 16px;
+		line-height: 22px;
+		/* identical to box height, or 138% */
+		letter-spacing: 0.01em;
+		color: #282828;
+		padding-top: 40px;
+	}
+}
+
+.resource-card-wrapper {
+	display: inline-flex;
+	gap: 20px 20px;
+	flex-flow: row wrap;
+
+	.resource-card {
+		border: 1px solid #DCDCDC;
+		border-radius: 4px;
+		padding: 18px;
+		width: 354px;
+
+		>p {
+			font-family: 'Roboto';
+			font-style: normal;
+			font-weight: 400;
+			font-size: 14px;
+			line-height: 22px;
+			color: #4D4D4D;
+			margin: 0px;
+			padding: 20px 0;
+		}
+
+		.resource-card-head {
+			display: flex;
+			justify-content: space-between;
+
+			.card-head {
+				p {
+					font-family: 'Roboto';
+					font-style: normal;
+					font-weight: 400;
+					font-size: 12px;
+					line-height: 22px;
+					/* identical to box height, or 183% */
+					letter-spacing: 0.05em;
+					color: #4D4D4D;
+					margin: 0px;
+				}
+
+				h2 {
+					font-family: 'Roboto';
+					font-style: normal;
+					font-weight: 500;
+					font-size: 16px;
+					line-height: 22px;
+					/* identical to box height, or 138% */
+					color: #4D4D4D;
+					margin: 0px;
+				}
+			}
+
+			.resource-card-button {
+				.anticon-edit {
+					color: #6C63FF;
+					font-size: 16px;
+					margin-right: 16px;
+				}
+
+				.anticon-delete {
+					font-size: 16px;
+					color: #FF0000;
+				}
+			}
+		}
+
+		.auth-card {
+			display: flex;
+
+			>p {
+				margin: 0px;
+				padding-right: 18px;
+				font-family: 'Roboto';
+				font-style: normal;
+				font-weight: 400;
+				font-size: 12px;
+				line-height: 22px;
+				/* identical to box height, or 183% */
+				letter-spacing: 0.05em;
+				color: #4D4D4D;
+			}
+
+			.status-tag {
+				background: #F9F0FF;
+				/* Golden Purple / purple-3 */
+				border: 1px solid #D3ADF7;
+				border-radius: 2px;
+				font-family: 'Roboto';
+				font-style: normal;
+				font-weight: 400;
+				font-size: 12px;
+				line-height: 20px;
+				color: #722ED1;
+			}
+		}
+
+	}
+}

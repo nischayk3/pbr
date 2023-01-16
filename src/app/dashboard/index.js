@@ -66,6 +66,7 @@ const ElogBook = lazy(() => import("./ElogBook/components/entryLanding/entryLand
 const ElogBookEntry = lazy(() => import("./ElogBook/components/dataEntryForm/dataEntryForm"))
 const EBookStep = lazy(() => import("./ElogBook/components/ebookSteps/eBookStep"))
 const ELogBookTemplate = lazy(() => import("./ElogBook/components/landingPage/Landing"))
+const TableauDashboard = lazy(() => import("./TableauDashboard/tableauDashboard"))
 
 const { Content } = Layout;
 
@@ -76,12 +77,6 @@ const Dashboard = () => {
 	const location = useLocation();
 	const screen = location.pathname.split("/");
 	const [authorised, setAuthorised] = useState(true);
-
-	// useEffect(() => {
-	// 	// if (!Auth.isAuthenticated()) {
-	// 	//   history.push('/user/login');
-	// 	// }
-	// }, [history]);
 
 	useEffect(() => {
 		if (JSON.parse(localStorage.getItem('login_details')) == null && !window.location.href.includes('user/login') && !window.location.href.includes('/redirect')) {
@@ -96,18 +91,14 @@ const Dashboard = () => {
 	const requiredAuth = async (resource) => {
 		let authResponse = {};
 		try {
-			// dispatch(showLoader());
 			authResponse = await getAuthorisedPermission("", resource);
 			if (authResponse.status === 200) {
 				setAuthorised(true);
-				// dispatch(hideLoader());
 			} else {
 				setAuthorised(false);
-				// dispatch(hideLoader());
 			}
 		} catch (err) {
 			setAuthorised(false);
-			// dispatch(hideLoader());
 		}
 	};
 
@@ -164,7 +155,6 @@ const Dashboard = () => {
 					<Sidebar />
 					{screen[2] !== "faq" && <Help />}
 					<Content>
-						{/* <BreadCrumbWrapper /> */}
 						<SuspenseWrapper>
 							<Switch>
 								<Route key="unauthorised" path={`${match.url}/unauthorised`}>
@@ -417,11 +407,6 @@ const Dashboard = () => {
 									)}
 								/>
 
-								{/* <Route
-									key="data_science_studio"
-									path={`${match.url}/data_science_studio`}
-									component={DataScienceStudio}
-								/> */}
 								<Route
 									path={`${match.url}/data_science_studio`}
 									render={({ match: { url } }) => (
@@ -432,14 +417,11 @@ const Dashboard = () => {
 												authorised={authorised}
 												component={DataScienceStudio}
 											/>
-
 											<PrivateRoute
 												path={`${url}/target_variable`}
 												authorised={authorised}
 												component={TargetVariable}
 											/>
-
-
 										</>
 									)}
 								/>
@@ -491,6 +473,13 @@ const Dashboard = () => {
 									path={`${match.url}/data-access-service`}
 									exact
 									component={DataAccess}
+									authorised={authorised}
+								/>
+								<PrivateRoute
+									key="tableau-dashboard"
+									path={`${match.url}/tableau-dashboard`}
+									exact
+									component={TableauDashboard}
 									authorised={authorised}
 								/>
 							</Switch>
