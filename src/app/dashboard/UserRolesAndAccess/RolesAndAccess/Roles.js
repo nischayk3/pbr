@@ -6,7 +6,7 @@
  * @Last Changed By - Dinesh Kumar
  */
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Badge, Button, Input, List, Space, Switch, Table, Tag } from 'antd';
+import { Button, Input, List, Switch, Table, Tag } from 'antd';
 import React, { useState } from 'react';
 
 const Roles = () => {
@@ -62,96 +62,49 @@ const Roles = () => {
 	const expandedRowRender = () => {
 		const columns1 = [
 			{
-				title: 'Date',
-				dataIndex: 'date',
-				key: 'date',
-			},
-			{
 				title: 'Name',
 				dataIndex: 'name',
 				key: 'name',
 			},
 			{
-				title: 'Status',
-				key: 'state',
-				render: () => <Badge status="success" text="Finished" />,
+				title: 'Include',
+				key: 'include',
+				render: () => <Switch size="small" defaultChecked />,
 			},
-			{
-				title: 'Upgrade Status',
-				dataIndex: 'upgradeNum',
-				key: 'upgradeNum',
-			},
-			{
-				title: 'Action',
-				dataIndex: 'operation',
-				key: 'operation',
-				render: () => (
-					<Space size="middle">
-						<a>Pause</a>
-						<a>Stop</a>
 
-					</Space>
-				),
-			},
 		];
 		const data1 = [];
 		for (let i = 0; i < 3; ++i) {
 			data1.push({
 				key: i.toString(),
-				date: '2014-12-24 23:12:00',
-				name: 'This is production name',
-				upgradeNum: 'Upgraded: 56',
+				name: 'Belatacept',
 			});
 		}
-		return <Table columns={columns1} dataSource={data1} pagination={false} />;
+		return <Table className="roles-inner-table" columns={columns1} dataSource={data1} pagination={false} />;
 	};
 	const columns2 = [
 		{
-			title: 'Name',
-			dataIndex: 'name',
-			key: 'name',
+			title: 'Data type',
+			dataIndex: 'datatype',
+			key: 'datatype',
 		},
-		{
-			title: 'Platform',
-			dataIndex: 'platform',
-			key: 'platform',
-		},
-		{
-			title: 'Version',
-			dataIndex: 'version',
-			key: 'version',
-		},
-		{
-			title: 'Upgraded',
-			dataIndex: 'upgradeNum',
-			key: 'upgradeNum',
-		},
-		{
-			title: 'Creator',
-			dataIndex: 'creator',
-			key: 'creator',
-		},
-		{
-			title: 'Date',
-			dataIndex: 'createdAt',
-			key: 'createdAt',
-		},
+
 		{
 			title: 'Action',
 			key: 'operation',
-			render: () => <a>Publish</a>,
+			render: () => (
+				<div className="actions">
+					<a>Edit</a>
+					<a>Delete</a>
+				</div>
+			),
 		},
 	];
 	const data2 = [];
 	for (let i = 0; i < 3; ++i) {
 		data2.push({
 			key: i.toString(),
-			name: 'Screen',
-			platform: 'iOS',
-			version: '10.3.4.5654',
-			upgradeNum: 500,
-			creator: 'Jack',
-			createdAt: '2014-12-24 23:12:00',
+			datatype: 'Molecule',
 		});
 	}
 
@@ -199,6 +152,7 @@ const Roles = () => {
 
 				<p className='card-heading'>Data access</p>
 				<Table
+					className='roles-table'
 					columns={columns2}
 					expandable={{
 						expandedRowRender,
