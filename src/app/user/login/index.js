@@ -9,14 +9,14 @@ import Banner from "../../../assets/images/dashboard_login_1.png";
 import microsoft from "../../../assets/images/icons8-microsoft-48.png";
 import ldapIcon from "../../../assets/images/ldap-icon.png";
 import { adenabled } from "../../../config/config";
-import { LDAP_LOGIN, MDH_APP_PYTHON_SERVICE, SSO_LOGIN, WITHOUT_AD_LOGIN, WITH_AD_LOGIN } from "../../../constants/apiBaseUrl";
+import { BMS_APP_LOGIN_PASS, LDAP_LOGIN, MDH_APP_PYTHON_SERVICE, SSO_LOGIN, WITHOUT_AD_LOGIN, WITH_AD_LOGIN } from "../../../constants/apiBaseUrl";
 import {
 	hideLoader,
 	showLoader,
 	showNotification
 } from "../../../duck/actions/commonActions";
 import { sendLoginDetails } from "../../../duck/actions/loginAction";
-import { consumerSamlLogin, createAccount, getAuthenticateWithLdap, getAuthenticateWithoutAD, loginUrl } from "../../../services/loginService";
+import { createAccount, getAuthenticateWithLdap, getAuthenticateWithoutAD, loginUrl } from "../../../services/loginService";
 import Auth from "../../../utils/auth";
 import "./login.scss";
 
@@ -46,6 +46,8 @@ const Login = () => {
 			setIsChecked(false)
 		}
 	}, []);
+
+	const consumerSamlLogin = (pathname) => window.open(`${window.location.origin}${BMS_APP_LOGIN_PASS}/saml-login?${pathname}`);
 
 	const onFinish = async values => {
 		try {
@@ -196,22 +198,8 @@ const Login = () => {
 		}
 	};
 
-	const samlLogin = async () => {
-		let req = {
-			'redirect_url': 'https://mi-dev.mareana.com/#/user/login'
-		}
-		try {
-			dispatch(showLoader());
-			const res = await consumerSamlLogin(req);
-			console.log("login res", res);
-			dispatch(hideLoader());
 
-		} catch (error) {
-			dispatch(hideLoader());
-			dispatch(showNotification("error", "Incorrect credentials"));
-		}
 
-	}
 
 	return (
 		<>
@@ -285,8 +273,8 @@ const Login = () => {
 							<Button
 								className="login-btn"
 								onClick={() => {
-									samlLogin()
-									// history.push(`/user/customer-login`);
+									consumerSamlLogin('redirect_url=https://mi-dev.mareana.com/#/user/login');
+									localStorage.setItem("loginwith", 'WITH_SAML')
 								}}>
 								Login with SSO
 							</Button>

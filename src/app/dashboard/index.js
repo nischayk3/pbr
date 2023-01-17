@@ -22,6 +22,7 @@ const Help = lazy(() => import("../../components/Help"))
 const Sidebar = lazy(() => import("../../components/Sidebar"))
 const ViewPage = lazy(() => import("./chartPersonal/components/viewPage/ViewPage"));
 const RolesAndAccess = lazy(() => import("./UserRolesAndAccess/RolesAndAccess/RolesAndAccess"));
+const RolesAndAccessV2 = lazy(() => import("./UserRolesAndAccess/RolesAndAccess/RolesAndAccessV2"));
 const ScreenControls = lazy(() => import("./UserRolesAndAccess/ScreenControls/ScreenControls"));
 const UserConfiguration = lazy(() => import("./UserRolesAndAccess/UserConfiguration/UserConfiguration"));
 const UserRolesAndAccess = lazy(() => import("./UserRolesAndAccess/UserRolesAndAccess"));
@@ -373,6 +374,12 @@ const Dashboard = () => {
 									key="roles-and-access"
 									path={`${match.url}/user-roles-and-access/roles-and-access`}
 									component={RolesAndAccess}
+									authorised={authorised}
+								/>
+								<PrivateRoute
+									key="roles-and-access"
+									path={`${match.url}/user-roles-and-access/roles-and-access-version-2`}
+									component={RolesAndAccessV2}
 									authorised={authorised}
 								/>
 								<PrivateRoute

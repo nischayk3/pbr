@@ -54,6 +54,12 @@ const UserRolesAndAccess = () => {
 						</div>
 						<p>Roles And Access</p>
 					</Col>
+					<Col span={4} onClick={() => redirectTo("roles-and-access-version-2")}>
+						<div className="create-new">
+							<img src={RolesAndAccessImage} alt="RolesAndAccess" width="98%" />
+						</div>
+						<p>Roles And Access - Version 2</p>
+					</Col>
 					<Col span={4} onClick={() => redirectTo("application-controls")}>
 						<div className="create-new">
 							<img
