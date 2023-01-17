@@ -6,11 +6,13 @@
  * @Last Changed By - Dinesh Kumar
  */
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Button, Input, List, Switch, Table, Tag } from 'antd';
+import { Button, Input, List, Modal, Switch, Table, Tag } from 'antd';
 import React, { useState } from 'react';
 
 const Roles = () => {
 	const [isCreateRole, setIsCreateRole] = useState(false);
+	const [isVisible, setIsVisible] = useState(false);
+
 
 	const data = [
 		'Chart manager',
@@ -57,6 +59,14 @@ const Roles = () => {
 
 	const handleClickROle = () => {
 		setIsCreateRole(true)
+	}
+
+	const handleClickResource = () => {
+		setIsVisible(true)
+	}
+
+	const handleCancel = () => {
+		setIsVisible(false)
 	}
 
 	const expandedRowRender = () => {
@@ -147,7 +157,7 @@ const Roles = () => {
 					<Button
 						type='primary'
 						className='custom-secondary-btn'
-
+						onClick={handleClickResource}
 					>
 						Add resource
 					</Button>
@@ -185,6 +195,13 @@ const Roles = () => {
 					}}
 					dataSource={data2}
 				/>
+				<Modal
+					width={400}
+					title="CHART MANAGER - Genealogy"
+					visible={isVisible}
+					onCancel={handleCancel}
+					footer={null}
+				></Modal>
 				{/* <Empty imageStyle={{
 					height: 160,
 				}} image={Empty.PRESENTED_IMAGE_SIMPLE} description={

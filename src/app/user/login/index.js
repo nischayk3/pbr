@@ -273,7 +273,7 @@ const Login = () => {
 							<Button
 								className="login-btn"
 								onClick={() => {
-									consumerSamlLogin('redirect_url=https://mi-dev.mareana.com/#/user/login');
+									consumerSamlLogin('redirect_url=https://mi-dev.mareana.com/%23/dashboard/redirect&from_=UI');
 									localStorage.setItem("loginwith", 'WITH_SAML')
 								}}>
 								Login with SSO
