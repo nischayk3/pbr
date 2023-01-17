@@ -62,8 +62,13 @@
 }
 
 .roles-details {
+	>.custom-primary-btn {
+		float: right;
+	}
+
 	.roles-heading {
 		display: flex;
+		float: left;
 
 		h1 {
 			font-family: 'Roboto';
@@ -112,6 +117,7 @@
 		color: #282828;
 		margin: 0px;
 		padding-top: 23px;
+		clear: both;
 	}
 
 	.card-header {
@@ -123,17 +129,7 @@
 			margin-bottom: 18px;
 		}
 
-		.card-heading {
-			font-family: 'Roboto';
-			font-style: normal;
-			font-weight: 600;
-			font-size: 16px;
-			line-height: 22px;
-			/* identical to box height, or 138% */
-			letter-spacing: 0.01em;
-			color: #282828;
-			margin: 0px;
-		}
+
 	}
 
 }
@@ -242,17 +238,7 @@
 	padding-top: 40px;
 	padding-bottom: 20px;
 
-	.card-heading {
-		font-family: 'Roboto';
-		font-style: normal;
-		font-weight: 600;
-		font-size: 16px;
-		line-height: 22px;
-		/* identical to box height, or 138% */
-		letter-spacing: 0.01em;
-		color: #282828;
-		margin: 0px;
-	}
+
 
 	div {
 		button {
@@ -288,5 +274,79 @@
 			}
 
 		}
+	}
+}
+
+.card-heading {
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 16px;
+	line-height: 22px;
+	/* identical to box height, or 138% */
+	letter-spacing: 0.01em;
+	color: #282828;
+	margin: 0px;
+}
+
+.card-heading-p {
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 22px;
+	/* identical to box height, or 138% */
+	letter-spacing: 0.01em;
+	color: #282828;
+	margin: 0px;
+	padding: 12px 0;
+}
+
+
+.modal-resource-wrapper {
+	padding: 3px;
+
+	.modal-sub-header {
+		display: flex;
+		padding-bottom: 20px;
+
+		p {
+			font-family: 'Roboto';
+			font-style: normal;
+			font-weight: 400;
+			font-size: 16px;
+			line-height: 22px;
+			/* identical to box height, or 138% */
+			letter-spacing: 0.01em;
+			color: #282828;
+			margin: 0px;
+			padding: 12px 0;
+		}
+
+		>.ant-select {
+			>.ant-select-selector {
+				height: 40px;
+
+				>.ant-select-selection-item {
+					line-height: 40px;
+				}
+			}
+		}
+	}
+
+	.modal-footer-btn {
+		display: flex;
+		direction: rtl;
+		padding-top: 32px;
+
+		button {
+			margin-left: 12px;
+		}
+	}
+}
+
+.actions {
+	a {
+		padding-left: 10px
 	}
 }
