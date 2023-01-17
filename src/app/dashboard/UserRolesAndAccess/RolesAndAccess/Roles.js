@@ -6,13 +6,12 @@
  * @Last Changed By - Dinesh Kumar
  */
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Button, Input, List, Modal, Switch, Table, Tag } from 'antd';
+import { Button, Checkbox, Input, List, Modal, Select, Switch, Table, Tag } from 'antd';
 import React, { useState } from 'react';
 
 const Roles = () => {
 	const [isCreateRole, setIsCreateRole] = useState(false);
 	const [isVisible, setIsVisible] = useState(false);
-
 
 	const data = [
 		'Chart manager',
@@ -110,13 +109,35 @@ const Roles = () => {
 			),
 		},
 	];
+	const columns3 = [
+		{
+			title: 'Authorization',
+			dataIndex: 'authorization',
+			key: 'authorization',
+		},
+		{
+			title: 'Function',
+			dataIndex: 'function',
+			key: 'function',
+		},
+		{
+			title: 'Enable',
+			key: 'enable',
+			render: () => <Checkbox />
+		},
+	];
 	const data2 = [];
+	const data3 = [];
 	for (let i = 0; i < 3; ++i) {
 		data2.push({
 			key: i.toString(),
 			datatype: 'Molecule',
 		});
 	}
+
+	const handleChange = (value) => {
+		console.log(`selected ${value}`);
+	};
 
 	return (
 		<div className="roles-wrapper">
@@ -149,6 +170,12 @@ const Roles = () => {
 						<Switch size="small" defaultChecked />
 					</div>
 				</div>
+				<Button
+					type='primary'
+					className='custom-primary-btn'
+				>
+					Edit role
+				</Button>
 				<p className="content">
 					The chart manager works with sample sentences like this one, and can always be replaced by the correct information since this is only a design placeholder.
 				</p>
@@ -196,12 +223,67 @@ const Roles = () => {
 					dataSource={data2}
 				/>
 				<Modal
-					width={400}
+					width={719}
 					title="CHART MANAGER - Genealogy"
 					visible={isVisible}
 					onCancel={handleCancel}
 					footer={null}
-				></Modal>
+				>
+					<div className='modal-resource-wrapper'>
+						<p className='card-heading'>Resources</p>
+						<div className='modal-sub-header'>
+							<p>The resource associated with this role</p>
+							<Select
+								size='medium'
+								defaultValue="lucy"
+								style={{
+									width: 230, marginLeft: 13,
+								}}
+								onChange={handleChange}
+								options={[
+									{
+										value: 'jack',
+										label: 'Jack',
+									},
+									{
+										value: 'lucy',
+										label: 'Lucy',
+									},
+									{
+										value: 'disabled',
+										disabled: true,
+										label: 'Disabled',
+									},
+									{
+										value: 'Yiminghe',
+										label: 'yiminghe',
+									},
+								]}
+							/>
+						</div>
+						<p className='card-heading'>Authorizations</p>
+						<p className='card-heading-p'>Select the actions you want to authorize chart managers to take.</p>
+						<Table
+							className='roles-table'
+							columns={columns3}
+							dataSource={data3}
+						/>
+						<div className='modal-footer-btn'>
+							<Button
+								type='primary'
+								className='custom-secondary-btn'
+							>
+								Save changes
+							</Button>
+							<Button
+								type='primary'
+								className='custom-primary-btn'
+							>
+								Cancel
+							</Button>
+						</div>
+					</div>
+				</Modal>
 				{/* <Empty imageStyle={{
 					height: 160,
 				}} image={Empty.PRESENTED_IMAGE_SIMPLE} description={
