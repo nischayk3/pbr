@@ -142,15 +142,40 @@ const Roles = () => {
 				<p className="content">
 					The chart manager works with sample sentences like this one, and can always be replaced by the correct information since this is only a design placeholder.
 				</p>
-				<p className='card-heading'>Resources and authorizations</p>
+				<div className="card-header">
+					<p className='card-heading'>Resources and authorizations</p>
+					<Button
+						type='primary'
+						className='custom-secondary-btn'
+
+					>
+						Add resource
+					</Button>
+				</div>
 				<div className="resource-card-wrapper">
 					{resourceCard}
 					{resourceCard}
 					{resourceCard}
 					{resourceCard}
 				</div>
+				<div className="data-table-wrapper">
+					<p className='card-heading'>Data access</p>
+					<div>
+						<Button
+							type='primary'
+							className='custom-primary-btn'
+						>
+							Edit
+						</Button>
+						<Button
+							type='primary'
+							className='custom-secondary-btn'
+						>
+							Add data access
+						</Button>
+					</div>
+				</div>
 
-				<p className='card-heading'>Data access</p>
 				<Table
 					className='roles-table'
 					columns={columns2}
