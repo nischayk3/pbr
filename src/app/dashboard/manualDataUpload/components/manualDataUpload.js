@@ -11,11 +11,12 @@ import {
 } from '@ant-design/icons';
 
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
+import { MDH_APP_PYTHON_SERVICE } from '../../../../constants/apiBaseUrl';
 import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
 import {
 	approvedData, cancelFileUpload, finalFileUpload, updateApprovedData, uploadFileApi
 } from '../../../../duck/actions/fileUploadAction';
-import { getAuthenticate, getAuthenticateWithoutAD } from '../../../../services/loginService';
+import { consumerSamlLogin, getAuthenticate, getAuthenticateWithoutAD } from '../../../../services/loginService';
 
 
 const dummyRequest = ({ onSuccess }) => {
@@ -83,6 +84,8 @@ class ManualDataUpload extends Component {
 	componentDidMount = () => {
 		const loginDetails = JSON.parse(localStorage.getItem("login_details"));
 		const loginWith = localStorage.getItem("loginwith");
+		console.log("loginDetails", loginDetails);
+		console.log("loginWith", loginWith);
 		if (loginWith) {
 			this.setState({
 				loginStatus: loginWith,
@@ -655,6 +658,26 @@ class ManualDataUpload extends Component {
 		}
 	}
 
+
+	samlRedirect = async () => {
+		// if (localStorage.getItem("login_details")) {
+		// 	history.push("/dashboard/workspace");
+		// 	dispatch(showNotification("success", "Logged In Success"));
+		// } else {
+		// 	window.open(`${window.location.origin}${BMS_APP_LOGIN_PASS}/saml-login?redirect_url=${MDH_APP_PYTHON_SERVICE}/%23/dashboard/redirect&from_=UI`, '_self');
+		// 	localStorage.setItem("loginwith", 'WITH_SAML')
+		// }
+		const _reqSaml = {
+			redirect_url: `${MDH_APP_PYTHON_SERVICE}/%23/dashboard/redirect&from_=SignedInfo`
+		}
+		const _header = {
+
+		}
+		const samlLogin = await consumerSamlLogin(_reqSaml, _header);
+		console.log("samlLoginnnnnnn", samlLogin);
+	}
+
+
 	render() {
 		const {
 			approvedDataRes,
@@ -1008,40 +1031,122 @@ class ManualDataUpload extends Component {
 												e.stopPropagation();
 												this.closeModel();
 											}}>
-											<div className='sign-form1'>
-												<div className='sign-cols1'>
-													<div>
-														<p>Username</p>
-														<Input
-															disabled
-															placeholder='Username'
-															value={username}
-															onChange={value =>
-																this.onChangeField(value, 'username')
-															}
-														/>
+											{loginStatus !== "WITH_SAML" ? (
+												<>
+													<div className='sign-form1'>
+														<div className='sign-cols1'>
+															<div>
+																<p>Username</p>
+																<Input
+																	disabled
+																	placeholder='Username'
+																	value={username}
+																	onChange={value =>
+																		this.onChangeField(value, 'username')
+																	}
+																/>
+															</div>
+															<div>
+																<p>Password</p>
+																<Input
+																	placeholder='Password'
+																	autocomplete='new-password'
+																	type='password'
+																	value={password}
+																	onChange={value =>
+																		this.onChangeField(value, 'password')
+																	}
+																/>
+															</div>
+														</div>
+														{isAuth && (
+															<div>
+																<p>Signing</p>
+																<Select
+																	placeholder='Select a reason'
+																	value={signatureReason}
+																	onChange={value =>
+																		this.onChangeSelect(value, 'reason')
+																	}
+																	style={{
+																		width: '100%',
+																		margin: '0px',
+																	}}>
+																	{reasonList.map(item => (
+																		<Select.Option key={item} value={item}>
+																			{item}
+																		</Select.Option>
+																	))}
+																</Select>
+															</div>
+														)}
 													</div>
-													<div>
-														<p>Password</p>
-														<Input
-															placeholder='Password'
-															autocomplete='new-password'
-															type='password'
-															value={password}
-															onChange={value =>
-																this.onChangeField(value, 'password')
-															}
-														/>
+													<div className='signature-modal'>
+														{isAuth ? (
+															<>
+																<Button
+																	type='primary'
+																	style={{
+																		backgroundColor: '#093185',
+																	}}
+																	onClick={() => this.updateFileApproveData()}>
+																	Confirm
+																</Button>
+																<Button
+																	className='custom-primary-btn'
+																	onClick={() => this.closeModel()}>
+																	Cancel
+																</Button>
+															</>
+														) : (
+															<>
+																{
+																	loginStatus == 'WITH_AD' ? (
+																		<Button
+																			type='primary'
+																			id="auth_with_ad"
+																			style={{
+																				backgroundColor: '#093185',
+																			}}
+																			disabled={username == '' || password == ''}
+																			onClick={() => this.onAuthenticate()}>
+																			Authenticate with AD
+																		</Button>
+																	) : loginStatus == "WITHOUT_AD" ? (
+																		<Button
+																			type='primary'
+																			id="auth_without_ad"
+																			style={{
+																				backgroundColor: '#093185',
+																			}}
+																			disabled={username == '' || password == ''}
+																			onClick={() => this.onAuthenticateWithoutAD()}>
+																			Authenticate without AD
+																		</Button>
+																	) : loginStatus == "WITH_SAML" ? (
+																		<Button
+																			className="custom-secondary-btn"
+																			key="3"
+																			disabled={username == "" || password == ""}
+																			onClick={() => authenticateWithLdap()}
+																		>
+																			Authenticate with SAML
+																		</Button>
+																	) : null
+																}
+															</>
+														)}
 													</div>
-												</div>
-												{isAuth && (
+												</>
+											) : (
+												<div className='sign-form1'>
 													<div>
 														<p>Signing</p>
 														<Select
 															placeholder='Select a reason'
-															value={signatureReason}
+															value={signatureReason1}
 															onChange={value =>
-																this.onChangeSelect(value, 'reason')
+																this.onChangeSelect(value, 'reason1')
 															}
 															style={{
 																width: '100%',
@@ -1054,53 +1159,23 @@ class ManualDataUpload extends Component {
 															))}
 														</Select>
 													</div>
-												)}
-											</div>
-											<div className='signature-modal'>
-												{isAuth ? (
-													<>
+													<div className='signature-modal'>
 														<Button
 															type='primary'
 															style={{
 																backgroundColor: '#093185',
 															}}
-															onClick={() => this.updateFileApproveData()}>
+															onClick={() => this.samlRedirect()}>
 															Confirm
 														</Button>
 														<Button
 															className='custom-primary-btn'
-															onClick={() => this.closeModel()}>
+															onClick={() => this.closeModelSignature1()}>
 															Cancel
 														</Button>
-													</>
-												) : (
-													<>
-														{loginStatus == 'WITH_AD' ?
-															(<Button
-																type='primary'
-																id="auth_with_ad"
-																style={{
-																	backgroundColor: '#093185',
-																}}
-
-																onClick={() => this.onAuthenticate()}>
-																Authenticate with AD
-															</Button>)
-															:
-															(<Button
-																type='primary'
-																id="auth_without_ad"
-																style={{
-																	backgroundColor: '#093185',
-																}}
-																disabled={username == '' || password == ''}
-																onClick={() => this.onAuthenticateWithoutAD()}>
-																Authenticate without AD
-															</Button>)
-														}
-													</>
-												)}
-											</div>
+													</div>
+												</div>
+											)}
 										</Modal>
 										<Modal
 											className='modal_digitalSignature'
@@ -1111,41 +1186,122 @@ class ManualDataUpload extends Component {
 												e.stopPropagation();
 												this.closeModel();
 											}}>
-											<div className='sign-form1'>
-												<div className='sign-cols1'>
-													<div>
-														<p>Username</p>
-														<Input
-															disabled
-															placeholder='Username'
-															value={username}
-															onChange={value =>
-																this.onChangeField(value, 'username')
-															}
-														/>
-													</div>
-													<div>
-														<p>Password</p>
-														<Input
+											{loginStatus !== "WITH_SAML" ? (
+												<>
+													<div className='sign-form1'>
+														<div className='sign-cols1'>
+															<div>
+																<p>Username</p>
+																<Input
+																	disabled
+																	placeholder='Username'
+																	value={username}
+																	onChange={value =>
+																		this.onChangeField(value, 'username')
+																	}
+																/>
+															</div>
+															<div>
+																<p>Password</p>
+																<Input
 
-															placeholder='Password'
-															autocomplete='new-password'
-															type='password'
-															value={password}
-															onChange={value =>
-																this.onChangeField(value, 'password')
-															}
-														/>
+																	placeholder='Password'
+																	autocomplete='new-password'
+																	type='password'
+																	value={password}
+																	onChange={value =>
+																		this.onChangeField(value, 'password')
+																	}
+																/>
+															</div>
+														</div>
+														{isAuth && (
+															<div>
+																<p>Signing</p>
+																<Select
+																	placeholder='Select a reason'
+																	value={signatureReason}
+																	onChange={value =>
+																		this.onChangeSelect(value, 'reason')
+																	}
+																	style={{
+																		width: '100%',
+																		margin: '0px',
+																	}}>
+																	{reasonList.map(item => (
+																		<Select.Option key={item} value={item}>
+																			{item}
+																		</Select.Option>
+																	))}
+																</Select>
+															</div>
+														)}
 													</div>
-												</div>
-												{isAuth && (
+													<div className='signature-modal'>
+														{isAuth ? (
+															<>
+																<Button
+																	type='primary'
+																	style={{
+																		backgroundColor: '#093185',
+																	}}
+																	onClick={() => this.approveDataFile()}>
+																	Confirm
+																</Button>
+																<Button
+																	className='custom-primary-btn'
+																	onClick={() => this.closeModel()}>
+																	Cancel
+																</Button>
+															</>
+														) : (
+															<>	{
+																loginStatus == 'WITH_AD' ? (
+																	<Button
+																		type='primary'
+																		id="auth_with_ad"
+																		style={{
+																			backgroundColor: '#093185',
+																		}}
+																		disabled={username == '' || password == ''}
+																		onClick={() => this.onAuthenticate()}>
+																		Authenticate with AD
+																	</Button>
+																) : loginStatus == "WITHOUT_AD" ? (
+																	<Button
+																		type='primary'
+																		id="auth_without_ad"
+																		style={{
+																			backgroundColor: '#093185',
+																		}}
+																		disabled={username == '' || password == ''}
+																		onClick={() => this.onAuthenticateWithoutAD()}>
+																		Authenticate without AD
+																	</Button>
+																) : loginStatus == "WITH_SAML" ? (
+																	<Button
+																		className="custom-secondary-btn"
+																		key="3"
+																		disabled={username == "" || password == ""}
+																		onClick={() => authenticateWithLdap()}
+																	>
+																		Authenticate with SAML
+																	</Button>
+																) : null
+															}
+															</>
+														)}
+													</div>
+												</>
+											) : (
+												<div className='sign-form1'>
 													<div>
 														<p>Signing</p>
 														<Select
 															placeholder='Select a reason'
-															value={signatureReason}
+															value={signatureReason1}
 															onChange={value =>
-																this.onChangeSelect(value, 'reason')
+																this.onChangeSelect(value, 'reason1')
 															}
 															style={{
 																width: '100%',
@@ -1158,52 +1314,23 @@ class ManualDataUpload extends Component {
 															))}
 														</Select>
 													</div>
-												)}
-											</div>
-											<div className='signature-modal'>
-												{isAuth ? (
-													<>
+													<div className='signature-modal'>
 														<Button
 															type='primary'
 															style={{
 																backgroundColor: '#093185',
 															}}
-															onClick={() => this.approveDataFile()}>
+															onClick={() => this.samlRedirect()}>
 															Confirm
 														</Button>
 														<Button
 															className='custom-primary-btn'
-															onClick={() => this.closeModel()}>
+															onClick={() => this.closeModelSignature1()}>
 															Cancel
 														</Button>
-													</>
-												) : (
-													<>	{loginStatus == 'WITH_AD' ?
-														<Button
-															type='primary'
-															id="auth_with_ad"
-															style={{
-																backgroundColor: '#093185',
-															}}
-															disabled={username == '' || password == ''}
-															onClick={() => this.onAuthenticate()}>
-															Authenticate with AD
-														</Button>
-														:
-														<Button
-															type='primary'
-															id="auth_without_ad"
-															style={{
-																backgroundColor: '#093185',
-															}}
-															disabled={username == '' || password == ''}
-															onClick={() => this.onAuthenticateWithoutAD()}>
-															Authenticate without AD
-														</Button>
-													}
-													</>
-												)}
-											</div>
+													</div>
+												</div>
+											)}
 										</Modal>
 										<Modal
 											className='modal_digitalSignature'
@@ -1286,34 +1413,116 @@ class ManualDataUpload extends Component {
 													e.stopPropagation();
 													this.closeModelSignature1();
 												}}>
-												<div className='sign-form1'>
-													<div className='sign-cols1'>
-														<div>
-															<p>Username</p>
-															<Input
-																disabled
-																placeholder='Username'
-																value={username}
-																onChange={value =>
-																	this.onChangeField(value, 'username')
-																}
+												{loginStatus !== "WITH_SAML" ? (
+													<>
+														<div className='sign-form1'>
+															<div className='sign-cols1'>
+																<div>
+																	<p>Username</p>
+																	<Input
+																		disabled
+																		placeholder='Username'
+																		value={username}
+																		onChange={value =>
+																			this.onChangeField(value, 'username')
+																		}
 
-															/>
+																	/>
+																</div>
+																<div>
+																	<p>Password</p>
+																	<Input
+																		placeholder='Password'
+																		autocomplete='new-password'
+																		type='password'
+																		value={password}
+																		onChange={value =>
+																			this.onChangeField(value, 'password')
+																		}
+																	/>
+																</div>
+															</div>
+															{isAuth && (
+																<div>
+																	<p>Signing</p>
+																	<Select
+																		placeholder='Select a reason'
+																		value={signatureReason1}
+																		onChange={value =>
+																			this.onChangeSelect(value, 'reason1')
+																		}
+																		style={{
+																			width: '100%',
+																			margin: '0px',
+																		}}>
+																		{reasonList.map(item => (
+																			<Select.Option key={item} value={item}>
+																				{item}
+																			</Select.Option>
+																		))}
+																	</Select>
+																</div>
+															)}
 														</div>
-														<div>
-															<p>Password</p>
-															<Input
-																placeholder='Password'
-																autocomplete='new-password'
-																type='password'
-																value={password}
-																onChange={value =>
-																	this.onChangeField(value, 'password')
-																}
-															/>
+														<div className='signature-modal'>
+															{isAuth ? (
+																<>
+																	<Button
+																		type='primary'
+																		style={{
+																			backgroundColor: '#093185',
+																		}}
+																		onClick={() => this.finalFileUploadData()}>
+																		Confirm
+																	</Button>
+																	<Button
+																		className='custom-primary-btn'
+																		onClick={() => this.closeModelSignature1()}>
+																		Cancel
+																	</Button>
+																</>
+															) : (
+																<>
+																	{
+																		loginStatus == 'WITH_AD' ? (
+																			<Button
+																				type='primary'
+																				id="auth_with_ad"
+																				style={{
+																					backgroundColor: '#093185',
+																				}}
+																				disabled={username == '' || password == ''}
+																				onClick={() => this.onAuthenticate()}>
+																				Authenticate with AD
+																			</Button>
+																		) : loginStatus == "WITHOUT_AD" ? (
+																			<Button
+																				type='primary'
+																				id="auth_without_ad"
+																				style={{
+																					backgroundColor: '#093185',
+																				}}
+																				disabled={username == '' || password == ''}
+																				onClick={() => this.onAuthenticateWithoutAD()}>
+																				Authenticate without AD
+																			</Button>
+																		) : loginStatus == "WITH_SAML" ? (
+																			<Button
+																				className="custom-secondary-btn"
+																				key="3"
+																				disabled={username == "" || password == ""}
+																				onClick={() => authenticateWithLdap()}
+																			>
+																				Authenticate with SAML
+																			</Button>
+																		) : null
+																	}
+																</>
+															)}
 														</div>
-													</div>
-													{isAuth && (
+													</>
+												) : (
+													<div className='sign-form1'>
 														<div>
 															<p>Signing</p>
 															<Select
@@ -1333,17 +1542,13 @@ class ManualDataUpload extends Component {
 																))}
 															</Select>
 														</div>
-													)}
-												</div>
-												<div className='signature-modal'>
-													{isAuth ? (
-														<>
+														<div className='signature-modal'>
 															<Button
 																type='primary'
 																style={{
 																	backgroundColor: '#093185',
 																}}
-																onClick={() => this.finalFileUploadData()}>
+																onClick={() => this.samlRedirect()}>
 																Confirm
 															</Button>
 															<Button
@@ -1351,34 +1556,9 @@ class ManualDataUpload extends Component {
 																onClick={() => this.closeModelSignature1()}>
 																Cancel
 															</Button>
-														</>
-													) : (
-														<>	{loginStatus == 'WITH_AD' ?
-															<Button
-																type='primary'
-																id="auth_with_ad"
-																style={{
-																	backgroundColor: '#093185',
-																}}
-																disabled={username == '' || password == ''}
-																onClick={() => this.onAuthenticate()}>
-																Authenticate with AD
-															</Button>
-															:
-															<Button
-																type='primary'
-																id="auth_without_ad"
-																style={{
-																	backgroundColor: '#093185',
-																}}
-																disabled={username == '' || password == ''}
-																onClick={() => this.onAuthenticateWithoutAD()}>
-																Authenticate without AD
-															</Button>
-														}
-														</>
-													)}
-												</div>
+														</div>
+													</div>
+												)}
 											</Modal>
 											<Modal
 												className='modal_digitalSignature'
