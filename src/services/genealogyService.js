@@ -255,3 +255,19 @@ export const getElogbook = (request) => {
         }
     );
 };
+
+//get timezone(PBR)
+export const getTimezoneData = request => {
+	return Service.get(
+		MDH_APP_PYTHON_SERVICE + '/pbr/udh/default_timezone_data',
+		request,
+		request_headers,
+	).then(
+		response => {
+			return response.data;
+		},
+		error => {
+			return error.response.data;
+		}
+	);
+};
