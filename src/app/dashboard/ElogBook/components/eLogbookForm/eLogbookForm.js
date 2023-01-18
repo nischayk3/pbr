@@ -66,6 +66,10 @@ function ElogForm({ isTemplateModal }) {
 
 	const handleBack = () => {
 		setIsModalVisible(false);
+		setFormData({
+			Tname: '',
+			Pname: ''
+		})
 	}
 
 	const data = ["Product1", "Product2", "Product3"];
@@ -91,6 +95,7 @@ function ElogForm({ isTemplateModal }) {
 						className="custom-secondary-btn"
 						type="primary"
 						onClick={() => handleNext()}
+						disabled={!formData.Tname || !formData.Pname}
 					>
 						Lets Go!
 					</Button>

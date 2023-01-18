@@ -72,15 +72,14 @@ const View = () => {
 	const [approveReject, setApproveReject] = useState("");
 	const [isEditView, setIsEditView] = useState(false);
 	const [fromWorkflowScreen, setFromWorkflowScreen] = useState(false);
-	//const [filterParam, setFilterParam] = useState("");
 	const [loadBatches, setLoadBatches] = useState([]);
-
 	const { id } = useParams();
-
 	const parameters = queryString.parse(location.search);
 
 	useEffect(() => {
-		if (parameters?.fromScreen !== "Workspace") {
+		if (Object.keys(parameters) &&
+			Object.keys(parameters).length > 0 &&
+			parameters.fromScreen !== "Workspace") {
 			setFromWorkflowScreen(true)
 		}
 

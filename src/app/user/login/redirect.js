@@ -43,7 +43,7 @@ export default function Redirect() {
 				title='Redirecting You to the Main Screen'
 				extra={
 					<Button type='primary' key='console'>
-						CPV
+						MI
 					</Button>
 				}
 			/>

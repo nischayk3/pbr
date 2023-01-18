@@ -190,7 +190,6 @@ const WorkflowTable = (props) => {
 					if (i.field_name === "appl_url") {
 						obj.fixed = "left";
 						obj.render = (text, row, index) => {
-							console.log("texttttttttttttt", text);
 							if (text == "/dashboard/chart_personalization") {
 								return (
 									<a
@@ -209,7 +208,7 @@ const WorkflowTable = (props) => {
 									<a
 										onClick={() =>
 											history.push(
-												`${text}/${row.Id}&${row.version}?id=${row.Id}&version=${row.version}`
+												`${text}/${row.Id}&${row.version}?id=${row.Id}&version=${row.version}&fromScreen=Workflow`
 											)
 										}
 										className="review-submission"
