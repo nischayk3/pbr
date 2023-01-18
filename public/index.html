@@ -4,7 +4,7 @@
 <head>
 	<!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'"> -->
 	<meta http-equiv="Content-Security-Policy"
-		content="default-src 'self' ws: wss: https;  script-src 'self' https://online.tableausoftware.com 'unsafe-eval' 'unsafe-inline'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline' data:;font-src 'self' https://fonts.gstatic.com 'unsafe-inline' data:; img-src 'self' https data: blob:;frame-src *;">
+		content="default-src 'self' ws: wss: https;  script-src 'self' http://online.tableausoftware.com 'unsafe-eval' 'unsafe-inline'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline' data:;font-src 'self' https://fonts.gstatic.com 'unsafe-inline' data:; img-src 'self' https data: blob:;frame-src *;">
 	<meta charset="utf-8" />
 	<link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -47,7 +47,8 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-	<script type="text/javascript" src="https://online.tableausoftware.com/javascripts/api/tableau_v8.js"></script>
+	<script type="text/javascript" src="http://online.tableausoftware.com/javascripts/api/tableau_v8.js"></script>
+	<!-- <script type='text/javascript' src='http://public.tableausoftware.com/javascripts/api/tableau_v8.js'></script> -->
 </body>
 
 </html>
