@@ -10,8 +10,8 @@ import {
 	DownloadOutlined,
 	InboxOutlined
 } from '@ant-design/icons';
-import { Button, Modal, Result, Tabs, Typography, Upload } from 'antd';
-import React, { useState } from 'react';
+import { Button, Modal, Result, Tabs, Typography, Upload, Select } from 'antd';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import genealogyLanding from '../../../../assets/images/genealogy-landing.png';
 import batchIcon from '../../../../assets/images/material.png';
@@ -33,13 +33,14 @@ import {
 	pbrApproval,
 	pbrFileUpload,
 	updateGoldenBatch,
-	getElogbook
+	getElogbook,
+	getTimezoneData
 } from '../../../../services/genealogyService';
 import GenealogyDrawer from '../components/genealogyDrawer/index.js';
 import GenealogyDataTable from './genealogyDataTable';
 import Filter from './genealogyFilter';
 import TreePlot from './TreePlot/TreePlot';
-
+import './genelogy.scss'
 const { TabPane } = Tabs;
 const { Paragraph } = Typography;
 const { Dragger } = Upload;
@@ -79,8 +80,27 @@ function Genealogy() {
 	const [fileUploadResponse, setFileUploadResponse] = useState('');
 	const [batchEquData, setBatchEquData] = useState([]);
 	const [elogBookData, setElogBookData] = useState([]);
+	const [timeZoneArray, setTimeZoneArray] = useState([]);
+	const [timeZoneValue, setTimeZoneValue] = useState('');
+	const [timeZoneList, setTimeZoneList] = useState([]);
+	const [timeZoneTemp, setTimeZoneTemp] = useState('');
+	const [timeZoneUpdate, setTimeZoneUpdate] = useState({});
 
 	const dispatch = useDispatch();
+
+	useEffect(() => {
+		if (timeZoneTemp && timeZoneUpdate) {
+			let arr = timeZoneList
+			arr.forEach(item=>{
+				if(item.fileName === timeZoneUpdate.name){
+					item.timezone = timeZoneTemp
+				}
+			})
+			setTimeZoneList(arr)
+			setTimeZoneTemp('')
+			setTimeZoneUpdate('')
+		}
+	}, [timeZoneTemp, timeZoneUpdate])
 
 	const onClickNode = node => {
 		if (node.clickType === 'backward') {
@@ -212,6 +232,7 @@ function Genealogy() {
 			setUploadId(uploadNodeId);
 			/* istanbul ignore next */
 			setIsUploadVisible(true);
+			getTimeZone(node)
 			/* istanbul ignore next */
 			setIsFileUploaded(false)
 			/* istanbul ignore next */
@@ -249,6 +270,20 @@ function Genealogy() {
 		}
 
 	};
+
+	const getTimeZone = async (node) => {
+		const data = node && node.nodeId.split('|');
+		let req = {
+			siteCode: data[0]
+		}
+		let res = await getTimezoneData(req)
+		if (res["status-code"] !== 200) {
+			dispatch(showNotification('error', "No Data found for current Site"));
+		} else {
+			setTimeZoneArray(res.Data)
+			setTimeZoneValue(res.Default)
+		}
+	}
 
 	const selectedParameter = param => {
 		const product = param && param.product.split('-');
@@ -480,6 +515,7 @@ function Genealogy() {
 			if (fileResponse.Status === 202) {
 				const fileName = [];
 				const fileSize = [];
+				const timezone = []
 				setUploading(false);
 				setFileUploadResponse(fileResponse.Status)
 				setFileMessage(fileResponse.Message)
@@ -489,6 +525,10 @@ function Genealogy() {
 				filterDuplicateFile.map((item) => {
 					fileName.push(item.fileName)
 					fileSize.push(item.fileSize)
+				})
+				let timezoneDuplicate = timeZoneList.filter(item=> !duplicateFile.includes(item.fileName))
+				timezoneDuplicate.forEach(item=>{
+					timezone.push(item.timezone)
 				})
 				let login_response = JSON.parse(localStorage.getItem('login_details'));
 				const data = fileData && fileData.split('|');
@@ -503,6 +543,7 @@ function Genealogy() {
 						filename: fileName,
 						fileSize: fileSize,
 						productNum: data[1],
+						timezone:timezone,
 						siteNum: data[0],
 						status: 'N',
 						uploadReason: 'PBR Document'
@@ -579,11 +620,18 @@ function Genealogy() {
 		setActivateKey(newActiveKey);
 	};
 
+	const handleTimeZoneChange = (item) => {
+		setTimeZoneTemp(item)
+	}
+
+	const handlePreview = (file) => {
+		setTimeZoneUpdate(file)
+	}
+
 	/* istanbul ignore next */
 	const files = {
 		name: 'file',
 		multiple: true,
-
 		progress: {
 			strokeColor: {
 				'0%': '#108ee9',
@@ -593,8 +641,17 @@ function Genealogy() {
 			showInfo: true,
 			format: percent => percent && `${parseFloat(percent.toFixed(2))}%`
 		},
+		showUploadList: {
+			showDownloadIcon: true,
+			downloadIcon:
+				<Select disabled={!timeZoneValue} options={timeZoneArray} defaultValue={timeZoneValue}
+					onChange={(item) => handleTimeZoneChange(item)}
+					className='uploadSelect'
+					size={'small'} />,
+		},
 		onChange(info) {
 			const fileName = [];
+			const timezone = []
 			const fileSize = [];
 			const fileDetail = [];
 			const nodeFileData = fileData && fileData.split('|');
@@ -607,6 +664,7 @@ function Genealogy() {
 				})
 				fileName.push(item.name)
 				fileSize.push(item.size)
+				timezone.push({ fileName: item.name, timezone: timeZoneValue })
 			})
 			formData.append('fileSize', fileSize)
 			formData.append('batchNum', nodeFileData[2])
@@ -614,6 +672,7 @@ function Genealogy() {
 			setUploadFileDetail(fileDetail);
 			setUploadFileName(fileName);
 			setUploadFile(formData);
+			setTimeZoneList(timezone)
 
 		},
 		onDrop(e) {
@@ -786,11 +845,13 @@ function Genealogy() {
 								title={'Upload file to ' + uploadId}
 								className='file-upload-modal'
 								onCancel={handleCancel}
+
 								footer={null}>
 								<Dragger
 									{...files}
 									listType='text'
 									customRequest={dummyRequest}
+									onDownload={(file) => handlePreview(file)}
 								>
 									<p className='ant-upload-drag-icon'>
 										<InboxOutlined />
