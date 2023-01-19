@@ -11,6 +11,7 @@ import {
 } from '@ant-design/icons';
 
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
+import { BMS_APP_LOGIN_PASS } from '../../../../constants/apiBaseUrl';
 import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
 import {
 	approvedData, cancelFileUpload, finalFileUpload, updateApprovedData, uploadFileApi
@@ -657,19 +658,21 @@ class ManualDataUpload extends Component {
 		}
 	}
 
-
 	samlRedirect = async () => {
-		const url = 'https://mi-dev.mareana.com/#/dashboard/redirect&from=SignedInfo'
+		const url = 'https://mi-dev.mareana.com/#/dashboard/redirect'
 		const encoded = encodeURI(url);
-		console.log("ssssssssss", decodeURI(encoded), encoded)
+
 		const _reqSaml = {
+			SignedInfoData: {
+				Reason: "I am approver"
+			},
 			redirect_url: decodeURI(encoded)
 		}
-		const _header = {
-			SignedInfoData: this.state.signatureReason
+
+		const samlLogin = await consumerSamlLogin(_reqSaml);
+		if (samlLogin.Status == 200) {
+			window.open(`${window.location.origin}${BMS_APP_LOGIN_PASS}/saml-login-redirect`, '_self')
 		}
-		const samlLogin = await consumerSamlLogin(_reqSaml, _header);
-		console.log("samlLoginnnnnnn", samlLogin);
 	}
 
 
