@@ -37,6 +37,7 @@ const Login = () => {
 			localStorage.removeItem('login_details');
 			localStorage.removeItem('username');
 			localStorage.removeItem('loginwith');
+			localStorage.removeItem('isSamlLogin');
 		}
 		if (JSON.parse(localStorage.getItem("isRemember"))) {
 			setEmail(localStorage.getItem("user"))
@@ -47,7 +48,17 @@ const Login = () => {
 		}
 	}, []);
 
-	const consumerSamlLogin = (pathname) => window.open(`${window.location.origin}${BMS_APP_LOGIN_PASS}/saml-login?${pathname}`);
+	const consumerSamlLogin = async () => {
+		if (localStorage.getItem("login_details")) {
+			history.push("/dashboard/workspace");
+			dispatch(showNotification("success", "Logged In Success"));
+		} else {
+			window.open(`${window.location.origin}${BMS_APP_LOGIN_PASS}/saml-login?redirect_url=${MDH_APP_PYTHON_SERVICE}/%23/dashboard/redirect&from_=UI`, '_self');
+			localStorage.setItem("loginwith", 'WITH_SAML')
+			localStorage.setItem("isSamlLogin", false)
+
+		}
+	}
 
 	const onFinish = async values => {
 		try {
@@ -69,8 +80,10 @@ const Login = () => {
 		} else {
 			if (localStorage.getItem("test_enabled")) {
 				window.open(`${loginUrl}?is_ui=True&base_url=${MDH_APP_PYTHON_SERVICE}&redirect_url=${MDH_APP_PYTHON_SERVICE}%2F%23%2Fdashboard%2Fredirect`, '_self')
+				localStorage.setItem("loginwith", 'WITH_AD')
 			} else {
 				window.open(`${loginUrl}?is_ui=True&base_url=${MDH_APP_PYTHON_SERVICE}&redirect_url=${MDH_APP_PYTHON_SERVICE}%2F%23%2Fdashboard%2Fredirect`, '_self')
+				localStorage.setItem("loginwith", 'WITH_AD')
 			}
 		}
 	}
@@ -272,10 +285,7 @@ const Login = () => {
 						{SSO_LOGIN === 'true' ? (
 							<Button
 								className="login-btn"
-								onClick={() => {
-									consumerSamlLogin('redirect_url=https://mi-dev.mareana.com/%23/dashboard/redirect&from_=UI');
-									localStorage.setItem("loginwith", 'WITH_SAML')
-								}}>
+								onClick={() => { consumerSamlLogin() }}>
 								Login with SSO
 							</Button>
 						) : (<></>)}

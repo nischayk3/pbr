@@ -2,7 +2,7 @@ import { getTheme } from "../../utils/commonUtils";
 import {
 	AUTHENTICATED,
 	HIDE_LOADING,
-	HIDE_NOTIFICATION, NETWORK_ERROR, SET_NAVIGATION_DATA,
+	HIDE_NOTIFICATION, IS_SAML_SIGN, NETWORK_ERROR, SET_NAVIGATION_DATA,
 	SET_THEME,
 	SHOW_LOADING,
 	SHOW_NOTIFICATION,
@@ -21,7 +21,8 @@ const initialState = {
 	navigationData: {},
 	isMenuCollapsed: true,
 	isAuthenticated: true,
-	isError: false
+	isError: false,
+	samlLogin: false
 };
 
 export default (state = initialState, action) => {
@@ -76,7 +77,11 @@ export default (state = initialState, action) => {
 				...state,
 				isError: action.payload,
 			};
-
+		case IS_SAML_SIGN:
+			return {
+				...state,
+				samlLogin: action.payload,
+			}
 		default:
 			return state;
 	}
