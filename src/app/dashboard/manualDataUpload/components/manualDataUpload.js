@@ -11,7 +11,7 @@ import {
 } from '@ant-design/icons';
 
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
-import { BMS_APP_LOGIN_PASS } from '../../../../constants/apiBaseUrl';
+import { BMS_APP_LOGIN_PASS, MDH_APP_PYTHON_SERVICE } from '../../../../constants/apiBaseUrl';
 import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
 import {
 	approvedData, cancelFileUpload, finalFileUpload, updateApprovedData, uploadFileApi
@@ -659,12 +659,12 @@ class ManualDataUpload extends Component {
 	}
 
 	samlRedirect = async () => {
-		const url = 'https://mi-dev.mareana.com/#/dashboard/saml-redirect'
+		const url = `${MDH_APP_PYTHON_SERVICE}/#/dashboard/saml-redirect`
 		const encoded = encodeURI(url);
 
 		const _reqSaml = {
 			SignedInfoData: {
-				Reason: "I am approver"
+				Reason: this.state.signatureReason,
 			},
 			redirect_url: decodeURI(encoded)
 		}
