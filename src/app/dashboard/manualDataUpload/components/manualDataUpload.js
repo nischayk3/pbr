@@ -84,8 +84,10 @@ class ManualDataUpload extends Component {
 	componentDidMount = () => {
 		const loginDetails = JSON.parse(localStorage.getItem("login_details"));
 		const loginWith = localStorage.getItem("loginwith");
-		console.log("loginDetails", loginDetails);
-		console.log("loginWith", loginWith);
+		if (loginWith === "WITH_SAML") {
+			localStorage.setItem('isSamlLogin', false)
+		}
+
 		if (loginWith) {
 			this.setState({
 				loginStatus: loginWith,
@@ -97,6 +99,7 @@ class ManualDataUpload extends Component {
 			});
 		}
 	};
+
 
 	clearData = () => {
 		this.setState({
@@ -279,6 +282,7 @@ class ManualDataUpload extends Component {
 
 		this.setState(() => nextState);
 	};
+
 	cancelFileUploadService = () => {
 		let reqCancelParam = {
 			user_id: JSON.parse(localStorage.getItem('login_details')).email_id,
@@ -560,6 +564,7 @@ class ManualDataUpload extends Component {
 			isModalVisibleSignature1: true,
 		});
 	};
+
 	showCancelModel = () => {
 		this.setState({
 			isModalCancelVisible: true,
@@ -671,7 +676,7 @@ class ManualDataUpload extends Component {
 
 		const samlLogin = await consumerSamlLogin(_reqSaml);
 		if (samlLogin.Status == 200) {
-			window.open(`${window.location.origin}${BMS_APP_LOGIN_PASS}/saml-login-redirect`, '_self')
+			window.open(`${window.location.origin}${BMS_APP_LOGIN_PASS}/saml-login-redirect`)
 		}
 	}
 
@@ -733,9 +738,18 @@ class ManualDataUpload extends Component {
 			},
 		};
 
+		if (localStorage.getItem('isSamlLogin')) {
+			if (this.state.isModalVisibleSignature1) {
+				this.finalFileUploadData();
+			} else if (onChangeStatus && onChangeStatus === 300) {
+				this.approveDataFile(); this.setState({ nextStepDisabled: false })
+			}
+		}
+
 		return (
 			<div className='custom-wrapper'>
 				<BreadCrumbWrapper />
+
 				<div className='custom-content-layout'>
 					<div className='custom-overview-block'>
 						<Steps
@@ -1666,9 +1680,14 @@ const mapDispatchToProps = {
 	showNotification,
 	hideLoader,
 	showLoader
-
 };
 
-ManualDataUpload = connect(null, mapDispatchToProps)(ManualDataUpload);
+const mapStateToProps = (state) => {
+	return {
+		samlLoginData: state.commonReducer.samlLogin
+	}
+}
+
+ManualDataUpload = connect(mapStateToProps, mapDispatchToProps)(ManualDataUpload);
 
 export default ManualDataUpload;
