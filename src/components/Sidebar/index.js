@@ -280,14 +280,14 @@ const Sidebar = () => {
 				>
 					<Link to="/dashboard/data-access-service">Data Access Services</Link>
 				</Menu.Item>
-				<Menu.Item
+				{/* <Menu.Item
 					key="tableau-dashboard"
 					icon={<TeamOutlined className="menu-icons" />}
 					id="tableau-dashboard"
 					className={path === "/dashboard/tableau-dashboard" ? 'ant-menu-item-selected' : 'remove-selected'}
 				>
 					<Link to="/dashboard/tableau-dashboard">Tableau Dashboard</Link>
-				</Menu.Item>
+				</Menu.Item> */}
 			</Menu>
 		</Sider >
 	);
