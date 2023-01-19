@@ -659,7 +659,7 @@ class ManualDataUpload extends Component {
 	}
 
 	samlRedirect = async () => {
-		const url = 'https://mi-dev.mareana.com/#/dashboard/redirect'
+		const url = 'https://mi-dev.mareana.com/#/dashboard/saml-redirect'
 		const encoded = encodeURI(url);
 
 		const _reqSaml = {

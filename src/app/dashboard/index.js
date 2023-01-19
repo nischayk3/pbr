@@ -13,6 +13,7 @@ import { showNotification } from "../../duck/actions/commonActions";
 import { getAuthorisedPermission } from "../../services/authProvider";
 import LoginRedirect from "../user/login/redirect";
 import RedirectSign from "../user/login/redirectSign";
+import RedirectSAMLSign from "../user/login/samlRedirectSign";
 import "./dashboard.scss";
 import PrivateRoute from "./ProtectedRoute";
 // DASHBOARD ROUTE COMPONENTS
@@ -315,6 +316,9 @@ const Dashboard = () => {
 								</Route>
 								<Route key="redirect_sign" path={`${match.url}/redirect_sign`}>
 									<RedirectSign />
+								</Route>
+								<Route key="redirect-saml-sign" path={`${match.url}/saml-redirect`}>
+									<RedirectSAMLSign />
 								</Route>
 								<Route key="faq" path={`${match.url}/faq`}>
 									<FaqMain />
