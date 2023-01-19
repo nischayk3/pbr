@@ -37,6 +37,7 @@ const Login = () => {
 			localStorage.removeItem('login_details');
 			localStorage.removeItem('username');
 			localStorage.removeItem('loginwith');
+			localStorage.removeItem('isSamlLogin');
 		}
 		if (JSON.parse(localStorage.getItem("isRemember"))) {
 			setEmail(localStorage.getItem("user"))
@@ -54,6 +55,8 @@ const Login = () => {
 		} else {
 			window.open(`${window.location.origin}${BMS_APP_LOGIN_PASS}/saml-login?redirect_url=${MDH_APP_PYTHON_SERVICE}/%23/dashboard/redirect&from_=UI`, '_self');
 			localStorage.setItem("loginwith", 'WITH_SAML')
+			localStorage.setItem("isSamlLogin", false)
+
 		}
 	}
 
