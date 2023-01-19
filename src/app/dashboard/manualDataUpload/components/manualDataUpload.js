@@ -11,7 +11,6 @@ import {
 } from '@ant-design/icons';
 
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
-import { MDH_APP_PYTHON_SERVICE } from '../../../../constants/apiBaseUrl';
 import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
 import {
 	approvedData, cancelFileUpload, finalFileUpload, updateApprovedData, uploadFileApi
@@ -660,18 +659,14 @@ class ManualDataUpload extends Component {
 
 
 	samlRedirect = async () => {
-		// if (localStorage.getItem("login_details")) {
-		// 	history.push("/dashboard/workspace");
-		// 	dispatch(showNotification("success", "Logged In Success"));
-		// } else {
-		// 	window.open(`${window.location.origin}${BMS_APP_LOGIN_PASS}/saml-login?redirect_url=${MDH_APP_PYTHON_SERVICE}/%23/dashboard/redirect&from_=UI`, '_self');
-		// 	localStorage.setItem("loginwith", 'WITH_SAML')
-		// }
+		const url = 'https://mi-dev.mareana.com/#/dashboard/redirect&from=SignedInfo'
+		const encoded = encodeURI(url);
+		console.log("ssssssssss", decodeURI(encoded), encoded)
 		const _reqSaml = {
-			redirect_url: `${MDH_APP_PYTHON_SERVICE}/%23/dashboard/redirect&from_=SignedInfo`
+			redirect_url: decodeURI(encoded)
 		}
 		const _header = {
-
+			SignedInfoData: this.state.signatureReason
 		}
 		const samlLogin = await consumerSamlLogin(_reqSaml, _header);
 		console.log("samlLoginnnnnnn", samlLogin);
@@ -1144,9 +1139,9 @@ class ManualDataUpload extends Component {
 														<p>Signing</p>
 														<Select
 															placeholder='Select a reason'
-															value={signatureReason1}
+															value={signatureReason}
 															onChange={value =>
-																this.onChangeSelect(value, 'reason1')
+																this.onChangeSelect(value, 'reason')
 															}
 															style={{
 																width: '100%',
@@ -1299,9 +1294,9 @@ class ManualDataUpload extends Component {
 														<p>Signing</p>
 														<Select
 															placeholder='Select a reason'
-															value={signatureReason1}
+															value={signatureReason}
 															onChange={value =>
-																this.onChangeSelect(value, 'reason1')
+																this.onChangeSelect(value, 'reason')
 															}
 															style={{
 																width: '100%',
@@ -1527,9 +1522,9 @@ class ManualDataUpload extends Component {
 															<p>Signing</p>
 															<Select
 																placeholder='Select a reason'
-																value={signatureReason1}
+																value={signatureReason}
 																onChange={value =>
-																	this.onChangeSelect(value, 'reason1')
+																	this.onChangeSelect(value, 'reason')
 																}
 																style={{
 																	width: '100%',
