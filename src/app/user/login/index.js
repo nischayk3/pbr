@@ -102,7 +102,7 @@ const Login = () => {
 				localStorage.setItem("login_details", JSON.stringify(data));
 				localStorage.setItem("user", data.email_id.replaceAll("^\"|\"$", ""));
 				localStorage.setItem("username", data?.firstname ? data.firstname.replaceAll("^\"|\"$", "") : data.email_id.replaceAll("^\"|\"$", ""));
-				localStorage.setItem("loginwith", 'WITH_SAML')
+				localStorage.setItem("loginwith", 'WITHOUT_AD')
 
 				dispatch(showNotification("success", `Logged in as ${data.email_id}`));
 				if (isChecked) {
