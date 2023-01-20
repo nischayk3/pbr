@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 import {
 	hideLoader, showLoader, showNotification
 } from '../../../duck/actions/commonActions';
+import { sendLoginDetails } from '../../../duck/actions/loginAction';
 import { getSession } from '../../../services/loginService';
 
 export default function RedirectSAMLSign() {
@@ -27,7 +28,8 @@ export default function RedirectSAMLSign() {
 			setIsPublish(true);
 
 			let url = localStorage.getItem('redirectUrl')
-			history.push(url)
+			console.log("urlllllll", url);
+			history.push(`${url}&publish=True`)
 			// // console.log("urllllllllll", url);
 			// window.open(url + '&publish=True', '_self')
 			// window.location.reload()
