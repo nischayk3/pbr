@@ -42,8 +42,7 @@ const Signature = (props) => {
 	useEffect(() => {
 		const loginDetails = JSON.parse(localStorage.getItem("login_details"));
 		const status = localStorage.getItem("loginwith");
-		console.log("loginDetails", loginDetails);
-		console.log("status", status);
+
 		if
 			(status) {
 			setLoginStatus(status);
@@ -238,7 +237,7 @@ const Signature = (props) => {
 		const samlLogin = await consumerSamlLogin(_reqSaml);
 		if (samlLogin.Status == 200) {
 			window.open(`${window.location.origin}${BMS_APP_LOGIN_PASS}/saml-login-redirect`, '_self')
-			localStorage.setItem('redirectUrl', `${window.location.origin}/#${location.pathname}${location.search}`)
+			localStorage.setItem('redirectUrl', `${location.pathname}${location.search}`)
 		}
 	}
 
