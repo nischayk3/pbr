@@ -11,7 +11,7 @@ import {
 } from '@ant-design/icons';
 
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
-import { MDH_APP_PYTHON_SERVICE } from '../../../../constants/apiBaseUrl';
+import { BMS_APP_LOGIN_PASS, MDH_APP_PYTHON_SERVICE } from '../../../../constants/apiBaseUrl';
 import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
 import {
 	approvedData, cancelFileUpload, finalFileUpload, updateApprovedData, uploadFileApi
@@ -84,8 +84,10 @@ class ManualDataUpload extends Component {
 	componentDidMount = () => {
 		const loginDetails = JSON.parse(localStorage.getItem("login_details"));
 		const loginWith = localStorage.getItem("loginwith");
-		console.log("loginDetails", loginDetails);
-		console.log("loginWith", loginWith);
+		if (loginWith === "WITH_SAML") {
+			localStorage.setItem('isSamlLogin', false)
+		}
+
 		if (loginWith) {
 			this.setState({
 				loginStatus: loginWith,
@@ -97,6 +99,7 @@ class ManualDataUpload extends Component {
 			});
 		}
 	};
+
 
 	clearData = () => {
 		this.setState({
@@ -279,6 +282,7 @@ class ManualDataUpload extends Component {
 
 		this.setState(() => nextState);
 	};
+
 	cancelFileUploadService = () => {
 		let reqCancelParam = {
 			user_id: JSON.parse(localStorage.getItem('login_details')).email_id,
@@ -560,6 +564,7 @@ class ManualDataUpload extends Component {
 			isModalVisibleSignature1: true,
 		});
 	};
+
 	showCancelModel = () => {
 		this.setState({
 			isModalCancelVisible: true,
@@ -658,23 +663,21 @@ class ManualDataUpload extends Component {
 		}
 	}
 
-
 	samlRedirect = async () => {
-		// if (localStorage.getItem("login_details")) {
-		// 	history.push("/dashboard/workspace");
-		// 	dispatch(showNotification("success", "Logged In Success"));
-		// } else {
-		// 	window.open(`${window.location.origin}${BMS_APP_LOGIN_PASS}/saml-login?redirect_url=${MDH_APP_PYTHON_SERVICE}/%23/dashboard/redirect&from_=UI`, '_self');
-		// 	localStorage.setItem("loginwith", 'WITH_SAML')
-		// }
-		const _reqSaml = {
-			redirect_url: `${MDH_APP_PYTHON_SERVICE}/%23/dashboard/redirect&from_=SignedInfo`
-		}
-		const _header = {
+		const url = `${MDH_APP_PYTHON_SERVICE}/#/dashboard/saml-redirect`
+		const encoded = encodeURI(url);
 
+		const _reqSaml = {
+			SignedInfoData: {
+				Reason: this.state.signatureReason,
+			},
+			redirect_url: decodeURI(encoded)
 		}
-		const samlLogin = await consumerSamlLogin(_reqSaml, _header);
-		console.log("samlLoginnnnnnn", samlLogin);
+
+		const samlLogin = await consumerSamlLogin(_reqSaml);
+		if (samlLogin.Status == 200) {
+			window.open(`${window.location.origin}${BMS_APP_LOGIN_PASS}/saml-login-redirect`, '_self')
+		}
 	}
 
 
@@ -735,9 +738,12 @@ class ManualDataUpload extends Component {
 			},
 		};
 
+
+
 		return (
 			<div className='custom-wrapper'>
 				<BreadCrumbWrapper />
+
 				<div className='custom-content-layout'>
 					<div className='custom-overview-block'>
 						<Steps
@@ -1144,9 +1150,9 @@ class ManualDataUpload extends Component {
 														<p>Signing</p>
 														<Select
 															placeholder='Select a reason'
-															value={signatureReason1}
+															value={signatureReason}
 															onChange={value =>
-																this.onChangeSelect(value, 'reason1')
+																this.onChangeSelect(value, 'reason')
 															}
 															style={{
 																width: '100%',
@@ -1299,9 +1305,9 @@ class ManualDataUpload extends Component {
 														<p>Signing</p>
 														<Select
 															placeholder='Select a reason'
-															value={signatureReason1}
+															value={signatureReason}
 															onChange={value =>
-																this.onChangeSelect(value, 'reason1')
+																this.onChangeSelect(value, 'reason')
 															}
 															style={{
 																width: '100%',
@@ -1527,9 +1533,9 @@ class ManualDataUpload extends Component {
 															<p>Signing</p>
 															<Select
 																placeholder='Select a reason'
-																value={signatureReason1}
+																value={signatureReason}
 																onChange={value =>
-																	this.onChangeSelect(value, 'reason1')
+																	this.onChangeSelect(value, 'reason')
 																}
 																style={{
 																	width: '100%',
@@ -1668,9 +1674,14 @@ const mapDispatchToProps = {
 	showNotification,
 	hideLoader,
 	showLoader
-
 };
 
-ManualDataUpload = connect(null, mapDispatchToProps)(ManualDataUpload);
+const mapStateToProps = (state) => {
+	return {
+		samlLoginData: state.commonReducer.samlLogin
+	}
+}
+
+ManualDataUpload = connect(mapStateToProps, mapDispatchToProps)(ManualDataUpload);
 
 export default ManualDataUpload;
