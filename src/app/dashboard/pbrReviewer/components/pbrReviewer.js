@@ -159,16 +159,13 @@ function PbrReviewer() {
 			let res = await updateApprove(req)
 
 			if (res.Status == "202") {
+				setArr([])
 				dispatch(hideLoader());
 				dispatch(showNotification("success", "Approved Successfully")),
-					cardTableData()
+				cardTableData()
 				getTemplateID()
 				chart();
 				chart1();
-
-				// setTimeout(() => window.location.reload(),
-				//   1000
-				// );
 			} else {
 				dispatch(hideLoader());
 				dispatch(showNotification("error", res?.Message))

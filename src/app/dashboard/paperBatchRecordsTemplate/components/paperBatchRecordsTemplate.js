@@ -37,7 +37,7 @@ import {
 } from '../../../../duck/actions/commonActions';
 import { loadTemplateInfo } from '../../../../duck/actions/pbrAction';
 import {
-    findParameter, getBoundingBoxData, getPbrTemplateData, savePbrTemplate, workflowTemplateReject
+    findParameter, getBoundingBoxData, getPbrTemplateData, savePbrTemplate, workflowTemplateReject,timeZone
 } from '../../../../services/pbrService';
 import ChangeCoordiantes from '../components/rightSidePanel/changeCoordiantes';
 import ParameterList from '../components/rightSidePanel/parameterList';
@@ -226,6 +226,7 @@ function PaperBatchRecordsTemplate() {
     const [showTime, setShowTime] = useState(false);
     const [showDate, setShowDate] = useState(false);
     const [pageIdDropdownValues, setPageIdDropdownValues] = useState([])
+    const [fileTimezoneData, setFileTimezoneData] = useState('')
     const toggleLeftCollapsed = () => {
         setLeftPanelCollapsed(!leftPanelCollapsed);
         setRightPanelCollapsed(!rightPanelCollapsed);
@@ -720,16 +721,18 @@ function PaperBatchRecordsTemplate() {
             template_name: params?.tempalteName,
             status: templateStatus,
             template_id: params?.temp_disp_id ? params?.temp_disp_id : templateId,
-            version: templateVersion ? templateVersion : "1"
+            version: templateVersion ? templateVersion : "1",
+            time_zone:fileTimezoneData
         }
         templateForm.setFieldsValue(template)
         setTemplateFormData(template)
-    }, [matBatch, templateId, templateStatus, templateVersion])
+    }, [matBatch, templateId, templateStatus, templateVersion,fileTimezoneData])
 
 
     useEffect(() => {
 
         getImage()
+        getTimeZone()
         // let loadData =  getIdTemplateData()
         const params = QueryString.parse(location?.search)
         const getIdTemplateData = async () => {
@@ -971,6 +974,26 @@ function PaperBatchRecordsTemplate() {
             }
         }
     }, [imageWidth, imageHeight]);
+
+    const getTimeZone = async () => {
+        try{
+            let req = {
+                filename :params?.file,
+                batchNum :matBatch?.batch,
+                siteCode :matBatch?.site,
+                productNum : matBatch?.material_num
+            }
+            let res = await timeZone(req)
+            if(res["status-code"]===200){
+                setFileTimezoneData(res.Data)
+            }else{
+                dispatch(showNotification('error', res.Message))
+            }
+            
+        }catch (err){
+            dispatch(showNotification('error', err))
+        }
+    }
 
     /* istanbul ignore next */
     const clicked = (area) => {
@@ -2109,6 +2132,14 @@ function PaperBatchRecordsTemplate() {
                                         <Form.Item
                                             name='version'
                                             label="Version"
+                                            style={{ marginBottom: 10 }}
+                                        >
+                                            <Input disabled />
+                                            {/* <Input/> */}
+                                        </Form.Item>
+                                        <Form.Item
+                                            name='time_zone'
+                                            label="Time Zone"
                                             style={{ marginBottom: 10 }}
                                         >
                                             <Input disabled />
