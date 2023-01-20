@@ -21,7 +21,7 @@ export default function RedirectSAMLSign() {
 			localStorage.setItem('login_details', JSON.stringify(data))
 			localStorage.setItem('user', data.email_id.replaceAll('^"|"$', ''));
 			localStorage.setItem('username', data.firstname ? data.firstname.replaceAll('^"|"$', '') : data.email_id.replaceAll('^"|"$', ''));
-			localStorage.setItem('isSamlLogin', true)
+
 			dispatch(showNotification('success', `Logined As ${data.email_id}`))
 			dispatch(hideLoader())
 			setIsPublish(true);
@@ -42,7 +42,7 @@ export default function RedirectSAMLSign() {
 
 	useEffect(() => {
 		GetSession()
-	})
+	}, [])
 	return (
 		<div>
 			<Result
