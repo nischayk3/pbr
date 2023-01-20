@@ -28,7 +28,7 @@ export default function RedirectSAMLSign() {
 
 			let url = localStorage.getItem('redirectUrl')
 			console.log("urlllllll", url);
-			history.push(`${url}&publish=True`)
+			history.push(`${url}`)
 			// // console.log("urllllllllll", url);
 			// window.open(url + '&publish=True', '_self')
 			// window.location.reload()
