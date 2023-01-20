@@ -230,7 +230,7 @@ const Signature = (props) => {
 
 		const _reqSaml = {
 			SignedInfoData: {
-				Reason: "I am approver"
+				Reason: reason
 			},
 			redirect_url: decodeURI(encoded)
 		}
@@ -238,6 +238,7 @@ const Signature = (props) => {
 		const samlLogin = await consumerSamlLogin(_reqSaml);
 		if (samlLogin.Status == 200) {
 			window.open(`${window.location.origin}${BMS_APP_LOGIN_PASS}/saml-login-redirect`, '_self')
+			localStorage.setItem('redirectUrl', `${window.location.origin}/#/${location.pathname}${location.search}`)
 		}
 	}
 
