@@ -25,9 +25,12 @@ export default function RedirectSAMLSign() {
 			dispatch(showNotification('success', `Logined As ${data.email_id}`))
 			dispatch(hideLoader())
 			setIsPublish(true);
+
 			let url = localStorage.getItem('redirectUrl')
-			// console.log("urllllllllll", url);
-			window.open(url + '&publish=True', '_self')
+			history.push(url)
+			// // console.log("urllllllllll", url);
+			// window.open(url + '&publish=True', '_self')
+			// window.location.reload()
 		}
 
 		else {
