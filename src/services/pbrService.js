@@ -418,3 +418,23 @@ export const workflowTemplateData = (_queryParam) => {
 		}
 	);
 };
+
+export const timeZone = (_queryParam) => {
+	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	const request_headers = {
+		'x-access-token': login_response?.token ? login_response?.token : '',
+		'resource-name': 'PBR'
+	};
+	return Service.get(
+		MDH_APP_PYTHON_SERVICE + "/pbr/udh/get_file_timezone",
+		_queryParam,
+		request_headers
+	).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};
