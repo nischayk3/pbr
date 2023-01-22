@@ -17,7 +17,7 @@ export default function RedirectSAMLSign() {
 		GetSession()
 	}, [])
 
-	const handleConfirm = async ({ parameter, screenName, appType, dispId, version, status, resourceDispId, resourceVersion }) => {
+	const handleConfirm = async ({ reason, parameter, screenName, appType, dispId, version, status, resourceDispId, resourceVersion }) => {
 		var today = new Date();
 		var h = today.getHours();
 		var m = today.getMinutes();
@@ -129,11 +129,8 @@ export default function RedirectSAMLSign() {
 			localStorage.setItem('username', data.firstname ? data.firstname.replaceAll('^"|"$', '') : data.email_id.replaceAll('^"|"$', ''));
 			dispatch(showNotification('success', `Logined As ${data.email_id}`))
 			dispatch(hideLoader())
-
 			let url = localStorage.getItem('redirectUrl')
-
-			history.push(`${url}`)
-			handleConfirm(signedInfoData?.parameter, signedInfoData?.screenName, signedInfoData?.appType, signedInfoData?.dispId, signedInfoData?.version, signedInfoData?.status, signedInfoData?.resourceDispId, signedInfoData?.resourceVersion)
+			handleConfirm(signedInfoData?.Reason, signedInfoData?.parameter, signedInfoData?.screenName, signedInfoData?.appType, signedInfoData?.dispId, signedInfoData?.version, signedInfoData?.status, signedInfoData?.resourceDispId, signedInfoData?.resourceVersion)
 			// // console.log("urllllllllll", url);
 			// window.open(url + '&publish=True', '_self')
 			// window.location.reload()
