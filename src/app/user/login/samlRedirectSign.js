@@ -18,6 +18,7 @@ export default function RedirectSAMLSign() {
 	}, [])
 
 	const handleConfirm = async ({ reason, parameter, screenName, appType, dispId, version, status, resourceDispId, resourceVersion }) => {
+		console.table("table", reason, parameter, screenName, appType, dispId, version, status, resourceDispId, resourceVersion);
 		var today = new Date();
 		var h = today.getHours();
 		var m = today.getMinutes();
@@ -29,16 +30,15 @@ export default function RedirectSAMLSign() {
 		var year = date.getFullYear();
 		let date_today = year + "-" + month + "-" + day;
 		let req = {};
-
+		let login_response = JSON.parse(localStorage.getItem("login_details"));
 		req["date"] = date_today;
 		req["timestamp"] = time_today;
 		req["reason"] = reason;
-		req["user_id"] = localStorage.getItem('username');
-		// eslint-disable-next-line react/prop-types
+		req["user_id"] = login_response["email_id"] ? login_response["email_id"] : "";
 		req["screen"] = screenName;
-		req["first_name"] = "first_name";
-		req["last_name"] = "last_name";
-		let login_response = JSON.parse(localStorage.getItem("login_details"));
+		req["first_name"] = login_response["firstname"] ? login_response["firstname"] : "";
+		req["last_name"] = login_response["lastname"] ? login_response["lastname"] : "";
+		console.log("request111111111", req);
 		let headers = {
 			"content-type": "application/json",
 			"resource-name":
@@ -85,7 +85,8 @@ export default function RedirectSAMLSign() {
 				// if (props.eSignId) {
 				// 	props.eSignId(esign_response.primary_id);
 				// }
-
+				console.log("request222222222", req1);
+				console.log("request3333333333", reqs);
 				let publish_response = {};
 				if (appType == "ELOGBOOK-READING") {
 					publish_response = await publishEvent(reqs, headers);
