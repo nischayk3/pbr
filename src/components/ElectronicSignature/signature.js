@@ -222,14 +222,21 @@ const Signature = (props) => {
 		}
 	};
 
-
 	const samlRedirect = async () => {
 		const url = `${MDH_APP_PYTHON_SERVICE}/#/dashboard/saml-redirect`
 		const encoded = encodeURI(url);
 
 		const _reqSaml = {
 			SignedInfoData: {
-				Reason: reason
+				Reason: reason,
+				screenName: props.screenName,
+				appType: props.appType,
+				dispId: props.dispId,
+				version: props.version,
+				resourceDispId: params.id,
+				resourceVersion: params.version,
+				status: props.status,
+				parameter: params
 			},
 			redirect_url: decodeURI(encoded)
 		}
