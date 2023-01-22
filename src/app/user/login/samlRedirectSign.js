@@ -57,10 +57,6 @@ export default function RedirectSAMLSign() {
 
 			if (esign_response.statuscode == 200) {
 				dispatch(showNotification("success", esign_response.message));
-				setReason("");
-				setPassword("");
-				handleClose();
-				setIsAuth("");
 				let reqs = {};
 				let req1 = {};
 				let user_details = JSON.parse(localStorage.getItem("login_details"));
@@ -76,7 +72,7 @@ export default function RedirectSAMLSign() {
 				req1["esignId"] = esign_response.primary_id.toString();
 				req1["resourceDispId"] = resourceDispId;
 
-				if (resourceVersion != "undefined") {
+				if (resourceVersion != undefined) {
 					req1["resourceVersion"] = parseInt(resourceVersion);
 				}
 				req1["status"] = status;
@@ -99,10 +95,10 @@ export default function RedirectSAMLSign() {
 
 				if (publish_response.status_code == 200) {
 					dispatch(showNotification("success", publish_response.msg));
-					props.PublishResponse(publish_response);
+					//props.PublishResponse(publish_response);
 				} else if (publish_response.Status == 200) {
 					dispatch(showNotification("success", publish_response.Message));
-					props.PublishResponse(publish_response);
+					//props.PublishResponse(publish_response);
 				} else {
 					dispatch(showNotification("error", publish_response.msg));
 				}
