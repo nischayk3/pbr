@@ -123,7 +123,7 @@ export default function RedirectSAMLSign() {
 		if (res.Status === 200) {
 			let data = res['Data'];
 			let signedInfoData = res['SignedInfo'];
-			console.log("dataaaaaaaa", data);
+			console.log("signedInfoData", signedInfoData, signedInfoData?.Reason);
 			dispatch(sendLoginDetails(data))
 			localStorage.setItem('login_details', JSON.stringify(data))
 			localStorage.setItem('user', data.email_id.replaceAll('^"|"$', ''));
@@ -131,7 +131,7 @@ export default function RedirectSAMLSign() {
 			dispatch(showNotification('success', `Logined As ${data.email_id}`))
 			dispatch(hideLoader())
 			let url = localStorage.getItem('redirectUrl')
-			handleConfirm(signedInfoData?.Reason, signedInfoData?.parameter, signedInfoData?.screenName, signedInfoData?.appType, signedInfoData?.dispId, signedInfoData?.version, signedInfoData?.status, signedInfoData?.resourceDispId, signedInfoData?.resourceVersion)
+			handleConfirm(signedInfoData.Reason, signedInfoData.parameter, signedInfoData.screenName, signedInfoData.appType, signedInfoData.dispId, signedInfoData.version, signedInfoData.status, signedInfoData.resourceDispId, signedInfoData.resourceVersion)
 			// // console.log("urllllllllll", url);
 			// window.open(url + '&publish=True', '_self')
 			// window.location.reload()
