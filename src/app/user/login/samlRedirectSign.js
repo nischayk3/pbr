@@ -129,10 +129,7 @@ export default function RedirectSAMLSign() {
 			localStorage.setItem('username', data.firstname ? data.firstname.replaceAll('^"|"$', '') : data.email_id.replaceAll('^"|"$', ''));
 			dispatch(showNotification('success', `Logined As ${data.email_id}`))
 			dispatch(hideLoader())
-
 			let url = localStorage.getItem('redirectUrl')
-
-			history.push(`${url}`)
 			handleConfirm(signedInfoData?.parameter, signedInfoData?.screenName, signedInfoData?.appType, signedInfoData?.dispId, signedInfoData?.version, signedInfoData?.status, signedInfoData?.resourceDispId, signedInfoData?.resourceVersion)
 			// // console.log("urllllllllll", url);
 			// window.open(url + '&publish=True', '_self')
