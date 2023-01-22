@@ -33,7 +33,7 @@ export default function RedirectSAMLSign() {
 		req["date"] = date_today;
 		req["timestamp"] = time_today;
 		req["reason"] = reason;
-		req["user_id"] = username;
+		req["user_id"] = localStorage.getItem('username');
 		// eslint-disable-next-line react/prop-types
 		req["screen"] = screenName;
 		req["first_name"] = "first_name";
