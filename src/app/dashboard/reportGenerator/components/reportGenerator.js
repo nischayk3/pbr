@@ -31,60 +31,6 @@ import ReportGeneratorForm from '../components/reportGeneratorForm';
 
 const { Panel } = Collapse;
 
-// const columns = [
-// 	{
-// 		title: 'Report ID',
-// 		dataIndex: 'rep_disp_id',
-// 		key: 'rep_disp_id',
-// 		render: (text, record) => {
-// 			return {
-// 				props: {
-// 					style: { background: record.color },
-// 				},
-// 				children: <div>{text}</div>,
-// 			};
-// 		},
-// 	},
-// 	{
-// 		title: 'Report Name',
-// 		dataIndex: 'rep_name',
-// 		key: 'rep_name',
-// 		render: (text, record) => {
-// 			return {
-// 				props: {
-// 					style: { background: record.color },
-// 				},
-// 				children: <div>{text}</div>,
-// 			};
-// 		},
-// 	},
-// 	{
-// 		title: 'Report Status',
-// 		dataIndex: 'rep_status',
-// 		key: 'rep_status',
-// 		render: (text, record) => {
-// 			return {
-// 				props: {
-// 					style: { background: record.color },
-// 				},
-// 				children: <div>{text}</div>,
-// 			};
-// 		},
-// 	},
-// 	{
-// 		title: 'Created By',
-// 		dataIndex: 'created_by',
-// 		key: 'created_by',
-// 		render: (text, record) => {
-// 			return {
-// 				props: {
-// 					style: { background: record.color },
-// 				},
-// 				children: <div>{text}</div>,
-// 			};
-// 		},
-// 	},
-// ];
 
 function ReportGenerator(props) {
 	const repotData = useSelector(
@@ -98,16 +44,7 @@ function ReportGenerator(props) {
 		state => state.reportDesignerReducer.genLoad
 	);
 
-
-	// function onChange(checkedValues, i) {
-	// 	update_object(checkedValues, i);
-	// }
-
-	// const menu = (
-	// 	<Menu>
-	// 		<Menu.Item>Save As</Menu.Item>
-	// 	</Menu>
-	// );
+	const esignPublishRes = useSelector((state) => state.commonReducer.publishRes)
 
 	const handleCancel = () => {
 		setAlertVisible(false);
@@ -120,13 +57,10 @@ function ReportGenerator(props) {
 	const [isSaved, setIsSaved] = useState(false);
 	const [reportId, setReportId] = useState('');
 	const [isPublish, setIsPublish] = useState(false);
-	// const [publishResponse, setPublishResponse] = useState({});
 	const [status, setStatus] = useState('')
 	const [reportName, setReportName] = useState('');
 	const [reportStatus, setReportStatus] = useState('');
 	const [approveReject, setApproveReject] = useState('')
-
-	// const [reportList, setReportList] = useState('');
 	const [chartLayout, setChartLayout] = useState({});
 	const selectedDays = {
 		Sunday: false,
@@ -138,41 +72,18 @@ function ReportGenerator(props) {
 		Saturday: false,
 	};
 	const [alertVisible, setAlertVisible] = useState(false);
-	// const [ sectionCharts,setSectionCharts] =
+
 	const dispatch = useDispatch();
 
 	useEffect(() => {
 		unloadTest(ReportData);
 	}, [ReportData]);
 
-	// useEffect(() => {
-	// 	getReportList();
-	// }, []);
+	useEffect(() => {
+		setStatus(esignPublishRes?.rep_stauts);
+	}, [esignPublishRes])
 
-	// const getReportList = () => {
-	// 	let req = { rep_status: 'all' };
-	// 	getReports(req).then(res => {
-	// 		setReportList(res['Data']);
-	// 	});
-	// };
-
-	//const mapReportList = reportList && reportList.length > 0 ? reportList : [];
-
-	// const createArraObj = arr => {
-	// 	let res = [];
-	// 	arr.map(i => {
-	// 		let chart_objects = {};
-	// 		chart_objects['chart'] = i;
-	// 		chart_objects['excursion'] = false;
-	// 		chart_objects['violation'] = false;
-	// 		chart_objects['parameter'] = false;
-	// 		chart_objects['exclusion'] = false;
-	// 		res.push(chart_objects);
-	// 	});
-	// 	return res;
-	// };
 	const PublishResponse = (res) => {
-		// setPublishResponse(res)
 		setStatus(res.rep_stauts)
 	}
 	const handleClose = () => {

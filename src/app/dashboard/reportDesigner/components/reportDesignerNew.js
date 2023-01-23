@@ -33,24 +33,27 @@ import ReportDesignerForm from './reportDesignerForm/reportDesignerForm';
 import './stylesNew.scss';
 
 
-function ReportDesignerNew(props) {
+const ReportDesignerNew = () => {
+	const dispatch = useDispatch();
+	const [form] = Form.useForm();
+	const location = useLocation();
+	const history = useHistory();
+
+	const loading = false;
+	const isNew = true;
 
 	const loadData = useSelector(
 		state => state.reportDesignerReducer.reportLoad
 	);
-	const location = useLocation()
 	const chart_deleted = useSelector(
 		state => state.reportDesignerReducer.layout
 	);
-	const history = useHistory();
 
-	const loading = false;
 	const [isLoad, setIsLoad] = useState(false);
 	const [isSave, setIsSave] = useState(false);
 	const [isSaved, setIsSaved] = useState(false);
 	const [issaved, setisSaved] = useState(false);
 	const [reportName, setReportName] = useState('');
-	const isNew = true;
 	const [viewId, setViewId] = useState('');
 	const [reportId, setReportId] = useState('');
 	const [viewVersion, setViewVersion] = useState('');
@@ -71,10 +74,6 @@ function ReportDesignerNew(props) {
 	const [sectionAddedCharts, setSectionAddedCharts] = useState({})
 	const [chartsLayout, setChartsLayout] = useState({})
 	const [currentSection, setCurrentSection] = useState()
-	// const [sections, setSections] = useState({})
-
-
-	const [form] = Form.useForm();
 
 	const menu = (
 		<Menu>
@@ -86,8 +85,9 @@ function ReportDesignerNew(props) {
 		</Menu>
 	);
 
-
-	const dispatch = useDispatch();
+	useEffect(() => {
+		setStatus(esignPublishRes?.rep_stauts);
+	}, [esignPublishRes]);
 
 	useEffect(() => {
 		const params = queryString.parse(location.search);
@@ -110,6 +110,7 @@ function ReportDesignerNew(props) {
 		}
 	}, []
 	);
+
 	useEffect(() => { form.resetFields() }, [formData]);
 
 	const unloadUrl = async (params) => {
@@ -144,9 +145,11 @@ function ReportDesignerNew(props) {
 		setSelectedSectionCharts(selectedSectionCharts)
 		setCharts(addedCharts)
 	}
+
 	const setSectionAddKey = (data) => {
 		setSectionKeys(data)
 	}
+
 	const setSectionAddCharts = (data) => {
 		setSectionAddedCharts(data)
 	}
@@ -154,7 +157,6 @@ function ReportDesignerNew(props) {
 	const deleteSection = (chartsLayouts) => {
 		setChartsLayout(chartsLayouts)
 	}
-
 
 	const checkChanges = (reportData, mainJson, save_Type) => {
 		let layout_change = false
@@ -191,16 +193,9 @@ function ReportDesignerNew(props) {
 		}
 		if (!layout_change && !new_charts_added)
 			return [true, json_data]
-		// if (!layout_change && !new_charts_added)
-		// 	return [false, {}]
-
-		// else
-		// 	return false
 	};
 
 	const mapViewList = viewList && viewList.length > 0 ? viewList : []
-
-
 
 	// Get form values
 	const handleValuesChange = (changedValues, values) => {
@@ -217,7 +212,6 @@ function ReportDesignerNew(props) {
 		setStatus(res.rep_stauts)
 	}
 
-
 	//Get view table data
 	const getViewsList = () => {
 		let req = {};
@@ -225,8 +219,6 @@ function ReportDesignerNew(props) {
 			setViewList(res['Data']);
 		});
 	};
-
-
 
 	//Get charts based on viewId-version
 	const getChartsList = (version) => {
@@ -295,8 +287,6 @@ function ReportDesignerNew(props) {
 
 		return arr;
 	};
-
-
 
 	// Saving the json
 	const PrepareJson = (formData, saveType) => {

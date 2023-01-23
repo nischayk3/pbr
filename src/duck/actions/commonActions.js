@@ -1,8 +1,7 @@
 import {
 	AUTHENTICATED,
 	HIDE_LOADING,
-	HIDE_NOTIFICATION, IS_SAML_SIGN, NETWORK_ERROR,
-	SHOW_LOADING,
+	HIDE_NOTIFICATION, NETWORK_ERROR, PUBLISH_RESPONSE, SHOW_LOADING,
 	SHOW_NOTIFICATION
 } from "../types/types";
 
@@ -30,8 +29,8 @@ export const checkNetworkError = (payload) => ({
 	payload,
 });
 
-export const isSamlLogin = (payload) => ({
-	type: IS_SAML_SIGN,
+export const pushPublishResponse = (payload) => ({
+	type: PUBLISH_RESPONSE,
 	payload,
 })
 
