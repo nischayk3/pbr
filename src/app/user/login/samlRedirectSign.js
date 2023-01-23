@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import {
-	hideLoader, showLoader, showNotification
+	hideLoader, pushPublishResponse, showLoader, showNotification
 } from '../../../duck/actions/commonActions';
 import { sendLoginDetails } from '../../../duck/actions/loginAction';
 import { eSign, publishEvent } from '../../../services/electronicSignatureService';
@@ -95,10 +95,10 @@ export default function RedirectSAMLSign() {
 
 				if (publish_response.status_code == 200) {
 					dispatch(showNotification("success", publish_response.msg));
-					//props.PublishResponse(publish_response);
+					dispatch(pushPublishResponse(publish_response));
 				} else if (publish_response.Status == 200) {
 					dispatch(showNotification("success", publish_response.Message));
-					//props.PublishResponse(publish_response);
+					dispatch(pushPublishResponse(publish_response));
 				} else {
 					dispatch(showNotification("error", publish_response.msg));
 				}
