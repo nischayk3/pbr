@@ -109,7 +109,9 @@ const View = () => {
 	}, []);
 
 	useEffect(() => {
-		setViewStatus(esignPublishRes?.rep_stauts);
+		if (esignPublishRes?.status_code === 200) {
+			setViewStatus(esignPublishRes?.rep_stauts);
+		}
 	}, [esignPublishRes]);
 
 	//Moleculelist api call

@@ -239,7 +239,9 @@ function PaperBatchRecordsTemplate() {
 	};
 
 	useEffect(() => {
-		setTemplateStatus(esignPublishRes.rep_stauts);
+		if (esignPublishRes?.status_code === 200) {
+			setTemplateStatus(esignPublishRes.rep_stauts);
+		}
 	}, [esignPublishRes]);
 
 	/* istanbul ignore next */

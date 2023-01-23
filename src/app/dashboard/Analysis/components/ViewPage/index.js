@@ -60,7 +60,9 @@ const ViewPageAnalysis = () => {
 	const esignPublishRes = useSelector((state) => state.commonReducer.publishRes);
 
 	useEffect(() => {
-		setPublishResponse(esignPublishRes);
+		if (esignPublishRes?.status_code === 200) {
+			setPublishResponse(esignPublishRes);
+		}
 	}, [esignPublishRes]);
 
 	const menu = (
