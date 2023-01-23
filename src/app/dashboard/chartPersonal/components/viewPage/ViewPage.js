@@ -46,6 +46,7 @@ const ViewPage = () => {
 	const { id } = useParams();
 	const history = useHistory();
 	const esignPublishRes = useSelector((state) => state.commonReducer.publishRes)
+
 	//state for chart json data
 	const [postChartData, setPostChartData] = useState({});
 	const chartDetails = useRef({ chartId: "", chartVersion: "" });
@@ -200,8 +201,10 @@ const ViewPage = () => {
 	}, [id]);
 
 	useEffect(() => {
-		setPublishResponse(esignPublishRes);
-		getChart();
+		if (esignPublishRes?.status_code === 200) {
+			setPublishResponse(esignPublishRes);
+			getChart();
+		}
 	}, [esignPublishRes]);
 
 

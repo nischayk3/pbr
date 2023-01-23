@@ -80,7 +80,9 @@ function ReportGenerator(props) {
 	}, [ReportData]);
 
 	useEffect(() => {
-		setStatus(esignPublishRes?.rep_stauts);
+		if (esignPublishRes?.status_code === 200) {
+			setStatus(esignPublishRes?.rep_stauts);
+		}
 	}, [esignPublishRes])
 
 	const PublishResponse = (res) => {

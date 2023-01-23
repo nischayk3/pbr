@@ -5,7 +5,6 @@ import { useHistory } from 'react-router-dom';
 import {
 	hideLoader, pushPublishResponse, showLoader, showNotification
 } from '../../../duck/actions/commonActions';
-import { sendLoginDetails } from '../../../duck/actions/loginAction';
 import { eSign, publishEvent } from '../../../services/electronicSignatureService';
 import { getSession } from '../../../services/loginService';
 
@@ -18,7 +17,7 @@ export default function RedirectSAMLSign() {
 	}, [])
 
 	const handleConfirm = async (reason, parameter, screenName, appType, dispId, version, status, resourceDispId, resourceVersion) => {
-		console.table("table", reason, parameter, screenName, appType, dispId, version, status, resourceDispId, resourceVersion);
+
 		var today = new Date();
 		var h = today.getHours();
 		var m = today.getMinutes();
@@ -81,8 +80,7 @@ export default function RedirectSAMLSign() {
 				// if (props.eSignId) {
 				// 	props.eSignId(esign_response.primary_id);
 				// }
-				console.log("request222222222", req1);
-				console.log("request3333333333", reqs);
+
 				let publish_response = {};
 				if (appType == "ELOGBOOK-READING") {
 					publish_response = await publishEvent(reqs, headers);
@@ -119,18 +117,11 @@ export default function RedirectSAMLSign() {
 		if (res.Status === 200) {
 			let data = res['Data'];
 			let signedInfoData = res['SignedInfo'];
-			console.log("signedInfoData", signedInfoData, signedInfoData?.Reason);
-			dispatch(sendLoginDetails(data))
-			localStorage.setItem('login_details', JSON.stringify(data))
-			localStorage.setItem('user', data.email_id.replaceAll('^"|"$', ''));
-			localStorage.setItem('username', data.firstname ? data.firstname.replaceAll('^"|"$', '') : data.email_id.replaceAll('^"|"$', ''));
 			dispatch(showNotification('success', `Logined As ${data.email_id}`))
 			dispatch(hideLoader())
 			let url = localStorage.getItem('redirectUrl')
 			handleConfirm(signedInfoData?.Reason, signedInfoData?.parameter, signedInfoData?.screenName, signedInfoData?.appType, signedInfoData?.dispId, signedInfoData?.version, signedInfoData?.status, signedInfoData?.resourceDispId, signedInfoData?.resourceVersion)
-			// // console.log("urllllllllll", url);
 			// window.open(url + '&publish=True', '_self')
-			// window.location.reload()
 			history.push(`${url}`)
 		}
 

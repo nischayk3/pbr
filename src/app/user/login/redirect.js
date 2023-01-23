@@ -19,8 +19,8 @@ export default function Redirect() {
 		if (data) {
 			dispatch(sendLoginDetails(data));
 			localStorage.setItem('login_details', JSON.stringify(data));
-			localStorage.setItem('user', data.email_id.replaceAll('^"|"$', ''));
-			localStorage.setItem('username', data?.firstname ? data.firstname.replaceAll('^"|"$', '') : data.email_id.replaceAll('^"|"$', ''));
+			localStorage.setItem('user', data.user_id);
+			localStorage.setItem('username', data.firstname ? data.firstname.replaceAll('^"|"$', '') : data.email_id.replaceAll('^"|"$', ''));
 			dispatch(showNotification('success', `Logged in as ${data.email_id}`));
 			history.push('/dashboard/workspace');
 			//temporary fix
