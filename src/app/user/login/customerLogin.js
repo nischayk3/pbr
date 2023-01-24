@@ -6,10 +6,6 @@ import './login.scss';
 const CustomerLogin = () => {
 	const [password, setPassword] = useState("");
 	const [username, setUsername] = useState("");
-	console.log("customer login");
-
-
-
 
 	return (
 		<div className="p-28">

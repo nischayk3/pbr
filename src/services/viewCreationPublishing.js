@@ -146,3 +146,18 @@ export const filterMolequles = (_queryParam) => {
 		}
 	);
 };
+
+export const viewDownload = (_queryParam) => {
+	return Service.get(
+		BMS_APP_PYTHON_SERVICE + "/view-download",
+		_queryParam,
+		request_headers
+	).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};
