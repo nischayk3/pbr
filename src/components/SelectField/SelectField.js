@@ -6,7 +6,7 @@ const SelectField = (props) => {
 
 	function capitalizeFirstLetter(string) {
 		if (typeof(string) !== 'number') {
-			return string.charAt(0).toUpperCase() + string.slice(1).replace("_" , '');	
+			return string?.charAt(0)?.toUpperCase() + string?.slice(1)?.replace("_" , '');	
 		}
 		return string;
 	  }
