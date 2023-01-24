@@ -5,10 +5,11 @@
  * @Last Modified - 13 Jan, 2023
  * @Last Changed By - Dinesh Kumar
  */
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Button, Input, List, Switch, Table, Tag } from 'antd';
+import { DeleteOutlined, EditOutlined, SearchOutlined } from '@ant-design/icons';
+import { Button, Empty, Input, Space, Switch, Table, Tag } from 'antd';
 import { dispatch } from 'd3';
 import React, { useEffect, useState } from 'react';
+import Highlighter from 'react-highlight-words';
 import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
 import { getResource } from '../../../../services/userRolesAndAccessService';
 import Resource from './Resource';
@@ -16,57 +17,143 @@ import Resource from './Resource';
 const Roles = () => {
 	const [isCreateRole, setIsCreateRole] = useState(false);
 	const [isVisible, setIsVisible] = useState(false);
+	const [allRoles, setAllRoles] = useState([]);
+	const [roleName, setRoleName] = useState("");
+	const [roleDesc, setRoleDesc] = useState("");
+	const [resourceCount, setResourceCount] = useState("0");
+	const [resourceDetails, setResourceDetails] = useState([]);
+	const [roleDataAccess, setRoleDataAccess] = useState([]);
+	const [isRoleDetailsAvailable, setIsRoleDetailsAvailable] = useState(false);
+	const [searchedColumn, setSearchedColumn] = useState('');
+
 
 	useEffect(() => {
 		const _req = {
 			// role_name: "",
 			active_status: true
 		}
-		getResourceData(_req)
+		getRolesData(_req)
 	}, [])
 
-	const data = [
-		'Chart manager',
-		'Default',
-		'Old approver',
-		'View creator',
-		'View',
-	];
-
-	const listHeader = (
-		<div className="roles-head">
-			<p>Role</p>
-			{isCreateRole && (
-				<div className="create-role">
-					<Input placeholder="Enter name of new role" />
-					<Button type="link" >
-						Save
-					</Button>
+	/* istanbul ignore next */
+	function getColumnSearchProps(dataIndex) {
+		return {
+			filterDropdown: ({
+				setSelectedKeys,
+				selectedKeys,
+				confirm,
+				clearFilters,
+			}) => (
+				<div style={{ padding: 8 }}>
+					<Input
+						placeholder={`Search ${dataIndex}`}
+						value={selectedKeys[0]}
+						onChange={(e) =>
+							setSelectedKeys(
+								e.target.value ? [e.target.value] : []
+							)
+						}
+						onPressEnter={() =>
+							handleSearch(selectedKeys, confirm, dataIndex)
+						}
+						style={{
+							marginBottom: 8,
+							display: 'block',
+						}}
+					/>
+					<Space>
+						<Button
+							type='primary'
+							onClick={() =>
+								handleSearch(selectedKeys, confirm, dataIndex)
+							}
+							icon={<SearchOutlined />}
+							size='small'
+							style={{ width: 90 }}
+						>
+							Search
+						</Button>
+						<Button
+							onClick={() => clearFilters && handleReset(clearFilters)}
+							size='small'
+							style={{ width: 90 }}
+						>
+							Reset
+						</Button>
+						<Button
+							type='link'
+							size='small'
+							onClick={() => {
+								confirm({ closeDropdown: false });
+								setSearchText(selectedKeys[0]);
+								setSearchedColumn(dataIndex);
+							}}
+						>
+							Filter
+						</Button>
+					</Space>
 				</div>
-			)}
-		</div>
-	)
+			),
+			filterIcon: (filtered) => (
+				<SearchOutlined
+					style={{ color: filtered ? '#1890ff' : undefined }}
+				/>
+			),
+			onFilter: (value, record) =>
+				record[dataIndex]
+					? record[dataIndex]
+						.toString()
+						.toLowerCase()
+						.includes(value.toLowerCase())
+					: "",
+			onFilterDropdownVisibleChange: (visible) => {
+				if (visible) {
+					// setTimeout(() => this.searchInput.select());
+				}
+			},
+			render: (text) =>
+				searchedColumn === dataIndex ? (
+					<Highlighter
+						highlightStyle={{
+							backgroundColor: '#ffc069',
+							padding: 0,
+						}}
+						searchWords={[searchText]}
+						autoEscape
+						textToHighlight={text?.toString()}
+					/>
+				) : (
+					text
+				),
+		};
+	};
 
-	const resourceCard = (
-		<div className="resource-card">
-			<div className="resource-card-head">
-				<div className='card-head'>
-					<p>3 AUTHORIZATIONS</p>
-					<h2>GENEALOGY</h2>
+
+	const ResourceCard = ({ resourceName, resourceDesc, authTag, authCount }) => {
+		return (
+			<div className="resource-card">
+				<div className="resource-card-head">
+					<div className='card-head'>
+						<p>{authCount} AUTHORIZATIONS</p>
+						<h2>{resourceName}</h2>
+					</div>
+					<div className="resource-card-button">
+						<EditOutlined />
+						<DeleteOutlined />
+					</div>
 				</div>
-				<div className="resource-card-button">
-					<EditOutlined />
-					<DeleteOutlined />
+				<p>{resourceDesc}</p>
+				<div className="auth-card">
+					<p>AUTHORIZATIONS</p>
+					{authTag.map((item) => {
+						return (
+							<Tag className="status-tag">{item}</Tag>
+						)
+					})}
 				</div>
 			</div>
-			<p>Chart managers can access Genealogy with the authorizations given below.</p>
-			<div className="auth-card">
-				<p>AUTHORIZATIONS</p>
-				<Tag className="status-tag">DISPLAY</Tag>
-				<Tag className="status-tag">MAINTAIN</Tag>
-			</div>
-		</div>
-	)
+		)
+	}
 
 	const handleClickROle = () => {
 		setIsCreateRole(true)
@@ -104,8 +191,8 @@ const Roles = () => {
 	const columns2 = [
 		{
 			title: 'Data type',
-			dataIndex: 'datatype',
-			key: 'datatype',
+			dataIndex: 'field_name',
+			key: 'field_name',
 		},
 
 		{
@@ -120,6 +207,63 @@ const Roles = () => {
 		},
 	];
 
+	const rolesColumn = [
+		{
+			title: 'Role',
+			dataIndex: 'role_name',
+			key: 'role_name',
+			...getColumnSearchProps('role_name')
+		},
+		{
+			title: 'Status',
+			dataIndex: 'active_status',
+			key: 'active_status',
+			render: (text) => {
+				if (text) {
+					console.log("texttttt", text);
+					return (
+						<div className="roles-status">
+							<span className='dot green'></span>
+							<p>Active</p>
+						</div>
+					)
+				} else {
+					return (
+						<div className="roles-status">
+							<span className='dot red'></span>
+							<p>Inactive</p>
+						</div>
+					)
+				}
+			},
+			filters: [
+				{
+					text: 'Active',
+					value: 'Active',
+				},
+				{
+					text: 'Inactive',
+					value: 'Inactive',
+				},
+
+			],
+			filterMode: 'tree',
+			filterSearch: true,
+			onFilter: (value, record) => {
+				const active = 'Active';
+				const inactive = 'Inactive';
+				if (record.active_status) {
+					return active.startsWith(value === true ? 'Active' : 'InActive')
+				} else {
+					return inactive.startsWith(value === true ? 'Active' : 'InActive')
+				}
+			}
+			// {
+			// 	console.log("record.active_status.value", record, value);
+			// },
+		}
+	]
+
 	const data2 = [];
 
 	for (let i = 0; i < 3; ++i) {
@@ -129,13 +273,13 @@ const Roles = () => {
 		});
 	}
 
-	//getresource api call
-	const getResourceData = async (_resourceQuery) => {
+	//get Roles api call
+	const getRolesData = async (_resourceQuery) => {
 		try {
 			dispatch(showLoader());
 			const resource = await getResource(_resourceQuery)
 			if (resource.statuscode === 200) {
-				resource.message
+				setAllRoles(resource.message)
 			}
 			console.log("resourceeeeeeee", resource);
 		} catch (error) {
@@ -143,6 +287,54 @@ const Roles = () => {
 			dispatch(showNotification("error", error));
 		}
 	}
+
+	const getResourceData = async (_resourceQuery) => {
+		try {
+			dispatch(showLoader());
+			const res = await getResource(_resourceQuery)
+			dispatch(showLoader());
+			if (res.statuscode === 200) {
+				setRoleDesc(res?.message?.role_description)
+				setResourceCount(res?.message?.role_resource_details?.length)
+				setResourceDetails(res?.message?.role_resource_details)
+				setRoleDataAccess(res?.message?.role_data_access)
+				setIsRoleDetailsAvailable(true)
+			} else {
+				setIsRoleDetailsAvailable(false)
+			}
+
+		} catch (error) {
+			dispatch(hideLoader());
+			dispatch(showNotification("error", error));
+		}
+	}
+
+	//select roles
+	const selectRoles = (record) => {
+		const _reqRecord = {
+			role_name: record.role_name,
+			active_status: false
+		}
+		setRoleName(record.role_name)
+		getResourceData(_reqRecord)
+	}
+
+	const createRole = () => {
+		setIsCreateRole(false)
+	}
+
+	const listHeader = (
+		<div className="roles-head">
+			{isCreateRole ? (
+				<div className="create-role">
+					<Input placeholder="Enter name of new role" />
+					<Button type="link" onClick={createRole}>
+						Save
+					</Button>
+				</div>
+			) : null}
+		</div>
+	)
 
 	return (
 		<div className="roles-wrapper">
@@ -156,85 +348,101 @@ const Roles = () => {
 						Create role
 					</Button>
 				</div>
-				<List
-					header={listHeader}
-					// footer={<div>Footer</div>}
-					dataSource={data}
-					renderItem={(item) => (
-						<List.Item>
-							{item}
-						</List.Item>
-					)}
-				/>
+				<div className="table-role-wrapper">
+					{listHeader}
+					<Table
+						className='roles-table'
+						columns={rolesColumn}
+						dataSource={allRoles}
+						size='medium'
+						onRow={(record) => ({
+							onClick: () => {
+								selectRoles(record)
+							},
+						})}
+
+					/>
+				</div>
+
+
 			</div>
+
 			<div className="roles-details">
-				<div className="roles-heading">
-					<h1>Chart Manager</h1>
-					<div className="sub-details">
-						<p>3 resources | Active </p>
-						<Switch size="small" defaultChecked />
-					</div>
-				</div>
-				<Button
-					type='primary'
-					className='custom-primary-btn'
-				>
-					Edit role
-				</Button>
-				<p className="content">
-					The chart manager works with sample sentences like this one, and can always be replaced by the correct information since this is only a design placeholder.
-				</p>
-				<div className="card-header">
-					<p className='card-heading'>Resources and authorizations</p>
-					<Button
-						type='primary'
-						className='custom-secondary-btn'
-						onClick={handleClickResource}
-					>
-						Add resource
-					</Button>
-				</div>
-				<div className="resource-card-wrapper">
-					{resourceCard}
-					{resourceCard}
-					{resourceCard}
-					{resourceCard}
-				</div>
-				<div className="data-table-wrapper">
-					<p className='card-heading'>Data access</p>
-					<div>
+				{isRoleDetailsAvailable ? (
+					<>
+						<div className="roles-heading">
+							<h1>{roleName}</h1>
+							<div className="sub-details">
+								<p>{resourceCount} resources | Active </p>
+								<Switch size="small" defaultChecked />
+							</div>
+						</div>
 						<Button
 							type='primary'
 							className='custom-primary-btn'
 						>
-							Edit
+							Edit role
 						</Button>
-						<Button
-							type='primary'
-							className='custom-secondary-btn'
-						>
-							Add data access
-						</Button>
-					</div>
-				</div>
+						<p className="content">
+							{roleDesc}
+						</p>
+						<div className="card-header">
+							<p className='card-heading'>Resources and authorizations</p>
+							<Button
+								type='primary'
+								className='custom-secondary-btn'
+								onClick={handleClickResource}
+							>
+								Add resource
+							</Button>
+						</div>
+						<div className="resource-card-wrapper">
+							{resourceDetails.map((item) => {
+								return (<ResourceCard
+									resourceName={item.resource_name}
+									resourceDesc={item.resource_descr}
+									authTag={item.auth}
+									authCount={item.auth.length}
+								/>)
+							})}
+						</div>
+						<div className="data-table-wrapper">
+							<p className='card-heading'>Data access</p>
+							<div>
+								<Button
+									type='primary'
+									className='custom-primary-btn'
+								>
+									Edit
+								</Button>
+								<Button
+									type='primary'
+									className='custom-secondary-btn'
+								>
+									Add data access
+								</Button>
+							</div>
+						</div>
 
-				<Table
-					className='roles-table'
-					columns={columns2}
-					expandable={{
-						expandedRowRender,
-						defaultExpandedRowKeys: ['0'],
-					}}
-					dataSource={data2}
-				/>
-				<Resource isVisible={isVisible} setIsVisible={setIsVisible} />
-				{/* <Empty imageStyle={{
+						<Table
+							className='roles-table'
+							columns={columns2}
+							expandable={{
+								expandedRowRender,
+								defaultExpandedRowKeys: ['0'],
+							}}
+							dataSource={roleDataAccess}
+						/>
+						<Resource isVisible={isVisible} setIsVisible={setIsVisible} />
+					</>
+
+				) : (<Empty imageStyle={{
 					height: 160,
 				}} image={Empty.PRESENTED_IMAGE_SIMPLE} description={
 					<span>
 						Select a role to view its details here
 					</span>
-				} /> */}
+				} />)}
 			</div>
 		</div>
 	)
