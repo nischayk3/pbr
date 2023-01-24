@@ -65,8 +65,7 @@ const FaqMain = () => {
 					bannerbg={{
 						background: 'linear-gradient(180deg, #E7E6FF 0%, #FFF4F4 100%)',
 					}}
-					title={`Hi ${localStorage.getItem('username') || localStorage.getItem('user')
-						},`}
+					title={`Hi ${localStorage.getItem('username')}`}
 					description='Let’s see what you need help with. Here are a bunch of FAQs you can take a look at!'
 					source={faqImage}
 					sourceClass='geanealogy-image'

@@ -126,6 +126,16 @@ const Sidebar = () => {
 							Hierarchy Config
 						</Link>
 					</Menu.Item>
+					<Menu.Item
+						key="limit-config"
+						icon={<DeploymentUnitOutlined className="menu-icons" />}
+						id="limit-config"
+						className={path === "/dashboard/limit-config" ? 'ant-menu-item-selected' : 'remove-selected'}
+					>
+						<Link to="/dashboard/limit-config">
+							Limit Config
+						</Link>
+					</Menu.Item>
 				</SubMenu>
 				<SubMenu
 					key="sub4"
@@ -280,14 +290,14 @@ const Sidebar = () => {
 				>
 					<Link to="/dashboard/data-access-service">Data Access Services</Link>
 				</Menu.Item>
-				<Menu.Item
+				{/* <Menu.Item
 					key="tableau-dashboard"
 					icon={<TeamOutlined className="menu-icons" />}
 					id="tableau-dashboard"
 					className={path === "/dashboard/tableau-dashboard" ? 'ant-menu-item-selected' : 'remove-selected'}
 				>
 					<Link to="/dashboard/tableau-dashboard">Tableau Dashboard</Link>
-				</Menu.Item>
+				</Menu.Item> */}
 			</Menu>
 		</Sider >
 	);

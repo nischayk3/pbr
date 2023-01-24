@@ -37,6 +37,7 @@ const Login = () => {
 			localStorage.removeItem('login_details');
 			localStorage.removeItem('username');
 			localStorage.removeItem('loginwith');
+
 		}
 		if (JSON.parse(localStorage.getItem("isRemember"))) {
 			setEmail(localStorage.getItem("user"))
@@ -54,6 +55,8 @@ const Login = () => {
 		} else {
 			window.open(`${window.location.origin}${BMS_APP_LOGIN_PASS}/saml-login?redirect_url=${MDH_APP_PYTHON_SERVICE}/%23/dashboard/redirect&from_=UI`, '_self');
 			localStorage.setItem("loginwith", 'WITH_SAML')
+
+
 		}
 	}
 
@@ -102,7 +105,7 @@ const Login = () => {
 				localStorage.setItem("login_details", JSON.stringify(data));
 				localStorage.setItem("user", data.email_id.replaceAll("^\"|\"$", ""));
 				localStorage.setItem("username", data?.firstname ? data.firstname.replaceAll("^\"|\"$", "") : data.email_id.replaceAll("^\"|\"$", ""));
-				localStorage.setItem("loginwith", 'WITHOUT_AD')
+				localStorage.setItem("loginwith", 'WITH_SAML')
 
 				dispatch(showNotification("success", `Logged in as ${data.email_id}`));
 				if (isChecked) {
