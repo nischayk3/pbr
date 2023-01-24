@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import {
 	hideLoader, pushPublishResponse, showLoader, showNotification
 } from '../../../duck/actions/commonActions';
-import { eSign, publishEvent } from '../../../services/electronicSignatureService';
+import { approveRecord, eSign, publishEvent } from '../../../services/electronicSignatureService';
 import { getSession } from '../../../services/loginService';
 
 export default function RedirectSAMLSign() {
@@ -37,7 +37,7 @@ export default function RedirectSAMLSign() {
 		req["screen"] = screenName;
 		req["first_name"] = login_response["firstname"] ? login_response["firstname"] : "";
 		req["last_name"] = login_response["lastname"] ? login_response["lastname"] : "";
-		console.log("request111111111", req);
+
 		let headers = {
 			"content-type": "application/json",
 			"resource-name":
@@ -105,30 +105,29 @@ export default function RedirectSAMLSign() {
 			} else {
 				dispatch(showNotification("error", esign_response.Message));
 			}
-		} catch {
-			dispatch(showNotification("error", "Error Occured"));
+		} catch (err) {
+			dispatch(showNotification("error", err));
 		}
 	};
 
 	const GetSession = async () => {
 		dispatch(showLoader())
 		let res = await getSession()
-
+		const url = localStorage.getItem('redirectUrl')
 		if (res.Status === 200) {
-			let data = res['Data'];
+			// let data = res['Data'];
 			let signedInfoData = res['SignedInfo'];
-			dispatch(showNotification('success', `Logined As ${data.email_id}`))
+			// dispatch(showNotification('success', `Logined As ${data.email_id}`))
 			dispatch(hideLoader())
-			let url = localStorage.getItem('redirectUrl')
+
 			handleConfirm(signedInfoData?.Reason, signedInfoData?.parameter, signedInfoData?.screenName, signedInfoData?.appType, signedInfoData?.dispId, signedInfoData?.version, signedInfoData?.status, signedInfoData?.resourceDispId, signedInfoData?.resourceVersion)
 			// window.open(url + '&publish=True', '_self')
 			history.push(`${url}`)
 		}
-
 		else {
 			dispatch(showNotification('error', 'Error in Login'))
 			dispatch(hideLoader())
-			history.push('/user/workflow')
+			history.push(`${url}`)
 		}
 	}
 
@@ -136,7 +135,7 @@ export default function RedirectSAMLSign() {
 	return (
 		<div>
 			<Result
-				title="Electonic Signature SAML"
+				title="Please wait while you are redirected to the MI"
 			/>
 		</div>
 	)

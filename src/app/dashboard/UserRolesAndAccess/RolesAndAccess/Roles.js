@@ -6,12 +6,24 @@
  * @Last Changed By - Dinesh Kumar
  */
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Input, List, Modal, Select, Switch, Table, Tag } from 'antd';
-import React, { useState } from 'react';
+import { Button, Input, List, Switch, Table, Tag } from 'antd';
+import { dispatch } from 'd3';
+import React, { useEffect, useState } from 'react';
+import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
+import { getResource } from '../../../../services/userRolesAndAccessService';
+import Resource from './Resource';
 
 const Roles = () => {
 	const [isCreateRole, setIsCreateRole] = useState(false);
 	const [isVisible, setIsVisible] = useState(false);
+
+	useEffect(() => {
+		const _req = {
+			// role_name: "",
+			active_status: true
+		}
+		getResourceData(_req)
+	}, [])
 
 	const data = [
 		'Chart manager',
@@ -64,9 +76,6 @@ const Roles = () => {
 		setIsVisible(true)
 	}
 
-	const handleCancel = () => {
-		setIsVisible(false)
-	}
 
 	const expandedRowRender = () => {
 		const columns1 = [
@@ -91,6 +100,7 @@ const Roles = () => {
 		}
 		return <Table className="roles-inner-table" columns={columns1} dataSource={data1} pagination={false} />;
 	};
+
 	const columns2 = [
 		{
 			title: 'Data type',
@@ -109,25 +119,9 @@ const Roles = () => {
 			),
 		},
 	];
-	const columns3 = [
-		{
-			title: 'Authorization',
-			dataIndex: 'authorization',
-			key: 'authorization',
-		},
-		{
-			title: 'Function',
-			dataIndex: 'function',
-			key: 'function',
-		},
-		{
-			title: 'Enable',
-			key: 'enable',
-			render: () => <Checkbox />
-		},
-	];
+
 	const data2 = [];
-	const data3 = [];
+
 	for (let i = 0; i < 3; ++i) {
 		data2.push({
 			key: i.toString(),
@@ -135,9 +129,20 @@ const Roles = () => {
 		});
 	}
 
-	const handleChange = (value) => {
-		console.log(`selected ${value}`);
-	};
+	//getresource api call
+	const getResourceData = async (_resourceQuery) => {
+		try {
+			dispatch(showLoader());
+			const resource = await getResource(_resourceQuery)
+			if (resource.statuscode === 200) {
+				resource.message
+			}
+			console.log("resourceeeeeeee", resource);
+		} catch (error) {
+			dispatch(hideLoader());
+			dispatch(showNotification("error", error));
+		}
+	}
 
 	return (
 		<div className="roles-wrapper">
@@ -222,68 +227,7 @@ const Roles = () => {
 					}}
 					dataSource={data2}
 				/>
-				<Modal
-					width={719}
-					title="CHART MANAGER - Genealogy"
-					visible={isVisible}
-					onCancel={handleCancel}
-					footer={null}
-				>
-					<div className='modal-resource-wrapper'>
-						<p className='card-heading'>Resources</p>
-						<div className='modal-sub-header'>
-							<p>The resource associated with this role</p>
-							<Select
-								size='medium'
-								defaultValue="lucy"
-								style={{
-									width: 230, marginLeft: 13,
-								}}
-								onChange={handleChange}
-								options={[
-									{
-										value: 'jack',
-										label: 'Jack',
-									},
-									{
-										value: 'lucy',
-										label: 'Lucy',
-									},
-									{
-										value: 'disabled',
-										disabled: true,
-										label: 'Disabled',
-									},
-									{
-										value: 'Yiminghe',
-										label: 'yiminghe',
-									},
-								]}
-							/>
-						</div>
-						<p className='card-heading'>Authorizations</p>
-						<p className='card-heading-p'>Select the actions you want to authorize chart managers to take.</p>
-						<Table
-							className='roles-table'
-							columns={columns3}
-							dataSource={data3}
-						/>
-						<div className='modal-footer-btn'>
-							<Button
-								type='primary'
-								className='custom-secondary-btn'
-							>
-								Save changes
-							</Button>
-							<Button
-								type='primary'
-								className='custom-primary-btn'
-							>
-								Cancel
-							</Button>
-						</div>
-					</div>
-				</Modal>
+				<Resource isVisible={isVisible} setIsVisible={setIsVisible} />
 				{/* <Empty imageStyle={{
 					height: 160,
 				}} image={Empty.PRESENTED_IMAGE_SIMPLE} description={

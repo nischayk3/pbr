@@ -217,8 +217,8 @@ const Signature = (props) => {
 			} else {
 				dispatch(showNotification("error", esign_response.Message));
 			}
-		} catch {
-			dispatch(showNotification("error", "Error Occured"));
+		} catch (error) {
+			dispatch(showNotification("error", error));
 		}
 	};
 
