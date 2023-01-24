@@ -84,9 +84,7 @@ class ManualDataUpload extends Component {
 	componentDidMount = () => {
 		const loginDetails = JSON.parse(localStorage.getItem("login_details"));
 		const loginWith = localStorage.getItem("loginwith");
-		if (loginWith === "WITH_SAML") {
-			localStorage.setItem('isSamlLogin', false)
-		}
+
 
 		if (loginWith) {
 			this.setState({

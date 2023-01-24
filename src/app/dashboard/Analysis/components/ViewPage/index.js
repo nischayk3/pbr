@@ -57,6 +57,14 @@ const ViewPageAnalysis = () => {
 	const parameters = queryString.parse(location.search);
 
 	const selectedViewData = useSelector((state) => state.analyticsReducer);
+	const esignPublishRes = useSelector((state) => state.commonReducer.publishRes);
+
+	useEffect(() => {
+		if (esignPublishRes?.status_code === 200) {
+			setPublishResponse(esignPublishRes);
+		}
+	}, [esignPublishRes]);
+
 	const menu = (
 		<Menu
 			items={[
@@ -82,7 +90,6 @@ const ViewPageAnalysis = () => {
 			]}
 		/>
 	);
-
 
 	const onSaveClick = async (save) => {
 		const tempObj = JSON.parse(JSON.stringify(finalModelJson));
@@ -118,7 +125,7 @@ const ViewPageAnalysis = () => {
 			setExectStart(true);
 			dispatch(showNotification("success", "Model saved successfully"));
 		} else {
-			 /* istanbul ignore next */
+			/* istanbul ignore next */
 			dispatch(hideLoader());
 			/* istanbul ignore next */
 			setExectStart(false);
@@ -199,7 +206,7 @@ const ViewPageAnalysis = () => {
 			setFinalModelJson(data?.data?.pipeline_data[0])
 			dispatch(hideLoader());
 		} else {
-			 /* istanbul ignore next */
+			/* istanbul ignore next */
 			dispatch(hideLoader());
 		}
 	}
@@ -229,9 +236,9 @@ const ViewPageAnalysis = () => {
 			}
 			setResultsData(apiResponse.data);
 		} else {
-			 /* istanbul ignore next */
+			/* istanbul ignore next */
 			dispatch(hideLoader());
-			 /* istanbul ignore next */
+			/* istanbul ignore next */
 			showNotification("error", "Unable to get results");
 		}
 	};

@@ -44,13 +44,14 @@ const { Panel } = Collapse;
 const View = () => {
 	const location = useLocation();
 	const history = useHistory();
+	const dispatch = useDispatch();
 
 	const selectedTableData = useSelector(
 		(state) => state.viewCreationReducer.selectedParamData
 	);
-
 	const viewState = useSelector((state) => state.viewCreationReducer);
-	const dispatch = useDispatch();
+	const esignPublishRes = useSelector((state) => state.commonReducer.publishRes)
+
 	const [count, setCount] = useState(1);
 	const [moleculeList, setMoleculeList] = useState({});
 	const [isPublish, setIsPublish] = useState(false);
@@ -106,6 +107,12 @@ const View = () => {
 			setViewVersion(parameters.version);
 		}
 	}, []);
+
+	useEffect(() => {
+		if (esignPublishRes?.status_code === 200) {
+			setViewStatus(esignPublishRes?.rep_stauts);
+		}
+	}, [esignPublishRes]);
 
 	//Moleculelist api call
 	const loadMolecule = async (_reqMolecule) => {

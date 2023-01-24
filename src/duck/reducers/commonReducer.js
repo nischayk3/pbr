@@ -2,7 +2,7 @@ import { getTheme } from "../../utils/commonUtils";
 import {
 	AUTHENTICATED,
 	HIDE_LOADING,
-	HIDE_NOTIFICATION, IS_SAML_SIGN, NETWORK_ERROR, SET_NAVIGATION_DATA,
+	HIDE_NOTIFICATION, NETWORK_ERROR, PUBLISH_RESPONSE, SET_NAVIGATION_DATA,
 	SET_THEME,
 	SHOW_LOADING,
 	SHOW_NOTIFICATION,
@@ -22,7 +22,7 @@ const initialState = {
 	isMenuCollapsed: true,
 	isAuthenticated: true,
 	isError: false,
-	samlLogin: false
+	publishRes: {}
 };
 
 export default (state = initialState, action) => {
@@ -77,10 +77,10 @@ export default (state = initialState, action) => {
 				...state,
 				isError: action.payload,
 			};
-		case IS_SAML_SIGN:
+		case PUBLISH_RESPONSE:
 			return {
 				...state,
-				samlLogin: action.payload,
+				publishRes: action.payload,
 			}
 		default:
 			return state;

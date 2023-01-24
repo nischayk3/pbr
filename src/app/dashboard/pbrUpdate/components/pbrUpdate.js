@@ -223,7 +223,7 @@ const PbrUpdate = () => {
 		let numberArray = resp.map(Number)
 		let formvalues = {
 			id: numberArray,
-			changed_by: localStorage.getItem('user'),
+			changed_by: localStorage.getItem('username'),
 			recorded_date: textInput?.recorded_date ? textInput?.recorded_date : null,
 			recorded_time: textInput?.recorded_time ? textInput?.recorded_time : null,
 			snippet_value: textInput?.snippet_value ? textInput?.snippet_value : null,

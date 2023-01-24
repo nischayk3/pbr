@@ -42,8 +42,7 @@ const Signature = (props) => {
 	useEffect(() => {
 		const loginDetails = JSON.parse(localStorage.getItem("login_details"));
 		const status = localStorage.getItem("loginwith");
-		console.log("loginDetails", loginDetails);
-		console.log("status", status);
+
 		if
 			(status) {
 			setLoginStatus(status);
@@ -223,14 +222,21 @@ const Signature = (props) => {
 		}
 	};
 
-
 	const samlRedirect = async () => {
 		const url = `${MDH_APP_PYTHON_SERVICE}/#/dashboard/saml-redirect`
 		const encoded = encodeURI(url);
 
 		const _reqSaml = {
 			SignedInfoData: {
-				Reason: reason
+				Reason: reason,
+				screenName: props.screenName,
+				appType: props.appType,
+				dispId: props.dispId,
+				version: props.version,
+				resourceDispId: params.id,
+				resourceVersion: params.version,
+				status: props.status,
+				parameter: params
 			},
 			redirect_url: decodeURI(encoded)
 		}
@@ -238,7 +244,7 @@ const Signature = (props) => {
 		const samlLogin = await consumerSamlLogin(_reqSaml);
 		if (samlLogin.Status == 200) {
 			window.open(`${window.location.origin}${BMS_APP_LOGIN_PASS}/saml-login-redirect`, '_self')
-			localStorage.setItem('redirectUrl', `${window.location.origin}/#/${location.pathname}${location.search}`)
+			localStorage.setItem('redirectUrl', `${location.pathname}${location.search}`)
 		}
 	}
 
