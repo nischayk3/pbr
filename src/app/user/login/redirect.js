@@ -39,7 +39,7 @@ export default function Redirect() {
 	return (
 		<div>
 			<Result
-				title='Redirecting You to the Main Screen'
+				title='Please wait while you are redirected to the MI'
 				extra={
 					<Button type='primary' key='console'>
 						MI
