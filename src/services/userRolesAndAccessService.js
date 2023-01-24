@@ -1,6 +1,14 @@
 import axios from 'axios';
+import { BMS_APP_PYTHON_SERVICE } from "../constants/apiBaseUrl";
 import Service from "./AjaxService";
-import { MDH_APP_PYTHON_SERVICE } from "../constants/apiBaseUrl";
+
+let login_response = JSON.parse(localStorage.getItem('login_details'));
+const request_headers = {
+	'x-access-token': login_response?.token ? login_response?.token : '',
+	'resource-name': 'CONFIGURATION',
+	"content-type": "application/json",
+};
+
 export const getRoleConfiguartions = () => {
 	let login_response = JSON.parse(localStorage.getItem('login_details'));
 	return axios.get('/services/v1/role-config', {
@@ -66,13 +74,8 @@ export const deleteUserConfiguartions = data => {
 }
 
 export const uploadUsers = (_queryParam) => {
-	let login_response = JSON.parse(localStorage.getItem('login_details'));
-	const request_headers = {
-		'x-access-token': login_response?.token ? login_response?.token : '',
-		'resource-name': 'CONFIGURATION'
-	};
 	return Service.post(
-		MDH_APP_PYTHON_SERVICE + "/services/v1/upload-users",
+		BMS_APP_PYTHON_SERVICE + "/upload-users",
 		_queryParam,
 		request_headers
 	).then(
@@ -86,13 +89,24 @@ export const uploadUsers = (_queryParam) => {
 };
 
 export const createUsers = (_queryParam) => {
-	let login_response = JSON.parse(localStorage.getItem('login_details'));
-	const request_headers = {
-		'x-access-token': login_response?.token ? login_response?.token : '',
-		'resource-name': 'CONFIGURATION'
-	};
 	return Service.put(
-		MDH_APP_PYTHON_SERVICE + "/services/v1/create-users",
+		BMS_APP_PYTHON_SERVICE + "/create-users",
+		_queryParam,
+		request_headers
+	).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};
+
+
+export const getResource = (_queryParam) => {
+	return Service.get(
+		BMS_APP_PYTHON_SERVICE + "/role-auth-dataaccess",
 		_queryParam,
 		request_headers
 	).then(

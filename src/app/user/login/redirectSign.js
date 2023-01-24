@@ -19,7 +19,7 @@ export default function RedirectSign() {
 		if (data) {
 			dispatch(sendLoginDetails(data))
 			localStorage.setItem('login_details', JSON.stringify(data))
-			localStorage.setItem('user', data.email_id.replaceAll('^"|"$', ''));
+			localStorage.setItem('user', data.user_id);
 			localStorage.setItem('username', data.firstname ? data.firstname.replaceAll('^"|"$', '') : data.email_id.replaceAll('^"|"$', ''));
 			// localStorage.setItem("loginwith", 'WITH_AD')
 			dispatch(showNotification('success', `Logined As ${data.email_id}`))

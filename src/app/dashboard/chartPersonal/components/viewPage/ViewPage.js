@@ -19,7 +19,7 @@ import ViewChart from "./viewChart/ViewChart";
 //chart json object
 import chartJson from "./chartObj.json";
 //redux
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
 	hideLoader, showLoader, showNotification
 } from "../../../../../duck/actions/commonActions";
@@ -45,6 +45,8 @@ const { TabPane } = Tabs;
 const ViewPage = () => {
 	const { id } = useParams();
 	const history = useHistory();
+	const esignPublishRes = useSelector((state) => state.commonReducer.publishRes)
+
 	//state for chart json data
 	const [postChartData, setPostChartData] = useState({});
 	const chartDetails = useRef({ chartId: "", chartVersion: "" });
@@ -72,6 +74,8 @@ const ViewPage = () => {
 	const handleShareCancel = () => {
 		setIsShare(false)
 	}
+
+
 
 	//function for saving chart data
 	const saveAs = async (type) => {
@@ -196,6 +200,12 @@ const ViewPage = () => {
 		}
 	}, [id]);
 
+	useEffect(() => {
+		if (esignPublishRes?.status_code === 200) {
+			setPublishResponse(esignPublishRes);
+			getChart();
+		}
+	}, [esignPublishRes]);
 
 
 	useEffect(() => {
