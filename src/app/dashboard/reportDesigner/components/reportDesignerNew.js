@@ -262,7 +262,7 @@ const ReportDesignerNew = () => {
 				section_arr.push(obj);
 			}
 			if (item !== undefined) {
-				console.log("itemmmmmmmmmmmmm", item);
+
 				obj['heading'] = item.sectionName ? item.sectionName : '';
 				obj['numbered'] = true;
 				let content_arr = [];

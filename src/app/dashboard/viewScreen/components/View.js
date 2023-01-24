@@ -29,7 +29,7 @@ import {
 	viewParamMap
 } from "../../../../duck/actions/viewAction";
 import {
-	getMoleculeList, getViewConfig, saveFunction
+	getMoleculeList, getViewConfig, saveFunction, viewDownload
 } from "../../../../services/viewCreationPublishing";
 import FileUpload from "./fileUpload/FileUpload";
 import MaterialTree from "./materialTree";
@@ -54,6 +54,7 @@ const View = () => {
 
 	const [count, setCount] = useState(1);
 	const [moleculeList, setMoleculeList] = useState({});
+	const [isDownload, setIsDownload] = useState(true);
 	const [isPublish, setIsPublish] = useState(false);
 	const [moleculeId, setMoleculeId] = useState();
 	const [functionEditorViewState, setFunctionEditorViewState] = useState(false);
@@ -304,6 +305,7 @@ const View = () => {
 				setViewDisplayId(response.view_disp_id);
 				setViewStatus(response.view_status);
 				setViewVersion(response.view_version);
+				setIsDownload(false);
 				dispatch(
 					showNotification(
 						"success",
@@ -363,6 +365,7 @@ const View = () => {
 			if (loadViewRes.view_name) {
 				setViewName(loadViewRes.view_name);
 			}
+			setIsDownload(false);
 			dispatch(sendSelectedParamData(loadViewRes["all_parameters"]));
 			dispatch(hideLoader());
 		} catch (err) {
@@ -378,6 +381,22 @@ const View = () => {
 	const PublishResponse = (res) => {
 		setViewStatus(res.rep_stauts);
 	};
+
+	const exportView = () => {
+		const _exportReq = {
+			view_disp_id: viewDisplayId,
+			view_version: viewVersion
+		}
+		viewDownload(_exportReq).then((res) => {
+			const url = window.URL.createObjectURL(new Blob([res]));
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = `${viewDisplayId}.csv`
+			document.body.appendChild(a);
+			a.click();
+			window.URL.revokeObjectURL(url);
+		})
+	}
 
 
 	return (
@@ -431,6 +450,13 @@ const View = () => {
 						>
 							<CloudUploadOutlined />
 							Publish
+						</Button>
+						<Button
+							className="view-publish-btn"
+							disabled={isDownload}
+							onClick={() => exportView()}
+						>
+							Export CSV
 						</Button>
 					</div>
 				)}
