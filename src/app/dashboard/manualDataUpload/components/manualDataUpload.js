@@ -84,9 +84,7 @@ class ManualDataUpload extends Component {
 	componentDidMount = () => {
 		const loginDetails = JSON.parse(localStorage.getItem("login_details"));
 		const loginWith = localStorage.getItem("loginwith");
-		if (loginWith === "WITH_SAML") {
-			localStorage.setItem('isSamlLogin', false)
-		}
+
 
 		if (loginWith) {
 			this.setState({
@@ -676,7 +674,7 @@ class ManualDataUpload extends Component {
 
 		const samlLogin = await consumerSamlLogin(_reqSaml);
 		if (samlLogin.Status == 200) {
-			window.open(`${window.location.origin}${BMS_APP_LOGIN_PASS}/saml-login-redirect`)
+			window.open(`${window.location.origin}${BMS_APP_LOGIN_PASS}/saml-login-redirect`, '_self')
 		}
 	}
 
@@ -738,13 +736,7 @@ class ManualDataUpload extends Component {
 			},
 		};
 
-		if (localStorage.getItem('isSamlLogin')) {
-			if (this.state.isModalVisibleSignature1) {
-				this.finalFileUploadData();
-			} else if (onChangeStatus && onChangeStatus === 300) {
-				this.approveDataFile(); this.setState({ nextStepDisabled: false })
-			}
-		}
+
 
 		return (
 			<div className='custom-wrapper'>

@@ -15,6 +15,7 @@ import LoginRedirect from "../user/login/redirect";
 import RedirectSign from "../user/login/redirectSign";
 import RedirectSAMLSign from "../user/login/samlRedirectSign";
 import "./dashboard.scss";
+import LimitConfig from "./LimitConfig/components/landing/LimitConfig";
 import PrivateRoute from "./ProtectedRoute";
 // DASHBOARD ROUTE COMPONENTS
 
@@ -396,6 +397,12 @@ const Dashboard = () => {
 									key="screen-controls"
 									path={`${match.url}/user-roles-and-access/screen-controls`}
 									component={ScreenControls}
+									authorised={authorised}
+								/>
+								<PrivateRoute
+									key="limit-config"
+									path={`${match.url}/limit-config`}
+									component={LimitConfig}
 									authorised={authorised}
 								/>
 								<Route

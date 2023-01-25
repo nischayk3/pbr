@@ -8,13 +8,13 @@
 
 import {
 	Button, Col,
-	Collapse, Dropdown, Form,
-	Input, Menu, message, Modal, notification, Row,
+	Collapse, Form,
+	Input, message, Modal, notification, Row,
 	Select, Table, Tooltip, Upload
 } from 'antd';
 import React, { useEffect, useState } from 'react';
 import ImageMapper from 'react-image-mapper';
-import { useLocation, useParams,useRouteMatch,useHistory } from 'react-router-dom';
+import { useHistory, useLocation, useParams, useRouteMatch } from 'react-router-dom';
 
 import {
 	DeleteOutlined, LeftOutlined, MinusSquareTwoTone, MonitorOutlined, PlusSquareTwoTone, RightOutlined
@@ -23,7 +23,6 @@ import {
 import Sider from 'antd/lib/layout/Sider';
 import debounce from "lodash/debounce";
 import QueryString from 'query-string';
-import { ImCrop } from 'react-icons/im';
 import { useDispatch, useSelector } from 'react-redux';
 import panelLeftImg from '../../../../assets/images/panel-leftIcon.svg';
 import panelRightImg from '../../../../assets/images/panel-rightIcon.svg';
@@ -31,13 +30,13 @@ import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import Signature from "../../../../components/ElectronicSignature/signature";
 import { MDH_APP_PYTHON_SERVICE } from '../../../../constants/apiBaseUrl';
 import {
-    hideLoader,
-    showLoader,
-    showNotification
+	hideLoader,
+	showLoader,
+	showNotification
 } from '../../../../duck/actions/commonActions';
 import { loadTemplateInfo } from '../../../../duck/actions/pbrAction';
 import {
-    findParameter, getBoundingBoxData, getPbrTemplateData, savePbrTemplate, workflowTemplateReject,timeZone
+	findParameter, getBoundingBoxData, getPbrTemplateData, savePbrTemplate, timeZone, workflowTemplateReject
 } from '../../../../services/pbrService';
 import ChangeCoordiantes from '../components/rightSidePanel/changeCoordiantes';
 import ParameterList from '../components/rightSidePanel/parameterList';
@@ -2817,13 +2816,13 @@ function PaperBatchRecordsTemplate() {
 																						<p>{item?.split('.')[0]}</p>
 																					))}</div>
 
-                                                                                    {/* <MinusCircleOutlined onClick={() => remove(name)} /> */}
-                                                                                </div>
+																					{/* <MinusCircleOutlined onClick={() => remove(name)} /> */}
+																				</div>
 
-                                                                            </div>
+																			</div>
 
-                                                                        </Panel>
-                                                                        // </Space>
+																		</Panel>
+																		// </Space>
 
 																	))}
 																</Collapse>
@@ -2878,155 +2877,155 @@ function PaperBatchRecordsTemplate() {
                                                         Save
                                                     </Button>
                                                 </div> */}
-                                            </div>
-                                        </div>
-                                    </Form>
-                                </Panel>
-                                <Panel id="tableExtraction" header='Table' key='4'>
-                                    <div className='tabletype'>
-                                        <DynamicTableForm handleSideState={handleSideState} sideTableData={sideTableData}
-                                            setTableActiveKey={setTableActiveKey} setFormTableData={setFormTableData} initialSideTableData={initialSideTableData}
-                                            handleOnFinishFailed={handleOnFinishFailed} parameterFormFinish={parameterFormFinish} params={params}
-                                            pageIdDropdownValues={pageIdDropdownValues} initialPageIdentifierData={initialPageIdentifierData} pageNumber={pageNumber}
-                                        />
-                                    </div>
-                                </Panel>
-                            </Collapse>
-                        </Sider>
-                    </div>
-                </div>
-                <div className='pbrTemplateCenter'>
-                    <div className='pbrPanel pbrCenterPanel'>
-                        <div className='pbrCenterPanel-header'>
-                            <Row className='pbrCenterPanelRow'>
-                                <Col
-                                    span={14}
-                                    className='pbrCenterPanelCol pbrCenterBlockLeft'
-                                >
-                                    <div className='preview_page_finder'>
-                                        <p className='pbrCenterPanelHeader-para' onClick={showModal}>
-                                            Preview
-                                        </p>
-                                        <Tooltip title={params?.file}>
-                                            <span style={{ marginTop: 4 }}>{params?.file.slice(0, 28)}</span>
-                                        </Tooltip>
-                                        <div>
-                                            <LeftOutlined disabled={true} className='icon_size' onClick={() => handlePageChange(pageNumber - 1)} />
-                                                <Input style={{ width: 48 }} value={pageNumber} onChange={(e) => handlePageTextChange(e.target.value)} onPressEnter={handlePageChangeEnter} />
-                                                <span style={{ fontSize: 15,marginLeft:6 }}>/ {pageLimit}</span>
-                                            <RightOutlined className='icon_size' onClick={() => handlePageChange(pageNumber + 1)} />
-                                        </div>
+											</div>
+										</div>
+									</Form>
+								</Panel>
+								<Panel id="tableExtraction" header='Table' key='4'>
+									<div className='tabletype'>
+										<DynamicTableForm handleSideState={handleSideState} sideTableData={sideTableData}
+											setTableActiveKey={setTableActiveKey} setFormTableData={setFormTableData} initialSideTableData={initialSideTableData}
+											handleOnFinishFailed={handleOnFinishFailed} parameterFormFinish={parameterFormFinish} params={params}
+											pageIdDropdownValues={pageIdDropdownValues} initialPageIdentifierData={initialPageIdentifierData} pageNumber={pageNumber}
+										/>
+									</div>
+								</Panel>
+							</Collapse>
+						</Sider>
+					</div>
+				</div>
+				<div className='pbrTemplateCenter'>
+					<div className='pbrPanel pbrCenterPanel'>
+						<div className='pbrCenterPanel-header'>
+							<Row className='pbrCenterPanelRow'>
+								<Col
+									span={14}
+									className='pbrCenterPanelCol pbrCenterBlockLeft'
+								>
+									<div className='preview_page_finder'>
+										<p className='pbrCenterPanelHeader-para' onClick={showModal}>
+											Preview
+										</p>
+										<Tooltip title={params?.file}>
+											<span style={{ marginTop: 4 }}>{params?.file.slice(0, 28)}</span>
+										</Tooltip>
+										<div>
+											<LeftOutlined disabled={true} className='icon_size' onClick={() => handlePageChange(pageNumber - 1)} />
+											<Input style={{ width: 48 }} value={pageNumber} onChange={(e) => handlePageTextChange(e.target.value)} onPressEnter={handlePageChangeEnter} />
+											<span style={{ fontSize: 15, marginLeft: 6 }}>/ {pageLimit}</span>
+											<RightOutlined className='icon_size' onClick={() => handlePageChange(pageNumber + 1)} />
+										</div>
 
-                                    </div>
-                                </Col>
+									</div>
+								</Col>
 
-                                <Col
-                                    span={10}
-                                    className='pbrCenterPanelCol pbrCenterBlockRight'
-                                    style={{ justifyContent: params?.fromScreen == "Workflow" ? "" : "right" }}
-                                >
-                                    {/* <div className='drawSnippet'>
+								<Col
+									span={10}
+									className='pbrCenterPanelCol pbrCenterBlockRight'
+									style={{ justifyContent: params?.fromScreen == "Workflow" ? "" : "right" }}
+								>
+									{/* <div className='drawSnippet'>
                                         <EditOutlined />
                                         Draw Snippet
                                     </div> */}
-                                    {params?.fromScreen == "Workflow" ?
-                                        <div className='btns' style={{ marginLeft: 40 }}>
-                                            <Button
-                                                className='custom-primary-btn'
-                                                onClick={() => {
-                                                    setIsModalOpen(true)
-                                                }}>
-                                                Reject Page
-                                            </Button>
-                                            <Button style={{ margin: "0px 16px" }} className='custom-primary-btn'
-                                                onClick={() => {
-                                                    handleWorkFlowApprove()
-                                                }}
-                                            >Approve Page</Button>
-                                        </div> : ""}
-                                    {params?.fromScreen == "Workflow" ? "" :
-                                        <div>
-                                            <div className='cropSnippet'>
-                                                <Select disabled={showRowColIdentifier} style={{width:150}} value={selectedMode} options={modesValues} onChange={(e)=>handleMenuChange(e)} />
-                                            </div>
-                                        </div>
-                                    }
-                                </Col>
-                            </Row>
-                        </div>
-                        <div className='pbrCenterPdfBlock' st>
+									{params?.fromScreen == "Workflow" ?
+										<div className='btns' style={{ marginLeft: 40 }}>
+											<Button
+												className='custom-primary-btn'
+												onClick={() => {
+													setIsModalOpen(true)
+												}}>
+												Reject Page
+											</Button>
+											<Button style={{ margin: "0px 16px" }} className='custom-primary-btn'
+												onClick={() => {
+													handleWorkFlowApprove()
+												}}
+											>Approve Page</Button>
+										</div> : ""}
+									{params?.fromScreen == "Workflow" ? "" :
+										<div>
+											<div className='cropSnippet'>
+												<Select disabled={showRowColIdentifier} style={{ width: 150 }} value={selectedMode} options={modesValues} onChange={(e) => handleMenuChange(e)} />
+											</div>
+										</div>
+									}
+								</Col>
+							</Row>
+						</div>
+						<div className='pbrCenterPdfBlock' st>
 
-                            {showRowColIdentifier &&
-                                <TableIdentifier clickedTable={clickedTable} metaData={params} imageHeight={imageHeight} imageWidth={imageWidth}
-                                    triggerPreview={triggerPreview} params={params} triggerUpdate={triggerUpdate} setSideTableData={setSideTableData}
-                                    setTriggerUpdate={setTriggerUpdate} tableActiveKey={tableActiveKey} formTableData={formTableData} setModalData={setModalData} setModalColumns={setModalColumns}
-                                    templateVersion={templateVersion} initialSideTableData={initialSideTableData} pageIdFormValues={pageIdFormValues} pageNumber={pageNumber} />}
+							{showRowColIdentifier &&
+								<TableIdentifier clickedTable={clickedTable} metaData={params} imageHeight={imageHeight} imageWidth={imageWidth}
+									triggerPreview={triggerPreview} params={params} triggerUpdate={triggerUpdate} setSideTableData={setSideTableData}
+									setTriggerUpdate={setTriggerUpdate} tableActiveKey={tableActiveKey} formTableData={formTableData} setModalData={setModalData} setModalColumns={setModalColumns}
+									templateVersion={templateVersion} initialSideTableData={initialSideTableData} pageIdFormValues={pageIdFormValues} pageNumber={pageNumber} />}
 
-                            {/* <DrawAnnotations /> */}
-                            {/* <h3>hello</h3> */}
+							{/* <DrawAnnotations /> */}
+							{/* <h3>hello</h3> */}
 
-                            <div id='drawRectangle'>
-                                <div className='pdfToImgBlock'>
+							<div id='drawRectangle'>
+								<div className='pdfToImgBlock'>
 
-                                    <ImageMapper
-                                        id='imageMApper'
-                                        className='pdfToImageWrapper'
-                                        src={displayImage}
-                                        map={areasMap}
-                                        // onLoad={() => load()}
-                                        onClick={area => clicked(area)}
-                                    />
+									<ImageMapper
+										id='imageMApper'
+										className='pdfToImageWrapper'
+										src={displayImage}
+										map={areasMap}
+										// onLoad={() => load()}
+										onClick={area => clicked(area)}
+									/>
 
-                                </div>
-                            </div>
+								</div>
+							</div>
 
-                        </div>
-                    </div>
-                    <Modal
-                        title='Preview'
-                        visible={isModalVisible}
-                        // style={{height:300,overflowY:"scroll"}}
-                        onOk={handleOk}
-                        onCancel={handleCancel}
-                        footer={null}>
-                        <Table
-                            loading={tableLoading}
-                            className='pbrTemplates-table'
-                            columns={modalColumns}
-                            dataSource={modalData}
-                            pagination={false}
-                            scroll={{ x: 1000, y: 300 }}
-                        />
-                    </Modal>
-                    <RejectModal templateVersion={templateVersion} pageNumber={pageNumber} params={params} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+						</div>
+					</div>
+					<Modal
+						title='Preview'
+						visible={isModalVisible}
+						// style={{height:300,overflowY:"scroll"}}
+						onOk={handleOk}
+						onCancel={handleCancel}
+						footer={null}>
+						<Table
+							loading={tableLoading}
+							className='pbrTemplates-table'
+							columns={modalColumns}
+							dataSource={modalData}
+							pagination={false}
+							scroll={{ x: 1000, y: 300 }}
+						/>
+					</Modal>
+					<RejectModal templateVersion={templateVersion} pageNumber={pageNumber} params={params} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
 
-                </div>
-                <div className='pbrTemplateRight'>
-                    <div className='pbrPanel pbrRightPanel'>
-                        <Sider trigger={null} collapsible collapsed={rightPanelCollapsed}>
-                            <span className='trigger' onClick={toggleRightCollapsed}>
-                                <img src={panelRightImg} className='panelImg' />
-                            </span>
-                            {params?.fromScreen == "Workflow" ? <ParameterList originalResponse={originalResponse} setAreasMap={setAreasMap} areasMap={areasMap} /> :
-                                <ChangeCoordiantes areasMapObject={areasMapObject} params={params} clickedSnippetId={clickedSnippetId} onChangeChart={onChangeChart} />
-                            }
-                        </Sider>
-                    </div>
-                </div>
-            </div>
-            <WorkflowPreviewModal templateVersion={templateVersion} params={params} isModalOpen={workflowPreviewModal} setIsModalOpen={setWorkflowPreviewModal} />
-            <Signature
-                isPublish={isPublish}
-                handleClose={handleClose}
-                screenName="Pbr Creation"
-                PublishResponse={PublishResponse}
-                appType="PBR"
-                dispId={templateId}
-                version={templateVersion}
-                status={approveReject}
-            />
-        </div>
-    );
+				</div>
+				<div className='pbrTemplateRight'>
+					<div className='pbrPanel pbrRightPanel'>
+						<Sider trigger={null} collapsible collapsed={rightPanelCollapsed}>
+							<span className='trigger' onClick={toggleRightCollapsed}>
+								<img src={panelRightImg} className='panelImg' />
+							</span>
+							{params?.fromScreen == "Workflow" ? <ParameterList originalResponse={originalResponse} setAreasMap={setAreasMap} areasMap={areasMap} /> :
+								<ChangeCoordiantes areasMapObject={areasMapObject} params={params} clickedSnippetId={clickedSnippetId} onChangeChart={onChangeChart} />
+							}
+						</Sider>
+					</div>
+				</div>
+			</div>
+			<WorkflowPreviewModal templateVersion={templateVersion} params={params} isModalOpen={workflowPreviewModal} setIsModalOpen={setWorkflowPreviewModal} />
+			<Signature
+				isPublish={isPublish}
+				handleClose={handleClose}
+				screenName="Pbr Creation"
+				PublishResponse={PublishResponse}
+				appType="PBR"
+				dispId={templateId}
+				version={templateVersion}
+				status={approveReject}
+			/>
+		</div>
+	);
 }
 
 export default PaperBatchRecordsTemplate;

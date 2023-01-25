@@ -1,0 +1,49 @@
+.limit-container {
+    .landing-search-wrapper {
+        background: #fff;
+        border-radius: 4px;
+        margin-top: -10px;
+    
+        .landing-card {
+            margin: 36px;
+            overflow: hidden;
+            padding: 40px 0;
+        }
+    }
+    .ant-table-thead > tr > th {
+        background-color: #E7E5FF;
+        height: 56px;
+    }
+    .action-table {
+        display: flex;
+        gap: 20px;
+    }
+    tr {
+        background-color: #FFF6F6;
+    }
+    tr:hover {
+       background-color: none !important;
+    }
+    tr.ant-table-expanded-row>td {
+        padding: 0px !important;
+      }
+    .expand-table {
+        .empty-space {
+            background-color:#E7E5FF;
+        }
+        tr {
+            background-color: white !important;
+        }
+    }
+    .add-button-limit {
+		display: flex;
+		justify-content: center;
+		border: 1px solid #f0f0f0;
+		border-top: none;
+		button {
+			border: 1px dashed #d9d9d9;
+			margin: 5px 0px 5px 0px;
+			width: fit-content;
+		}
+	}
+}

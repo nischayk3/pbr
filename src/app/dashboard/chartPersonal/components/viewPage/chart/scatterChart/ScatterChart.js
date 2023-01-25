@@ -223,6 +223,11 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		];
 
 		newArr.forEach((ele) => {
+			ele.limits = {
+				"control": [],
+				"specification": [],
+				"warning": []
+			};
 			if (ele.data_filter.unapproved_data === 1) {
 				ele.layout.annotations = annotations;
 			} else {
@@ -292,6 +297,8 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			newdataArr[0].data = viewRes.data[0].data;
 			newdataArr[0].extras = viewRes.data[0].extras;
 			newdataArr[0].layout = viewRes.data[0].layout;
+			newdataArr[0].limits = viewRes.data[0].limits;
+			newdataArr[0].violations = viewRes.data[0].violations;
 			newdataArr[0].ppk_cpk_data = viewRes.data[0].ppk_cpk_data;
 			/* istanbul ignore next */
 			if (axisValues.transform !== "") {
