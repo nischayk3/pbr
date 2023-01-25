@@ -17,6 +17,7 @@ export default function Redirect() {
 		let res = await getSession();
 		let data = res['Data'];
 		if (data) {
+			dispatch(hideLoader());
 			dispatch(sendLoginDetails(data));
 			localStorage.setItem('login_details', JSON.stringify(data));
 			localStorage.setItem('user', data.user_id);
@@ -25,7 +26,6 @@ export default function Redirect() {
 			history.push('/dashboard/workspace');
 			//temporary fix
 			window.location.reload()
-			dispatch(hideLoader());
 		} else {
 			dispatch(showNotification('error', 'Error in Login'));
 			dispatch(hideLoader());
