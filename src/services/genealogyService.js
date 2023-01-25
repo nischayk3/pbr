@@ -137,6 +137,24 @@ export const getProcessInfo = _queryParam => {
 	);
 };
 
+/**
+ * TODO: get subprocess Order details
+ */
+export const getSubProcess = _queryParam => {
+	return Service.get(
+		MDH_APP_GENEALOGY + 'sub-process-details',
+		_queryParam,
+		request_headers
+	).then(
+		response => {
+			return response.data;
+		},
+		error => {
+			return error.response.data;
+		}
+	);
+};
+
 //download data table
 // export const downloadDataTable = request => {
 // 	return Service.get(
@@ -242,18 +260,18 @@ export const getBatchEquipment = request => {
 
 // get elog book
 export const getElogbook = (request) => {
-    return Service.get(
-        BMS_APP_PYTHON_SERVICE + "/elogbook-record-list",
-        request,
-        request_headers
-    ).then(
-        (response) => {
-            return response.data;
-        },
-        (error) => {
-            return error.response.data;
-        }
-    );
+	return Service.get(
+		BMS_APP_PYTHON_SERVICE + "/elogbook-record-list",
+		request,
+		request_headers
+	).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
 };
 
 //get timezone(PBR)

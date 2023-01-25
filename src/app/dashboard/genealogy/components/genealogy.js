@@ -10,8 +10,8 @@ import {
 	DownloadOutlined,
 	InboxOutlined
 } from '@ant-design/icons';
-import { Button, Modal, Result, Tabs, Typography, Upload, Select } from 'antd';
-import React, { useState, useEffect } from 'react';
+import { Button, Modal, Result, Select, Tabs, Typography, Upload } from 'antd';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import genealogyLanding from '../../../../assets/images/genealogy-landing.png';
 import batchIcon from '../../../../assets/images/material.png';
@@ -27,24 +27,19 @@ import {
 	genealogyDataUpload,
 	getBackwardData,
 	getBatchEquipment,
-	getBatchInfo,
-	getForwardData,
-	getProcessInfo,
-	pbrApproval,
+	getBatchInfo, getElogbook, getForwardData,
+	getProcessInfo, getSubProcess, getTimezoneData, pbrApproval,
 	pbrFileUpload,
-	updateGoldenBatch,
-	getElogbook,
-	getTimezoneData
+	updateGoldenBatch
 } from '../../../../services/genealogyService';
 import GenealogyDrawer from '../components/genealogyDrawer/index.js';
 import GenealogyDataTable from './genealogyDataTable';
 import Filter from './genealogyFilter';
+import './genelogy.scss';
 import TreePlot from './TreePlot/TreePlot';
-import './genelogy.scss'
 const { TabPane } = Tabs;
 const { Paragraph } = Typography;
 const { Dragger } = Upload;
-
 
 function Genealogy() {
 	const [batchNodeId, setBatchNodeId] = useState({});
@@ -59,6 +54,7 @@ function Genealogy() {
 	const [purchaseInfo, setPurchaseInfo] = useState([]);
 	const [processInput, setProcessInput] = useState([]);
 	const [processOutput, setProcessOutput] = useState([]);
+	const [subProcess, setSubProcess] = useState([]);
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 	const [panes, setPanes] = useState([]);
 	const [limsBatchInfo, setLimsBatchInfo] = useState([]);
@@ -91,8 +87,8 @@ function Genealogy() {
 	useEffect(() => {
 		if (timeZoneTemp && timeZoneUpdate) {
 			let arr = timeZoneList
-			arr.forEach(item=>{
-				if(item.fileName === timeZoneUpdate.name){
+			arr.forEach(item => {
+				if (item.fileName === timeZoneUpdate.name) {
 					item.timezone = timeZoneTemp
 				}
 			})
@@ -195,6 +191,10 @@ function Genealogy() {
 					product: node.nodeData.matNo,
 					batch: node.nodeData.batchNo
 				}
+				let _reqSubprocess = {
+					process_order: node.nodeData.poNo,
+					plant: node.nodeData.plant,
+				}
 				setNodeTitle(node.nodeData.poNo);
 				setIsDrawerOpen(true);
 				setNodeType(node.nodeType);
@@ -202,6 +202,7 @@ function Genealogy() {
 				getElogBookRecords(_reqElogbook)
 				getNodeProcessInput(_reqProcessInput);
 				getNodeProcessOutput(_reqProcessOutput);
+				getSubProcess(_reqSubprocess);
 			} else if (node.nodeType === 'Purchase Order') {
 				const _purchaseInfo = {
 					node_id: node.nodeData.nodeId,
@@ -441,6 +442,24 @@ function Genealogy() {
 	};
 
 	/**
+	 *TODO: get sub process output of node
+	 */
+	const getSubProcessNode = async _reqProcessInfo => {
+		try {
+			dispatch(showLoader());
+			const process = await getSubProcess(_reqProcessInfo);
+			dispatch(hideLoader());
+			if (process.length > 0) {
+				setSubProcess(processResOutput);
+			}
+		} catch (error) {/* istanbul ignore next */
+			dispatch(hideLoader());
+			/* istanbul ignore next */
+			dispatch(showNotification('error', 'No Data Found'));
+		}
+	};
+
+	/**
 	 *TODO: get PBR Data output of node
 	 */
 	/* istanbul ignore next */
@@ -526,8 +545,8 @@ function Genealogy() {
 					fileName.push(item.fileName)
 					fileSize.push(item.fileSize)
 				})
-				let timezoneDuplicate = timeZoneList.filter(item=> !duplicateFile.includes(item.fileName))
-				timezoneDuplicate.forEach(item=>{
+				let timezoneDuplicate = timeZoneList.filter(item => !duplicateFile.includes(item.fileName))
+				timezoneDuplicate.forEach(item => {
 					timezone.push(item.timezone)
 				})
 				let login_response = JSON.parse(localStorage.getItem('login_details'));
@@ -543,7 +562,7 @@ function Genealogy() {
 						filename: fileName,
 						fileSize: fileSize,
 						productNum: data[1],
-						timezone:timezone,
+						timezone: timezone,
 						siteNum: data[0],
 						status: 'N',
 						uploadReason: 'PBR Document'
@@ -829,6 +848,7 @@ function Genealogy() {
 								batchInfo={batchInfo}
 								processInput={processInput}
 								processOutput={processOutput}
+								subProcess={subProcess}
 								batchEquData={batchEquData}
 								elogBookData={elogBookData}
 								//fileDownload={downloadFile}
@@ -947,6 +967,7 @@ function Genealogy() {
 								batchInfo={batchInfo}
 								processInput={processInput}
 								processOutput={processOutput}
+								subProcess={subProcess}
 								batchEquData={batchEquData}
 								elogBookData={elogBookData}
 								collapseKey={collapseKey}

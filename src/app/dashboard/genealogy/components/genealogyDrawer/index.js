@@ -72,6 +72,7 @@ function GenealogyDrawer(props) {
 				purchaseInfo={props.purchaseInfo}
 				processInput={props.processInput}
 				processOutput={props.processOutput}
+				subProcess={props.subProcess}
 				type={props.type}
 				collapseKey={props.collapseKey}
 				setCollapseKey={props.setCollapseKey}

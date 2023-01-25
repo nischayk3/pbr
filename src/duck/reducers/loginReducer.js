@@ -4,7 +4,6 @@ const initialState = {
 	loginDetails: {},
 	redirectUrl: '',
 	profile: false
-
 };
 
 export default (state = initialState, action) => {
