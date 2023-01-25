@@ -1,5 +1,5 @@
 import { COMPONENT, ROW, COLUMN } from "./data";
-import InputForm from "./FormInput";
+import InputForm from "./components/FormInput";
 
 const initialData = {
   layout: [

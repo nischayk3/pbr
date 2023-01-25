@@ -6,7 +6,6 @@ import { COMPONENT, SIDEBAR_ITEM, ROW, COLUMN } from "./data";
 const ACCEPTS = [SIDEBAR_ITEM, COMPONENT, ROW, COLUMN];
 
 const DropZone = ({ data, onDrop, isLast, className, layout }) => {
-  console.log(data,"drop");
   const [{ isOver, canDrop }, drop] = useDrop({
     accept: ACCEPTS,
     drop: (item, monitor) => {

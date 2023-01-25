@@ -98,7 +98,6 @@ const EbookStep = () => {
 		)}
 	</div>;
 
-	console.log(state)
 	return (
 		<div className="custom-wrapper">
 			<BreadCrumbWrapper />

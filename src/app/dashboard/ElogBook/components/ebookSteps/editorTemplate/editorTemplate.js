@@ -16,12 +16,13 @@ import Row from "./Row";
 import { SIDEBAR_ITEMS, SIDEBAR_ITEM, COMPONENT, COLUMN } from "./data";
 import rightarrow from './rightarrow.png';
 import { Button, Dropdown, Layout, Menu, Select, Tabs, Steps, Checkbox } from 'antd';
-import CheckboxForm from './CheckboxForm';
-import InputForm from './InputForm';
-import TextForm from './TextForm';
-import Tableform from './Tableform';
-import RadioForm from './RadioForm';
-import LineForm from './LineForm';
+import CheckboxForm from './forms/CheckboxForm';
+import InputForm from './forms/InputForm';
+import TextForm from './forms/TextForm';
+import Tableform from './forms/Tableform';
+import RadioForm from './forms/RadioForm';
+import LineForm from './forms/LineForm';
+import './editorTemplate.scss'
 const { Header, Sider, Content } = Layout;
 const { TabPane } = Tabs;
 
@@ -48,7 +49,7 @@ function editorTemplate() {
 	const [layout, setLayout] = useState(initialLayout);
 	const [components, setComponents] = useState(initialComponents);
 	const [current, setCurrent] = useState("1");
-	const [collapsed, setCollapsed] = useState(false)
+	const [collapsed, setCollapsed] = useState(true)
 	const [filterPanel, setFilterPanel] = useState([]);
 	const [completedTasks, setCompletedTasks] = useState([]);
 	const [inputData, setInputData] = useState({ technicalname: '', datatype: '', datatype: '', label: '', tooltip: '', id: '', width: '' })
@@ -61,7 +62,6 @@ function editorTemplate() {
 	const [editRow, setEditRow] = useState('');
 	const [columnData, setColumnData] = useState({ title: '', id: '' })
 	const [formData, setFormData] = useState({ columns: '', rows: '' });
-	console.log(radioData);
 	const handleDropToTrashBin = useCallback(
 		(dropZone, item) => {
 			const splitItemPath = item.path.split("-");
@@ -72,9 +72,7 @@ function editorTemplate() {
 
 	const handleDrop = useCallback(
 		(dropZone, item) => {
-			console.log('dropZone', dropZone)
-			console.log('item', item)
-
+            setCollapsed(false)
 			const splitDropZonePath = dropZone.path.split("-");
 			const pathToDropZone = splitDropZonePath.slice(0, -1).join("-");
 
@@ -259,7 +257,6 @@ function editorTemplate() {
 		[layout, components]
 	);
 	const renderRow = (row, currentPath) => {
-		console.log(row,"sdafsg");
 		return (
 			<Row
 				key={row.id}
@@ -309,7 +306,6 @@ function editorTemplate() {
 					fields_data[foundIndex]['datatype'] = event
 					break;
 			}
-			// console.log(fields_data[foundIndex]);
 			// if (event == 'technicalname' || event == 'label' || event == 'tooltip') {
 			// 	fields_data[foundIndex]['KeyData'] = event
 			// 	fields_data[foundIndex]['ValueData'] = ''
@@ -323,9 +319,7 @@ function editorTemplate() {
 	}
 
 	const filteredOrg = [];
-	console.log(layout, "layout");
 	const handleFilterPanel = (Id) => {
-		console.log(Id);
 		setRadioData({ ...radioData, id: Id?.id, textlabel: Id?.textlabel, fieldData: Id?.fieldData })
 		setFormData({ ...formData, rows: Id?.datasource?.length, columns: Id?.columns?.length })
 		// setSelectTable({datasource: Id?.datasource?.length, columns: Id?.columns?.length })
@@ -365,13 +359,11 @@ function editorTemplate() {
 
 	}
 	const handleColumnTitle = (data, col, i) => {
-		console.log(data, col, i);
 		const filterData = data.find((i) => i.title === col)
 		setColumnData({ ...columnData, id: filterData.key, title: col })
 
 	}
 
-	console.log(layout);
 	return (
 		<div>
 			<Layout>
@@ -380,7 +372,7 @@ function editorTemplate() {
 						<div className='left-screen flex-grow: 8' >
 
 							{Object.values(SIDEBAR_ITEMS).map((sideBarItem, index) => (
-								<TopBarItem key={sideBarItem.id} data={sideBarItem} />
+								<TopBarItem key={sideBarItem.id} data={sideBarItem} collapsed={collapsed} />
 							))}
 						</div>
 					</div>

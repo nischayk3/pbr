@@ -23,9 +23,7 @@ const Column = ({ data, components, handleDrop, path, handleFilterPanel, handleC
 
   const opacity = isDragging ? 0 : 1;
   drag(ref);
-console.log(isDragging);
   const renderComponent = (component, currentPath) => {
-    console.log(component);
     return (
       <Component
         key={component.id}
@@ -39,7 +37,6 @@ console.log(isDragging);
       />
     );
   };
-  console.log(data,"daata");
   return (
     <div
       ref={ref}

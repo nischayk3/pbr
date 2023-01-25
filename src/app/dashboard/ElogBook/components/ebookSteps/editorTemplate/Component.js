@@ -1,12 +1,12 @@
 import React, { useRef } from "react";
 import { useDrag } from "react-dnd";
 import { COMPONENT } from "./data";
-import FormInput from "./FormInput";
-import FormText from "./FormText";
-import FormCheckbox from "./FormCheckbox";
-import Formtable from "./Formtable";
-import FormRadio from "./FormRadio";
-import FormLine from "./FormLine";
+import FormInput from "./components/FormInput";
+import FormText from "./components/FormText";
+import FormCheckbox from "./components/FormCheckbox";
+import Formtable from "./components/Formtable";
+import FormRadio from "./components/FormRadio";
+import FormLine from "./components/FormLine";
 
 const style = {
   border: "1px dashed black",
@@ -29,7 +29,6 @@ const Component = ({ data, components, path,handleFilterPanel, handleColumnTitle
   drag(ref);
 
   const component = components[data.id];
-  console.log(data,isDragging,layout,"component");
 
   return (
     <div

@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
-import FormInput from './FormInput';
-import FormText from './FormText';
+import FormInput from './components/FormInput';
+import FormText from './components/FormText';
 export const SIDEBAR_ITEM = "sidebarItem";
 export const ROW = "row";
 export const COLUMN = "column";
@@ -17,14 +17,14 @@ export const SIDEBAR_ITEMS = [
           content: "FormText"
         }
       },
-      {
-        id: uuidv4(),
-        type: SIDEBAR_ITEM,
-        component: {
-          type: "Chart",
-          content: "Some name"
-        }
-      },
+      // {
+      //   id: uuidv4(),
+      //   type: SIDEBAR_ITEM,
+      //   component: {
+      //     type: "Chart",
+      //     content: "Some name"
+      //   }
+      // },
     {
       id: uuidv4(),
       type: SIDEBAR_ITEM,

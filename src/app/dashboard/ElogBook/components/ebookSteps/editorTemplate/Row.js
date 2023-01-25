@@ -23,9 +23,7 @@ const Row = ({ data, components, handleDrop, path, handleFilterPanel, handleColu
 
   const opacity = isDragging ? 0 : 1;
   drag(ref);
-console.log(isDragging);
   const renderColumn = (column, currentPath) => {
-    console.log(column);
     return (
       <Column
         key={column.id}
@@ -40,7 +38,6 @@ console.log(isDragging);
       />
     );
   };
-  console.log(data,"daata");
   return (
     <div ref={ref} style={{ ...style, opacity }} className="base draggable row">
       {/* {data.id} */}
