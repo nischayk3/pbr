@@ -21,8 +21,6 @@ const App = () => {
 	const error = useSelector(
 		(state) => state.commonReducer.isError
 	);
-
-	console.log("${match.url}", match.url, 'user/customer-login')
 	return (
 		<>
 			<Loading show={showLoading} />

@@ -269,7 +269,7 @@ const Threshold = ({ postChartData, setPostChartData }) => {
         ) : (
           <Row className="mt">
             <Col span={24}>
-              <Button className="button-add" onClick={onAddThresh}>
+              <Button className="button-add" onClick={onAddThresh} disabled={!postChartData?.data[0]?.extras?.data_table?.length}>
                 <PlusOutlined /> Add a threshold
               </Button>
             </Col>

@@ -20,45 +20,29 @@
 		padding-bottom: 25px;
 	}
 
-	.ant-list {
-		.ant-list-header {
-			padding: 0px;
+	.table-role-wrapper {
+		position: relative;
 
-			.roles-head {
-				p {
-					background: #E7E5FF;
-					margin: 0;
-					padding: 12px 29px;
-					font-family: 'Roboto';
-					font-style: normal;
-					font-weight: 600;
-					font-size: 14px;
-					line-height: 22px;
-					/* identical to box height, or 157% */
-					letter-spacing: 0.01em;
-					color: #282828;
-				}
+		.roles-head {
+			position: absolute;
+			z-index: 1;
+			width: 100%;
+			top: 47px;
 
-				.create-role {
-					display: flex;
-					background: #CDCAFF;
-					padding: 8px 26px;
-					justify-content: space-between;
+			.create-role {
+				display: flex;
+				background: #CDCAFF;
+				padding: 8px 26px;
+				justify-content: space-between;
 
-					input {
-						width: 70%;
-					}
+				input {
+					width: 70%;
 				}
 			}
 		}
-
-		.ant-list-item {
-			background: #F7F7F7;
-			border-bottom: 1px solid #fff;
-			padding: 12px 27px;
-		}
-
 	}
+
+
 }
 
 .roles-details {
@@ -67,6 +51,7 @@
 	}
 
 	.roles-heading {
+
 		display: flex;
 		float: left;
 
@@ -348,5 +333,29 @@
 .actions {
 	a {
 		padding-left: 10px
+	}
+}
+
+.roles-status {
+	display: flex;
+
+	.dot {
+		height: 6px;
+		width: 6px;
+		border-radius: 50%;
+		margin: 5px 8px 5px 0px;
+	}
+
+	.red {
+		background-color: #FF0000;
+	}
+
+	.green {
+		background-color: #32AF55;
+
+	}
+
+	p {
+		margin: 0px;
 	}
 }
