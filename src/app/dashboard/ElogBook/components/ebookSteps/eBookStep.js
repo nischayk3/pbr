@@ -8,6 +8,8 @@ import "./eBookStep.scss";
 import EditorNew from "./editornew/editorNew";
 import EditorTemplate from "./editorTemplate/editorTemplate";
 import MetaData from "./metaData/metaData";
+import { useDrag, useDrop, DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 const { TabPane } = Tabs;
 const { Step } = Steps;
 const { Item } = Form;
@@ -74,7 +76,7 @@ const EbookStep = () => {
 			key: "3",
 			sticky: "New form",
 			form_name: "New form",
-			data: <EditorTemplate />
+			data: <DndProvider backend={HTML5Backend}> <EditorTemplate /></DndProvider>
 		},
 
 	];
@@ -96,7 +98,6 @@ const EbookStep = () => {
 		)}
 	</div>;
 
-	console.log(state)
 	return (
 		<div className="custom-wrapper">
 			<BreadCrumbWrapper />
