@@ -5,12 +5,12 @@
  * @Last Modified - 15 March, 2022
  * @Last Changed By - Dinesh Kumar
  */
-import { SearchOutlined, ManOutlined } from '@ant-design/icons';
+import { SearchOutlined } from '@ant-design/icons';
 import { Button, Collapse, Input, Space, Table } from "antd";
 import React, { useEffect, useState } from "react";
-import { useHistory } from 'react-router-dom';
 import Highlighter from "react-highlight-words";
-import navigate from "../../../../../assets/navigate.png"
+import { useHistory } from 'react-router-dom';
+import navigate from "../../../../../assets/navigate.png";
 /* istanbul ignore next */
 function GenealogyDataTable(props) {
 	const [batchData, setbatchData] = useState({});
@@ -18,6 +18,7 @@ function GenealogyDataTable(props) {
 	const [pbrDetails, setPbrDetails] = useState([]);
 	const [proInput, setProInput] = useState([]);
 	const [proOutput, setProOutput] = useState([]);
+	const [subPro, setSubPro] = useState([]);
 	const [purchaseData, setPurchaseData] = useState([]);
 	const [batchEqupData, setBatchEqupData] = useState([]);
 	const [searchedColumn, setSearchedColumn] = useState('');
@@ -131,16 +132,16 @@ function GenealogyDataTable(props) {
 		setSearchText('');
 	}
 
-	const pbrColumns = [
-		{ title: "Site", dataIndex: "site_code", key: "1", width: 100, ...getColumnSearchProps('site_code') },
-		{ title: "Product", dataIndex: "product_num", key: "2", width: 100, ...getColumnSearchProps('product_num') },
-		{ title: "Batch", dataIndex: "batch_num", key: "3", width: 100, ...getColumnSearchProps('batch_num') },
-		{ title: "Parameter", dataIndex: "parameter_name", key: "4", width: 100, ...getColumnSearchProps('parameter_name') },
-		{ title: "Param Value", dataIndex: "parameter_value", key: "5", width: 100, ...getColumnSearchProps('parameter_value') },
-		{ title: "Data Source", dataIndex: "data_source", key: "6", width: 100, ...getColumnSearchProps('data_source') },
-		{ title: "System Code", dataIndex: "system_code", key: "7", width: 100, ...getColumnSearchProps('system_code') },
-		{ title: "UOM ", dataIndex: "uom_code", key: "8", width: 100, ...getColumnSearchProps('uom_code') },
-	]
+	// const pbrColumns = [
+	// 	{ title: "Site", dataIndex: "site_code", key: "1", width: 100, ...getColumnSearchProps('site_code') },
+	// 	{ title: "Product", dataIndex: "product_num", key: "2", width: 100, ...getColumnSearchProps('product_num') },
+	// 	{ title: "Batch", dataIndex: "batch_num", key: "3", width: 100, ...getColumnSearchProps('batch_num') },
+	// 	{ title: "Parameter", dataIndex: "parameter_name", key: "4", width: 100, ...getColumnSearchProps('parameter_name') },
+	// 	{ title: "Param Value", dataIndex: "parameter_value", key: "5", width: 100, ...getColumnSearchProps('parameter_value') },
+	// 	{ title: "Data Source", dataIndex: "data_source", key: "6", width: 100, ...getColumnSearchProps('data_source') },
+	// 	{ title: "System Code", dataIndex: "system_code", key: "7", width: 100, ...getColumnSearchProps('system_code') },
+	// 	{ title: "UOM ", dataIndex: "uom_code", key: "8", width: 100, ...getColumnSearchProps('uom_code') },
+	// ]
 	const limsColumns = [
 		{ title: "Batch", dataIndex: "batch_num", key: "1", width: 100, ...getColumnSearchProps('batch_num') },
 		{ title: "Plant", dataIndex: "site_code", key: "2", width: 100, ...getColumnSearchProps('site_code') },
@@ -171,6 +172,18 @@ function GenealogyDataTable(props) {
 		{ title: "Node Id", dataIndex: "node_id", key: "7", width: 100, ...getColumnSearchProps('node_id') },
 		{ title: "Unit", dataIndex: "unit", key: "8", width: 70, ...getColumnSearchProps('unit') },
 		{ title: "Qty", dataIndex: "qty", key: "9", width: 70, ...getColumnSearchProps('qty') }
+	];
+
+	const subProcessColumn = [
+		{ title: "Process Order", dataIndex: "process_order_name", key: "1", width: 80, ...getColumnSearchProps('process_order_name') },
+		{ title: "Process Stage", dataIndex: "process_stage", key: "2", width: 60, ...getColumnSearchProps('process_stage') },
+		{ title: "Product", dataIndex: "product_number", key: "3", width: 60, ...getColumnSearchProps('product_number') },
+		{ title: "Batch", dataIndex: "batch_number", key: "4", width: 60, ...getColumnSearchProps('batch_number') },
+		{ title: "Equipment Desc", dataIndex: "equipment_description", key: "5", width: 100, ...getColumnSearchProps('equipment_description') },
+		{ title: "File Name", dataIndex: "file_name", key: "6", width: 80, ...getColumnSearchProps('file_name') },
+		{ title: "Manufacturer", dataIndex: "manufacturer", key: "7", width: 100, ...getColumnSearchProps('manufacturer') },
+		{ title: "Model", dataIndex: "model", key: "8", width: 70, ...getColumnSearchProps('model') },
+		{ title: "Tag", dataIndex: "tag", key: "9", width: 70, ...getColumnSearchProps('tag') }
 	];
 
 	const toTimestamp = (strDate) => {
@@ -214,6 +227,9 @@ function GenealogyDataTable(props) {
 		}
 		if (props && props.processOutput && props.processOutput.length > 0) {
 			setProOutput(props.processOutput);
+		}
+		if (props && props.subProcess && props.subProcess.length > 0) {
+			setSubPro(props.subProcess);
 		}
 		if (props && props.purchaseInfo) {
 			setPurchaseData(props.purchaseInfo);
@@ -385,6 +401,37 @@ function GenealogyDataTable(props) {
 						size="small"
 						columns={processColumns}
 						dataSource={proOutput}
+						scroll={{ x: 1200, y: 350 }}
+						pagination={false}
+					/>
+				</Panel>
+			) : (
+				<></>
+			)}
+
+			{props.type === "Process Order" ? (
+				<Panel
+					header={
+						<div className="panel-header">
+							<p>Sub process order</p>
+							<Button
+								type="primary"
+								className="custom-primary-btn"
+								size="small"
+							>
+								Download
+							</Button>
+						</div>
+					}
+					key="4"
+				>
+					<Table
+						rowClassName={(record, index) =>
+							index % 2 === 0 ? "table-row-light" : "table-row-dark"
+						}
+						size="small"
+						columns={subProcessColumn}
+						dataSource={subPro}
 						scroll={{ x: 1200, y: 350 }}
 						pagination={false}
 					/>
