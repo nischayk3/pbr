@@ -11,7 +11,7 @@ import { dispatch } from 'd3';
 import React, { useEffect, useState } from 'react';
 import Highlighter from 'react-highlight-words';
 import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
-import { getResource } from '../../../../services/userRolesAndAccessService';
+import { getResource, resourceActions } from '../../../../services/userRolesAndAccessService';
 import Resource from './Resource';
 
 const Roles = () => {
@@ -25,6 +25,8 @@ const Roles = () => {
 	const [roleDataAccess, setRoleDataAccess] = useState([]);
 	const [isRoleDetailsAvailable, setIsRoleDetailsAvailable] = useState(false);
 	const [searchedColumn, setSearchedColumn] = useState('');
+	const [resourceList, setResourceList] = useState([]);
+	const [resourceDataTable, setResourceDataTable] = useState([]);
 
 
 	useEffect(() => {
@@ -128,7 +130,6 @@ const Roles = () => {
 		};
 	};
 
-
 	const ResourceCard = ({ resourceName, resourceDesc, authTag, authCount }) => {
 		return (
 			<div className="resource-card">
@@ -161,8 +162,11 @@ const Roles = () => {
 
 	const handleClickResource = () => {
 		setIsVisible(true)
+		const resource = {
+			all_resources: true
+		}
+		getResourceAction(resource)
 	}
-
 
 	const expandedRowRender = () => {
 		const columns1 = [
@@ -278,6 +282,7 @@ const Roles = () => {
 		try {
 			dispatch(showLoader());
 			const resource = await getResource(_resourceQuery)
+			dispatch(hideLoader());
 			if (resource.statuscode === 200) {
 				setAllRoles(resource.message)
 			}
@@ -292,7 +297,7 @@ const Roles = () => {
 		try {
 			dispatch(showLoader());
 			const res = await getResource(_resourceQuery)
-			dispatch(showLoader());
+			dispatch(hideLoader());
 			if (res.statuscode === 200) {
 				setRoleDesc(res?.message?.role_description)
 				setResourceCount(res?.message?.role_resource_details?.length)
@@ -336,6 +341,48 @@ const Roles = () => {
 		</div>
 	)
 
+	// get resource data
+	const getResourceAction = async (_resourceQuery) => {
+		try {
+			dispatch(showLoader());
+			const resourceAction = await resourceActions(_resourceQuery)
+			dispatch(hideLoader());
+			if (resourceAction.statuscode === 200) {
+				setResourceList(resourceAction.message)
+				console.log("resourceAction", resourceAction);
+			}
+
+		} catch (error) {
+			dispatch(hideLoader());
+			dispatch(showNotification("error", error));
+		}
+	}
+
+	// get resource data
+	const getResourceDatatable = async (_resourceQuery) => {
+		try {
+			dispatch(showLoader());
+			const resDatatable = await resourceActions(_resourceQuery)
+			dispatch(hideLoader());
+			if (resDatatable.statuscode === 200) {
+				setResourceDataTable(resDatatable.message)
+				console.log("resourceAction", resDatatable);
+			}
+
+		} catch (error) {
+			dispatch(hideLoader());
+			dispatch(showNotification("error", error));
+		}
+	}
+
+	const callbackResource = (value) => {
+		const reso = {
+			all_resources: false,
+			resource: value
+		}
+		getResourceDatatable(reso)
+	}
+
 	return (
 		<div className="roles-wrapper">
 			<div className="roles">
@@ -363,8 +410,6 @@ const Roles = () => {
 
 					/>
 				</div>
-
-
 			</div>
 
 			<div className="roles-details">
@@ -433,7 +478,14 @@ const Roles = () => {
 							}}
 							dataSource={roleDataAccess}
 						/>
-						<Resource isVisible={isVisible} setIsVisible={setIsVisible} />
+						<Resource
+							isVisible={isVisible}
+							setIsVisible={setIsVisible}
+							roleName={roleName}
+							resourceList={resourceList}
+							callbackResource={callbackResource}
+							resourceDataTable={resourceDataTable}
+						/>
 					</>
 
 				) : (<Empty imageStyle={{

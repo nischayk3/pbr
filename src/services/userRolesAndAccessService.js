@@ -118,3 +118,18 @@ export const getResource = (_queryParam) => {
 		}
 	);
 };
+
+export const resourceActions = (_queryParam) => {
+	return Service.get(
+		BMS_APP_PYTHON_SERVICE + "/resource-action-details",
+		_queryParam,
+		request_headers
+	).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};
