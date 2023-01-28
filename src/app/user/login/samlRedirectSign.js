@@ -7,6 +7,7 @@ import {
 } from '../../../duck/actions/commonActions';
 import { approveRecord, eSign, publishEvent } from '../../../services/electronicSignatureService';
 import { getSession } from '../../../services/loginService';
+import { createUsers } from '../../../services/userRolesAndAccessService';
 
 export default function RedirectSAMLSign() {
 	const dispatch = useDispatch();
@@ -54,56 +55,73 @@ export default function RedirectSAMLSign() {
 		try {
 			let esign_response = await eSign(req, headers);
 
-			if (esign_response.statuscode == 200) {
-				dispatch(showNotification("success", esign_response.message));
-				let reqs = {};
-				let req1 = {};
-				let user_details = JSON.parse(localStorage.getItem("login_details"));
-				let user = user_details["email_id"] ? user_details["email_id"] : "";
-
-				reqs["application_type"] = appType;
-				reqs["created_by"] = user;
-				reqs["esign_id"] = esign_response.primary_id;
-				reqs["disp_id"] = dispId;
-				reqs["version"] = parseInt(version);
-
-				req1["applicationType"] = appType;
-				req1["esignId"] = esign_response.primary_id.toString();
-				req1["resourceDispId"] = resourceDispId;
-
-				if (resourceVersion != undefined) {
-					req1["resourceVersion"] = parseInt(resourceVersion);
+			if (screenName === "CONFIGURATION") {
+				let req = {
+					esign_id: esign_response?.primary_id,
+					file_id: fileID,
+					flag: userType,
+					reason: reason
 				}
-				req1["status"] = status;
-
-				// //callback esign id
-				// if (props.eSignId) {
-				// 	props.eSignId(esign_response.primary_id);
-				// }
-
-				let publish_response = {};
-				if (appType == "ELOGBOOK-READING") {
-					publish_response = await publishEvent(reqs, headers);
+				let res = await createUsers(req);
+				if (res.Status == 200) {
+					dispatch(showNotification("success", res.message));
+					dispatch(hideLoader());
 				} else {
-					publish_response =
-						Object.keys(parameter).length > 0 && parameter.fromScreen !== "Workspace"
-							? await approveRecord(req1)
-							: await publishEvent(reqs, headers);
+					dispatch(hideLoader());
+					dispatch(showNotification("error", res.message));
 				}
-
-				if (publish_response.status_code == 200) {
-					dispatch(showNotification("success", publish_response.msg));
-					dispatch(pushPublishResponse(publish_response));
-				} else if (publish_response.Status == 200) {
-					dispatch(showNotification("success", publish_response.Message));
-					dispatch(pushPublishResponse(publish_response));
-				} else {
-					dispatch(showNotification("error", publish_response.msg));
-				}
-			} else if (esign_response.Status == 403) {
-				dispatch(showNotification("error", esign_response.Message));
 			} else {
-				dispatch(showNotification("error", esign_response.Message));
+				if (esign_response.statuscode == 200) {
+					dispatch(showNotification("success", esign_response.message));
+					let reqs = {};
+					let req1 = {};
+					let user_details = JSON.parse(localStorage.getItem("login_details"));
+					let user = user_details["email_id"] ? user_details["email_id"] : "";
+
+					reqs["application_type"] = appType;
+					reqs["created_by"] = user;
+					reqs["esign_id"] = esign_response.primary_id;
+					reqs["disp_id"] = dispId;
+					reqs["version"] = parseInt(version);
+
+					req1["applicationType"] = appType;
+					req1["esignId"] = esign_response.primary_id.toString();
+					req1["resourceDispId"] = resourceDispId;
+
+					if (resourceVersion != undefined) {
+						req1["resourceVersion"] = parseInt(resourceVersion);
+					}
+					req1["status"] = status;
+
+					// //callback esign id
+					// if (props.eSignId) {
+					// 	props.eSignId(esign_response.primary_id);
+					// }
+
+					let publish_response = {};
+					if (appType == "ELOGBOOK-READING") {
+						publish_response = await publishEvent(reqs, headers);
+					} else {
+						publish_response =
+							Object.keys(parameter).length > 0 && parameter.fromScreen !== "Workspace"
+								? await approveRecord(req1)
+								: await publishEvent(reqs, headers);
+					}
+
+					if (publish_response.status_code == 200) {
+						dispatch(showNotification("success", publish_response.msg));
+						dispatch(pushPublishResponse(publish_response));
+					} else if (publish_response.Status == 200) {
+						dispatch(showNotification("success", publish_response.Message));
+						dispatch(pushPublishResponse(publish_response));
+					} else {
+						dispatch(showNotification("error", publish_response.msg));
+					}
+				} else if (esign_response.Status == 403) {
+					dispatch(showNotification("error", esign_response.Message));
+				} else {
+					dispatch(showNotification("error", esign_response.Message));
+				}
 			}
 		} catch (err) {
 			dispatch(showNotification("error", err));
