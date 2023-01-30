@@ -34,6 +34,7 @@ function PbrReviewer() {
 	const [showResetConfidence, setShowResetConfidence] = useState(false);
 	const [templateArray, setTemplateArray] = useState([]);
 	const [selectedTemplateArray, setSelectedTemplateArray] = useState([]);
+	const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 	const [reviewerReq, setReviewerReq] = useState({
 		confidence: null,
 		createdBy: null,
@@ -60,7 +61,8 @@ function PbrReviewer() {
 			setTableLoading(true)
 			const tableResponse = await getPbrReviewerData(val ? val : req);
 			if (tableResponse['status-code'] === 200) {
-				setTemplateData(tableResponse.Data);
+				let arr = tableResponse.Data.map((item, index) => ({ ...item, key: index }))
+				setTemplateData(arr);
 				setTableLoading(false)
 				dispatch(hideLoader());
 			}
@@ -160,9 +162,10 @@ function PbrReviewer() {
 
 			if (res.Status == "202") {
 				setArr([])
+				setSelectedRowKeys([]);
 				dispatch(hideLoader());
 				dispatch(showNotification("success", "Approved Successfully")),
-				cardTableData()
+					cardTableData()
 				getTemplateID()
 				chart();
 				chart1();
@@ -418,20 +421,20 @@ function PbrReviewer() {
 			...getColumnSearchProps('status'),
 			sorter: (a, b) => a.status?.length - b.status?.length,
 			sortDirections: ['descend', 'ascend'],
-			render: (text, record, index) => {
-				if (record.status == "approved") {
-					return record.status;
-				}
-				else {
-					return (
-						<Checkbox
-							onChange={(e) => { updateStatus(e, record) }}
-						/>
+			// render: (text, record, index) => {
+			// 	if (record.status == "approved") {
+			// 		return record.status;
+			// 	}
+			// 	else {
+			// 		return (
+			// 			<Checkbox
+			// 				onChange={(e) => { updateStatus(e, record) }}
+			// 			/>
 
 
-					)
-				}
-			}
+			// 		)
+			// 	}
+			// }
 
 		},
 		{
@@ -663,6 +666,20 @@ function PbrReviewer() {
 		chart1()
 	}
 
+	const rowSelection = {
+		selectedRowKeys,
+		onChange: (selectedRowKeys, selectedRows) => {
+			setSelectedRowKeys(selectedRowKeys);
+			let arr = selectedRows.map(item => item.id)
+			setArr(arr)
+		},
+		getCheckboxProps: (record) => ({
+			disabled: record.status === 'approved',
+			// Column configuration not to be checked
+			//   name: record.name,
+		}),
+	};
+
 	return (
 		<>
 			<BreadCrumbWrapper />
@@ -777,12 +794,15 @@ function PbrReviewer() {
 								<div >
 									<Table
 										loading={tableLoading}
+										rowSelection={{
+											...rowSelection,
+										}}
 										columns={columns2}
 										className="pbr_reviewer_table"
 										dataSource={filterTableLanding === null
 											? templateData
 											: filterTableLanding}
-										pagination={{ defaultPageSize: 10, showSizeChanger: true, pageSizeOptions: ['10', '50', '100', '200'] }}
+										pagination={{ defaultPageSize: 1000, showSizeChanger: true, pageSizeOptions: ["1000", '2000', '5000', '100000'] }}
 										scroll={{
 											x: 2300,
 											y: 'calc(100vh - 460px)',
