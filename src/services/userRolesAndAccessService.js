@@ -133,3 +133,18 @@ export const resourceActions = (_queryParam) => {
 		}
 	);
 };
+
+export const roleConfig = (_queryParam) => {
+	return Service.put(
+		BMS_APP_PYTHON_SERVICE + "/role-config-v2",
+		_queryParam,
+		request_headers
+	).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};
