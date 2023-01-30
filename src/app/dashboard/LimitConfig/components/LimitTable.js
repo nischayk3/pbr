@@ -1,14 +1,20 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './Limitconfig.scss'
 import { Table, Button, Dropdown, Space, Select } from 'antd'
 import { DownOutlined, UploadOutlined, DownloadOutlined } from '@ant-design/icons';
-import SelectField from "../../../../components/SelectField/SelectField";
+import { getLimitConfig, saveLimitConfigApi } from '../../../../services/limitConfig';
 import LimitInputs from './LimitInputs';
+import { useDispatch } from "react-redux";
+import { hideLoader, showNotification, showLoader } from '../../../../duck/actions/commonActions';
 
 const LimitTable = () => {
 
+  const dispatch = useDispatch();
   const [editTable, setEditTable] = useState(false)
   const [openRow, setOpenRow] = useState();
+  const [moleculeData, setMoleculeData] = useState([]);
+  const [limitsData, setLimitsData] = useState([]);
+
   const items = [
     {
       label: <div><DownloadOutlined />  &nbsp; Download template</div>,
@@ -17,25 +23,6 @@ const LimitTable = () => {
     {
       label: <div><UploadOutlined /> &nbsp; Upload filled template</div>,
       key: '1',
-    },
-  ];
-
-  const data = [
-    {
-      key: 1,
-      molecule: 'Elixr-1',
-    },
-    {
-      key: 2,
-      molecule: 'Elixr-2',
-    },
-    {
-      key: 3,
-      molecule: 'TestinKp',
-    },
-    {
-      key: 4,
-      molecule: 'Elixr-3',
     },
   ];
 
@@ -65,17 +52,17 @@ const LimitTable = () => {
       key: 'molecule',
       width: 1000,
       render: (text, record) =>
-        data.map((data, index) => {
+        moleculeData.map((data, index) => {
           if (record.key === data.key) {
             if (record.key === openRow) {
               return (
                 <Select
                   name="molecule"
-                  style={{width: '70%'}}
+                  style={{ width: '70%' }}
                   options={molList}
                   value={data.molecule}
                   onClick={(e) => e.stopPropagation()}
-                  // onChangeSelect={(e) => handleChange(index, e, "", "limitType")}
+                // onChangeSelect={(e) => handleChange(index, e, "", "limitType")}
                 />
               );
             } else {
@@ -92,7 +79,7 @@ const LimitTable = () => {
         return (
           <div className='action-table'>
             {(record.key !== openRow) && <a onClick={(e) => onEdit(e, record.key)}>Edit</a>}
-            {(record.key === openRow) && <a onClick={() => setOpenRow('')}>Save</a>}
+            {(record.key === openRow) && <a onClick={() => saveParammeterData()}>Save</a>}
             <a onClick={(e) => e.stopPropagation()}>Delete</a>
             {(record.key === openRow) && <Dropdown menu={{ items }} trigger={['click']}>
               <a onClick={(e) => e.stopPropagation()}>
@@ -108,12 +95,63 @@ const LimitTable = () => {
     },
   ];
 
+
+  const getLimitConfigApi = async () => {
+    try {
+      dispatch(showLoader());
+      const apiResponse = await getLimitConfig({});
+      const tempMoleculeArray = [];
+      Object.entries(apiResponse?.Data).forEach(([key, value], index) => {
+        const obj = {
+          key: index + 1,
+          molecule: key,
+          paramData: value
+        }
+        tempMoleculeArray.push(obj);
+      })
+      tempMoleculeArray?.forEach((ele) => { 
+        ele?.paramData.forEach((param, index) => {
+           param.key = index + 1
+        })
+      });
+      setMoleculeData(tempMoleculeArray)
+      dispatch(hideLoader());
+    } catch (error) {
+      dispatch(hideLoader());
+      dispatch(showNotification("error", error));
+    }
+  }
+
+  const saveParammeterData = async () => {
+		const data = {
+			data: limitsData
+		}
+		try {
+			dispatch(showLoader());
+			const apiResponse = await saveLimitConfigApi(data);
+			// const tempParamData = limitsData.filter((limit) => limit?.int_id !== int_id)
+			// setLimitsData(tempParamData)
+			console.log(apiResponse, 'api');
+      setOpenRow('')
+			dispatch(hideLoader());
+		} catch (error) {
+			dispatch(hideLoader());
+			dispatch(showNotification("error", error));
+		}
+	}
+
   const onEdit = (e, rowKey) => {
     if (editTable) {
       e.stopPropagation();
     }
     setOpenRow(rowKey)
   }
+
+  useEffect(() => {
+    getLimitConfigApi();
+  }, [])
+
+
 
   return (
     <div className='limit-container'>
@@ -123,7 +161,7 @@ const LimitTable = () => {
             columns={columns}
             pagination={false}
             expandable={{
-              expandedRowRender: (record) => <LimitInputs editTable={editTable} selectedRowKey={record.key} openRow={openRow} />,
+              expandedRowRender: (record) => <LimitInputs limitsData={limitsData} setLimitsData={setLimitsData} paramData={record.paramData} editTable={editTable} selectedRowKey={record.key} openRow={openRow} />,
               // rowExpandable: (record) => record.name !== 'Not Expandable',
               expandRowByClick: true,
               onExpand: (expanded, record) => {
@@ -136,7 +174,7 @@ const LimitTable = () => {
               }
             }}
             // expandRowByClick={true}
-            dataSource={data}
+            dataSource={moleculeData}
             rowKey={(record) => record.key}
           />
         </div>
