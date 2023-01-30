@@ -17,7 +17,7 @@ export default function RedirectSAMLSign() {
 		GetSession()
 	}, [])
 
-	const handleConfirm = async (reason, parameter, screenName, appType, dispId, version, status, resourceDispId, resourceVersion) => {
+	const handleConfirm = async (reason, parameter, screenName, appType, dispId, version, status, resourceDispId, resourceVersion, fileID, userType) => {
 
 		var today = new Date();
 		var h = today.getHours();
@@ -54,24 +54,23 @@ export default function RedirectSAMLSign() {
 
 		try {
 			let esign_response = await eSign(req, headers);
-
-			if (screenName === "CONFIGURATION") {
-				let req = {
-					esign_id: esign_response?.primary_id,
-					file_id: fileID,
-					flag: userType,
-					reason: reason
-				}
-				let res = await createUsers(req);
-				if (res.Status == 200) {
-					dispatch(showNotification("success", res.message));
-					dispatch(hideLoader());
+			if (esign_response.statuscode == 200) {
+				if (screenName === "CONFIGURATION") {
+					let req = {
+						esign_id: esign_response?.primary_id,
+						file_id: fileID,
+						flag: userType,
+						reason: reason
+					}
+					let res = await createUsers(req);
+					if (res.Status == 200) {
+						dispatch(showNotification("success", res.message));
+						dispatch(hideLoader());
+					} else {
+						dispatch(hideLoader());
+						dispatch(showNotification("error", res.message));
+					}
 				} else {
-					dispatch(hideLoader());
-					dispatch(showNotification("error", res.message));
-				}
-			} else {
-				if (esign_response.statuscode == 200) {
 					dispatch(showNotification("success", esign_response.message));
 					let reqs = {};
 					let req1 = {};
@@ -117,12 +116,14 @@ export default function RedirectSAMLSign() {
 					} else {
 						dispatch(showNotification("error", publish_response.msg));
 					}
-				} else if (esign_response.Status == 403) {
-					dispatch(showNotification("error", esign_response.Message));
-				} else {
-					dispatch(showNotification("error", esign_response.Message));
 				}
+			} else if (esign_response.Status == 403) {
+				dispatch(showNotification("error", esign_response.Message));
+			} else {
+				dispatch(showNotification("error", esign_response.Message));
 			}
+
+
 		} catch (err) {
 			dispatch(showNotification("error", err));
 		}
@@ -138,7 +139,7 @@ export default function RedirectSAMLSign() {
 			// dispatch(showNotification('success', `Logined As ${data.email_id}`))
 			dispatch(hideLoader())
 
-			handleConfirm(signedInfoData?.Reason, signedInfoData?.parameter, signedInfoData?.screenName, signedInfoData?.appType, signedInfoData?.dispId, signedInfoData?.version, signedInfoData?.status, signedInfoData?.resourceDispId, signedInfoData?.resourceVersion)
+			handleConfirm(signedInfoData?.Reason, signedInfoData?.parameter, signedInfoData?.screenName, signedInfoData?.appType, signedInfoData?.dispId, signedInfoData?.version, signedInfoData?.status, signedInfoData?.resourceDispId, signedInfoData?.resourceVersion, signedInfoData?.fileId, signedInfoData?.userType)
 			// window.open(url + '&publish=True', '_self')
 			history.push(`${url}`)
 		}
