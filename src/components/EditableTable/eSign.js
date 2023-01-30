@@ -172,6 +172,9 @@ function Esign(props) {
 				Reason: reason,
 				screenName: screenName,
 				appType: appType,
+				fileID: fileID,
+				userType: userType,
+
 			},
 			redirect_url: decodeURI(encoded)
 		}
