@@ -27,6 +27,7 @@ const Roles = () => {
 	const [searchedColumn, setSearchedColumn] = useState('');
 	const [resourceList, setResourceList] = useState([]);
 	const [resourceDataTable, setResourceDataTable] = useState([]);
+	const [editResource, setEditResource] = useState("");
 
 
 	useEffect(() => {
@@ -130,6 +131,17 @@ const Roles = () => {
 		};
 	};
 
+	const editRole = (resourceName) => {
+		console.log("resourceName", resourceName);
+		setIsVisible(true)
+		setEditResource(resourceName)
+		const editres = {
+			all_resources: false,
+			resource: resourceName
+		}
+		getResourceDatatable(editres)
+	}
+
 	const ResourceCard = ({ resourceName, resourceDesc, authTag, authCount }) => {
 		return (
 			<div className="resource-card">
@@ -139,7 +151,7 @@ const Roles = () => {
 						<h2>{resourceName}</h2>
 					</div>
 					<div className="resource-card-button">
-						<EditOutlined />
+						<EditOutlined onClick={() => editRole(resourceName)} />
 						<DeleteOutlined />
 					</div>
 				</div>
@@ -161,6 +173,7 @@ const Roles = () => {
 	}
 
 	const handleClickResource = () => {
+		setEditResource('')
 		setIsVisible(true)
 		const resource = {
 			all_resources: true
@@ -282,11 +295,11 @@ const Roles = () => {
 		try {
 			dispatch(showLoader());
 			const resource = await getResource(_resourceQuery)
-			dispatch(hideLoader());
 			if (resource.statuscode === 200) {
 				setAllRoles(resource.message)
 			}
-			console.log("resourceeeeeeee", resource);
+			dispatch(hideLoader());
+
 		} catch (error) {
 			dispatch(hideLoader());
 			dispatch(showNotification("error", error));
@@ -297,7 +310,7 @@ const Roles = () => {
 		try {
 			dispatch(showLoader());
 			const res = await getResource(_resourceQuery)
-			dispatch(hideLoader());
+
 			if (res.statuscode === 200) {
 				setRoleDesc(res?.message?.role_description)
 				setResourceCount(res?.message?.role_resource_details?.length)
@@ -307,7 +320,7 @@ const Roles = () => {
 			} else {
 				setIsRoleDetailsAvailable(false)
 			}
-
+			dispatch(hideLoader());
 		} catch (error) {
 			dispatch(hideLoader());
 			dispatch(showNotification("error", error));
@@ -346,12 +359,11 @@ const Roles = () => {
 		try {
 			dispatch(showLoader());
 			const resourceAction = await resourceActions(_resourceQuery)
-			dispatch(hideLoader());
 			if (resourceAction.statuscode === 200) {
 				setResourceList(resourceAction.message)
 				console.log("resourceAction", resourceAction);
 			}
-
+			dispatch(hideLoader());
 		} catch (error) {
 			dispatch(hideLoader());
 			dispatch(showNotification("error", error));
@@ -363,12 +375,11 @@ const Roles = () => {
 		try {
 			dispatch(showLoader());
 			const resDatatable = await resourceActions(_resourceQuery)
-			dispatch(hideLoader());
 			if (resDatatable.statuscode === 200) {
 				setResourceDataTable(resDatatable.message)
 				console.log("resourceAction", resDatatable);
 			}
-
+			dispatch(hideLoader());
 		} catch (error) {
 			dispatch(hideLoader());
 			dispatch(showNotification("error", error));
@@ -485,6 +496,7 @@ const Roles = () => {
 							resourceList={resourceList}
 							callbackResource={callbackResource}
 							resourceDataTable={resourceDataTable}
+							editResource={editResource}
 						/>
 					</>
 

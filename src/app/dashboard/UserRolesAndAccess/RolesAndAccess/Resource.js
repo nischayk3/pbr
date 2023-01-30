@@ -9,7 +9,7 @@
 import { Button, Checkbox, Modal, Select, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 
-const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackResource, resourceDataTable }) => {
+const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackResource, resourceDataTable, editResource }) => {
 	const [resList, setResList] = useState([]);
 	const [selectedResource, setSelectedResource] = useState('');
 
@@ -24,6 +24,11 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 		})
 		setResList(resListData);
 	}, [resourceList])
+
+	useEffect(() => {
+		setResList([])
+		setSelectedResource(editResource)
+	}, [editResource])
 
 	const columns3 = [
 		{
@@ -47,19 +52,20 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 	const handleChange = (value) => {
 		setSelectedResource(value);
 		callbackResource(value)
-		console.log(`selected ${value}`);
 	};
 
 
 	const handleCancel = () => {
 		setIsVisible(false)
+		setResList([])
+		setSelectedResource('')
 	}
 
 	console.log("resList", resList);
 	return (
 		<Modal
 			width={719}
-			title={roleName + "-"}
+			title={roleName + " - " + selectedResource}
 			visible={isVisible}
 			onCancel={handleCancel}
 			footer={null}
@@ -97,6 +103,7 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 					<Button
 						type='primary'
 						className='custom-primary-btn'
+						onClick={handleCancel}
 					>
 						Cancel
 					</Button>
