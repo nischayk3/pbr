@@ -139,7 +139,7 @@ export default function RedirectSAMLSign() {
 			// dispatch(showNotification('success', `Logined As ${data.email_id}`))
 			dispatch(hideLoader())
 
-			handleConfirm(signedInfoData?.Reason, signedInfoData?.parameter, signedInfoData?.screenName, signedInfoData?.appType, signedInfoData?.dispId, signedInfoData?.version, signedInfoData?.status, signedInfoData?.resourceDispId, signedInfoData?.resourceVersion, signedInfoData?.fileId, signedInfoData?.userType)
+			handleConfirm(signedInfoData?.Reason, signedInfoData?.parameter, signedInfoData?.screenName, signedInfoData?.appType, signedInfoData?.dispId, signedInfoData?.version, signedInfoData?.status, signedInfoData?.resourceDispId, signedInfoData?.resourceVersion, signedInfoData?.fileID, signedInfoData?.userType)
 			// window.open(url + '&publish=True', '_self')
 			history.push(`${url}`)
 		}
