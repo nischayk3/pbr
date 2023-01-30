@@ -1,6 +1,7 @@
 import { Button, Input, Modal, Select } from "antd";
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
+import { useLocation } from "react-router";
 import { BMS_APP_LOGIN_PASS, MDH_APP_PYTHON_SERVICE } from "../../constants/apiBaseUrl";
 import {
 	hideLoader, showLoader, showNotification
@@ -15,6 +16,8 @@ import './importUser.scss';
 const { Option } = Select;
 
 function Esign(props) {
+	const location = useLocation();
+
 	let { showEsign, userType, screenName, fileID, handleEsignCancle, handlePopUpClose, appType } = props
 	const dispatch = useDispatch();
 	const [password, setPassword] = useState("");
@@ -172,6 +175,9 @@ function Esign(props) {
 				Reason: reason,
 				screenName: screenName,
 				appType: appType,
+				fileID: fileID,
+				userType: userType,
+
 			},
 			redirect_url: decodeURI(encoded)
 		}
