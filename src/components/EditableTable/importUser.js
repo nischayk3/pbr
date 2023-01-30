@@ -52,10 +52,7 @@ function ImportUser(prop) {
 			setShowStatus(true)
 			setFileID(res?.file_id)
 		} else {
-			setProgressPercent(100)
-			setShowStatus(true)
-			// setFileID(res?.file_id)
-			// setShowErrorStatus(true)
+			setShowErrorStatus(true)
 		}
 	}
 
