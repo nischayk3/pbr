@@ -335,12 +335,12 @@ class EditableTable extends Component {
           // className="button-dashed__primary"
           onClick={() => this.setState({importUserModal:true})}
           icon={<FileExcelFilled />}
-          style={{ marginBottom: 16, marginRight: 10 }}
+          style={{ marginBottom: 16, marginLeft: 6 }}
           id="editable-table-button-add-new-user"
         >
           Import Users
         </Button>
-        <Button
+        {/* <Button
           type="dashed"
           className="button-dashed__primary"
           onClick={this.onAddRow}
@@ -349,7 +349,7 @@ class EditableTable extends Component {
           id="editable-table-button-add-new-user"
         >
           {this.props.screens === "Roles" ? "Add new role" : "Add new user"}
-        </Button>
+        </Button> */}
         <Search
           placeholder="Search"
           onSearch={this.searchTable}
