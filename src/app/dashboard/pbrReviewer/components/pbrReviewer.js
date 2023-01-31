@@ -794,6 +794,7 @@ function PbrReviewer() {
 								<div >
 									<Table
 										loading={tableLoading}
+										size="small"
 										rowSelection={{
 											...rowSelection,
 										}}
