@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import './Limitconfig.scss'
 import { Table, Button, Dropdown, Space, Select } from 'antd'
 import { DownOutlined, UploadOutlined, DownloadOutlined } from '@ant-design/icons';
-import { getLimitConfig, saveLimitConfigApi } from '../../../../services/limitConfig';
+import { getLimitConfig, saveLimitConfigApi, deleteLimitsApi } from '../../../../services/limitConfig';
 import LimitInputs from './LimitInputs';
 import { useDispatch } from "react-redux";
 import { hideLoader, showNotification, showLoader } from '../../../../duck/actions/commonActions';
@@ -28,21 +28,9 @@ const LimitTable = () => {
 
   const molList = [
     {
-      value: 'Elixr-1',
-      label: 'Elixr-1',
+      value: '',
+      label: '',
     },
-    {
-      value: 'Elixr-2',
-      label: 'Elixr-2',
-    },
-    {
-      value: 'Elixr-3',
-      label: 'Elixr-3',
-    },
-    {
-      value: 'TestinKp',
-      label: 'TestinKp',
-    }
   ]
 
   const columns = [
@@ -80,7 +68,7 @@ const LimitTable = () => {
           <div className='action-table'>
             {(record.key !== openRow) && <a onClick={(e) => onEdit(e, record.key)}>Edit</a>}
             {(record.key === openRow) && <a onClick={() => saveParammeterData()}>Save</a>}
-            <a onClick={(e) => e.stopPropagation()}>Delete</a>
+            <a onClick={(e) => onDelete(e, record)}>Delete</a>
             {(record.key === openRow) && <Dropdown menu={{ items }} trigger={['click']}>
               <a onClick={(e) => e.stopPropagation()}>
                 <Space>
@@ -122,16 +110,45 @@ const LimitTable = () => {
     }
   }
 
+  const onDelete = (e, record) => {
+      e.stopPropagation()
+      deleteMolecule(record)
+  }
+
+  const deleteMolecule = async (record) => {
+    const obj = {
+      data : []
+    }
+    record?.paramData?.forEach((param) => {
+      obj.data.push(param?.int_id)
+    })
+		try {
+			dispatch(showLoader());
+      const apiResponse = await deleteLimitsApi("", obj);
+      if(apiResponse.Status === 200) {
+        getLimitConfigApi();
+      }
+			dispatch(hideLoader());
+		} catch (error) {
+			dispatch(hideLoader());
+			dispatch(showNotification("error", error));
+		}
+	}
+
   const saveParammeterData = async () => {
+    const tempLimitData = JSON.parse(JSON.stringify(limitsData))
+    tempLimitData.forEach((limits) => {
+      limits.from_ = Number(limits?.from_);
+      limits.to_ = Number(limits?.to_);
+      limits.validity_date = (limits.validity_date !== "NaTZ") ?  new Date(limits.validity_date).toISOString() : null
+    })
 		const data = {
-			data: limitsData
+			data: tempLimitData
 		}
 		try {
 			dispatch(showLoader());
 			const apiResponse = await saveLimitConfigApi(data);
-			// const tempParamData = limitsData.filter((limit) => limit?.int_id !== int_id)
-			// setLimitsData(tempParamData)
-			console.log(apiResponse, 'api');
+      getLimitConfig();
       setOpenRow('')
 			dispatch(hideLoader());
 		} catch (error) {

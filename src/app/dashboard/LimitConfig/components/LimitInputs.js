@@ -7,15 +7,16 @@ import moment from 'moment';
 import { useDispatch } from "react-redux";
 import { deleteLimitsApi, saveLimitConfigApi } from '../../../../services/limitConfig';
 import { hideLoader, showNotification, showLoader } from '../../../../duck/actions/commonActions';
+import { v1 as uuid } from "uuid";
 
 const LimitInputs = ({ setLimitsData, limitsData, openRow, selectedRowKey, paramData }) => {
 
 	const dispatch = useDispatch();
 	const [tableColumns, setTableCOlumns] = useState();
 	let limitList = [
-		'Control Limits',
-		'Specifications Limits',
-		'Warnings'
+		'control',
+		'specification',
+		'warning'
 	]
 	let columns = [
 		{
@@ -96,6 +97,7 @@ const LimitInputs = ({ setLimitsData, limitsData, openRow, selectedRowKey, param
 						return (
 							<Input
 								name="from_"
+								type='number'
 								value={data.from_}
 								onChange={(e) => handleChange(index, e, "", "limits")}
 							/>
@@ -117,6 +119,7 @@ const LimitInputs = ({ setLimitsData, limitsData, openRow, selectedRowKey, param
 						return (
 							<Input
 								name="to_"
+								type='number'
 								value={data.to_}
 								onChange={(e) => handleChange(index, e, "", "limits")}
 							/>
@@ -168,32 +171,54 @@ const LimitInputs = ({ setLimitsData, limitsData, openRow, selectedRowKey, param
 	const handleChange = (index, event, dateString, type) => {
 		const rowsInput = [...limitsData];
 		if (!dateString) {
-			rowsInput[index]["valid_timestamp"] = null;
+			rowsInput[index]["validity_date"] = null;
 		}
 		if (dateString && type === "date") {
-			rowsInput[index]["valid_timestamp"] = dateString._d.toLocaleDateString();
+			rowsInput[index]["validity_date"] = dateString._d.toLocaleDateString();
 		} else if (type === "limits") {
 			const { name, value } = event.target;
 			rowsInput[index][name] = value;
 		} else if (type === 'limitType') {
-			rowsInput[index]['limitType'] = event;
+			rowsInput[index]['limit_type'] = event;
 		}
 		setLimitsData(rowsInput);
 	};
 
-	const deleteParam = async (int_id) => {
+	const deleteParam = async (record) => {
+		let tempParamData;
 		try {
 			dispatch(showLoader());
-			const apiResponse = await deleteLimitsApi(int_id);
-			const tempParamData = limitsData.filter((limit) => limit?.int_id !== int_id)
+			if(record?.int_id) {
+				const apiResponse = await deleteLimitsApi(record?.int_id);
+				tempParamData = limitsData.filter((limit) => limit?.int_id !== record?.int_id)
+			} else {
+				tempParamData = limitsData.filter((limit) => limit?.key !== record?.key)
+			}
 			setLimitsData(tempParamData)
-			console.log(apiResponse, 'api');
 			dispatch(hideLoader());
 		} catch (error) {
 			dispatch(hideLoader());
 			dispatch(showNotification("error", error));
 		}
 	}
+
+	const handleAdd = () => {
+		// count.current = count.current + 1;
+		const newData = {
+			key: uuid(),
+			"cust_key": paramData[0]?.cust_key,
+			"from_": Number,
+			"limit_type": "",
+			"molecule": paramData[0]?.molecule,
+			"parameters": "",
+			"site": "",
+			"to_": Number,
+			"validity_date": "",
+			"view_disp_id": paramData[0]?.view_disp_id,
+			"view_version": paramData[0]?.view_version
+		};
+		setLimitsData([...limitsData, newData]);
+	};
 
 	useEffect(() => {
 		const obj = {
@@ -207,7 +232,7 @@ const LimitInputs = ({ setLimitsData, limitsData, openRow, selectedRowKey, param
 						title={text}
 						onConfirm={(event) => {
 							event.stopPropagation();
-							deleteParam(record.int_id)
+							deleteParam(record)
 						}}
 						okText="Yes"
 						cancelText="No"
@@ -233,7 +258,7 @@ const LimitInputs = ({ setLimitsData, limitsData, openRow, selectedRowKey, param
 	useEffect(() => {
 		setLimitsData(paramData)
 	}, [paramData])
-	
+
 
 	return (
 		<div className='expand-table'>
@@ -247,7 +272,7 @@ const LimitInputs = ({ setLimitsData, limitsData, openRow, selectedRowKey, param
 					/>
 					{(selectedRowKey === openRow) && <div className="add-button-limit">
 						<Button
-						// onClick={() => handleAdd()}
+						onClick={() => handleAdd()}
 						// disabled={
 						// 	Object.keys(params).length > 0 &&
 						// 	params.fromScreen !== "Workspace"

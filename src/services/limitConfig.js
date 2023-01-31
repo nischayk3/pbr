@@ -47,8 +47,7 @@ export const saveLimitConfigApi = (_queryParam) => {
 };
 
 
-export const deleteLimitsApi = (_queryParam) => {
-    console.log(_queryParam, '_queryParam');
+export const deleteLimitsApi = (_queryParam, reqBody) => {
 	let login_response = JSON.parse(localStorage.getItem("login_details"));
 	const headers = {
 		"content-type": "application/json",
@@ -56,8 +55,8 @@ export const deleteLimitsApi = (_queryParam) => {
 		"resource-name": "CHART"
 	};
 	return Service.del(
-		BMS_APP_PYTHON_SERVICE + "/chart-limit" + `?id=${_queryParam}`,
-        {},
+		BMS_APP_PYTHON_SERVICE + "/chart-limit" + (_queryParam ? `?id=${_queryParam}` : ''),
+        (reqBody ? reqBody : {}),
 		headers
 	).then(
 		(response) => {
