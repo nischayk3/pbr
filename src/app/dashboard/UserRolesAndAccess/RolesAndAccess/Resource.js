@@ -6,11 +6,30 @@
  * @Last Changed By - Dinesh Kumar
  */
 
-import { Button, Modal, Select, Table } from 'antd';
-import React from 'react';
+import { Button, Checkbox, Modal, Select, Table } from 'antd';
+import React, { useEffect, useState } from 'react';
 
+const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackResource, resourceDataTable, editResource }) => {
+	const [resList, setResList] = useState([]);
+	const [selectedResource, setSelectedResource] = useState('');
 
-const Resource = ({ isVisible, setIsVisible }) => {
+	useEffect(() => {
+		const resourceData = [...resourceList];
+		let resListData = []
+		resourceData.forEach((item) => {
+			let resObj = {};
+			resObj["value"] = item.resource_name;
+			resObj["label"] = item.display_resource_name;
+			resListData.push(resObj);
+		})
+		setResList(resListData);
+	}, [resourceList])
+
+	useEffect(() => {
+		setResList([])
+		setSelectedResource(editResource)
+	}, [editResource])
+
 	const columns3 = [
 		{
 			title: 'Authorization',
@@ -28,20 +47,25 @@ const Resource = ({ isVisible, setIsVisible }) => {
 			render: () => <Checkbox />
 		},
 	];
-	const data3 = [];
+
 
 	const handleChange = (value) => {
-		console.log(`selected ${value}`);
+		setSelectedResource(value);
+		callbackResource(value)
 	};
 
 
 	const handleCancel = () => {
 		setIsVisible(false)
+		setResList([])
+		setSelectedResource('')
 	}
+
+	console.log("resList", resList);
 	return (
 		<Modal
 			width={719}
-			title="CHART MANAGER - Genealogy"
+			title={roleName + " - " + selectedResource}
 			visible={isVisible}
 			onCancel={handleCancel}
 			footer={null}
@@ -51,31 +75,15 @@ const Resource = ({ isVisible, setIsVisible }) => {
 				<div className='modal-sub-header'>
 					<p>The resource associated with this role</p>
 					<Select
+						showSearch
+						placeholder="Select resource"
 						size='medium'
-						defaultValue="lucy"
 						style={{
 							width: 230, marginLeft: 13,
 						}}
+						value={selectedResource}
 						onChange={handleChange}
-						options={[
-							{
-								value: 'jack',
-								label: 'Jack',
-							},
-							{
-								value: 'lucy',
-								label: 'Lucy',
-							},
-							{
-								value: 'disabled',
-								disabled: true,
-								label: 'Disabled',
-							},
-							{
-								value: 'Yiminghe',
-								label: 'yiminghe',
-							},
-						]}
+						options={resList}
 					/>
 				</div>
 				<p className='card-heading'>Authorizations</p>
@@ -83,7 +91,7 @@ const Resource = ({ isVisible, setIsVisible }) => {
 				<Table
 					className='roles-table'
 					columns={columns3}
-					dataSource={data3}
+					dataSource={resourceDataTable}
 				/>
 				<div className='modal-footer-btn'>
 					<Button
@@ -95,6 +103,7 @@ const Resource = ({ isVisible, setIsVisible }) => {
 					<Button
 						type='primary'
 						className='custom-primary-btn'
+						onClick={handleCancel}
 					>
 						Cancel
 					</Button>
@@ -102,7 +111,6 @@ const Resource = ({ isVisible, setIsVisible }) => {
 			</div>
 		</Modal>
 	)
-
 }
 
 export default Resource;

@@ -10,8 +10,9 @@ import { Button, Empty, Input, Space, Switch, Table, Tag } from 'antd';
 import { dispatch } from 'd3';
 import React, { useEffect, useState } from 'react';
 import Highlighter from 'react-highlight-words';
+import { v1 as uuid } from "uuid";
 import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
-import { getResource } from '../../../../services/userRolesAndAccessService';
+import { getResource, resourceActions, roleConfig } from '../../../../services/userRolesAndAccessService';
 import Resource from './Resource';
 
 const Roles = () => {
@@ -25,6 +26,14 @@ const Roles = () => {
 	const [roleDataAccess, setRoleDataAccess] = useState([]);
 	const [isRoleDetailsAvailable, setIsRoleDetailsAvailable] = useState(false);
 	const [searchedColumn, setSearchedColumn] = useState('');
+	const [resourceList, setResourceList] = useState([]);
+	const [resourceDataTable, setResourceDataTable] = useState([]);
+	const [editResource, setEditResource] = useState("");
+	const [isRoleActive, setIsRoleActive] = useState(false);
+	const [newRole, setNewRole] = useState("");
+	const [isEditRole, setisEditRole] = useState(true);
+	const [isRoleToggle, setisRoleToggle] = useState(true);
+	const [expandedData, setExpandedData] = useState([]);
 
 
 	useEffect(() => {
@@ -128,6 +137,15 @@ const Roles = () => {
 		};
 	};
 
+	const editRole = (resourceName) => {
+		setIsVisible(true)
+		setEditResource(resourceName)
+		const editres = {
+			all_resources: false,
+			resource: resourceName
+		}
+		getResourceDatatable(editres)
+	}
 
 	const ResourceCard = ({ resourceName, resourceDesc, authTag, authCount }) => {
 		return (
@@ -138,7 +156,7 @@ const Roles = () => {
 						<h2>{resourceName}</h2>
 					</div>
 					<div className="resource-card-button">
-						<EditOutlined />
+						<EditOutlined onClick={() => editRole(resourceName)} />
 						<DeleteOutlined />
 					</div>
 				</div>
@@ -156,13 +174,18 @@ const Roles = () => {
 	}
 
 	const handleClickROle = () => {
+		setNewRole('')
 		setIsCreateRole(true)
 	}
 
 	const handleClickResource = () => {
+		setEditResource('')
 		setIsVisible(true)
+		const resource = {
+			all_resources: true
+		}
+		getResourceAction(resource)
 	}
-
 
 	const expandedRowRender = () => {
 		const columns1 = [
@@ -185,9 +208,27 @@ const Roles = () => {
 				name: 'Belatacept',
 			});
 		}
-		return <Table className="roles-inner-table" columns={columns1} dataSource={data1} pagination={false} />;
+		return <Table className="roles-inner-table" columns={columns1} dataSource={data1} pagination={false} rowKey={uuid()} />;
 	};
 
+
+	const onTableRowExpand = (expanded, record) => {
+		console.log("expanded, record", expanded, record);
+		//var keys = [];
+		if (expanded) {
+			const _expandRecord = {
+				role_name: roleName,
+				active_status: false,
+				field_name: record.field_name
+			}
+			getDataType(_expandRecord)
+			//	keys.push(record.key); // I have set my record.id as row key. Check the documentation for more details.
+		}
+
+
+	};
+
+	console.log("uuid()", uuid());
 	const columns2 = [
 		{
 			title: 'Data type',
@@ -219,8 +260,7 @@ const Roles = () => {
 			dataIndex: 'active_status',
 			key: 'active_status',
 			render: (text) => {
-				if (text) {
-					console.log("texttttt", text);
+				if (text === 'Active') {
 					return (
 						<div className="roles-status">
 							<span className='dot green'></span>
@@ -249,18 +289,7 @@ const Roles = () => {
 			],
 			filterMode: 'tree',
 			filterSearch: true,
-			onFilter: (value, record) => {
-				const active = 'Active';
-				const inactive = 'Inactive';
-				if (record.active_status) {
-					return active.startsWith(value === true ? 'Active' : 'InActive')
-				} else {
-					return inactive.startsWith(value === true ? 'Active' : 'InActive')
-				}
-			}
-			// {
-			// 	console.log("record.active_status.value", record, value);
-			// },
+			onFilter: (value, record) => record.active.startsWith(value)
 		}
 	]
 
@@ -281,18 +310,19 @@ const Roles = () => {
 			if (resource.statuscode === 200) {
 				setAllRoles(resource.message)
 			}
-			console.log("resourceeeeeeee", resource);
+			dispatch(hideLoader());
+
 		} catch (error) {
 			dispatch(hideLoader());
 			dispatch(showNotification("error", error));
 		}
 	}
 
+	// onclick resource data
 	const getResourceData = async (_resourceQuery) => {
 		try {
 			dispatch(showLoader());
 			const res = await getResource(_resourceQuery)
-			dispatch(showLoader());
 			if (res.statuscode === 200) {
 				setRoleDesc(res?.message?.role_description)
 				setResourceCount(res?.message?.role_resource_details?.length)
@@ -302,7 +332,24 @@ const Roles = () => {
 			} else {
 				setIsRoleDetailsAvailable(false)
 			}
+			dispatch(hideLoader());
+		} catch (error) {
+			dispatch(hideLoader());
+			dispatch(showNotification("error", error));
+		}
+	}
 
+	// data type expand table
+	const getDataType = async (_dataType) => {
+		try {
+			dispatch(showLoader());
+			const dataType = await getResource(_dataType)
+			if (res.statuscode === 200) {
+				setExpandedData(res.message)
+			} else {
+				setExpandedData([])
+			}
+			console.log("_dataType", dataType);
 		} catch (error) {
 			dispatch(hideLoader());
 			dispatch(showNotification("error", error));
@@ -316,18 +363,38 @@ const Roles = () => {
 			active_status: false
 		}
 		setRoleName(record.role_name)
+		setIsRoleActive(record.active_status === "Active" ? true : false)
 		getResourceData(_reqRecord)
 	}
 
 	const createRole = () => {
 		setIsCreateRole(false)
+		let _reqRoleConfig = {
+			inactive: true,
+			description: "",
+			role_name: newRole,
+			updated: false
+		}
+		rolesConfig(_reqRoleConfig)
+	}
+
+	const handleChangeRole = (e) => {
+		if (e.target.value != null) {
+			setNewRole(e.target.value)
+		}
+	}
+
+	const onChangeRoleDesc = (e) => {
+		if (e.target.value != null) {
+			setRoleDesc(e.target.value)
+		}
 	}
 
 	const listHeader = (
 		<div className="roles-head">
 			{isCreateRole ? (
 				<div className="create-role">
-					<Input placeholder="Enter name of new role" />
+					<Input placeholder="Enter name of new role" value={newRole} onChange={handleChangeRole} />
 					<Button type="link" onClick={createRole}>
 						Save
 					</Button>
@@ -336,6 +403,88 @@ const Roles = () => {
 		</div>
 	)
 
+	//role-config create role
+
+	const rolesConfig = async (_reqRole) => {
+		try {
+			dispatch(showLoader());
+			const config = await roleConfig(_reqRole);
+			dispatch(hideLoader());
+			if (config.statuscode === 200) {
+				dispatch(showNotification("success", config.message));
+				setisEditRole(true)
+				setisRoleToggle(true)
+				const _reqBackRole = {
+					active_status: true
+				}
+				getRolesData(_reqBackRole)
+			} else {
+				dispatch(showNotification("error", config.message));
+			}
+		} catch (error) {
+			dispatch(hideLoader());
+			dispatch(showNotification("error", error));
+		}
+	}
+
+	// get resource data
+	const getResourceAction = async (_resourceQuery) => {
+		try {
+			dispatch(showLoader());
+			const resourceAction = await resourceActions(_resourceQuery)
+			if (resourceAction.statuscode === 200) {
+				setResourceList(resourceAction.message)
+			}
+			dispatch(hideLoader());
+		} catch (error) {
+			dispatch(hideLoader());
+			dispatch(showNotification("error", error));
+		}
+	}
+
+	// get resource data
+	const getResourceDatatable = async (_resourceQuery) => {
+		try {
+			dispatch(showLoader());
+			const resDatatable = await resourceActions(_resourceQuery)
+			if (resDatatable.statuscode === 200) {
+				setResourceDataTable(resDatatable.message)
+			}
+			dispatch(hideLoader());
+		} catch (error) {
+			dispatch(hideLoader());
+			dispatch(showNotification("error", error));
+		}
+	}
+
+	const callbackResource = (value) => {
+		const reso = {
+			all_resources: false,
+			resource: value
+		}
+		getResourceDatatable(reso)
+	}
+
+	const handleClickEditRole = () => {
+
+		if (isRoleToggle) {
+			setisEditRole(false)
+			setisRoleToggle(false)
+		} else {
+			let _roleUpdate = {
+				inactive: isRoleActive,
+				description: roleDesc,
+				role_name: roleName,
+				updated: true
+			}
+			rolesConfig(_roleUpdate)
+		}
+
+	}
+
+	const onChangeSwitch = (checked) => {
+		setIsRoleActive(checked)
+	}
 	return (
 		<div className="roles-wrapper">
 			<div className="roles">
@@ -363,8 +512,6 @@ const Roles = () => {
 
 					/>
 				</div>
-
-
 			</div>
 
 			<div className="roles-details">
@@ -374,18 +521,32 @@ const Roles = () => {
 							<h1>{roleName}</h1>
 							<div className="sub-details">
 								<p>{resourceCount} resources | Active </p>
-								<Switch size="small" defaultChecked />
+								<Switch
+									size="small"
+									checked={isRoleActive}
+									disabled={isEditRole}
+									onChange={onChangeSwitch}
+								/>
+
 							</div>
 						</div>
 						<Button
 							type='primary'
 							className='custom-primary-btn'
+							onClick={handleClickEditRole}
 						>
-							Edit role
+							{isRoleToggle ? 'Edit role' : 'Save role'}
 						</Button>
-						<p className="content">
-							{roleDesc}
-						</p>
+
+						<Input
+							className={isRoleToggle ? "content content-border " : "content content-border-active"}
+							placeholder="Add role descreption here"
+							value={roleDesc}
+							bordered={false}
+							disabled={isEditRole}
+							onChange={onChangeRoleDesc}
+						/>
+
 						<div className="card-header">
 							<p className='card-heading'>Resources and authorizations</p>
 							<Button
@@ -428,12 +589,22 @@ const Roles = () => {
 							className='roles-table'
 							columns={columns2}
 							expandable={{
-								expandedRowRender,
-								defaultExpandedRowKeys: ['0'],
+								expandedRowRender
+								// defaultExpandedRowKeys: ['0'],
 							}}
+							onExpand={onTableRowExpand}
 							dataSource={roleDataAccess}
+							rowKey='field_name'
 						/>
-						<Resource isVisible={isVisible} setIsVisible={setIsVisible} />
+						<Resource
+							isVisible={isVisible}
+							setIsVisible={setIsVisible}
+							roleName={roleName}
+							resourceList={resourceList}
+							callbackResource={callbackResource}
+							resourceDataTable={resourceDataTable}
+							editResource={editResource}
+						/>
 					</>
 
 				) : (<Empty imageStyle={{
