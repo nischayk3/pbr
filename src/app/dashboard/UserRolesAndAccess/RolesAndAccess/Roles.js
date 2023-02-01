@@ -6,7 +6,7 @@
  * @Last Changed By - Dinesh Kumar
  */
 import { DeleteOutlined, EditOutlined, SearchOutlined } from '@ant-design/icons';
-import { Button, Empty, Input, Space, Switch, Table, Tag } from 'antd';
+import { Button, Empty, Input, Select, Space, Switch, Table, Tag } from 'antd';
 import React, { useEffect, useState } from 'react';
 import Highlighter from 'react-highlight-words';
 import { useDispatch } from "react-redux";
@@ -189,11 +189,36 @@ const Roles = () => {
 	}
 
 	const expandedRowRender = () => {
+		const options = [];
+		for (let i = 10; i < 36; i++) {
+			options.push({
+				label: i.toString(36) + i,
+				value: i.toString(36) + i,
+			});
+		}
+		const handleChange = (value) => {
+			console.log(`selected ${value}`);
+		};
 		const columns1 = [
 			{
 				title: 'Name',
 				dataIndex: 'name',
 				key: 'name',
+				render: () => {
+					return (
+						<Select
+							mode="multiple"
+							allowClear
+							style={{
+								width: '100%',
+							}}
+							placeholder="Please select"
+							defaultValue={['a10', 'c12']}
+							onChange={handleChange}
+							options={options}
+						/>
+					)
+				},
 			},
 			{
 				title: 'Include',
@@ -345,11 +370,13 @@ const Roles = () => {
 		try {
 			dispatch(showLoader());
 			const dataType = await getResource(_dataType)
-			if (res.statuscode === 200) {
-				setExpandedData(res.message)
-			} else {
-				setExpandedData([])
-			}
+			dispatch(hideLoader());
+			console.log("dataTyped", dataType);
+			// if (res.statuscode === 200) {
+			// 	setExpandedData(res.message)
+			// } else {
+			// 	setExpandedData([])
+			// }
 
 		} catch (error) {
 			dispatch(hideLoader());
