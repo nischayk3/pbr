@@ -44,7 +44,12 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 		{
 			title: 'Enable',
 			key: 'enable',
-			render: () => <Checkbox />
+			render: (record) => {
+				console.log("value,record,index", record);
+				return (
+					<Checkbox key={index} onChange={(e) => onChangeAuth(e, record)} />
+				)
+			}
 		},
 	];
 
@@ -61,7 +66,34 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 		setSelectedResource('')
 	}
 
-	console.log("resList", resList);
+	//resource auth update
+	const authUpdate = async (_resourceAuth) => {
+		try {
+			dispatch(showLoader());
+			const auth = await resourceActionUpdated(_resourceAuth)
+			console.log("authhhhhh", auth);
+		} catch (error) {
+			dispatch(hideLoader());
+			dispatch(showNotification("error", error));
+		}
+	}
+
+	const authSave = () => {
+		let _reqAuth = {
+			role_name: roleName,
+			resource: selectedResource,
+			authorization: ["READ,MAINT"],
+			updated: false
+		}
+
+		authUpdate(_reqAuth)
+	}
+
+	const onChangeAuth = (e, record) => {
+		console.log("e,record,index", e, record);
+	}
+
+
 	return (
 		<Modal
 			width={719}
@@ -97,6 +129,7 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 					<Button
 						type='primary'
 						className='custom-secondary-btn'
+						onClick={authSave}
 					>
 						Save changes
 					</Button>
