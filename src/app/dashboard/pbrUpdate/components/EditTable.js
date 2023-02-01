@@ -82,7 +82,7 @@ const EditableCell = ({
  /* istanbul ignore next */
 const App = (props) => {
   let { templateData, setTemplateData,setTextInput,textInput } = props
-
+  let editCells = ["recorded_date","recorded_time","snippet_value","table_value","uom"]
   const defaultColumns = [
     {
       title: "Columns",
@@ -101,7 +101,12 @@ const App = (props) => {
             <img src={`data:image/png;base64,${text}`} width="50%" height="15%" />
           )
         } else {
-          return text
+          return {
+            props: {
+              style: { background: editCells.includes(record.column) ? "#d9d9d9" : null },
+            },
+            children : text
+          } 
         }
       }
     },
@@ -129,12 +134,12 @@ const App = (props) => {
     if (!col.editable) {
       return col;
     }
-
+    
     return {
       ...col,
       onCell: (record) => ({
         record,
-        editable: col.editable,
+        editable: editCells.includes(record.column) ? col.editable : null,
         dataIndex: col.dataIndex,
         title: col.title,
         handleSave,
