@@ -7,9 +7,9 @@
  */
 import { DeleteOutlined, EditOutlined, SearchOutlined } from '@ant-design/icons';
 import { Button, Empty, Input, Space, Switch, Table, Tag } from 'antd';
-import { dispatch } from 'd3';
 import React, { useEffect, useState } from 'react';
 import Highlighter from 'react-highlight-words';
+import { useDispatch } from "react-redux";
 import { v1 as uuid } from "uuid";
 import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
 import { getResource, resourceActions, roleConfig } from '../../../../services/userRolesAndAccessService';
@@ -35,6 +35,7 @@ const Roles = () => {
 	const [isRoleToggle, setisRoleToggle] = useState(true);
 	const [expandedData, setExpandedData] = useState([]);
 
+	const dispatch = useDispatch();
 
 	useEffect(() => {
 		const _req = {
@@ -228,7 +229,7 @@ const Roles = () => {
 
 	};
 
-	console.log("uuid()", uuid());
+
 	const columns2 = [
 		{
 			title: 'Data type',
@@ -349,7 +350,7 @@ const Roles = () => {
 			} else {
 				setExpandedData([])
 			}
-			console.log("_dataType", dataType);
+
 		} catch (error) {
 			dispatch(hideLoader());
 			dispatch(showNotification("error", error));

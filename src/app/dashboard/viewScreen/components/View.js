@@ -120,7 +120,6 @@ const View = () => {
 
 	const userMenu = (
 		<Menu>
-
 			<Menu.Item key="1" onClick={() => reportDownloadExcel("excel")}>
 				Excel
 			</Menu.Item>
@@ -399,12 +398,20 @@ const View = () => {
 	};
 
 	const reportDownloadExcel = (reportType) => {
+		let login_response = JSON.parse(localStorage.getItem("login_details"));
+
 		const _exportReq = {
 			view_disp_id: viewDisplayId,
-			view_version: viewVersion,
-			type: reportType,
+			view_version: parseInt(viewVersion),
+			download_type: reportType,
 		}
-		let login_response = JSON.parse(localStorage.getItem("login_details"));
+
+		const _headerReq = {
+			"content-type": "application/json",
+			"x-access-token": login_response.token ? login_response.token : "",
+			"resource-name": "VIEW",
+		}
+
 
 		if (reportType === "csv") {
 			viewDownload(_exportReq).then((res) => {
@@ -417,35 +424,21 @@ const View = () => {
 				window.URL.revokeObjectURL(url);
 			})
 		} else if (reportType === "excel") {
-			// viewDownload(_exportReq, {
-			// 	responseType: 'arraybuffer',
-			// }).then((res) => {
-			// 	const blob = new Blob([res.data], { type: 'application/octet-stream' });
-			// 	const url = window.URL.createObjectURL(blob);
-			// 	const a = document.createElement('a');
-			// 	a.href = url;
-			// 	a.download = `${viewDisplayId}.xlsx`
-			// 	document.body.appendChild(a);
-			// 	a.click();
-			// 	window.URL.revokeObjectURL(url);
-			// })
-
 			axios
-				.get(BMS_APP_PYTHON_SERVICE + '/report_download', _reportReq, {
+				.post(BMS_APP_PYTHON_SERVICE + '/view-download', _exportReq, {
 					responseType: 'arraybuffer',
+					headers: _headerReq
 				})
 				.then(response => {
 					const blob = new Blob([response.data], { type: 'application/octet-stream' });
 					const url = window.URL.createObjectURL(blob);
 					const a = document.createElement('a');
 					a.href = url;
-					a.download = "report.xlsx"
+					a.download = `${viewDisplayId}.xlsx`
 					document.body.appendChild(a);
 					a.click();
 					window.URL.revokeObjectURL(url);
 				});
-
-
 		}
 	}
 
