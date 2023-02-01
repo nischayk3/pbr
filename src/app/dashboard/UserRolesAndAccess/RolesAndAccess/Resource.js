@@ -40,8 +40,6 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 
 	useEffect(() => {
 		setData(resourceDataTable)
-
-		resou
 	}, [resourceDataTable])
 
 	const columns3 = [
