@@ -1,7 +1,7 @@
 
 const TableauDashboard = () => {
 	var placeholderDiv = document.getElementById("tableauViz");
-	var url = "https://prod-useast-a.online.tableau.com/t/mareanatableau/views/dashboard/Dashboard1";
+	var url = "https://prod-useast-a.online.tableau.com/t/mareana/views/Superstore/Forecast";
 	var options = {
 		hideTabs: true,
 		width: "1000px",
