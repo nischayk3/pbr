@@ -148,7 +148,7 @@ export const filterMolequles = (_queryParam) => {
 };
 
 export const viewDownload = (_queryParam) => {
-	return Service.get(
+	return Service.post(
 		BMS_APP_PYTHON_SERVICE + "/view-download",
 		_queryParam,
 		request_headers
