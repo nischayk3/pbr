@@ -460,10 +460,13 @@ const Roles = () => {
 		try {
 			dispatch(showLoader());
 			const resourceAction = await resourceActions(_resourceQuery)
+			dispatch(hideLoader());
 			if (resourceAction.statuscode === 200) {
 				setResourceList(resourceAction.message)
+			} else {
+				dispatch(showNotification("error", resDatatable.message));
 			}
-			dispatch(hideLoader());
+
 		} catch (error) {
 			dispatch(hideLoader());
 			dispatch(showNotification("error", error));
@@ -475,10 +478,13 @@ const Roles = () => {
 		try {
 			dispatch(showLoader());
 			const resDatatable = await resourceActions(_resourceQuery)
+			dispatch(hideLoader());
 			if (resDatatable.statuscode === 200) {
 				setResourceDataTable(resDatatable.message)
+			} else {
+				dispatch(showNotification("error", resDatatable.message));
 			}
-			dispatch(hideLoader());
+
 		} catch (error) {
 			dispatch(hideLoader());
 			dispatch(showNotification("error", error));
