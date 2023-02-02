@@ -12,13 +12,13 @@ const TableauDashboard = () => {
 	// setInterval(function () { viz.refreshDataAsync() }, 10000);
 
 	return (
-		<div id="tableauViz">
+		<div id="tableauViz" style={{ padding: "20px", height: "100vh", overflow: 'auto' }}>
 
 			<iframe
 				//src={DASHBOARD_URL + endPoint}
 				src='https://prod-useast-a.online.tableau.com/t/mareanatableaudashboard/views/dashboard/Dashboard1?:showVizHome=no&:embed=tru&'
 				width="100%"
-				height="900"
+				height="1000"
 				frameBorder="0"
 			></iframe>
 		</div>
