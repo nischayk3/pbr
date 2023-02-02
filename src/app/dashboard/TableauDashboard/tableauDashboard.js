@@ -16,7 +16,7 @@ const TableauDashboard = () => {
 
 			<iframe
 				//src={DASHBOARD_URL + endPoint}
-				src='https://prod-useast-a.online.tableau.com/t/mareanatableaudashboard/views/Regional/Obesity?:showVizHome=no&:embed=tru&'
+				src='https://prod-useast-a.online.tableau.com/t/mareanatableaudashboard/views/dashboard/Dashboard1?:showVizHome=no&:embed=tru&'
 				width="100%"
 				height="900"
 				frameBorder="0"
