@@ -907,32 +907,31 @@ function TreePlot(props) {
 					})
 					.on("mouseover", function (d) {
 						toolTip.transition().duration(200).style("opacity", ".9");
-						var material = "";
-						var processOrder = "";
-						var quantity =
-							d.source.relationshipMap[d.source.id + "-" + d.target.id].qty +
-							" " +
-							d.source.relationshipMap[d.source.id + "-" + d.target.id].unit;
-						var purchaseOrder = "";
+						let material = "Not Available";
+						let processOrder = "Not Available";
+						let quantity =
+							d.source.relationshipMap[d.source.id + "-" + d.target.id].qty
+						let uom = d.source.relationshipMap[d.source.id + "-" + d.target.id].unit;
+						let purchaseOrder = "";
+						let pOrder = purchaseOrder == undefined ? "Not Available" : purchaseOrder;
 
-						/* istanbul ignore next */
-						if (THIS.type === "forward") {
-							material = d.source.matNo || "Not Available";
-							processOrder = d.source.poNo || "Not Available";
-							purchaseOrder = d.source.purchaseOrderNo || "Not Available";
-						}
+						purchaseOrder = d.target.purchaseOrderNo || d.source.purchaseOrderNo;
+						material = d.source.matNo || d.target.matNo;
+						processOrder = d.target.poNo || d.source.poNo;
 
-						var tooltipHtml =
+						let tooltipHtml =
 							"<div ><span class='col-xs-1' style='padding:5px'>Product No. :  </span><span class='col-xs-1' style='padding:5px'><b>" +
 							material +
 							// "</b></span><br/><span class='col-xs-1' style='padding:5px'>Batch  :  </span><span class='col-xs-1' style='padding:5px'><b>" + (key[2] || "N/A") +
 							"</b></span><br/><span class='col-xs-1' style='padding:5px'>Process Order :  </span><span class='col-xs-1' style='padding:5px'><b>" +
 							processOrder +
-							"</b></span><br/><span class='col-xs-1' style='padding:5px'>Quantity :  </span><span class='col-xs-1' style='padding:5px'><b>" +
-							purchaseOrder +
+							"</b></span><br/><span class='col-xs-1' style='padding:5px'>Purchase Order :  </span><span class='col-xs-1' style='padding:5px'><b>" +
+							pOrder +
 							"</b></span><br/><span class='col-xs-1' style='padding:5px'>Quantity  :  </span><span class='col-xs-1' style='padding:5px'><b>" +
 							quantity +
-							"</b></span><br/></span></div>";
+							"</b></span><br/><span class='col-xs-1' style='padding:5px'>UOM  :  </span><span class='col-xs-1' style='padding:5px'><b>" +
+							uom +
+							"</b></span><br/></span></div>"
 						d3.select("#keyTooltip").html(tooltipHtml);
 
 						toolTip.style("left", d3.event.layerX + 100 + "px");
@@ -1169,6 +1168,7 @@ function TreePlot(props) {
 								"Not available";
 							quantity = d.relationshipMap[d.id + "-" + d.children[0].id].qty;
 						}
+
 						let tooltipHtml = "";
 						if (d.type === "Process Order") {
 							tooltipHtml =
@@ -1397,16 +1397,18 @@ function TreePlot(props) {
 							"path.additionalParentLink,path.additionalParentForwardLink"
 						)
 						.on("mouseover", function (d) {
-							var data = this.getAttribute("data");
+							let data = this.getAttribute("data");
 							data = JSON.parse(data);
 							toolTip.transition().duration(200).style("opacity", ".9");
-							var material = data.mat || "Not available";
+							let material = data.mat || "Not available";
+							let processOrder = data.poNo || "Not available";
+							let quantity = data.qty || "Not available";
+							let uom = data.uom || "Not available";
 
-							var quantity = data.qty || "Not available";
-							var uom = data.unit || "Not available";
-
-							var tooltipHtml =
-								"<div ><span class='col-xs-1' style='padding:5px'>Product   :  </span><span class='col-xs-1' style='padding:5px'><b>" +
+							let tooltipHtml =
+								"<div><span class='col-xs-1' style='padding:5px'>Process Order   :  </span><span class='col-xs-1' style='padding:5px'><b>" +
+								processOrder +
+								"</b></span><br/><span class='col-xs-1' style='padding:5px'>Product   :  </span><span class='col-xs-1' style='padding:5px'><b>" +
 								material +
 								"</b></span><br/><span class='col-xs-1' style='padding:5px'>Quantity  :  </span><span class='col-xs-1' style='padding:5px'><b>" +
 								quantity +

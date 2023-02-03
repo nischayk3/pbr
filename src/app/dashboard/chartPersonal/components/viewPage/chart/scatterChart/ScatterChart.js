@@ -18,6 +18,7 @@ import SelectSearchField from "../../../../../../../components/SelectSearchField
 import {
 	hideLoader, showLoader, showNotification
 } from "../../../../../../../duck/actions/commonActions";
+import ProcessCapabilityResult from "../dataTables/ProcessCapabilityResult";
 
 const { TabPane } = Tabs;
 
@@ -638,9 +639,11 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 								<TabPane tab="Data Table" key="3">
 									<DataTable postChartData={postChartData} />
 								</TabPane>
-								{/* <TabPane tab="ProcessCapability" key="4">
-									<DataTable postChartData={postChartData} />
-								</TabPane> */}
+								{axisValues.chartType === 'Process Capability' && (
+									<TabPane tab="ProcessCapability" key="4">
+										<ProcessCapabilityResult postChartData={postChartData} />
+									</TabPane>
+								)}
 							</Tabs>
 						</Col>
 					</Row>
