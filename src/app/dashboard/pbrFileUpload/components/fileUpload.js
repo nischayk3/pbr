@@ -268,7 +268,7 @@ function FileUpload() {
 				fileSize.push(item.size)
 			})
 			formData.append('fileSize', fileSize)
-			formData.append('project', uploadLable === 'shared_drive'? 'shared_drive' : selectParam['project'])
+			formData.append('project', uploadLable === 'shared_drive' ? 'shared_drive' : selectParam['project'])
 			setUploadFileDetail(fileDetail);
 			setUploadFileName(fileName);
 			setUploadFile(formData);
@@ -320,8 +320,8 @@ function FileUpload() {
 						fileSize: fileSize,
 						filename: fileName,
 						group: selectParam['group'],
-						project:  uploadLable === 'shared_drive'? 'shared_drive' : selectParam['project'],
-						status: uploadLable === 'shared_drive'? 'SD_N' :'N',
+						project: uploadLable === 'shared_drive' ? 'shared_drive' : selectParam['project'],
+						status: uploadLable === 'shared_drive' ? 'SD_N' : 'N',
 						subgroup: selectParam['subGroup'],
 						uploadReason: 'PBR Document'
 					}
@@ -363,13 +363,13 @@ function FileUpload() {
 			} else {
 				dispatch(showNotification('error', 'Please Select Project'));
 			}
-		}else if(uploadLable === 'genelogy'){
+		} else if (uploadLable === 'genelogy') {
 			dispatch(showNotification('error', 'Please Select Plant'))
-		}else{
+		} else {
 			setIsUploadVisible(true)
 		}
 	}
-	console.log("first", uploadLable)
+	
 	return (
 		<div className='pbr-container'>
 			<div className='custom-wrapper pbr-wrapper'>
@@ -409,8 +409,8 @@ function FileUpload() {
 													id="projectDropdown"
 													showSearch
 													disabled={uploadLable === 'genelogy'}
-													label={uploadLable === 'genelogy'? 'Plant *' : 'Project *'}
-													placeholder={uploadLable === 'genelogy'? 'Select Plant' : 'Select Project'}
+													label={uploadLable === 'genelogy' ? 'Plant *' : 'Project *'}
+													placeholder={uploadLable === 'genelogy' ? 'Select Plant' : 'Select Project'}
 													onChangeSelect={value => onChangeParam(value, 'project')}
 													onSearchSelect={type => onSearchParam(type, 'project')}
 													options={optionProject}
@@ -424,8 +424,8 @@ function FileUpload() {
 													id="groupDropdown"
 													disabled={selectParam['project'] ? false : true}
 													showSearch
-													label={uploadLable === 'genelogy'?'Product':'Group'}
-													placeholder={uploadLable === 'genelogy'? 'Select Product' : 'Select Group'}
+													label={uploadLable === 'genelogy' ? 'Product' : 'Group'}
+													placeholder={uploadLable === 'genelogy' ? 'Select Product' : 'Select Group'}
 													onChangeSelect={value => onChangeParam(value, 'group')}
 													onSearchSelect={type => onSearchParam(type, 'group')}
 													options={optionsGroup}
@@ -439,8 +439,8 @@ function FileUpload() {
 													id="subGroupDropdown"
 													showSearch
 													disabled={selectParam['group'] ? false : true}
-													label={uploadLable === 'genelogy'?'Batch':'Sub-Group'}
-													placeholder={uploadLable === 'genelogy'? 'Select Batch' : 'Select Sub-Group'}
+													label={uploadLable === 'genelogy' ? 'Batch' : 'Sub-Group'}
+													placeholder={uploadLable === 'genelogy' ? 'Select Batch' : 'Select Sub-Group'}
 													onChangeSelect={value => onChangeParam(value, 'subGroup')}
 													onSearchSelect={type => onSearchParam(type, 'subGroup')}
 													options={optionsSubGroup}
