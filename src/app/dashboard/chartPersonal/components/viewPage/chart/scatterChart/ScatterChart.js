@@ -223,11 +223,11 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		];
 
 		newArr.forEach((ele) => {
-			ele.limits = {
-				"control": [],
-				"specification": [],
-				"warning": []
-			};
+			// ele.limits = {
+			// 	"control": [],
+			// 	"specification": [],
+			// 	"warning": []
+			// };
 			if (ele.data_filter.unapproved_data === 1) {
 				ele.layout.annotations = annotations;
 			} else {
@@ -638,6 +638,9 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 								<TabPane tab="Data Table" key="3">
 									<DataTable postChartData={postChartData} />
 								</TabPane>
+								{/* <TabPane tab="ProcessCapability" key="4">
+									<DataTable postChartData={postChartData} />
+								</TabPane> */}
 							</Tabs>
 						</Col>
 					</Row>
