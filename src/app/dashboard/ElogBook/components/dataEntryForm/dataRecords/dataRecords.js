@@ -367,8 +367,6 @@ class DataFormFirst extends Component {
     let { formDetails } = this.state;
     let { getTableData } = this.props;
 
-    console.log(formDetails);
-
     var batch = formDetails.filter(function (el) {
       return el.id == "batch";
     });
