@@ -96,21 +96,18 @@ class AuditTrials extends React.Component {
 					title: "User",
 					dataIndex: "user_id",
 					key: "1",
-					defaultSortOrder: "descend",
 					sorter: (a, b) => a.user_id.localeCompare(b.user_id)
 				},
 				{
 					title: "Event",
 					dataIndex: "activity",
 					key: "2",
-					defaultSortOrder: "descend",
 					sorter: (a, b) => a.activity.localeCompare(b.activity)
 				},
 				{
 					title: "Old Value",
 					dataIndex: "old_value",
 					key: "3",
-					defaultSortOrder: "descend",
 					className: "old_value_class",
 					sorter: (a, b) => a.old_value.localeCompare(b.old_value)
 				},
@@ -118,7 +115,6 @@ class AuditTrials extends React.Component {
 					title: "New Value",
 					dataIndex: "new_value",
 					key: "4",
-					defaultSortOrder: "descend",
 					className: "old_value_class",
 					sorter: (a, b) => {
 						return a.new_value === null ||
@@ -136,14 +132,12 @@ class AuditTrials extends React.Component {
 					title: "Changed Fields",
 					dataIndex: "changed_fields",
 					key: "9",
-					defaultSortOrder: "descend",
 					sorter: (a, b) => a?.changed_fields?.localeCompare(b.changed_fields)
 				},
 				{
 					title: "Reason For Change",
 					dataIndex: "reason",
 					key: "5",
-					defaultSortOrder: "descend",
 					sorter: (a, b) => a.reason.localeCompare(b.reason)
 				},
 				{
@@ -151,21 +145,18 @@ class AuditTrials extends React.Component {
 					dataIndex: "entry_date",
 					key: "6",
 					width: 200,
-					defaultSortOrder: "descend",
-					sorter: (a, b) => new Date(a.entry_date) - new Date(b.entry_date),
-					render: (text) => moment(text).format("YYYY-MM-DD")
+					sorter: (a, b) => new Date(b.entry_date) - new Date(a.entry_date),
+					render: (text) => text
 				},
 				{
 					title: "Table Name",
 					dataIndex: "table_name",
 					key: "7",
-					defaultSortOrder: "descend",
 					sorter: (a, b) => a.table_name.localeCompare(b.table_name)
 				}, {
 					title: "Table Id",
 					dataIndex: "table_disp_key",
 					key: "8",
-					defaultSortOrder: "descend",
 					sorter: (a, b) => a.table_disp_key.localeCompare(b.table_disp_key)
 				},
 			],
@@ -484,6 +475,7 @@ class AuditTrials extends React.Component {
 								<div>
 									<p>User</p>
 									<Select
+									    showSearch
 										style={{
 											width: "100%",
 

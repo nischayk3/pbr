@@ -1,7 +1,7 @@
 {
 	"/dashboard/dashboard": "Chart configurator",
 	"/dashboard/profile": "Profile",
-	"/dashboard/audit_trail_report": "Audit Trail Report",
+	"/dashboard/audit_trail_report": "Audit Trail",
 	"/dashboard/user_trail_report": "User Trail Report",
 	"/dashboard/system_error_report": "System Error Report",
 	"/dashboard/data_load": "Data Load",
