@@ -10,7 +10,6 @@ import { Button, Checkbox, Modal, Select, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
 import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
-import { resourceActionUpdated } from '../../../../services/userRolesAndAccessService';
 
 const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackResource, resourceDataTable, editResource }) => {
 	const [resList, setResList] = useState([]);
@@ -95,7 +94,7 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 	const authUpdate = async (_resourceAuth) => {
 		try {
 			dispatch(showLoader());
-			const auth = await resourceActionUpdated(_resourceAuth)
+			const auth = await resourceActions(_resourceAuth)
 			dispatch(hideLoader());
 			console.log("authhhhhh", auth);
 		} catch (error) {
@@ -121,9 +120,7 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 		// } else {
 		// 	setSelectedAuth(selectedAuth.filter((v) => v !== record.authorization));
 		// }
-
 		setSelectedAuth(authList)
-
 		setIsChecked(e.target.checked)
 		console.log("e,record,index", e, record);
 		setData(tableData)

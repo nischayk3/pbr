@@ -388,7 +388,8 @@ const Roles = () => {
 	const selectRoles = (record) => {
 		const _reqRecord = {
 			role_name: record.role_name,
-			active_status: false
+			active_status: false,
+			field_name: ''
 		}
 		setRoleName(record.role_name)
 		setIsRoleActive(record.active_status === "Active" ? true : false)

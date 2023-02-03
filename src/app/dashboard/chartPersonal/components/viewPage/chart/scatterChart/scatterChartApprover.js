@@ -6,6 +6,7 @@ import { Col, Empty, Row, Tabs } from "antd";
 import ScatterPlot from "../../../../../../../components/ScatterPlot/ScatterPlot";
 import DataTable from "../dataTables/DataTable";
 import ExclusionTable from "../dataTables/ExclusionTable";
+import ProcessCapabilityResult from "../dataTables/ProcessCapabilityResult";
 import ViolationTable from "../dataTables/ViolationTable";
 
 const { TabPane } = Tabs;
@@ -225,6 +226,11 @@ const ScatterChartApprover = ({ postChartData, setPostChartData }) => {
 								<TabPane id="tab-datatable" tab="Data Table" key="3">
 									<DataTable postChartData={postChartData} />
 								</TabPane>
+								{axisValuesApprover.chartType === 'Process Capability' && (
+									<TabPane id="tab-process" tab="ProcessCapability" key="4">
+										<ProcessCapabilityResult postChartData={postChartData} />
+									</TabPane>
+								)}
 							</Tabs>
 						</Col>
 					</Row>
