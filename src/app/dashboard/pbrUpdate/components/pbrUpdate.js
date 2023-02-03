@@ -158,7 +158,8 @@ const PbrUpdate = () => {
 			id: Number(params.id),
 			limit: null,
 			status: null,
-			template_id: []
+			template_id: [],
+			date_range:null
 		}
 		let res = await getPbrReviewerData(req);
 		// let arr = []
@@ -223,7 +224,7 @@ const PbrUpdate = () => {
 		let numberArray = resp.map(Number)
 		let formvalues = {
 			id: numberArray,
-			changed_by: localStorage.getItem('user'),
+			changed_by: localStorage.getItem('username'),
 			recorded_date: textInput?.recorded_date ? textInput?.recorded_date : null,
 			recorded_time: textInput?.recorded_time ? textInput?.recorded_time : null,
 			snippet_value: textInput?.snippet_value ? textInput?.snippet_value : null,

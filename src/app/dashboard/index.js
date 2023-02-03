@@ -13,7 +13,9 @@ import { showNotification } from "../../duck/actions/commonActions";
 import { getAuthorisedPermission } from "../../services/authProvider";
 import LoginRedirect from "../user/login/redirect";
 import RedirectSign from "../user/login/redirectSign";
+import RedirectSAMLSign from "../user/login/samlRedirectSign";
 import "./dashboard.scss";
+import LimitConfig from "./LimitConfig/components/landing/LimitConfig";
 import PrivateRoute from "./ProtectedRoute";
 // DASHBOARD ROUTE COMPONENTS
 
@@ -316,6 +318,9 @@ const Dashboard = () => {
 								<Route key="redirect_sign" path={`${match.url}/redirect_sign`}>
 									<RedirectSign />
 								</Route>
+								<Route key="redirect-saml-sign" path={`${match.url}/saml-redirect`}>
+									<RedirectSAMLSign />
+								</Route>
 								<Route key="faq" path={`${match.url}/faq`}>
 									<FaqMain />
 								</Route>
@@ -392,6 +397,12 @@ const Dashboard = () => {
 									key="screen-controls"
 									path={`${match.url}/user-roles-and-access/screen-controls`}
 									component={ScreenControls}
+									authorised={authorised}
+								/>
+								<PrivateRoute
+									key="limit-config"
+									path={`${match.url}/limit-config`}
+									component={LimitConfig}
 									authorised={authorised}
 								/>
 								<Route

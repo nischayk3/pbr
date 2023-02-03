@@ -1,12 +1,14 @@
-import { SearchOutlined } from '@ant-design/icons';
-import { Button, Card, Checkbox, Col, Input, Row, Select, Space, Table } from 'antd';
+import { SearchOutlined, FilterOutlined } from '@ant-design/icons';
+import { Button, Card, DatePicker, Col, Input, Row, Popover, Space, Table, Tooltip, Select } from 'antd';
 import React, { useEffect, useState } from 'react';
 import Highlighter from 'react-highlight-words';
 import Plot from 'react-plotly.js';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
+import DateFilter from "../../chartPersonal/components/viewPage/viewChart/DateFilter";
 import Signature from "../../../../components/ElectronicSignature/signature";
+import moment from "moment";
 import {
 	hideLoader,
 	showLoader,
@@ -15,6 +17,7 @@ import {
 import { geTemplateDropdown, getPbrReviewerData, getPieChartData, updateApprove } from '../../../../services/pbrService';
 import './styles.scss';
 const { Search } = Input;
+const { RangePicker } = DatePicker;
 /* istanbul ignore next */
 function PbrReviewer() {
 	const dispatch = useDispatch();
@@ -34,15 +37,26 @@ function PbrReviewer() {
 	const [showResetConfidence, setShowResetConfidence] = useState(false);
 	const [templateArray, setTemplateArray] = useState([]);
 	const [selectedTemplateArray, setSelectedTemplateArray] = useState([]);
+	const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 	const [reviewerReq, setReviewerReq] = useState({
 		confidence: null,
 		createdBy: null,
 		id: null,
 		limit: null,
 		status: null,
-		template_id: []
+		template_id: [],
+		date_range: null
 	});
-
+	const [batchFilters, setBatchFilters] = useState({
+		site: null,
+		startDate: null,
+		endDate: null,
+		time: "",
+		duration: null,
+		unApproved: 0,
+	});
+	const [isDatePopupVisible, setIsDatePopupVisible] = useState(false);
+	const dateFormat = "YYYY-MM-DD";
 	let [filteredData] = useState();
 
 	const history = useHistory();
@@ -55,12 +69,18 @@ function PbrReviewer() {
 			dispatch(showLoader());
 			let req = {
 				...reviewerReq,
-				template_id: selectedTemplateArray
+				template_id: selectedTemplateArray,
+				date_range: batchFilters.startDate
+					? new Date(batchFilters.startDate).toISOString() +
+					"/" +
+					new Date(batchFilters.endDate).toISOString()
+					: null
 			}
 			setTableLoading(true)
 			const tableResponse = await getPbrReviewerData(val ? val : req);
 			if (tableResponse['status-code'] === 200) {
-				setTemplateData(tableResponse.Data);
+				let arr = tableResponse.Data.map((item, index) => ({ ...item, key: index }))
+				setTemplateData(arr);
 				setTableLoading(false)
 				dispatch(hideLoader());
 			}
@@ -159,16 +179,14 @@ function PbrReviewer() {
 			let res = await updateApprove(req)
 
 			if (res.Status == "202") {
+				setArr([])
+				setSelectedRowKeys([]);
 				dispatch(hideLoader());
 				dispatch(showNotification("success", "Approved Successfully")),
 					cardTableData()
 				getTemplateID()
 				chart();
 				chart1();
-
-				// setTimeout(() => window.location.reload(),
-				//   1000
-				// );
 			} else {
 				dispatch(hideLoader());
 				dispatch(showNotification("error", res?.Message))
@@ -187,9 +205,15 @@ function PbrReviewer() {
 	};
 
 	const chart = async (val) => {
-		let req = { key: "status", id: selectedTemplateArray }
+		let req = {
+			date_range: batchFilters.startDate
+				? new Date(batchFilters.startDate).toISOString() +
+				"/" +
+				new Date(batchFilters.endDate).toISOString()
+				: null, id: selectedTemplateArray
+		}
 		let obj = await getPieChartData(val ? val : req);
-		let jsondata = obj.Data;
+		let jsondata = obj.status_data;
 		let approved = 0
 		let unapproved = 0
 		jsondata.forEach(item => {
@@ -200,6 +224,20 @@ function PbrReviewer() {
 			}
 		})
 		setPieChartData([approved, unapproved]);
+		let jsondata1 = obj.confidence_data;
+		let High = 0
+		let Medium = 0
+		let Low = 0
+		jsondata1.forEach(item => {
+			if (item.confidence == "High") {
+				High = item.count
+			} else if (item.confidence == "Low") {
+				Low = item.count
+			} else if (item.confidence == "Medium") {
+				Medium = item.count
+			}
+		})
+		setPieChartData1([High, Medium, Low]);
 
 	};
 
@@ -267,7 +305,7 @@ function PbrReviewer() {
 
 	useEffect(() => {
 		chart();
-		chart1();
+		// chart1();
 	}, []);
 	/* istanbul ignore next */
 	const columns2 = [
@@ -421,21 +459,6 @@ function PbrReviewer() {
 			...getColumnSearchProps('status'),
 			sorter: (a, b) => a.status?.length - b.status?.length,
 			sortDirections: ['descend', 'ascend'],
-			render: (text, record, index) => {
-				if (record.status == "approved") {
-					return record.status;
-				}
-				else {
-					return (
-						<Checkbox
-							onChange={(e) => { updateStatus(e, record) }}
-						/>
-
-
-					)
-				}
-			}
-
 		},
 		{
 			title: 'Site',
@@ -650,9 +673,28 @@ function PbrReviewer() {
 	/* istanbul ignore next */
 	const handleTemplateChange = (val) => {
 		if (val.length == 0) {
-			let req = { ...reviewerReq, template_id: [] }
-			let req1 = { key: "status", id: [] }
-			let req2 = { key: "confidence", id: [] }
+			let req = {
+				...reviewerReq, template_id: [], date_range: batchFilters.startDate
+					? new Date(batchFilters.startDate).toISOString() +
+					"/" +
+					new Date(batchFilters.endDate).toISOString()
+					: null
+			}
+			let req1 = {
+				date_range: batchFilters.startDate
+					? new Date(batchFilters.startDate).toISOString() +
+					"/" +
+					new Date(batchFilters.endDate).toISOString()
+					: null, id: []
+			}
+			let req2 = {
+				date_range: batchFilters.startDate
+					? new Date(batchFilters.startDate).toISOString() +
+					"/" +
+					new Date(batchFilters.endDate).toISOString()
+					: null, id: []
+			}
+			setSelectedTemplateArray([])
 			cardTableData(req)
 			chart(req1)
 			chart1(req2)
@@ -663,9 +705,51 @@ function PbrReviewer() {
 	const applyTemplateFilter = () => {
 		cardTableData()
 		chart()
-		chart1()
+		// chart1()
 	}
 
+	const rowSelection = {
+		selectedRowKeys,
+		onChange: (selectedRowKeys, selectedRows) => {
+			setSelectedRowKeys(selectedRowKeys);
+			let arr = selectedRows.map(item => item.id)
+			setArr(arr)
+		},
+		getCheckboxProps: (record) => ({
+			disabled: record.status === 'approved',
+			// Column configuration not to be checked
+			//   name: record.name,
+		}),
+	};
+
+	const handledatechange = (e) => {
+		if (e) {
+			setBatchFilters({
+				...batchFilters,
+				startDate: e[0].format("YYYY-MM-DD"),
+				endDate: e[1].format("YYYY-MM-DD"),
+			});
+		} else {
+			setBatchFilters({
+				...batchFilters,
+				startDate: null,
+				endDate: null,
+			});
+			let req = {
+				...reviewerReq,date_range: null
+			}
+			let req1 = {
+				date_range: null, id: selectedTemplateArray
+			}
+			cardTableData(req)
+			chart(req1)
+		}
+	};
+
+	const handleVisibleChange = (visible) => {
+		setIsDatePopupVisible(visible);
+	};
+	
 	return (
 		<>
 			<BreadCrumbWrapper />
@@ -730,37 +814,8 @@ function PbrReviewer() {
 						<div className='content_section' style={{ height: "100vh" }} >
 							<div className="scrollable-container" >
 								<div>
-									<Row justify="space-around" align="middle">
-										<Col span={16}>
-											<Search
-												className='dashboard-search'
-												placeholder='Search by template ID, name, creator or date of creation'
-												allowClear
-												enterButton='Search'
-												size='large'
-												icon={<SearchOutlined />}
-												onSearch={landingSearch}
-											/>
-										</Col>
-										<Col span={4} >
-											<Select mode='multiple' maxTagCount={1} id="templateDrop" placeholder="Select Template ID" allowClear options={templateArray} onChange={handleTemplateChange} style={{ width: 160, marginLeft: 25 }} />
-										</Col>
-										<Col span={2} >
-											<Button id="applyFilter" style={{
-												margin: "7px 20px",
-												right: 8,
-												borderRadius: "5px",
-												textTransform: "none",
-												background: "#ffffff",
-												borderColor: "#303f9f",
-												color: "#303f9f"
-
-											}}
-												onClick={applyTemplateFilter}
-												disabled={selectedTemplateArray?.length == 0 ? true : false}
-											>Apply</Button>
-										</Col>
-										<Col span={2} >
+									<Row >
+										<Col span={10} >
 											<Button id="pbr-approve" style={{
 												margin: "7px 20px",
 												right: 8,
@@ -774,18 +829,80 @@ function PbrReviewer() {
 												onClick={showApproved}
 												disabled={arr?.length == 0 ? true : false}
 											>Approve</Button>
+											<Search
+												placeholder="Search"
+												allowClear
+												onSearch={landingSearch}
+												style={{ width: 300, marginTop: 7 }}
+											/>
 										</Col>
+										<Col span={14} style={{ display: "flex", justifyContent: 'space-between' }}>
+											<Select className='templateIDDropdown' mode='multiple' maxTagCount={1} id="templateDrop" placeholder="Select Template ID" allowClear options={templateArray} onChange={handleTemplateChange} style={{ width: 160, marginLeft: 25 }} />
+											<div>
+												<RangePicker
+													className='dateFilter'
+													value={
+														batchFilters.startDate
+															? [
+																moment(batchFilters.startDate, dateFormat),
+																moment(batchFilters.endDate, dateFormat),
+															]
+															: ""
+													}
+													format={dateFormat}
+													onChange={(dateString) => handledatechange(dateString)}
+												/>
+												<Popover
+													overlayClassName="cppopup-over"
+													placement="bottomLeft"
+													title="Search quick time range"
+													visible={isDatePopupVisible}
+													onVisibleChange={handleVisibleChange}
+													content={
+														<DateFilter
+															batchFilters={batchFilters}
+															setBatchFilters={setBatchFilters}
+															setIsDatePopupVisible={setIsDatePopupVisible}
+														/>
+													}
+													trigger="click"
+												>
+													<Tooltip title="Advanced Filters">
+														<FilterOutlined style={{ marginLeft: 5, fontSize: 20 }} />
+													</Tooltip>
+												</Popover>
+												
+											</div>
+											<Button id="applyFilter" style={{
+												margin: "7px 20px",
+												right: 8,
+												borderRadius: "5px",
+												textTransform: "none",
+												background: "#ffffff",
+												borderColor: "#303f9f",
+												color: "#303f9f"
+
+											}}
+												onClick={applyTemplateFilter}
+												disabled={selectedTemplateArray?.length == 0 ? batchFilters.startDate == null ? true : false : false}
+											>Apply</Button>
+										</Col>
+
 									</Row>
 								</div>
 								<div >
 									<Table
 										loading={tableLoading}
+										size="small"
+										rowSelection={{
+											...rowSelection,
+										}}
 										columns={columns2}
 										className="pbr_reviewer_table"
 										dataSource={filterTableLanding === null
 											? templateData
 											: filterTableLanding}
-										pagination={{ defaultPageSize: 10, showSizeChanger: true, pageSizeOptions: ['10', '50', '100', '200'] }}
+										pagination={{ defaultPageSize: 1000, showSizeChanger: true, pageSizeOptions: ["1000", '2000', '5000', '100000'] }}
 										scroll={{
 											x: 2300,
 											y: 'calc(100vh - 460px)',

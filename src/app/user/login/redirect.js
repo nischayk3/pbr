@@ -17,15 +17,15 @@ export default function Redirect() {
 		let res = await getSession();
 		let data = res['Data'];
 		if (data) {
+			dispatch(hideLoader());
 			dispatch(sendLoginDetails(data));
 			localStorage.setItem('login_details', JSON.stringify(data));
-			localStorage.setItem('user', data.email_id.replaceAll('^"|"$', ''));
-			localStorage.setItem('username', data?.firstname ? data.firstname.replaceAll('^"|"$', '') : data.email_id.replaceAll('^"|"$', ''));
+			localStorage.setItem('user', data.user_id);
+			localStorage.setItem('username', data.firstname ? data.firstname.replaceAll('^"|"$', '') : data.email_id.replaceAll('^"|"$', ''));
 			dispatch(showNotification('success', `Logged in as ${data.email_id}`));
 			history.push('/dashboard/workspace');
 			//temporary fix
 			window.location.reload()
-			dispatch(hideLoader());
 		} else {
 			dispatch(showNotification('error', 'Error in Login'));
 			dispatch(hideLoader());
@@ -39,7 +39,7 @@ export default function Redirect() {
 	return (
 		<div>
 			<Result
-				title='Redirecting You to the Main Screen'
+				title='Please wait while you are redirected to the MI'
 				extra={
 					<Button type='primary' key='console'>
 						MI

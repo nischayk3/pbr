@@ -19,6 +19,9 @@ export default function Landing() {
 		setIsDatasetVisible(false)
 	}
 
+	const login_response = JSON.parse(localStorage.getItem('login_details'));
+	const JUPYTER_APP_URL = `${JUPYTER_APP}/hub/login?next=%2Fhub%2F&auth_token=${login_response.token}`;
+	console.log("JUPYTER_APP", JUPYTER_APP_URL);
 	return (
 		<div>
 			<ScreenHeader
@@ -56,7 +59,7 @@ export default function Landing() {
 					<div
 						className="jupyter-card"
 						onClick={
-							() => window.open(`${JUPYTER_APP}`, "_blank")
+							() => window.open(`${JUPYTER_APP_URL}`, "_blank")
 						}
 						id="explore-jupyter"
 					>

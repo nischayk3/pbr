@@ -7,7 +7,8 @@
  */
 
 import { CloudUploadOutlined, InfoCircleOutlined } from "@ant-design/icons";
-import { Button, Collapse, Modal } from "antd";
+import { Button, Collapse, Dropdown, Menu, Modal } from "antd";
+import axios from 'axios';
 import queryString from "query-string";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,6 +16,7 @@ import { useHistory, useLocation, useParams } from "react-router";
 import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
 import Signature from "../../../../components/ElectronicSignature/signature";
 import InputField from "../../../../components/InputField/InputField";
+import { BMS_APP_PYTHON_SERVICE } from "../../../../constants/apiBaseUrl";
 import {
 	hideLoader,
 	showLoader,
@@ -29,7 +31,7 @@ import {
 	viewParamMap
 } from "../../../../duck/actions/viewAction";
 import {
-	getMoleculeList, getViewConfig, saveFunction
+	getMoleculeList, getViewConfig, saveFunction, viewDownload
 } from "../../../../services/viewCreationPublishing";
 import FileUpload from "./fileUpload/FileUpload";
 import MaterialTree from "./materialTree";
@@ -44,15 +46,17 @@ const { Panel } = Collapse;
 const View = () => {
 	const location = useLocation();
 	const history = useHistory();
+	const dispatch = useDispatch();
 
 	const selectedTableData = useSelector(
 		(state) => state.viewCreationReducer.selectedParamData
 	);
-
 	const viewState = useSelector((state) => state.viewCreationReducer);
-	const dispatch = useDispatch();
+	const esignPublishRes = useSelector((state) => state.commonReducer.publishRes)
+
 	const [count, setCount] = useState(1);
 	const [moleculeList, setMoleculeList] = useState({});
+	const [isDownload, setIsDownload] = useState(true);
 	const [isPublish, setIsPublish] = useState(false);
 	const [moleculeId, setMoleculeId] = useState();
 	const [functionEditorViewState, setFunctionEditorViewState] = useState(false);
@@ -106,6 +110,25 @@ const View = () => {
 			setViewVersion(parameters.version);
 		}
 	}, []);
+
+	useEffect(() => {
+		if (esignPublishRes?.status_code === 200) {
+			setViewStatus(esignPublishRes?.rep_stauts);
+		}
+	}, [esignPublishRes]);
+
+
+	const userMenu = (
+		<Menu>
+			<Menu.Item key="1" onClick={() => reportDownloadExcel("excel")}>
+				Excel
+			</Menu.Item>
+			<Menu.Divider />
+			<Menu.Item key="2" onClick={() => reportDownloadExcel("csv")}>
+				CSV
+			</Menu.Item>
+		</Menu>
+	);
 
 	//Moleculelist api call
 	const loadMolecule = async (_reqMolecule) => {
@@ -297,6 +320,7 @@ const View = () => {
 				setViewDisplayId(response.view_disp_id);
 				setViewStatus(response.view_status);
 				setViewVersion(response.view_version);
+				setIsDownload(false);
 				dispatch(
 					showNotification(
 						"success",
@@ -356,6 +380,7 @@ const View = () => {
 			if (loadViewRes.view_name) {
 				setViewName(loadViewRes.view_name);
 			}
+			setIsDownload(false);
 			dispatch(sendSelectedParamData(loadViewRes["all_parameters"]));
 			dispatch(hideLoader());
 		} catch (err) {
@@ -371,6 +396,51 @@ const View = () => {
 	const PublishResponse = (res) => {
 		setViewStatus(res.rep_stauts);
 	};
+
+	const reportDownloadExcel = (reportType) => {
+		let login_response = JSON.parse(localStorage.getItem("login_details"));
+
+		const _exportReq = {
+			view_disp_id: viewDisplayId,
+			view_version: parseInt(viewVersion),
+			download_type: reportType,
+		}
+
+		const _headerReq = {
+			"content-type": "application/json",
+			"x-access-token": login_response.token ? login_response.token : "",
+			"resource-name": "VIEW",
+		}
+
+
+		if (reportType === "csv") {
+			viewDownload(_exportReq).then((res) => {
+				const url = window.URL.createObjectURL(new Blob([res]));
+				const a = document.createElement('a');
+				a.href = url;
+				a.download = `${viewDisplayId}.csv`
+				document.body.appendChild(a);
+				a.click();
+				window.URL.revokeObjectURL(url);
+			})
+		} else if (reportType === "excel") {
+			axios
+				.post(BMS_APP_PYTHON_SERVICE + '/view-download', _exportReq, {
+					responseType: 'arraybuffer',
+					headers: _headerReq
+				})
+				.then(response => {
+					const blob = new Blob([response.data], { type: 'application/octet-stream' });
+					const url = window.URL.createObjectURL(blob);
+					const a = document.createElement('a');
+					a.href = url;
+					a.download = `${viewDisplayId}.xlsx`
+					document.body.appendChild(a);
+					a.click();
+					window.URL.revokeObjectURL(url);
+				});
+		}
+	}
 
 
 	return (
@@ -425,6 +495,20 @@ const View = () => {
 							<CloudUploadOutlined />
 							Publish
 						</Button>
+						<Dropdown style={{ color: "#ffffff" }} overlay={userMenu} disabled={isDownload} >
+							<Button
+								className="view-publish-btn"
+							>
+								Export
+							</Button>
+						</Dropdown>
+						{/* <Button
+							className="view-publish-btn"
+							disabled={isDownload}
+							onClick={() => exportView()}
+						>
+							Export CSV
+						</Button> */}
 					</div>
 				)}
 			</div>

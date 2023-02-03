@@ -37,6 +37,7 @@ const Login = () => {
 			localStorage.removeItem('login_details');
 			localStorage.removeItem('username');
 			localStorage.removeItem('loginwith');
+
 		}
 		if (JSON.parse(localStorage.getItem("isRemember"))) {
 			setEmail(localStorage.getItem("user"))

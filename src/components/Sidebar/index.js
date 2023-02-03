@@ -126,6 +126,16 @@ const Sidebar = () => {
 							Hierarchy Config
 						</Link>
 					</Menu.Item>
+					<Menu.Item
+						key="limit-config"
+						icon={<DeploymentUnitOutlined className="menu-icons" />}
+						id="limit-config"
+						className={path === "/dashboard/limit-config" ? 'ant-menu-item-selected' : 'remove-selected'}
+					>
+						<Link to="/dashboard/limit-config">
+							Limit Config
+						</Link>
+					</Menu.Item>
 				</SubMenu>
 				<SubMenu
 					key="sub4"

@@ -7,29 +7,32 @@
  */
 
 import {
-  PlusOutlined,
   DeleteTwoTone,
   EllipsisOutlined,
+  PlusOutlined,
 } from "@ant-design/icons";
 import {
   Button,
   Checkbox,
+  Dropdown,
   Input,
+  Menu,
+  Popconfirm,
   Select,
   Switch,
   Table,
-  Dropdown,
-  Menu,
-  Popconfirm,
 } from "antd";
 import { Component } from "react";
 import { connect } from "react-redux";
 import { v1 as uuid } from "uuid";
+import Signature from "../../../../../../components/ElectronicSignature/signature";
+import InputField from "../../../../../../components/InputField/InputField";
 import {
   hideLoader,
   showLoader,
   showNotification,
 } from "../../../../../../duck/actions/commonActions";
+import { putFormData } from "../../../../../../services/eLogBookService";
 import {
   addRows,
   adjustColumnWidths,
@@ -42,9 +45,6 @@ import {
   selectAllRowsForDeletion,
 } from "../../../../../../utils/editableTableHelper";
 import "./dataRecords.scss";
-import InputField from "../../../../../../components/InputField/InputField";
-import { putFormData } from "../../../../../../services/eLogBookService";
-import Signature from "../../../../../../components/ElectronicSignature/signature";
 
 const { Option } = Select;
 
@@ -373,6 +373,9 @@ class DataFormFirst extends Component {
     var process = formDetails.filter(function (el) {
       return el.id == "process";
     });
+    var location = formDetails.filter(function (el) {
+      return el.id == "location";
+    });
 
     let save_req = {
       archive: boolean_value,
@@ -385,13 +388,10 @@ class DataFormFirst extends Component {
       version: this.props.form_version,
       form_id: this.props.form_id,
       record_name:
-        batch &&
-        batch[0] &&
-        batch[0].value &&
-        process &&
-        process[0] &&
-        process[0].value
+        batch[0] && batch[0].value && process[0] && process[0].value
           ? batch[0].value + "_" + process[0].value
+          : batch[0] && batch[0].value && location[0] && location[0].value
+          ? batch[0].value + "_" + location[0].value
           : batch && batch[0] && batch[0].value
           ? batch[0].value
           : "",
@@ -429,6 +429,7 @@ class DataFormFirst extends Component {
   PublishResponse = (res) => {
     this.setState({ status: res.rep_stauts });
   };
+
   handleClose = () => {
     this.setState({ isPublish: false });
   };

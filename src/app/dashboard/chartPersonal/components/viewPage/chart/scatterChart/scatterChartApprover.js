@@ -99,8 +99,8 @@ const ScatterChartApprover = ({ postChartData, setPostChartData }) => {
 						if (ele.chart_mapping?.transform?.function_name !== "") {
 							setShowPpk(true)
 							setPpkData(ele.ppk_cpk_data)
-							ele.layout.width = 500;
-							ele.layout.height = 350;
+							// ele.layout.width = 500;
+							// ele.layout.height = 350;
 						} else {
 							setShowPpk(false)
 						}

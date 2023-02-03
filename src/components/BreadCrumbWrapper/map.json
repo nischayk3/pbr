@@ -40,5 +40,6 @@
 	"/dashboard/elog_book_data_entry/data_entry_forms": "Data entry form",
 	"/dashboard/elog_book_template": "E-Log Book Template",
 	"/dashboard/elog_book_template/new-template": "New template",
-	"/dashboard/data-access-service": "Data Access Service"
+	"/dashboard/data-access-service": "Data Access Service",
+	"/dashboard/limit-config": "Molecule Limit Configurator"
 }

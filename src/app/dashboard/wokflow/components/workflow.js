@@ -50,13 +50,13 @@ const Workflow = () => {
 	}, []);
 
 	useEffect(() => {
-		if (cardTitle != "" && cardTitle !== "Param Data Approval") {
+		if (cardTitle != "" && cardTitle !== "Param Data") {
 			cardTableData();
 		}
 	}, [cardTitle, activeTab]);
 
 	useEffect(() => {
-		if (cardTitle === "Param Data Approval") {
+		if (cardTitle === "Param Data") {
 			getUnApprovedParamData();
 		}
 	}, [cardTitle, activeTab]);
@@ -229,6 +229,7 @@ const Workflow = () => {
 	};
 
 	const tilesClicked = (item, index) => {
+		console.log("textttttttt", item);
 		setItemCount(item.item_count);
 		//setIndexCount(index);
 		setCardTitle(item.text);
@@ -311,7 +312,7 @@ const Workflow = () => {
 									</div>
 								}
 							>
-								{cardTitle === "Param Data Approval" ? (
+								{cardTitle === "Param Data" ? (
 									<>
 										<div style={{ margin: "12px 0px 12px 0px" }}>
 											<Button
