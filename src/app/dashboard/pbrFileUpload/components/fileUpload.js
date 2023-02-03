@@ -34,6 +34,7 @@ function FileUpload() {
 	const [uploadedFileInfo, setUploadedFileInfo] = useState([]);
 	const [isUploadVisible, setIsUploadVisible] = useState(false);
 	const [uploading, setUploading] = useState(false);
+	const [uploadLable, setUploadLable] = useState('project');
 	const [paramList, setParamList] = useState({
 		projectList: [],
 		groupList: [],
@@ -44,6 +45,7 @@ function FileUpload() {
 		group: '',
 		subGroup: '',
 	});
+	const uploadOptions = [{ label: "Project", value: "project" }, { label: "Genelogy", value: "genelogy" }, { label: "Shared Drive", value: "shared_drive" }]
 
 	useEffect(() => {
 		getProjectFilterData()
@@ -266,7 +268,7 @@ function FileUpload() {
 				fileSize.push(item.size)
 			})
 			formData.append('fileSize', fileSize)
-			formData.append('project', selectParam['project'])
+			formData.append('project', uploadLable === 'shared_drive'? 'shared_drive' : selectParam['project'])
 			setUploadFileDetail(fileDetail);
 			setUploadFileName(fileName);
 			setUploadFile(formData);
@@ -318,8 +320,8 @@ function FileUpload() {
 						fileSize: fileSize,
 						filename: fileName,
 						group: selectParam['group'],
-						project: selectParam['project'],
-						status: 'N',
+						project:  uploadLable === 'shared_drive'? 'shared_drive' : selectParam['project'],
+						status: uploadLable === 'shared_drive'? 'SD_N' :'N',
 						subgroup: selectParam['subGroup'],
 						uploadReason: 'PBR Document'
 					}
@@ -355,14 +357,19 @@ function FileUpload() {
 	}
 
 	const checkUpload = () => {
-		if (selectParam['project']) {
+		if (uploadLable === 'project') {
+			if (selectParam['project']) {
+				setIsUploadVisible(true)
+			} else {
+				dispatch(showNotification('error', 'Please Select Project'));
+			}
+		}else if(uploadLable === 'genelogy'){
+			dispatch(showNotification('error', 'Please Select Plant'))
+		}else{
 			setIsUploadVisible(true)
-		} else {
-			dispatch(showNotification('error', 'Please Select Project'));
 		}
-
 	}
-
+	console.log("first", uploadLable)
 	return (
 		<div className='pbr-container'>
 			<div className='custom-wrapper pbr-wrapper'>
@@ -392,55 +399,60 @@ function FileUpload() {
 									<h3>Files</h3>
 									<Divider style={{ marginTop: 5 }} />
 									<h3>Where do you want to place your new files?</h3>
-									<div style={{ display: "flex", justifyContent: "space-between", marginTop: 40 }}>
-										<div style={{ width: 235 }}>
-											<SelectSearchField
-												id="projectDropdown"
-												showSearch
-												label='Project *'
-												placeholder='Select Project'
-												onChangeSelect={value => onChangeParam(value, 'project')}
-												onSearchSelect={type => onSearchParam(type, 'project')}
-												options={optionProject}
-												handleClearSearch={e => clearSearch(e, 'project')}
-												// error={isEmptyPlant ? 'Please select project' : null}
-												selectedValue={selectParam['project'] ? selectParam['project'] : null}
-											/>
-										</div>
-										<div style={{ width: 235 }}>
-											<SelectSearchField
-												id="groupDropdown"
-												disabled={selectParam['project'] ? false : true}
-												showSearch
-												label='Group'
-												placeholder='Select Group'
-												onChangeSelect={value => onChangeParam(value, 'group')}
-												onSearchSelect={type => onSearchParam(type, 'group')}
-												options={optionsGroup}
-												handleClearSearch={e => clearSearch(e, 'group')}
-												// error={isEmptyPlant ? 'Please select plant' : null}
-												selectedValue={selectParam['group'] ? selectParam['group'] : null}
-											/>
-										</div>
-										<div style={{ width: 235 }}>
-											<SelectSearchField
-												id="subGroupDropdown"
-												showSearch
-												disabled={selectParam['group'] ? false : true}
-												label='Sub-Group'
-												placeholder='Select Sub-Group'
-												onChangeSelect={value => onChangeParam(value, 'subGroup')}
-												onSearchSelect={type => onSearchParam(type, 'subGroup')}
-												options={optionsSubGroup}
-												handleClearSearch={e => clearSearch(e, 'subGroup')}
-												// error={isEmptyPlant ? 'Please select plant' : null}
-												selectedValue={selectParam['subGroup'] ? selectParam['subGroup'] : null}
-											/>
-										</div>
-									</div>
+									<Select defaultValue={'project'} className='uploadDropdown' options={uploadOptions}
+										onChange={(val) => setUploadLable(val)}
+									/>
+									{(uploadLable === 'project' || uploadLable === 'genelogy') &&
+										<div style={{ display: "flex", justifyContent: "space-between", marginTop: 40 }}>
+											<div style={{ width: 235 }}>
+												<SelectSearchField
+													id="projectDropdown"
+													showSearch
+													disabled={uploadLable === 'genelogy'}
+													label={uploadLable === 'genelogy'? 'Plant *' : 'Project *'}
+													placeholder={uploadLable === 'genelogy'? 'Select Plant' : 'Select Project'}
+													onChangeSelect={value => onChangeParam(value, 'project')}
+													onSearchSelect={type => onSearchParam(type, 'project')}
+													options={optionProject}
+													handleClearSearch={e => clearSearch(e, 'project')}
+													// error={isEmptyPlant ? 'Please select project' : null}
+													selectedValue={selectParam['project'] ? selectParam['project'] : null}
+												/>
+											</div>
+											<div style={{ width: 235 }}>
+												<SelectSearchField
+													id="groupDropdown"
+													disabled={selectParam['project'] ? false : true}
+													showSearch
+													label={uploadLable === 'genelogy'?'Product':'Group'}
+													placeholder={uploadLable === 'genelogy'? 'Select Product' : 'Select Group'}
+													onChangeSelect={value => onChangeParam(value, 'group')}
+													onSearchSelect={type => onSearchParam(type, 'group')}
+													options={optionsGroup}
+													handleClearSearch={e => clearSearch(e, 'group')}
+													// error={isEmptyPlant ? 'Please select plant' : null}
+													selectedValue={selectParam['group'] ? selectParam['group'] : null}
+												/>
+											</div>
+											<div style={{ width: 235 }}>
+												<SelectSearchField
+													id="subGroupDropdown"
+													showSearch
+													disabled={selectParam['group'] ? false : true}
+													label={uploadLable === 'genelogy'?'Batch':'Sub-Group'}
+													placeholder={uploadLable === 'genelogy'? 'Select Batch' : 'Select Sub-Group'}
+													onChangeSelect={value => onChangeParam(value, 'subGroup')}
+													onSearchSelect={type => onSearchParam(type, 'subGroup')}
+													options={optionsSubGroup}
+													handleClearSearch={e => clearSearch(e, 'subGroup')}
+													// error={isEmptyPlant ? 'Please select plant' : null}
+													selectedValue={selectParam['subGroup'] ? selectParam['subGroup'] : null}
+												/>
+											</div>
+										</div>}
 									<h3 style={{ marginTop: 30 }}>Upload Files</h3>
 									<div
-										id = "uploadPDf"
+										id="uploadPDf"
 										className='create-new'
 										onClick={() => checkUpload()}
 										disabled={true}
