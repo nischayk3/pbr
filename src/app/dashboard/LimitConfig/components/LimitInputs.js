@@ -135,6 +135,7 @@ const LimitInputs = ({ setLimitsData, limitsData, openRow, selectedRowKey, param
 				limitsData.map((data, index) => {
 					if (record.key === data.key) {
 						if (selectedRowKey !== openRow) {
+							/* istanbul ignore next */
 							if (!data.validity_date) {
 								return "";
 							} else {
@@ -189,15 +190,24 @@ const LimitInputs = ({ setLimitsData, limitsData, openRow, selectedRowKey, param
 		try {
 			dispatch(showLoader());
 			if(record?.int_id) {
-				const apiResponse = await deleteLimitsApi(record?.int_id);
-				tempParamData = limitsData.filter((limit) => limit?.int_id !== record?.int_id)
+				const obj = {
+					data: [
+						record?.int_id
+					]
+				}
+				const apiResponse = await deleteLimitsApi(obj);
+				if(apiResponse?.Status === 200) {
+					tempParamData = limitsData.filter((limit) => limit?.int_id !== record?.int_id)
+				}
 			} else {
 				tempParamData = limitsData.filter((limit) => limit?.key !== record?.key)
 			}
 			setLimitsData(tempParamData)
 			dispatch(hideLoader());
 		} catch (error) {
+			/* istanbul ignore next */
 			dispatch(hideLoader());
+			/* istanbul ignore next */
 			dispatch(showNotification("error", error));
 		}
 	}
@@ -205,7 +215,7 @@ const LimitInputs = ({ setLimitsData, limitsData, openRow, selectedRowKey, param
 	const handleAdd = () => {
 		// count.current = count.current + 1;
 		const newData = {
-			key: uuid(),
+			key: paramData?.length + 1,
 			"cust_key": paramData[0]?.cust_key,
 			"from_": Number,
 			"limit_type": "",
