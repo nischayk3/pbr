@@ -10,8 +10,9 @@ import { Button, Checkbox, Modal, Select, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
 import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
+import { resourceActionUpdated } from '../../../../services/userRolesAndAccessService';
 
-const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackResource, resourceDataTable, editResource }) => {
+const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackResource, resourceDataTable, editResource, resourceType }) => {
 	const [resList, setResList] = useState([]);
 	const [selectedResource, setSelectedResource] = useState('');
 	const [isChecked, setIsChecked] = useState(false);
@@ -57,7 +58,6 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 			key: 'isEnable',
 			dataIndex: 'isEnable',
 			render: (value, record, rowIndex) => {
-				console.log("value,record,index", record, value);
 				return (
 					<Checkbox checked={value} onChange={(e) => onChangeAuth(e, record, rowIndex)} />
 				)
@@ -85,16 +85,18 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 			role_name: roleName,
 			resource: selectedResource,
 			authorization: selectedAuth,
-			updated: false
+			updated: resourceType === 'new_resource' ? false : resourceType === 'edit_resource' ? true : null
 		}
+		console.log("_reqAuth", _reqAuth);
 		authUpdate(_reqAuth)
 	}
 
 	//resource auth update
 	const authUpdate = async (_resourceAuth) => {
+		console.log('authUpdate', _resourceAuth);
 		try {
 			dispatch(showLoader());
-			const auth = await resourceActions(_resourceAuth)
+			const auth = await resourceActionUpdated(_resourceAuth)
 			dispatch(hideLoader());
 			console.log("authhhhhh", auth);
 		} catch (error) {
@@ -120,9 +122,10 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 		// } else {
 		// 	setSelectedAuth(selectedAuth.filter((v) => v !== record.authorization));
 		// }
+		console.log("authList", authList, data);
 		setSelectedAuth(authList)
 		setIsChecked(e.target.checked)
-		console.log("e,record,index", e, record);
+		console.log("tableData", tableData);
 		setData(tableData)
 	}
 

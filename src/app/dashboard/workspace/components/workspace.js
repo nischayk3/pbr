@@ -137,9 +137,9 @@ const Workspace = () => {
 			const chartIdResponse = await getChartExceptionData(req);
 			setChartIdException(chartIdResponse.Data);
 			setActiveTab(
-				chartIdResponse.Data[0]?.chart_disp_id +
+				chartIdResponse?.Data[0]?.chart_disp_id +
 				"_" +
-				chartIdResponse.Data[0]?.chart_version
+				chartIdResponse?.Data[0]?.chart_version
 			);
 			// dispatch(hideLoader());
 		} catch (error) {
@@ -277,41 +277,6 @@ const Workspace = () => {
 													</Avatar>
 												);
 											})}
-										{/* <Avatar
-                      style={{
-                        backgroundColor: '#0CE7CC',
-                      }}
-                    >
-                      A
-                    </Avatar>
-                    <Avatar
-                      style={{
-                        backgroundColor: '#0CE7CC',
-                      }}
-                    >
-                      B
-                    </Avatar>
-                    <Avatar
-                      style={{
-                        backgroundColor: '#0CE7CC',
-                      }}
-                    >
-                      C
-                    </Avatar>
-                    <Avatar
-                      style={{
-                        backgroundColor: '#0CE7CC',
-                      }}
-                    >
-                      D
-                    </Avatar>
-                    <Avatar
-                      style={{
-                        backgroundColor: '#0CE7CC',
-                      }}
-                    >
-                      E
-                    </Avatar> */}
 									</Avatar.Group>
 								</div>
 							</div>

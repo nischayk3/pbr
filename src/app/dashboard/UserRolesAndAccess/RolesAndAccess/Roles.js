@@ -12,7 +12,7 @@ import Highlighter from 'react-highlight-words';
 import { useDispatch } from "react-redux";
 import { v1 as uuid } from "uuid";
 import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
-import { getResource, resourceActions, roleConfig } from '../../../../services/userRolesAndAccessService';
+import { dataAccessUpdate, getResource, roleConfig } from '../../../../services/userRolesAndAccessService';
 import Resource from './Resource';
 
 const Roles = () => {
@@ -30,12 +30,26 @@ const Roles = () => {
 	const [resourceDataTable, setResourceDataTable] = useState([]);
 	const [editResource, setEditResource] = useState("");
 	const [isRoleActive, setIsRoleActive] = useState(false);
+	const [isUnapproved, setIsUnapproved] = useState(false);
 	const [newRole, setNewRole] = useState("");
 	const [isEditRole, setisEditRole] = useState(true);
 	const [isRoleToggle, setisRoleToggle] = useState(true);
 	const [expandedData, setExpandedData] = useState([]);
+	const [inculdeExcludeData, setInculdeExcludeData] = useState([]);
+	const [expandedRowKeys, setExpandedRowKeys] = useState([]);
+	const [editingKey, setEditingKey] = useState('');
+	const [loading, setLoading] = useState(false);
+	const [selectedValue, setSelectedValue] = useState([]);
+	const [expandedTableData, setExpandedTableData] = useState({});
+	const [editable, setEditable] = useState(false);
+	const [resourceType, setResourceType] = useState('');
+
+
+	const isEditing = (record) => record.id === editingKey;
 
 	const dispatch = useDispatch();
+
+	const dataTypeData = [{ field_name: 'Molecule', id: '01' }, { field_name: 'Plant', id: '02' }]
 
 	useEffect(() => {
 		const _req = {
@@ -139,6 +153,7 @@ const Roles = () => {
 	};
 
 	const editRole = (resourceName) => {
+		setResourceType('edit_resource')
 		setIsVisible(true)
 		setEditResource(resourceName)
 		const editres = {
@@ -182,6 +197,7 @@ const Roles = () => {
 	const handleClickResource = () => {
 		setEditResource('')
 		setIsVisible(true)
+		setResourceType('new_resource')
 		const resource = {
 			all_resources: true
 		}
@@ -189,88 +205,164 @@ const Roles = () => {
 	}
 
 	const expandedRowRender = () => {
-		const options = [];
-		for (let i = 10; i < 36; i++) {
+		const options = []
+		expandedData && expandedData.forEach((item) => {
 			options.push({
-				label: i.toString(36) + i,
-				value: i.toString(36) + i,
+				label: item,
+				value: item,
 			});
-		}
-		const handleChange = (value) => {
-			console.log(`selected ${value}`);
+		})
+		// for (let i = 10; i < 36; i++) {
+		// 	options.push({
+		// 		label: i.toString(36) + i,
+		// 		value: i.toString(36) + i,
+		// 	});
+		// }
+		const handleChange = (text, record, value, index) => {
+			const tableData = { ...expandedTableData }
+			const tableRecord = { ...inculdeExcludeData }
+
+			if (record.dataType === 'Molecule') {
+				if (record['name'] === 'Include') {
+					tableData['molecule_included'] = value
+					tableRecord[index]['data'] = value
+				} else if (record['name'] === 'Exclude') {
+					tableData['molecule_excluded'] = value
+					tableRecord[index]['data'] = value
+				}
+			}
+			if (record.dataType === 'Plant') {
+				if (record['name'] === 'Include') {
+					tableData['plant_included'] = value
+					tableRecord[index]['data'] = value
+				} else if (record['name'] === 'Exclude') {
+					tableData['plant_excluded'] = value
+					tableRecord[index]['data'] = value
+				}
+			}
+
+
+			setExpandedTableData(tableData)
+			// setInculdeExcludeData(tableRecord)
+			if (value !== undefined) {
+				setSelectedValue(value)
+			}
 		};
+
 		const columns1 = [
 			{
 				title: 'Name',
 				dataIndex: 'name',
 				key: 'name',
-				render: () => {
+				with: 100,
+				render: (text) => {
 					return (
-						<Select
-							mode="multiple"
-							allowClear
-							style={{
-								width: '100%',
-							}}
-							placeholder="Please select"
-							defaultValue={['a10', 'c12']}
-							onChange={handleChange}
-							options={options}
-						/>
+						<div className="multi-select">
+							<p>{text}</p>
+						</div>
 					)
 				},
 			},
 			{
-				title: 'Include',
-				key: 'include',
-				render: () => <Switch size="small" defaultChecked />,
+				title: '',
+				dataIndex: 'data',
+				key: 'data',
+				render: (text, record, index) => {
+
+					return (
+						<div className="multi-select">
+							<Select
+								mode="multiple"
+								allowClear
+								style={{
+									width: '100%',
+								}}
+								placeholder="Please select"
+								value={text}
+								onChange={(value) => handleChange(text, record, value, index)}
+								options={options}
+							/>
+						</div>
+					)
+				},
 			},
+			// {
+			// 	title: 'Include',
+			// 	key: 'include',
+			// 	render: () => <Switch size="small" defaultChecked />,
+			// },
 
 		];
-		const data1 = [];
-		for (let i = 0; i < 3; ++i) {
-			data1.push({
-				key: i.toString(),
-				name: 'Belatacept',
-			});
-		}
-		return <Table className="roles-inner-table" columns={columns1} dataSource={data1} pagination={false} rowKey={uuid()} />;
+
+
+		return <Table className="roles-inner-table" columns={columns1} dataSource={inculdeExcludeData} pagination={false} rowKey={uuid()} loading={loading} />;
 	};
 
 
 	const onTableRowExpand = (expanded, record) => {
-		console.log("expanded, record", expanded, record);
-		//var keys = [];
+		const keys = [];
 		if (expanded) {
+			setEditingKey(record.id);
+			keys.push(record.id);
 			const _expandRecord = {
 				role_name: roleName,
 				active_status: false,
 				field_name: record.field_name
 			}
 			getDataType(_expandRecord)
-			//	keys.push(record.key); // I have set my record.id as row key. Check the documentation for more details.
+			const editRecord = isEditing(record);
+			setEditable(editRecord)
+		} else {
+			setEditingKey(record.id);
+			const editRecorded = isEditing(record);
+			setEditable(editRecorded)
 		}
-
-
+		setExpandedRowKeys(keys);
 	};
 
+	// const onClickPlantName = (expanded, record) => {
+	// 	console.log("onClickPlantName", expanded, record);
+	// }
 
+	const expandRowByClick = (expanded, record) => {
+		console.log("expandRowByClick", expanded, record);
+	}
+
+	// console.log("isEditDataAccess", isEditDataAccess);
 	const columns2 = [
 		{
 			title: 'Data type',
 			dataIndex: 'field_name',
 			key: 'field_name',
+			editable: true,
 		},
 
 		{
 			title: 'Action',
 			key: 'operation',
-			render: () => (
-				<div className="actions">
-					<a>Edit</a>
-					<a>Delete</a>
-				</div>
-			),
+			render: (record) => {
+				const editableRow = isEditing(record);
+				// setEditable(editableRow)
+				return (
+					<div className="actions">
+						<Button
+							type='link'
+							id="edit"
+							className='custom-primary-edit-btn '
+							onClick={(e) => editableRow ? saveDataAccess(record) : editDataAccess(record)} >
+							{editableRow ? 'Save' : 'Edit'}
+						</Button>
+						<Button
+							type='link'
+							id="delete"
+							className='custom-primary-edit-btn '
+						>
+							Delete
+						</Button>
+
+					</div>
+				)
+			},
 		},
 	];
 
@@ -328,18 +420,55 @@ const Roles = () => {
 		});
 	}
 
+	const editDataAccess = (record) => {
+		setEditingKey(record.id);
+
+	}
+
+	const saveDataAccess = (record) => {
+		let _reqSaveData = {
+			field_name: record.field_name,
+			role_name: roleName,
+			unapproved_data: true,
+			molecule_included: expandedTableData?.molecule_included != undefined ? expandedTableData?.molecule_included : [],
+			molecule_excluded: expandedTableData?.molecule_excluded != undefined ? expandedTableData?.molecule_excluded : [],
+			plant_included: expandedTableData?.plant_included != undefined ? expandedTableData?.plant_included : [],
+			plant_excluded: expandedTableData?.plant_excluded != undefined ? expandedTableData?.plant_excluded : []
+		}
+		console.log("_reqSaveData", _reqSaveData);
+		roleDataAccessUpdate(_reqSaveData)
+		// setEditingKey('');
+		setEditingKey(record.id);
+		const editRcd = isEditing(record);
+		setEditable(editRcd)
+	}
+
 	//get Roles api call
 	const getRolesData = async (_resourceQuery) => {
 		try {
-			dispatch(showLoader());
+			setLoading(true)
 			const resource = await getResource(_resourceQuery)
 			if (resource.statuscode === 200) {
 				setAllRoles(resource.message)
 			}
-			dispatch(hideLoader());
+			setLoading(false)
 
 		} catch (error) {
-			dispatch(hideLoader());
+			setLoading(false)
+			dispatch(showNotification("error", error));
+		}
+	}
+
+	// role data accesss table update
+	const roleDataAccessUpdate = async (_resourceQuery) => {
+		try {
+			const dataAccess = await dataAccessUpdate(_resourceQuery)
+			if (dataAccess.statuscode === 200) {
+				dispatch(showNotification("success", dataAccess.message));
+			} else {
+				dispatch(showNotification("error", dataAccess.message));
+			}
+		} catch (error) {
 			dispatch(showNotification("error", error));
 		}
 	}
@@ -353,7 +482,8 @@ const Roles = () => {
 				setRoleDesc(res?.message?.role_description)
 				setResourceCount(res?.message?.role_resource_details?.length)
 				setResourceDetails(res?.message?.role_resource_details)
-				setRoleDataAccess(res?.message?.role_data_access)
+				setRoleDataAccess(dataTypeData)
+				setIsUnapproved(res?.message?.unapproved_data)
 				setIsRoleDetailsAvailable(true)
 			} else {
 				setIsRoleDetailsAvailable(false)
@@ -368,15 +498,52 @@ const Roles = () => {
 	// data type expand table
 	const getDataType = async (_dataType) => {
 		try {
-			dispatch(showLoader());
+			setLoading(true)
 			const dataType = await getResource(_dataType)
-			dispatch(hideLoader());
-			console.log("dataTyped", dataType);
-			// if (res.statuscode === 200) {
-			// 	setExpandedData(res.message)
-			// } else {
-			// 	setExpandedData([])
-			// }
+			setLoading(false)
+			let data1 = []
+			if (dataType.statuscode === 200) {
+				if (_dataType.field_name === 'Molecule') {
+					setExpandedData(dataType.message.molecule_total_list)
+					data1 = [
+						{
+							name: "Include",
+							dataType: _dataType.field_name,
+							data: dataType.message.molecule_included
+						},
+						{
+							name: "Exclude",
+							dataType: _dataType.field_name,
+							data: dataType.message.molecule_excluded
+						}
+					];
+					setInculdeExcludeData(data1)
+					setExpandedTableData(dataType.message)
+				} else if (_dataType.field_name === 'Plant') {
+					setExpandedData(dataType.message.plant_total_list)
+					data1 = [
+						{
+							name: "Include",
+							dataType: _dataType.field_name,
+							data: dataType.message.plant_included
+						},
+						{
+							name: "Exclude",
+							dataType: _dataType.field_name,
+							data: dataType.message.plant_excluded
+						}
+					];
+					setInculdeExcludeData(data1)
+					setExpandedTableData(dataType.message)
+				} else {
+					setInculdeExcludeData(data1)
+					setExpandedData([])
+					setExpandedTableData()
+				}
+
+			} else {
+				setExpandedData([])
+			}
 
 		} catch (error) {
 			dispatch(hideLoader());
@@ -520,6 +687,11 @@ const Roles = () => {
 	const onChangeSwitch = (checked) => {
 		setIsRoleActive(checked)
 	}
+
+	const onChangeUnapproved = (checked) => {
+		setIsUnapproved(checked)
+	}
+
 	return (
 		<div className="roles-wrapper">
 			<div className="roles">
@@ -544,7 +716,7 @@ const Roles = () => {
 								selectRoles(record)
 							},
 						})}
-
+						loading={loading}
 					/>
 				</div>
 			</div>
@@ -603,8 +775,22 @@ const Roles = () => {
 							})}
 						</div>
 						<div className="data-table-wrapper">
-							<p className='card-heading'>Data access</p>
-							<div>
+							<div className="data-table-head">
+								<p className='card-heading'>Data access</p>
+								<h4>Unapproved data</h4>
+							</div>
+
+							<div className="unapproved-data">
+								<p>Make unapproved data visible to chart manager</p>
+								<Switch
+									size="small"
+									checked={isUnapproved}
+									disabled={isEditRole}
+									onChange={onChangeUnapproved}
+								/>
+							</div>
+							<h4>Plant & Molecule</h4>
+							{/* <div>
 								<Button
 									type='primary'
 									className='custom-primary-btn'
@@ -617,19 +803,19 @@ const Roles = () => {
 								>
 									Add data access
 								</Button>
-							</div>
+							</div> */}
 						</div>
 
 						<Table
 							className='roles-table'
 							columns={columns2}
-							expandable={{
-								expandedRowRender
-								// defaultExpandedRowKeys: ['0'],
-							}}
+							expandable={{ expandedRowRender }}
+							// onRow={onClickPlantName}
+							expandRowByClick={expandRowByClick}
+							expandedRowKeys={expandedRowKeys}
 							onExpand={onTableRowExpand}
 							dataSource={roleDataAccess}
-							rowKey='field_name'
+							rowKey='id'
 						/>
 						<Resource
 							isVisible={isVisible}
@@ -639,6 +825,7 @@ const Roles = () => {
 							callbackResource={callbackResource}
 							resourceDataTable={resourceDataTable}
 							editResource={editResource}
+							resourceType={resourceType}
 						/>
 					</>
 

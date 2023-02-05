@@ -220,19 +220,36 @@
 }
 
 .data-table-wrapper {
-	display: flex;
-	justify-content: space-between;
 	padding-top: 40px;
-	padding-bottom: 20px;
 
+	h4 {
+		font-family: 'Roboto';
+		font-style: normal;
+		font-weight: 600;
+		font-size: 16px;
+		line-height: 22px;
+		/* identical to box height, or 138% */
+		letter-spacing: 0.01em;
+		color: #B1B1B1;
+		padding: 24px 0 0px 0;
+	}
 
+	.unapproved-data {
+		display: flex;
 
-	div {
-		button {
-			margin-left: 16px;
+		p {
+			margin: 0px;
+		}
+
+		>button {
+			margin: 5px 12px;
 		}
 	}
+
+
+
 }
+
 
 .roles-table {
 	.ant-table {
@@ -334,7 +351,7 @@
 
 .actions {
 	a {
-		padding-left: 10px
+		margin-left: 10px
 	}
 }
 
@@ -370,4 +387,13 @@
 .content-border-active {
 	border: 1px solid #d9d9d9 !important;
 	padding: 12px;
+}
+
+.multi-select {
+
+	p {
+		margin: 0px;
+		padding: 8px 10px;
+		width: 100px;
+	}
 }
