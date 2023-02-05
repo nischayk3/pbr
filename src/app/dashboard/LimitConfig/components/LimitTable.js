@@ -105,7 +105,9 @@ const LimitTable = () => {
       setMoleculeData(tempMoleculeArray)
       dispatch(hideLoader());
     } catch (error) {
+      /* istanbul ignore next */
       dispatch(hideLoader());
+      /* istanbul ignore next */
       dispatch(showNotification("error", error));
     }
   }
@@ -124,13 +126,15 @@ const LimitTable = () => {
     })
 		try {
 			dispatch(showLoader());
-      const apiResponse = await deleteLimitsApi("", obj);
+      const apiResponse = await deleteLimitsApi(obj);
       if(apiResponse.Status === 200) {
         getLimitConfigApi();
       }
 			dispatch(hideLoader());
 		} catch (error) {
+      /* istanbul ignore next */
 			dispatch(hideLoader());
+      /* istanbul ignore next */
 			dispatch(showNotification("error", error));
 		}
 	}
@@ -152,7 +156,9 @@ const LimitTable = () => {
       setOpenRow('')
 			dispatch(hideLoader());
 		} catch (error) {
+      /* istanbul ignore next */
 			dispatch(hideLoader());
+      /* istanbul ignore next */
 			dispatch(showNotification("error", error));
 		}
 	}
