@@ -12,7 +12,7 @@ import Highlighter from 'react-highlight-words';
 import { useDispatch } from "react-redux";
 import { v1 as uuid } from "uuid";
 import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
-import { dataAccessUpdate, getResource, roleConfig } from '../../../../services/userRolesAndAccessService';
+import { dataAccessUpdate, getResource, resourceActions, resourceDelete, roleConfig } from '../../../../services/userRolesAndAccessService';
 import Resource from './Resource';
 
 const Roles = () => {
@@ -30,7 +30,7 @@ const Roles = () => {
 	const [resourceDataTable, setResourceDataTable] = useState([]);
 	const [editResource, setEditResource] = useState("");
 	const [isRoleActive, setIsRoleActive] = useState(false);
-	const [isUnapproved, setIsUnapproved] = useState(false);
+	const [isUnapproved, setIsUnapproved] = useState('False');
 	const [newRole, setNewRole] = useState("");
 	const [isEditRole, setisEditRole] = useState(true);
 	const [isRoleToggle, setisRoleToggle] = useState(true);
@@ -39,21 +39,16 @@ const Roles = () => {
 	const [expandedRowKeys, setExpandedRowKeys] = useState([]);
 	const [editingKey, setEditingKey] = useState('');
 	const [loading, setLoading] = useState(false);
-	const [selectedValue, setSelectedValue] = useState([]);
 	const [expandedTableData, setExpandedTableData] = useState({});
-	const [editable, setEditable] = useState(false);
 	const [resourceType, setResourceType] = useState('');
-
-
-	const isEditing = (record) => record.id === editingKey;
 
 	const dispatch = useDispatch();
 
+	const isEditing = (record) => record.id === editingKey;
 	const dataTypeData = [{ field_name: 'Molecule', id: '01' }, { field_name: 'Plant', id: '02' }]
 
 	useEffect(() => {
 		const _req = {
-			// role_name: "",
 			active_status: true
 		}
 		getRolesData(_req)
@@ -152,15 +147,26 @@ const Roles = () => {
 		};
 	};
 
-	const editRole = (resourceName) => {
+	const editRole = (resName) => {
+
 		setResourceType('edit_resource')
+		setResourceDataTable([])
 		setIsVisible(true)
-		setEditResource(resourceName)
+		setEditResource(resName)
 		const editres = {
 			all_resources: false,
-			resource: resourceName
+			resource: resName
 		}
 		getResourceDatatable(editres)
+	}
+
+	const deleteResource = (resName) => {
+		let _reqRes = {
+			resource_name: resName,
+			role_name: roleName
+		}
+
+		deleteResourceCard(_reqRes)
 	}
 
 	const ResourceCard = ({ resourceName, resourceDesc, authTag, authCount }) => {
@@ -173,17 +179,19 @@ const Roles = () => {
 					</div>
 					<div className="resource-card-button">
 						<EditOutlined onClick={() => editRole(resourceName)} />
-						<DeleteOutlined />
+						<DeleteOutlined onClick={() => deleteResource(resourceName)} />
 					</div>
 				</div>
 				<p>{resourceDesc}</p>
 				<div className="auth-card">
 					<p>AUTHORIZATIONS</p>
-					{authTag.map((item) => {
-						return (
-							<Tag className="status-tag">{item}</Tag>
-						)
-					})}
+					<div className="auth-tag">
+						{authTag.map((item) => {
+							return (
+								<Tag className="status-tag">{item}</Tag>
+							)
+						})}
+					</div>
 				</div>
 			</div>
 		)
@@ -195,6 +203,7 @@ const Roles = () => {
 	}
 
 	const handleClickResource = () => {
+		setResourceDataTable([])
 		setEditResource('')
 		setIsVisible(true)
 		setResourceType('new_resource')
@@ -212,12 +221,7 @@ const Roles = () => {
 				value: item,
 			});
 		})
-		// for (let i = 10; i < 36; i++) {
-		// 	options.push({
-		// 		label: i.toString(36) + i,
-		// 		value: i.toString(36) + i,
-		// 	});
-		// }
+
 		const handleChange = (text, record, value, index) => {
 			const tableData = { ...expandedTableData }
 			const tableRecord = { ...inculdeExcludeData }
@@ -240,13 +244,7 @@ const Roles = () => {
 					tableRecord[index]['data'] = value
 				}
 			}
-
-
 			setExpandedTableData(tableData)
-			// setInculdeExcludeData(tableRecord)
-			if (value !== undefined) {
-				setSelectedValue(value)
-			}
 		};
 
 		const columns1 = [
@@ -286,18 +284,9 @@ const Roles = () => {
 					)
 				},
 			},
-			// {
-			// 	title: 'Include',
-			// 	key: 'include',
-			// 	render: () => <Switch size="small" defaultChecked />,
-			// },
-
 		];
-
-
 		return <Table className="roles-inner-table" columns={columns1} dataSource={inculdeExcludeData} pagination={false} rowKey={uuid()} loading={loading} />;
 	};
-
 
 	const onTableRowExpand = (expanded, record) => {
 		const keys = [];
@@ -310,25 +299,18 @@ const Roles = () => {
 				field_name: record.field_name
 			}
 			getDataType(_expandRecord)
-			const editRecord = isEditing(record);
-			setEditable(editRecord)
+			isEditing(record);
 		} else {
 			setEditingKey(record.id);
-			const editRecorded = isEditing(record);
-			setEditable(editRecorded)
+			isEditing(record);
 		}
 		setExpandedRowKeys(keys);
 	};
-
-	// const onClickPlantName = (expanded, record) => {
-	// 	console.log("onClickPlantName", expanded, record);
-	// }
 
 	const expandRowByClick = (expanded, record) => {
 		console.log("expandRowByClick", expanded, record);
 	}
 
-	// console.log("isEditDataAccess", isEditDataAccess);
 	const columns2 = [
 		{
 			title: 'Data type',
@@ -342,7 +324,6 @@ const Roles = () => {
 			key: 'operation',
 			render: (record) => {
 				const editableRow = isEditing(record);
-				// setEditable(editableRow)
 				return (
 					<div className="actions">
 						<Button
@@ -352,14 +333,6 @@ const Roles = () => {
 							onClick={(e) => editableRow ? saveDataAccess(record) : editDataAccess(record)} >
 							{editableRow ? 'Save' : 'Edit'}
 						</Button>
-						<Button
-							type='link'
-							id="delete"
-							className='custom-primary-edit-btn '
-						>
-							Delete
-						</Button>
-
 					</div>
 				)
 			},
@@ -411,15 +384,6 @@ const Roles = () => {
 		}
 	]
 
-	const data2 = [];
-
-	for (let i = 0; i < 3; ++i) {
-		data2.push({
-			key: i.toString(),
-			datatype: 'Molecule',
-		});
-	}
-
 	const editDataAccess = (record) => {
 		setEditingKey(record.id);
 
@@ -429,25 +393,45 @@ const Roles = () => {
 		let _reqSaveData = {
 			field_name: record.field_name,
 			role_name: roleName,
-			unapproved_data: true,
+			unapproved_data: isUnapproved === 'True' ? true : false,
 			molecule_included: expandedTableData?.molecule_included != undefined ? expandedTableData?.molecule_included : [],
 			molecule_excluded: expandedTableData?.molecule_excluded != undefined ? expandedTableData?.molecule_excluded : [],
 			plant_included: expandedTableData?.plant_included != undefined ? expandedTableData?.plant_included : [],
 			plant_excluded: expandedTableData?.plant_excluded != undefined ? expandedTableData?.plant_excluded : []
 		}
-		console.log("_reqSaveData", _reqSaveData);
+
 		roleDataAccessUpdate(_reqSaveData)
-		// setEditingKey('');
 		setEditingKey(record.id);
-		const editRcd = isEditing(record);
-		setEditable(editRcd)
+		isEditing(record);
+		//setEditable(editRcd)
+	}
+
+	// delete resource
+
+	const deleteResourceCard = async (_resCard) => {
+		const _dltReqRecord = {
+			role_name: _resCard.role_name,
+			active_status: false,
+			field_name: ''
+		}
+		try {
+			const resCard = await resourceDelete(_resCard);
+			if (resCard.statuscode === 200) {
+				dispatch(showNotification("success", resCard.message));
+				getResourceData(_dltReqRecord)
+			} else {
+				dispatch(showNotification("error", resCard.message));
+			}
+		} catch (error) {
+			dispatch(showNotification("error", error));
+		}
 	}
 
 	//get Roles api call
 	const getRolesData = async (_resourceQuery) => {
 		try {
 			setLoading(true)
-			const resource = await getResource(_resourceQuery)
+			const resource = await getResource(_resourceQuery);
 			if (resource.statuscode === 200) {
 				setAllRoles(resource.message)
 			}
@@ -667,6 +651,15 @@ const Roles = () => {
 		getResourceDatatable(reso)
 	}
 
+	const callbackResourceCard = (value) => {
+		const _callbackReq = {
+			role_name: value,
+			active_status: false,
+			field_name: ''
+		}
+		getResourceData(_callbackReq)
+	}
+
 	const handleClickEditRole = () => {
 
 		if (isRoleToggle) {
@@ -689,7 +682,12 @@ const Roles = () => {
 	}
 
 	const onChangeUnapproved = (checked) => {
-		setIsUnapproved(checked)
+		if (checked) {
+			setIsUnapproved('True')
+		} else {
+			setIsUnapproved('False')
+		}
+
 	}
 
 	return (
@@ -784,8 +782,7 @@ const Roles = () => {
 								<p>Make unapproved data visible to chart manager</p>
 								<Switch
 									size="small"
-									checked={isUnapproved}
-									disabled={isEditRole}
+									checked={isUnapproved === 'True' ? true : false}
 									onChange={onChangeUnapproved}
 								/>
 							</div>
@@ -823,6 +820,7 @@ const Roles = () => {
 							roleName={roleName}
 							resourceList={resourceList}
 							callbackResource={callbackResource}
+							callbackResourceCard={callbackResourceCard}
 							resourceDataTable={resourceDataTable}
 							editResource={editResource}
 							resourceType={resourceType}

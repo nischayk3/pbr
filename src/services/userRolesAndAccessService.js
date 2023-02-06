@@ -195,3 +195,18 @@ export const dataAccessUpdate = (_queryParam) => {
 		}
 	);
 };
+
+export const resourceDelete = (_queryParam) => {
+	return Service.del(
+		BMS_APP_PYTHON_SERVICE + "/role-auth-dataaccess",
+		_queryParam,
+		request_headers
+	).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};
