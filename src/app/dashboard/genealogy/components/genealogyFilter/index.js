@@ -252,7 +252,7 @@ function Filter(props) {
 
 	const OnSearchTree = () => {
 		const param = []
-		selectParam['productType'].forEach(element => {
+		selectParam['productType'] && selectParam['productType'].forEach(element => {
 			const splitElement = element?.split(/[ -]+/)
 			param.push(splitElement[0])
 		});
