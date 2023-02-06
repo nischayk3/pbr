@@ -202,20 +202,25 @@
 				color: #4D4D4D;
 			}
 
-			.status-tag {
-				background: #F9F0FF;
-				/* Golden Purple / purple-3 */
-				border: 1px solid #D3ADF7;
-				border-radius: 2px;
-				font-family: 'Roboto';
-				font-style: normal;
-				font-weight: 400;
-				font-size: 12px;
-				line-height: 20px;
-				color: #722ED1;
+			.auth-tag {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 8px 0;
+
+				.status-tag {
+					background: #F9F0FF;
+					/* Golden Purple / purple-3 */
+					border: 1px solid #D3ADF7;
+					border-radius: 2px;
+					font-family: 'Roboto';
+					font-style: normal;
+					font-weight: 400;
+					font-size: 12px;
+					line-height: 20px;
+					color: #722ED1;
+				}
 			}
 		}
-
 	}
 }
 
