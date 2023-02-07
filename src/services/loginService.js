@@ -12,7 +12,7 @@ export const getSession = (request) => {
 			return response.data;
 		},
 		(error) => {
-			return error.response.data;
+			return error?.response?.data;
 		}
 	);
 };
@@ -23,7 +23,7 @@ export const getAuthenticate = (request, header) => {
 			return response.data;
 		},
 		(error) => {
-			return error.response.data;
+			return error?.response?.data;
 		}
 	);
 };
@@ -34,7 +34,7 @@ export const getAuthenticateWithoutAD = (request, header) => {
 			return response.data;
 		},
 		(error) => {
-			return error.response.data;
+			return error?.response?.data;
 		}
 	);
 };
@@ -45,7 +45,7 @@ export const getAuthenticateWithLdap = (request, header) => {
 			return response.data;
 		},
 		(error) => {
-			return error.response.data;
+			return error?.response?.data;
 		}
 	);
 };
@@ -57,7 +57,7 @@ export const createAccount = (request, headers) => {
 			return response.data;
 		},
 		(error) => {
-			return error.response.data;
+			return error?.response?.data;
 		}
 	);
 };
@@ -76,7 +76,7 @@ export const passwordChange = (request) => {
 			return response.data;
 		},
 		(error) => {
-			return error.response.data;
+			return error?.response?.data;
 		}
 	);
 };
@@ -95,7 +95,7 @@ export const getUserProfile = (request) => {
 			return response.data;
 		},
 		(error) => {
-			return error.response.data;
+			return error?.response?.data;
 		}
 	);
 };
@@ -116,7 +116,7 @@ export const sendUserProfile = (request) => {
 			return response.data;
 		},
 		(error) => {
-			return error.response.data;
+			return error?.response?.data;
 		}
 	);
 };
@@ -137,7 +137,7 @@ export const userProfileUpload = (request) => {
 			return response.data;
 		},
 		(error) => {
-			return error.response.data;
+			return error?.response?.data;
 		}
 	);
 };
@@ -149,7 +149,7 @@ export const consumerSamlLogin = (request, header) => {
 			return response.data;
 		},
 		(error) => {
-			return error.response.data;
+			return error?.response?.data;
 		}
 	);
 };

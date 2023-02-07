@@ -12,12 +12,13 @@ import { useDispatch } from "react-redux";
 import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
 import { resourceActionUpdated } from '../../../../services/userRolesAndAccessService';
 
-const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackResource, resourceDataTable, editResource }) => {
+const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackResource, callbackResourceCard, resourceDataTable, editResource, resourceType }) => {
 	const [resList, setResList] = useState([]);
 	const [selectedResource, setSelectedResource] = useState('');
 	const [isChecked, setIsChecked] = useState(false);
 	const [data, setData] = useState([]);
 	const [selectedAuth, setSelectedAuth] = useState([]);
+
 
 	const dispatch = useDispatch();
 
@@ -34,12 +35,21 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 	}, [resourceList])
 
 	useEffect(() => {
+
 		setResList([])
 		setSelectedResource(editResource)
 	}, [editResource])
 
 	useEffect(() => {
-		setData(resourceDataTable)
+		const auth = []
+		const resData = [...resourceDataTable]
+		resData.filter((item) => {
+			if (item.isEnable) {
+				auth.push(item.authorization)
+			}
+		})
+		setData(resData)
+		setSelectedAuth(auth)
 	}, [resourceDataTable])
 
 	const columns3 = [
@@ -58,7 +68,6 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 			key: 'isEnable',
 			dataIndex: 'isEnable',
 			render: (value, record, rowIndex) => {
-				console.log("value,record,index", record, value);
 				return (
 					<Checkbox checked={value} onChange={(e) => onChangeAuth(e, record, rowIndex)} />
 				)
@@ -79,14 +88,11 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 	}
 
 	const authSave = () => {
-		console.log("roleName", roleName);
-		console.log("selectedResource", selectedResource);
-		console.log("selectedAuth", selectedAuth);
 		let _reqAuth = {
 			role_name: roleName,
 			resource: selectedResource,
 			authorization: selectedAuth,
-			updated: false
+			updated: resourceType === 'new_resource' ? false : resourceType === 'edit_resource' ? true : null
 		}
 		authUpdate(_reqAuth)
 	}
@@ -97,7 +103,15 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 			dispatch(showLoader());
 			const auth = await resourceActionUpdated(_resourceAuth)
 			dispatch(hideLoader());
-			console.log("authhhhhh", auth);
+			if (auth.statuscode === 200) {
+				setIsVisible(false)
+				setResList([])
+				setSelectedResource('')
+				callbackResourceCard(_resourceAuth.role_name)
+				dispatch(showNotification("success", auth.message));
+			} else {
+				dispatch(showNotification("error", auth.message));
+			}
 		} catch (error) {
 			dispatch(hideLoader());
 			dispatch(showNotification("error", error));
@@ -107,6 +121,7 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 	const onChangeAuth = (e, record, rowIndex) => {
 		let authList = []
 		const tableData = [...data];
+
 		tableData[rowIndex]['isEnable'] = e.target.checked == false ? "" : e.target.checked;
 
 		tableData.filter((item) => {
@@ -116,16 +131,9 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 				authList.filter((v) => v !== record.authorization);
 			}
 		})
-		// if (e.target.checked) {
-		// 	setSelectedAuth([...selectedAuth, record.authorization]);
-		// } else {
-		// 	setSelectedAuth(selectedAuth.filter((v) => v !== record.authorization));
-		// }
 
 		setSelectedAuth(authList)
-
 		setIsChecked(e.target.checked)
-		console.log("e,record,index", e, record);
 		setData(tableData)
 	}
 
