@@ -20,7 +20,7 @@
 	}
 
 	.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
-		color: var(--primary-color);
+		color: var(--primary-color) !important;
 	}
 
 	.ant-tabs-ink-bar {
@@ -164,4 +164,8 @@
 			}
 		}
 	}
+}
+
+.ant-tabs-tab-btn:focus {
+	color: black;
 }
