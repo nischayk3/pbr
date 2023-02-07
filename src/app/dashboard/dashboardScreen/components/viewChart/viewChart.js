@@ -255,9 +255,8 @@ const ViewChart = (props, ref) => {
     if (obj.data_filter.date_range == "") {
       obj.data_filter.date_range = `${date ? moment(date).toISOString() : ""}/`;
     } else {
-      obj.data_filter.date_range = `${date ? moment(date).toISOString() : ""}/${
-        obj.data_filter.date_range.split("/")[1]
-      }`;
+      obj.data_filter.date_range = `${date ? moment(date).toISOString() : ""}/${obj.data_filter.date_range.split("/")[1]
+        }`;
     }
 
     setDashboardInfo(obj);
@@ -275,9 +274,8 @@ const ViewChart = (props, ref) => {
     if (obj.data_filter.date_range == "") {
       obj.data_filter.date_range = `/${date ? moment(date).toISOString() : ""}`;
     } else {
-      obj.data_filter.date_range = `${
-        obj.data_filter.date_range.split("/")[0]
-      }/${date ? moment(date).toISOString() : ""}`;
+      obj.data_filter.date_range = `${obj.data_filter.date_range.split("/")[0]
+        }/${date ? moment(date).toISOString() : ""}`;
     }
 
     setDashboardInfo(obj);
@@ -295,13 +293,11 @@ const ViewChart = (props, ref) => {
 
     let arr = [...tempPanels];
     if (arr[index].data_filter.date_range == "") {
-      arr[index].data_filter.date_range = `${
-        date ? moment(date).toISOString() : ""
-      }/`;
+      arr[index].data_filter.date_range = `${date ? moment(date).toISOString() : ""
+        }/`;
     } else {
-      arr[index].data_filter.date_range = `${
-        date ? moment(date).toISOString() : ""
-      }/${arr[index].data_filter.date_range.split("/")[1]}`;
+      arr[index].data_filter.date_range = `${date ? moment(date).toISOString() : ""
+        }/${arr[index].data_filter.date_range.split("/")[1]}`;
     }
 
     setTempPanels(arr);
@@ -317,13 +313,11 @@ const ViewChart = (props, ref) => {
     }
     let arr = [...tempPanels];
     if (arr[index].data_filter.date_range == "") {
-      arr[index].data_filter.date_range = `/${
-        date ? moment(date).toISOString() : ""
-      }`;
+      arr[index].data_filter.date_range = `/${date ? moment(date).toISOString() : ""
+        }`;
     } else {
-      arr[index].data_filter.date_range = `${
-        arr[index].data_filter.date_range.split("/")[0]
-      }/${date ? moment(date).toISOString() : ""}`;
+      arr[index].data_filter.date_range = `${arr[index].data_filter.date_range.split("/")[0]
+        }/${date ? moment(date).toISOString() : ""}`;
     }
     setTempPanels(arr);
   };
@@ -332,9 +326,8 @@ const ViewChart = (props, ref) => {
     if (obj.data_filter.date_range == "") {
       obj.data_filter.date_range = `${date ? moment(date).toISOString() : ""}/`;
     } else {
-      obj.data_filter.date_range = `${date ? moment(date).toISOString() : ""}/${
-        obj.data_filter.date_range.split("/")[1]
-      }`;
+      obj.data_filter.date_range = `${date ? moment(date).toISOString() : ""}/${obj.data_filter.date_range.split("/")[1]
+        }`;
     }
     setTempCard(obj);
   };
@@ -343,9 +336,8 @@ const ViewChart = (props, ref) => {
     if (obj.data_filter.date_range == "") {
       obj.data_filter.date_range = `/${date ? moment(date).toISOString() : ""}`;
     } else {
-      obj.data_filter.date_range = `${
-        obj.data_filter.date_range.split("/")[0]
-      }/${date ? moment(date).toISOString() : ""}`;
+      obj.data_filter.date_range = `${obj.data_filter.date_range.split("/")[0]
+        }/${date ? moment(date).toISOString() : ""}`;
     }
     setTempCard(obj);
   };
@@ -416,6 +408,7 @@ const ViewChart = (props, ref) => {
     dispatch(showLoader());
     try {
       let res = await getChartData(id, payload);
+
       let chartLayout = {
         xaxis: res.data[0]?.layout.xaxis,
         yaxis: res.data[0]?.layout.yaxis,
@@ -681,9 +674,9 @@ const ViewChart = (props, ref) => {
               value={
                 dashboardInfo?.data_filter?.date_range?.split("/")[0]
                   ? moment(
-                      dashboardInfo?.data_filter?.date_range?.split("/")[0],
-                      "YYYY-MM-DD"
-                    )
+                    dashboardInfo?.data_filter?.date_range?.split("/")[0],
+                    "YYYY-MM-DD"
+                  )
                   : ""
               }
               allowClear
@@ -696,9 +689,9 @@ const ViewChart = (props, ref) => {
               value={
                 dashboardInfo?.data_filter?.date_range?.split("/")[1]
                   ? moment(
-                      dashboardInfo?.data_filter?.date_range?.split("/")[1],
-                      "YYYY-MM-DD"
-                    )
+                    dashboardInfo?.data_filter?.date_range?.split("/")[1],
+                    "YYYY-MM-DD"
+                  )
                   : ""
               }
               style={{ height: "34px" }}
