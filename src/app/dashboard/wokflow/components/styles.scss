@@ -2,7 +2,7 @@
 	margin-top: 30px;
 	display: grid;
 	gap: 0px 18px;
-	grid-template-columns: 18% 81%;
+	grid-template-columns: 22% 77%;
 }
 
 .approve-wrapper {
@@ -20,17 +20,13 @@
 	box-sizing: border-box;
 	height: 515px;
 
-	.ant-card-head {
+	>.ant-card-head {
 		background: #ffffff !important;
 		height: 65px !important;
-		padding: 20px 7px !important;
+		padding: 12px 28px !important;
 	}
 
-	.ant-card-head-title {
-		//padding: 12px 15px !important;
-	}
-
-	.ant-card-body {
+	>.ant-card-body {
 		padding: 0px 25px !important;
 	}
 }

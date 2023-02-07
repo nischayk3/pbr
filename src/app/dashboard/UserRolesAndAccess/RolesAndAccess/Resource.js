@@ -6,11 +6,52 @@
  * @Last Changed By - Dinesh Kumar
  */
 
-import { Button, Modal, Select, Table } from 'antd';
-import React from 'react';
+import { Button, Checkbox, Modal, Select, Table } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from "react-redux";
+import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
+import { resourceActionUpdated } from '../../../../services/userRolesAndAccessService';
+
+const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackResource, callbackResourceCard, resourceDataTable, editResource, resourceType }) => {
+	const [resList, setResList] = useState([]);
+	const [selectedResource, setSelectedResource] = useState('');
+	const [isChecked, setIsChecked] = useState(false);
+	const [data, setData] = useState([]);
+	const [selectedAuth, setSelectedAuth] = useState([]);
 
 
-const Resource = ({ isVisible, setIsVisible }) => {
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		const resourceData = [...resourceList];
+		let resListData = []
+		resourceData.forEach((item) => {
+			let resObj = {};
+			resObj["value"] = item.resource_name;
+			resObj["label"] = item.display_resource_name;
+			resListData.push(resObj);
+		})
+		setResList(resListData);
+	}, [resourceList])
+
+	useEffect(() => {
+
+		setResList([])
+		setSelectedResource(editResource)
+	}, [editResource])
+
+	useEffect(() => {
+		const auth = []
+		const resData = [...resourceDataTable]
+		resData.filter((item) => {
+			if (item.isEnable) {
+				auth.push(item.authorization)
+			}
+		})
+		setData(resData)
+		setSelectedAuth(auth)
+	}, [resourceDataTable])
+
 	const columns3 = [
 		{
 			title: 'Authorization',
@@ -24,24 +65,83 @@ const Resource = ({ isVisible, setIsVisible }) => {
 		},
 		{
 			title: 'Enable',
-			key: 'enable',
-			render: () => <Checkbox />
+			key: 'isEnable',
+			dataIndex: 'isEnable',
+			render: (value, record, rowIndex) => {
+				return (
+					<Checkbox checked={value} onChange={(e) => onChangeAuth(e, record, rowIndex)} />
+				)
+			}
 		},
 	];
-	const data3 = [];
+
 
 	const handleChange = (value) => {
-		console.log(`selected ${value}`);
+		setSelectedResource(value);
+		callbackResource(value)
 	};
-
 
 	const handleCancel = () => {
 		setIsVisible(false)
+		setResList([])
+		setSelectedResource('')
 	}
+
+	const authSave = () => {
+		let _reqAuth = {
+			role_name: roleName,
+			resource: selectedResource,
+			authorization: selectedAuth,
+			updated: resourceType === 'new_resource' ? false : resourceType === 'edit_resource' ? true : null
+		}
+		authUpdate(_reqAuth)
+	}
+
+	//resource auth update
+	const authUpdate = async (_resourceAuth) => {
+		try {
+			dispatch(showLoader());
+			const auth = await resourceActionUpdated(_resourceAuth)
+			dispatch(hideLoader());
+			if (auth.statuscode === 200) {
+				setIsVisible(false)
+				setResList([])
+				setSelectedResource('')
+				callbackResourceCard(_resourceAuth.role_name)
+				dispatch(showNotification("success", auth.message));
+			} else {
+				dispatch(showNotification("error", auth.message));
+			}
+		} catch (error) {
+			dispatch(hideLoader());
+			dispatch(showNotification("error", error));
+		}
+	}
+
+	const onChangeAuth = (e, record, rowIndex) => {
+		let authList = []
+		const tableData = [...data];
+
+		tableData[rowIndex]['isEnable'] = e.target.checked == false ? "" : e.target.checked;
+
+		tableData.filter((item) => {
+			if (item.isEnable) {
+				authList.push(item.authorization);
+			} else {
+				authList.filter((v) => v !== record.authorization);
+			}
+		})
+
+		setSelectedAuth(authList)
+		setIsChecked(e.target.checked)
+		setData(tableData)
+	}
+
+
 	return (
 		<Modal
 			width={719}
-			title="CHART MANAGER - Genealogy"
+			title={roleName + " - " + selectedResource}
 			visible={isVisible}
 			onCancel={handleCancel}
 			footer={null}
@@ -51,31 +151,15 @@ const Resource = ({ isVisible, setIsVisible }) => {
 				<div className='modal-sub-header'>
 					<p>The resource associated with this role</p>
 					<Select
+						showSearch
+						placeholder="Select resource"
 						size='medium'
-						defaultValue="lucy"
 						style={{
 							width: 230, marginLeft: 13,
 						}}
+						value={selectedResource}
 						onChange={handleChange}
-						options={[
-							{
-								value: 'jack',
-								label: 'Jack',
-							},
-							{
-								value: 'lucy',
-								label: 'Lucy',
-							},
-							{
-								value: 'disabled',
-								disabled: true,
-								label: 'Disabled',
-							},
-							{
-								value: 'Yiminghe',
-								label: 'yiminghe',
-							},
-						]}
+						options={resList}
 					/>
 				</div>
 				<p className='card-heading'>Authorizations</p>
@@ -83,18 +167,20 @@ const Resource = ({ isVisible, setIsVisible }) => {
 				<Table
 					className='roles-table'
 					columns={columns3}
-					dataSource={data3}
+					dataSource={data}
 				/>
 				<div className='modal-footer-btn'>
 					<Button
 						type='primary'
 						className='custom-secondary-btn'
+						onClick={authSave}
 					>
 						Save changes
 					</Button>
 					<Button
 						type='primary'
 						className='custom-primary-btn'
+						onClick={handleCancel}
 					>
 						Cancel
 					</Button>
@@ -102,7 +188,6 @@ const Resource = ({ isVisible, setIsVisible }) => {
 			</div>
 		</Modal>
 	)
-
 }
 
 export default Resource;

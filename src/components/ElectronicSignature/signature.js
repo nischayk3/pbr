@@ -361,10 +361,11 @@ const Signature = (props) => {
 												let reason_value = value.value ? value.value : "";
 												if (reason_value === "Other Reason") {
 													setCheckRejectReason(true);
+													setReason("");
 												} else {
+													setReason(reason_value);
 													setCheckRejectReason(false);
 												}
-												setReason(reason_value);
 											}}
 											className="sign-select"
 										>
@@ -402,10 +403,11 @@ const Signature = (props) => {
 									let reason_value = value.value ? value.value : "";
 									if (reason_value === "Other Reason") {
 										setCheckRejectReason(true);
+										setReason("");
 									} else {
+										setReason(reason_value);
 										setCheckRejectReason(false);
 									}
-									setReason(reason_value);
 								}}
 								className="sign-select"
 							>
