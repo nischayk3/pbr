@@ -6,6 +6,7 @@ import {
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
 import "./style.scss";
@@ -19,7 +20,10 @@ const Sidebar = () => {
 	const location = useLocation();
 	const locationSplit = location?.pathname?.split("/")
 	const path = `${'/' + locationSplit[1] + '/' + locationSplit[2]}`
-	//console.log("path", path);
+
+	const validResource = useSelector((state) => state?.loginDetails?.resource_action)
+	console.log("validResource", validResource);
+
 	const cpvMenu = [
 		{
 			key: "view_creation",
