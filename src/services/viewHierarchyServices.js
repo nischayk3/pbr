@@ -108,3 +108,18 @@ export const putProcessStepMap = request => {
 		}
 	);
 };
+
+export const postViewDownload = request => {
+	return Service.post(
+		BMS_APP_PYTHON_SERVICE + '/view-download',
+		request,
+		request_headers
+	).then(
+		response => {
+			return response.data;
+		},
+		error => {
+			return error.response.data;
+		}
+	);
+};
