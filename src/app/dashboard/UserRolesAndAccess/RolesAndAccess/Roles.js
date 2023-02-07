@@ -25,7 +25,6 @@ const Roles = () => {
 	const [resourceDetails, setResourceDetails] = useState([]);
 	const [roleDataAccess, setRoleDataAccess] = useState([]);
 	const [isRoleDetailsAvailable, setIsRoleDetailsAvailable] = useState(false);
-	const [searchedColumn, setSearchedColumn] = useState('');
 	const [resourceList, setResourceList] = useState([]);
 	const [resourceDataTable, setResourceDataTable] = useState([]);
 	const [editResource, setEditResource] = useState("");
@@ -41,7 +40,8 @@ const Roles = () => {
 	const [loading, setLoading] = useState(false);
 	const [expandedTableData, setExpandedTableData] = useState({});
 	const [resourceType, setResourceType] = useState('');
-
+	const [searchedColumn, setSearchedColumn] = useState("");
+	const [searchText, setSearchText] = useState("");
 	const dispatch = useDispatch();
 
 	const isEditing = (record) => record.id === editingKey;
@@ -53,6 +53,20 @@ const Roles = () => {
 		}
 		getRolesData(_req)
 	}, [])
+
+	/* istanbul ignore next */
+	function handleSearch(selectedKeys, confirm, dataIndex) {
+		confirm();
+		setSearchText(selectedKeys[0]);
+		setSearchedColumn(dataIndex);
+	}
+
+	function handleClearSearch(confirm, dataIndex) {
+		confirm({ closeDropdown: true });
+		setSearchText(undefined);
+		setSearchedColumn(dataIndex);
+	}
+
 
 	/* istanbul ignore next */
 	function getColumnSearchProps(dataIndex) {
@@ -92,23 +106,15 @@ const Roles = () => {
 						>
 							Search
 						</Button>
-						<Button
-							onClick={() => clearFilters && handleReset(clearFilters)}
-							size='small'
-							style={{ width: 90 }}
-						>
-							Reset
-						</Button>
+
 						<Button
 							type='link'
 							size='small'
 							onClick={() => {
-								confirm({ closeDropdown: false });
-								setSearchText(selectedKeys[0]);
-								setSearchedColumn(dataIndex);
+								handleClearSearch(confirm, dataIndex)
 							}}
 						>
-							Filter
+							Clear
 						</Button>
 					</Space>
 				</div>
@@ -155,7 +161,8 @@ const Roles = () => {
 		setEditResource(resName)
 		const editres = {
 			all_resources: false,
-			resource: resName
+			resource: resName,
+			role_name: roleName,
 		}
 		getResourceDatatable(editres)
 	}
@@ -380,7 +387,7 @@ const Roles = () => {
 			],
 			filterMode: 'tree',
 			filterSearch: true,
-			onFilter: (value, record) => record.active.startsWith(value)
+			onFilter: (value, record) => record.active_status.startsWith(value)
 		}
 	]
 
@@ -779,7 +786,7 @@ const Roles = () => {
 							</div>
 
 							<div className="unapproved-data">
-								<p>Make unapproved data visible to chart manager</p>
+								<p>Make unapproved data visible to {roleName}</p>
 								<Switch
 									size="small"
 									checked={isUnapproved === 'True' ? true : false}

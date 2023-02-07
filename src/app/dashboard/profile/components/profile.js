@@ -221,13 +221,13 @@ const Profile = () => {
 
 	const getProfile = async () => {
 		try {
-			dispatch(showLoader());
+
 			const _getReq = {
 				email_address: loginDetails && loginDetails.email_id,
 				image: true
 			}
 			const getRes = await getUserProfile(_getReq)
-			dispatch(hideLoader());
+
 			if (getRes.statuscode === 200) {
 				/* istanbul ignore next */
 				setImagePrev(true)
@@ -236,8 +236,7 @@ const Profile = () => {
 				setImagePrev(false)
 			}
 		} catch (error) {
-			/* istanbul ignore next */
-			dispatch(hideLoader());
+
 			/* istanbul ignore next */
 			dispatch(showNotification('error', error));
 		}
