@@ -12,7 +12,7 @@ export default function DataAccessContentArea(props) {
   const tabList = [
     {
       key: "tab1",
-      tab: "Genealogy Extraction",
+      tab: `${props.selectedTab} Extraction`,
     },
   ];
 
