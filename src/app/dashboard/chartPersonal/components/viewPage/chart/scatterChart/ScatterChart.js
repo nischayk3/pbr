@@ -18,6 +18,7 @@ import SelectSearchField from "../../../../../../../components/SelectSearchField
 import {
 	hideLoader, showLoader, showNotification
 } from "../../../../../../../duck/actions/commonActions";
+import ProcessCapabilityResult from "../dataTables/ProcessCapabilityResult";
 
 const { TabPane } = Tabs;
 
@@ -51,8 +52,8 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 	const [tableKey, setTableKey] = useState("3");
 	const [showZAxis, setShowZAxis] = useState(false);
 	const [transformationList, setTransformationList] = useState([
-		{ label: "Yeohjohnson", value: "johnson" },
-		{ label: "Boxcox", value: "boxcox" }
+		{ label: "Yeo-Johnson", value: "Yeo-Johnson" },
+		{ label: "Box-Cox", value: "Box-Cox" }
 	]);
 
 	// /'boxcox', 'johnson'
@@ -223,11 +224,11 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		];
 
 		newArr.forEach((ele) => {
-			ele.limits = {
-				"control": [],
-				"specification": [],
-				"warning": []
-			};
+			// ele.limits = {
+			// 	"control": [],
+			// 	"specification": [],
+			// 	"warning": []
+			// };
 			if (ele.data_filter.unapproved_data === 1) {
 				ele.layout.annotations = annotations;
 			} else {
@@ -305,8 +306,8 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 				if (viewRes?.data[0]?.ppk_cpk_data?.return_code === 200) {
 					setShowPpk(true)
 					setPpkData(viewRes.data[0].ppk_cpk_data)
-					newdataArr[0].layout.width = 500;
-					newdataArr[0].layout.height = 350;
+					// newdataArr[0].layout.width = 500;
+					// newdataArr[0].layout.height = 350;
 					dispatch(showNotification("success", `Best Transformation : ${viewRes.data[0].ppk_cpk_data?.best_transformer}`));
 				} else {
 					setShowPpk(false)
@@ -421,8 +422,8 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 						if (ele.ppk_cpk_data?.return_code === 200) {
 							setShowPpk(true)
 							setPpkData(ele.ppk_cpk_data)
-							ele.layout.width = 500;
-							ele.layout.height = 350;
+							// ele.layout.width = 500;
+							// ele.layout.height = 350;
 							dispatch(showNotification("success", `Best Transformation : ${ele.ppk_cpk_data?.best_transformer}`));
 						} else {
 							setShowPpk(false)
@@ -600,11 +601,13 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 					{showPpk && (
 						<div className="show-ppk">
 							<span>Results :</span>
-							<p>CP : {ppkData?.cp}</p>
-							<p>CPK : {ppkData?.cpk}</p>
-							<p>PP : {ppkData?.pp}</p>
-							<p>PPK : {ppkData?.ppk}</p>
-							<p>Lambda : {ppkData?.selected_lambda}</p>
+							<div className="result">
+								<p>CP : {ppkData?.cp}</p>
+								<p>CPK : {ppkData?.cpk}</p>
+								<p>PP : {ppkData?.pp}</p>
+								<p>PPK : {ppkData?.ppk}</p>
+								<p>Lambda : {ppkData?.selected_lambda}</p>
+							</div>
 						</div>
 					)}
 				</div>
@@ -636,6 +639,11 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 								<TabPane tab="Data Table" key="3">
 									<DataTable postChartData={postChartData} />
 								</TabPane>
+								{axisValues.chartType === 'Process Capability' && (
+									<TabPane tab="ProcessCapability" key="4">
+										<ProcessCapabilityResult postChartData={postChartData} />
+									</TabPane>
+								)}
 							</Tabs>
 						</Col>
 					</Row>

@@ -7,7 +7,8 @@
  */
 
 import { CloudUploadOutlined, InfoCircleOutlined } from "@ant-design/icons";
-import { Button, Collapse, Modal } from "antd";
+import { Button, Collapse, Dropdown, Menu, Modal } from "antd";
+import axios from 'axios';
 import queryString from "query-string";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,6 +16,7 @@ import { useHistory, useLocation, useParams } from "react-router";
 import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
 import Signature from "../../../../components/ElectronicSignature/signature";
 import InputField from "../../../../components/InputField/InputField";
+import { BMS_APP_PYTHON_SERVICE } from "../../../../constants/apiBaseUrl";
 import {
 	hideLoader,
 	showLoader,
@@ -114,6 +116,19 @@ const View = () => {
 			setViewStatus(esignPublishRes?.rep_stauts);
 		}
 	}, [esignPublishRes]);
+
+
+	const userMenu = (
+		<Menu>
+			<Menu.Item key="1" onClick={() => reportDownloadExcel("excel")}>
+				Excel
+			</Menu.Item>
+			<Menu.Divider />
+			<Menu.Item key="2" onClick={() => reportDownloadExcel("csv")}>
+				CSV
+			</Menu.Item>
+		</Menu>
+	);
 
 	//Moleculelist api call
 	const loadMolecule = async (_reqMolecule) => {
@@ -382,20 +397,49 @@ const View = () => {
 		setViewStatus(res.rep_stauts);
 	};
 
-	const exportView = () => {
+	const reportDownloadExcel = (reportType) => {
+		let login_response = JSON.parse(localStorage.getItem("login_details"));
+
 		const _exportReq = {
 			view_disp_id: viewDisplayId,
-			view_version: viewVersion
+			view_version: parseInt(viewVersion),
+			download_type: reportType,
 		}
-		viewDownload(_exportReq).then((res) => {
-			const url = window.URL.createObjectURL(new Blob([res]));
-			const a = document.createElement('a');
-			a.href = url;
-			a.download = `${viewDisplayId}.csv`
-			document.body.appendChild(a);
-			a.click();
-			window.URL.revokeObjectURL(url);
-		})
+
+		const _headerReq = {
+			"content-type": "application/json",
+			"x-access-token": login_response.token ? login_response.token : "",
+			"resource-name": "VIEW",
+		}
+
+
+		if (reportType === "csv") {
+			viewDownload(_exportReq).then((res) => {
+				const url = window.URL.createObjectURL(new Blob([res]));
+				const a = document.createElement('a');
+				a.href = url;
+				a.download = `${viewDisplayId}.csv`
+				document.body.appendChild(a);
+				a.click();
+				window.URL.revokeObjectURL(url);
+			})
+		} else if (reportType === "excel") {
+			axios
+				.post(BMS_APP_PYTHON_SERVICE + '/view-download', _exportReq, {
+					responseType: 'arraybuffer',
+					headers: _headerReq
+				})
+				.then(response => {
+					const blob = new Blob([response.data], { type: 'application/octet-stream' });
+					const url = window.URL.createObjectURL(blob);
+					const a = document.createElement('a');
+					a.href = url;
+					a.download = `${viewDisplayId}.xlsx`
+					document.body.appendChild(a);
+					a.click();
+					window.URL.revokeObjectURL(url);
+				});
+		}
 	}
 
 
@@ -451,13 +495,20 @@ const View = () => {
 							<CloudUploadOutlined />
 							Publish
 						</Button>
-						<Button
+						<Dropdown style={{ color: "#ffffff" }} overlay={userMenu} disabled={isDownload} >
+							<Button
+								className="view-publish-btn"
+							>
+								Export
+							</Button>
+						</Dropdown>
+						{/* <Button
 							className="view-publish-btn"
 							disabled={isDownload}
 							onClick={() => exportView()}
 						>
 							Export CSV
-						</Button>
+						</Button> */}
 					</div>
 				)}
 			</div>

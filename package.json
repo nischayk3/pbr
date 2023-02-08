@@ -63,6 +63,7 @@
 		"redux-thunk": "^2.3.0",
 		"spectramicro-table": "^1.0.1",
 		"svg-pan-zoom": "^3.6.1",
+		"tableau-api": "^2.2.3",
 		"uuid": "^8.3.2",
 		"zoom-level": "^2.5.0"
 	},

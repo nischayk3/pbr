@@ -10,11 +10,11 @@ import {
 	Button, Col,
 	Collapse, Form,
 	Input, message, Modal, notification, Row,
-	Select, Table, Tooltip, Upload
+	Select, Table, Tooltip
 } from 'antd';
 import React, { useEffect, useState } from 'react';
 import ImageMapper from 'react-image-mapper';
-import { useHistory, useLocation, useParams, useRouteMatch } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 import {
 	DeleteOutlined, LeftOutlined, MinusSquareTwoTone, MonitorOutlined, PlusSquareTwoTone, RightOutlined
@@ -48,13 +48,15 @@ import TableIdentifier from './tableIdentifier/tableIdentifier';
 import WorkflowPreviewModal from './workflowPreviewModal';
 const { Panel } = Collapse;
 const { Option } = Select;
-const { Dragger } = Upload;
+
 /* istanbul ignore next */
-function PaperBatchRecordsTemplate() {
+const PaperBatchRecordsTemplate = () => {
+
 	var AREAS_MAP = {
 		name: 'my-map',
 		areas: [],
 	};
+
 	const initialColumns = [
 		{
 			title: 'File Name',
@@ -108,29 +110,31 @@ function PaperBatchRecordsTemplate() {
 			key: 'recorded_time',
 		},
 	];
-	const modesValues = [{ label: "Word", value: "word" }, { label: "Line", value: "line" }, { label: "Key-Value", value: "key_value" }, { label: "Selection Element", value: "selection_element" },
-	{ label: "Cell", value: "cell" }, { label: "Parameters", value: "parameters" }]
 
-	const esignPublishRes = useSelector((state) => state.commonReducer.publishRes)
-	const match = useRouteMatch();
-	let history = useHistory();
-	const mat_batch = useSelector((state) => state?.pbrReducer?.matBatchInfo)
+	const modesValues = [
+		{ label: "Word", value: "word" },
+		{ label: "Line", value: "line" },
+		{ label: "Key-Value", value: "key_value" },
+		{ label: "Selection Element", value: "selection_element" },
+		{ label: "Cell", value: "cell" },
+		{ label: "Parameters", value: "parameters" }
+	]
+
 	const location = useLocation()
 	const { id } = useParams()
 	const dispatch = useDispatch();
 	const params = QueryString.parse(location.search)
+
+	const mat_batch = useSelector((state) => state?.pbrReducer?.matBatchInfo)
+	const esignPublishRes = useSelector((state) => state.commonReducer.publishRes)
+
 	const [templateForm] = Form.useForm();
 	const [parameterForm] = Form.useForm();
 	const [leftPanelCollapsed, setLeftPanelCollapsed] = useState(false);
 	const [rightPanelCollapsed, setRightPanelCollapsed] = useState(true);
 	const [paramaterAdded, setParamaterAdded] = useState(false);
-	const [conditionList, setConditionList] = useState(['AND', 'OR', 'NOT']);
-	const [draggerFirstAreaValue, setDraggerFirstAreaValue] = useState('');
-	const [draggerLastAreaValue, setDraggerLastAreaValue] = useState('');
 	const [clickedSnippetId, setClickedSnippetId] = useState('');
 	const [snippetNumber, setSnippetNumber] = useState(0);
-	const [boundingBoxClicked, setBoundingBoxClicked] = useState(false);
-	const [DraggerActive, setDraggerActive] = useState(true);
 	const [showInputAnchor, setShowInputAnchor] = useState(false);
 	const [areasMap, setAreasMap] = useState(AREAS_MAP);
 	const [callAdd, setCallAdd] = useState(false);
@@ -184,10 +188,8 @@ function PaperBatchRecordsTemplate() {
 	const [tableLoading, setTableLoading] = useState(false);
 	const [searchedFileList, setSearchedFileList] = useState("");
 	const [selectedMode, setSelectedMode] = useState("word");
-	const [menuKey, setMenuKey] = useState("word");
 	const [formLoadParameter, setFormLoadParameter] = useState({});
-	const [templateInitialData, setTemplateInitialData] = useState({});
-	const [pageIdentifierData, setPageIdentifierData] = useState({});
+	// const [pageIdentifierData, setPageIdentifierData] = useState({});
 	const [parameterFormData, setParameterFormData] = useState([]);
 	const [isPublish, setIsPublish] = useState(false);
 	const [approveReject, setApproveReject] = useState("");
@@ -203,7 +205,6 @@ function PaperBatchRecordsTemplate() {
 	const [templateFormData, setTemplateFormData] = useState({})
 	const [showRowColIdentifier, setShowRowColIdentifier] = useState(false)
 	const [clickedTable, setClickedTable] = useState({})
-	const [tableFindCount, setTableFindCount] = useState([])
 	const [triggerPreview, setTriggerPreview] = useState(false);
 	const [tableActiveKey, setTableActiveKey] = useState(0);
 	const [formTableData, setFormTableData] = useState([]);
@@ -237,13 +238,6 @@ function PaperBatchRecordsTemplate() {
 		setRightPanelCollapsed(!rightPanelCollapsed);
 		setLeftPanelCollapsed(!leftPanelCollapsed);
 	};
-
-	useEffect(() => {
-		if (esignPublishRes?.status_code === 200) {
-			setTemplateStatus(esignPublishRes.rep_stauts);
-		}
-	}, [esignPublishRes]);
-
 	/* istanbul ignore next */
 	useEffect(() => {
 		if (pageIdFormValues) {
@@ -259,6 +253,13 @@ function PaperBatchRecordsTemplate() {
 		}
 
 	}, [pageIdFormValues])
+
+	useEffect(() => {
+		if (esignPublishRes?.status_code === 200) {
+			setPublishResponse(res);
+			setTemplateStatus(esignPublishRes.rep_stauts);
+		}
+	}, [esignPublishRes]);
 
 	const parameterAddingHandler = (a) => {
 		setFileList([])
@@ -280,7 +281,6 @@ function PaperBatchRecordsTemplate() {
 			let openKey = parseInt(open) + 1
 			setParamaterAdded(true);
 			setOpen([`${openKey}`]);
-			let key = Object.keys(parameterValue).length;
 			let param = { anchorValue: '', anchorId: '' };
 			setParameterValue({ ...parameterValue, param1: param });
 			setActiveNumber(activeNumber + 1);
@@ -290,7 +290,6 @@ function PaperBatchRecordsTemplate() {
 
 	const DraggerInputHandlerAnchor = (e, val) => {
 		e.stopPropagation();
-		setDraggerActive(true);
 		let obj = {
 			value: false,
 			valueSnippet: false,
@@ -319,7 +318,6 @@ function PaperBatchRecordsTemplate() {
 	/* istanbul ignore next */
 	const DraggerInputHandlerSnippet = (e, val) => {
 		e.stopPropagation();
-		setDraggerActive(false);
 		let obj = {
 			value: false,
 			valueSnippet: false,
@@ -346,11 +344,11 @@ function PaperBatchRecordsTemplate() {
 		}
 	};
 	/* istanbul ignore next */
-	const onClickImage = (e) => {
-		var rect = e.target.getBoundingClientRect();
-		var x = e.clientX - rect.left;
-		var y = e.clientY - rect.top;
-	};
+	// const onClickImage = (e) => {
+	// 	var rect = e.target.getBoundingClientRect();
+	// 	var x = e.clientX - rect.left;
+	// 	var y = e.clientY - rect.top;
+	// };
 	/* istanbul ignore next */
 	const onChangeChart = (e, field, key, value) => {
 		let arr = [...formValues]
@@ -366,7 +364,7 @@ function PaperBatchRecordsTemplate() {
 		};
 
 		if (field === 'anchorValue') {
-			setDraggerFirstAreaValue(e.target.value);
+			// setDraggerFirstAreaValue(e.target.value);
 			arr[key] = { ...arr[key], values: { ...arr[key]?.values, anchorValue: e.target.value } }
 			setFormValues(arr)
 			let obj1 = { ...parameterValue };
@@ -376,7 +374,7 @@ function PaperBatchRecordsTemplate() {
 			};
 			setParameterValue(obj1);
 		} else if (field === 'snippetValue') {
-			setDraggerLastAreaValue(e.target.value);
+			//setDraggerLastAreaValue(e.target.value);
 			arr[key] = { ...arr[key], values: { ...arr[key]?.values, anchorId: e.target.value } }
 			setFormValues(arr)
 			let obj2 = { ...parameterValue };
@@ -386,7 +384,7 @@ function PaperBatchRecordsTemplate() {
 			};
 			setParameterValue(obj2);
 		} else if (field === 'uomanchorValue') {
-			setDraggerLastAreaValue(e.target.value);
+			//setDraggerLastAreaValue(e.target.value);
 			arr[key] = { ...arr[key], unitValues: { ...arr[key]?.unitValues, unitAnchor: e.target.value } }
 			setFormValues(arr)
 			let obj2 = { ...parameterValue };
@@ -396,7 +394,7 @@ function PaperBatchRecordsTemplate() {
 			};
 			setParameterValue(obj2);
 		} else if (field === 'uomsnippetValue') {
-			setDraggerLastAreaValue(e.target.value);
+			//setDraggerLastAreaValue(e.target.value);
 			arr[key] = { ...arr[key], unitValues: { ...arr[key]?.unitValues, unitId: e.target.value } }
 			setFormValues(arr)
 			let obj2 = { ...parameterValue };
@@ -406,7 +404,7 @@ function PaperBatchRecordsTemplate() {
 			};
 			setParameterValue(obj2);
 		} else if (field === 'timeanchorValue') {
-			setDraggerLastAreaValue(e.target.value);
+			//setDraggerLastAreaValue(e.target.value);
 			arr[key] = { ...arr[key], timeValues: { ...arr[key]?.timeValues, timeAnchor: e.target.value } }
 			setFormValues(arr)
 			let obj2 = { ...parameterValue };
@@ -416,7 +414,7 @@ function PaperBatchRecordsTemplate() {
 			};
 			setParameterValue(obj2);
 		} else if (field === 'timesnippetValue') {
-			setDraggerLastAreaValue(e.target.value);
+			//setDraggerLastAreaValue(e.target.value);
 			arr[key] = { ...arr[key], timeValues: { ...arr[key]?.timeValues, timeId: e.target.value } }
 			setFormValues(arr)
 			let obj2 = { ...parameterValue };
@@ -426,7 +424,7 @@ function PaperBatchRecordsTemplate() {
 			};
 			setParameterValue(obj2);
 		} else if (field === 'dateanchorValue') {
-			setDraggerLastAreaValue(e.target.value);
+			//setDraggerLastAreaValue(e.target.value);
 			arr[key] = { ...arr[key], dateValues: { ...arr[key]?.dateValues, dateAnchor: e.target.value } }
 			setFormValues(arr)
 			let obj2 = { ...parameterValue };
@@ -436,7 +434,7 @@ function PaperBatchRecordsTemplate() {
 			};
 			setParameterValue(obj2);
 		} else if (field === 'datesnippetValue') {
-			setDraggerLastAreaValue(e.target.value);
+			//setDraggerLastAreaValue(e.target.value);
 			arr[key] = { ...arr[key], dateValues: { ...arr[key]?.dateValues, dateId: e.target.value } }
 			setFormValues(arr)
 			let obj2 = { ...parameterValue };
@@ -769,13 +767,13 @@ function PaperBatchRecordsTemplate() {
 				setTemplateStatus(loadData[0]?.pbr_template_status)
 				setTemplateVersion(loadData[0]?.pbr_template_version)
 				setTemplateId(loadData[0]?.pbr_template_disp_id)
-				if (Object.keys(loadData[0]?.pbr_template_info.pbrPageIdentifier).length > 0) {
-					let obj1 = {
-						key: loadData[0]?.pbr_template_info?.pbrPageIdentifier?.keys[0],
-						key_2: loadData[0]?.pbr_template_info?.pbrPageIdentifier?.keys[1]
-					}
-					setPageIdentifierData(obj1)
-				}
+				// if (Object.keys(loadData[0]?.pbr_template_info.pbrPageIdentifier).length > 0) {
+				// 	let obj1 = {
+				// 		key: loadData[0]?.pbr_template_info?.pbrPageIdentifier?.keys[0],
+				// 		key_2: loadData[0]?.pbr_template_info?.pbrPageIdentifier?.keys[1]
+				// 	}
+				// 	setPageIdentifierData(obj1)
+				// }
 			}
 
 			if (params?.temp_disp_id || localStorage.getItem("test_enabled") == !null) {
@@ -1026,7 +1024,6 @@ function PaperBatchRecordsTemplate() {
 		if (mainPanelValue == 2) {
 			setPageDragValue(area)
 		}
-		setBoundingBoxClicked(true);
 		setClickedSnippetId(area.areaValue);
 		setSnippetNumber(area.snippetID)
 		let updateObj = { ...areasMap }
@@ -1483,9 +1480,9 @@ function PaperBatchRecordsTemplate() {
 		setParameterFormData(values.users)
 	};
 	/* istanbul ignore next */
-	const pageIdentifierValueChange = (changedValues, values) => {
-		setPageIdentifierData(values)
-	};
+	// const pageIdentifierValueChange = (changedValues, values) => {
+	// 	setPageIdentifierData(values)
+	// };
 	/* istanbul ignore next */
 	const close = () => {
 		console.log(
@@ -1811,7 +1808,6 @@ function PaperBatchRecordsTemplate() {
 	/* istanbul ignore next */
 	const handleMenuChange = (item) => {
 		setSelectedMode(item)
-		setMenuKey(item)
 		for (let i = 0; i < 2; i++) {
 			setTimeout(() => {
 				getBoundingBoxDataInfo(imageWidth, imageHeight, item, pageNumber - 1);
@@ -1943,9 +1939,9 @@ function PaperBatchRecordsTemplate() {
 		}
 	}
 	/* istanbul ignore next */
-	const handleDrawSnippet = () => {
-		initDraw(document.getElementById('drawRectangle'));
-	}
+	// const handleDrawSnippet = () => {
+	// 	initDraw(document.getElementById('drawRectangle'));
+	// }
 	/* istanbul ignore next */
 	const handleSideState = () => {
 		setTriggerUpdate(true)
@@ -2022,18 +2018,18 @@ function PaperBatchRecordsTemplate() {
 										className='custom-primary-btn'
 										style={{ marginRight: 10 }}
 										onClick={() => {
-											// setIsPublish(true);
-											// setApproveReject("R");
-											history.push(`/dashboard/signature_module?status=R&dispId=${templateId}&version=${templateVersion}&screenName=Pbr Creation&appType=PBR`);
+											setIsPublish(true);
+											setApproveReject("R");
+											// history.push(`/dashboard/signature_module?status=R&dispId=${templateId}&version=${templateVersion}&screenName=Pbr Creation&appType=PBR`);
 										}}>
 										Reject
 									</Button>
 									<Button className='custom-primary-btn'
 										style={{ marginRight: 10 }}
 										onClick={() => {
-											history.push(`/dashboard/signature_module?status=A&dispId=${templateId}&version=${templateVersion}&screenName=Pbr Creation&appType=PBR`);
-											// setIsPublish(true);
-											// setApproveReject("A");
+											// history.push(`/dashboard/signature_module?status=A&dispId=${templateId}&version=${templateVersion}&screenName=Pbr Creation&appType=PBR`);
+											setIsPublish(true);
+											setApproveReject("A");
 										}}
 									>Approve</Button>
 									<Button style={{ marginRight: 10 }} className='custom-secondary-btn'

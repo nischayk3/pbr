@@ -328,3 +328,8 @@
 		}
 	}
 }
+
+.ant-checkbox-checked .ant-checkbox-inner {
+	background-color: var(--primary-color) !important;
+	border-color: 1px solid var(--primary-color) !important;
+}
