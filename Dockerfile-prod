@@ -5,7 +5,7 @@ RUN echo "dns name is ${app_dns}"
 RUN apt-get -y update 
 RUN apt-get -y install sed  
 RUN sed -i  "s/APPDNS/${app_dns}/g" /app/.env 
-RUN sed -i  "s/JUPYTERDNS/${jupyter_dns}/g" /app/.env && cat /app/.env
+#RUN sed -i  "s/JUPYTERDNS/${jupyter_dns}/g" /app/.env && cat /app/.env
 RUN npm install --silent
 RUN npm rebuild node-sass
 RUN npm run build
