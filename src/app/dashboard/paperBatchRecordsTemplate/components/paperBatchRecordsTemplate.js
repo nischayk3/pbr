@@ -3024,7 +3024,7 @@ const PaperBatchRecordsTemplate = () => {
 				handleClose={handleClose}
 				screenName="Pbr Creation"
 				PublishResponse={PublishResponse}
-				appType="PBR"
+				appType="PBR_TEMPLATE"
 				dispId={templateId}
 				version={templateVersion}
 				status={approveReject}

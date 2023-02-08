@@ -925,7 +925,7 @@ function PbrReviewer() {
 				handleClose={handleClose}
 				eSignId={eSignId}
 				screenName="Pbr Creation"
-				appType="PBR"
+				appType="PBR_TEMPLATE"
 			/>
 		</>
 	)
