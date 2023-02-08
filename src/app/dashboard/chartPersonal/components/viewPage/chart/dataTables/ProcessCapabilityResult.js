@@ -33,8 +33,8 @@ const ProcessCapabilityResult = ({ postChartData }) => {
 		newCovArr &&
 			newCovArr.data &&
 			newCovArr.data.forEach((ele) => {
-				if (ele.extras && ele.extras.data_table) {
-					setDataTable(ele.extras.data_table);
+				if (ele.ppk_cpk_data && ele?.ppk_cpk_data?.data) {
+					setDataTable(ele.ppk_cpk_data.data);
 				}
 			});
 	}, [postChartData]);
