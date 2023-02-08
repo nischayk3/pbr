@@ -85,7 +85,6 @@ const EditableCell = ({
 
 function Formtable({task, handleColumnTitle, handleRowName, layout, setLayout}) {
     // const [dataSource,setDataSource] = useState(task.datasource)
-
    
     const handleSave = row => {
         const newData = [...task.datasource];
@@ -116,7 +115,113 @@ function Formtable({task, handleColumnTitle, handleRowName, layout, setLayout}) 
           cell: EditableCell
         }
       };
-      const columns2 = task.columns.map(col => {
+      const columns2 = task?.columns?.map(col => {
+        if (!col.editable) {
+          return col;
+        }
+        return {
+          ...col,
+          onCell: record => ({
+            record,
+            editable: col.editable,
+            dataIndex: col.dataIndex,
+            title: col.title,
+            handleSave: handleSave
+          })
+        };
+      });
+      const columns = [
+        {
+          title: 'Serie',
+          dataIndex: 'serie',
+          key: 'serie',
+          width: 100,
+          fixed: 'left',
+          editable: true,
+          children: [
+            {
+              title: 'Sample',
+              dataIndex: 'sample',
+              key: 'sample',
+              width: 150,
+              editable: true,
+              // sorter: (a, b) => a.age - b.age,
+            },
+          ]
+        },
+        {
+          title: 'A',
+          editable: true,
+          children: [
+            {
+              title: 'mg',
+              dataIndex: 'mg',
+              key: 'mg',
+              width: 150,
+              editable: true,
+              // sorter: (a, b) => a.age - b.age,
+            },
+            {
+              title: 'Seri1',
+              dataIndex: 'seri1',
+              key: 'seri1',
+              width: 150,
+              editable: true,
+            },
+          ],
+        },
+        {
+          title: 'B',
+          editable: true,
+          children: [
+            {
+              title: 'mg',
+              dataIndex: 'mg',
+              key: 'mg',
+              width: 150,
+              editable: true,
+              // sorter: (a, b) => a.age - b.age,
+            },
+            {
+              title: 'Seri2',
+              dataIndex: 'seri2',
+              key: 'seri2',
+              width: 150,
+              editable: true,
+            },
+          ],
+        },
+        {
+          title: 'C',
+          editable: true,
+          children: [
+            {
+              title: 'mg',
+              dataIndex: 'mg',
+              key: 'mg',
+              width: 150,
+              editable: true,
+              // sorter: (a, b) => a.age - b.age,
+            },
+            {
+              title: 'Seri3',
+              dataIndex: 'seri3',
+              key: 'seri3',
+              width: 150,
+              editable: true,
+            },
+          ],
+        },
+        {
+          title: 'Actions',
+          dataIndex: 'actions',
+          key: 'actions',
+          width: 80,
+          editable: true,
+          // fixed: 'right',
+        },
+      ];
+      const columns3 = columns?.map(col => {
         if (!col.editable) {
           return col;
         }

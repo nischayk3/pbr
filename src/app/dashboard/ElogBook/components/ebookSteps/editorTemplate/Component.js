@@ -9,7 +9,7 @@ import FormRadio from "./components/FormRadio";
 import FormLine from "./components/FormLine";
 
 const style = {
-  border: "1px dashed black",
+  // border: "1px dashed black",
   padding: "0.5rem 1rem",
   backgroundColor: "white",
   cursor: "move"

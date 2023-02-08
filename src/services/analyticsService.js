@@ -6,7 +6,7 @@ export const getPipelineList = (_queryParam) => {
 	const headers = {
 		"content-type": "application/json",
 		"x-access-token": login_response.token ? login_response.token : "",
-		"resource-name": "ANALYTICS",
+		"resource-name": "AUTO_ML",
 		username: localStorage.getItem("user"),
 	};
 	return Service.get(
@@ -28,7 +28,7 @@ export const getResults = (_queryParam) => {
 	const headers = {
 		"content-type": "application/json",
 		"x-access-token": login_response.token ? login_response.token : "",
-		"resource-name": "ANALYTICS",
+		"resource-name": "AUTO_ML",
 		username: localStorage.getItem("user"),
 	};
 	return Service.get(
@@ -72,7 +72,7 @@ export const putPipelineObj = (request) => {
 	const headers = {
 		"content-type": "application/json",
 		"x-access-token": login_response.token ? login_response.token : "",
-		"resource-name": "ANALYTICS",
+		"resource-name": "AUTO_ML",
 	};
 	return Service.put(
 		BMS_APP_PYTHON_SERVICE + "/pipelines",
@@ -93,7 +93,7 @@ export const getPreprocessing = (request) => {
 	const headers = {
 		"content-type": "application/json",
 		"x-access-token": login_response.token ? login_response.token : "",
-		"resource-name": "ANALYTICS",
+		"resource-name": "AUTO_ML",
 	};
 	return Service.post(
 		BMS_APP_PYTHON_SERVICE + "/analysis-preprocessing",
@@ -115,7 +115,7 @@ export const savePreprocessing = (request) => {
 	const headers = {
 		"content-type": "application/json",
 		"x-access-token": login_response.token ? login_response.token : "",
-		"resource-name": "ANALYTICS",
+		"resource-name": "AUTO_ML",
 	};
 	return Service.post(
 		BMS_APP_PYTHON_SERVICE + "/model-data",
@@ -180,7 +180,7 @@ export const getCrossBatch = (_queryParam) => {
 	const headers = {
 		"content-type": "application/json",
 		"x-access-token": login_response.token ? login_response.token : "",
-		"resource-name": "ANALYTICS",
+		"resource-name": "AUTO_ML",
 		username: localStorage.getItem("user"),
 	};
 	return Service.post(GRAFANA_API + "/cross_batch", _queryParam, headers).then(
@@ -198,7 +198,7 @@ export const getAnalyticsNodes = (request) => {
 	const headers = {
 		"content-type": "application/json",
 		"x-access-token": login_response.token ? login_response.token : "",
-		"resource-name": "ANALYTICS",
+		"resource-name": "AUTO_ML",
 	};
 	return Service.post(
 		BMS_APP_PYTHON_SERVICE + "/analysis-model-populate",
@@ -219,7 +219,7 @@ export const getAnalyticsModel = (request) => {
 	const headers = {
 		"content-type": "application/json",
 		"x-access-token": login_response.token ? login_response.token : "",
-		"resource-name": "ANALYTICS",
+		"resource-name": "AUTO_ML",
 	};
 	return Service.post(
 		BMS_APP_PYTHON_SERVICE + "/analysis-model-json",
@@ -241,7 +241,7 @@ export const getAnalyticsTransformation = (request) => {
 	const headers = {
 		"content-type": "application/json",
 		"x-access-token": login_response.token ? login_response.token : "",
-		"resource-name": "ANALYTICS",
+		"resource-name": "AUTO_ML",
 	};
 	return Service.post(
 		BMS_APP_PYTHON_SERVICE + "/transformation_mapping",
