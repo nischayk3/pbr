@@ -44,7 +44,6 @@ const DesignTable = () => {
 	const [form] = Form.useForm();
 
 	const [editingKey, setEditingKey] = useState('');
-	console.log(editingKey);
 	const isEditing = (record) =>
 		record.key === editingKey;
 
@@ -87,7 +86,7 @@ const DesignTable = () => {
 
 	const save = async (key, arrayIndex, record) => {
 
-		console.log(key, record, datas, columns);
+	
 		try {
 			const row = await form.validateFields();
 			datas.map((i) => {
@@ -112,12 +111,12 @@ const DesignTable = () => {
 		}
 
 	};
-	console.log(columns);
+	
 
 	const rowedit = (record) => {
 		setEdu(false)
 		setEduu(true)
-		console.log(record);
+		
 		record.map((i) => {
 			for (const [key, val] of Object.entries(i)) {
 
@@ -135,7 +134,7 @@ const DesignTable = () => {
 		setEditingKey(record);
 	}
 	const edit = (record) => {
-		console.log(record);
+		
 		for (const [key, val] of Object.entries(record)) {
 			form.setFieldsValue({
 
@@ -250,7 +249,7 @@ const DesignTable = () => {
 
 	};
 
-	console.log(columns);
+	
 	return (
 		<div className="custom-wrapper">
 			<div className="custom-content-layout">

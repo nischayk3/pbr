@@ -31,13 +31,6 @@ export const SIDEBAR_ITEMS = [
       component: {
         type: "Input field",
         content: "FormInput"
-        // <FormInput 
-        // // current="1"
-        // // task = {task}
-        // // handleFormControl= {handleFormControl}
-        // // handleFormControlSelect= {handleFormControlSelect}
-        // // handleSave= {handleSave} 
-        //  />
       }
     },
     {
