@@ -147,7 +147,7 @@ const ViewPageAnalysis = () => {
 			created_by: localStorage.getItem("username")
 				? localStorage.getItem("username")
 				: "",
-			app_type: "ANALYTICS",
+			app_type: "AUTO_ML",
 			app_id: selectedViewData.viewData.pipeline_id,
 			email_config: {},
 			frequency: "Once",
