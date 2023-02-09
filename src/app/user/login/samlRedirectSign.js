@@ -44,8 +44,8 @@ export default function RedirectSAMLSign() {
 			"resource-name":
 				appType == "REPORT"
 					? "REPORT_DESIGNER"
-					: appType == "ANALYSIS"
-						? "ANALYTICS"
+					: appType == "AUTO_ML"
+						? "AUTO_ML"
 						: appType == "ELOGBOOK-READING"
 							? "DASHBOARD"
 							: appType,
