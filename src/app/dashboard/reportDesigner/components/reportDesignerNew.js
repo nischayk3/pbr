@@ -268,16 +268,16 @@ const ReportDesignerNew = () => {
         let content_arr = [];
         content_arr = item.dymamic_rows
           ? item.dymamic_rows.map((i, index) => {
-              // let objj = {};
-              let key_obj = {};
-              key_obj["value"] = i && i.value ? i.value : "";
-              key_obj["editable"] =
-                i && i.editable == undefined ? false : i && i.editable;
-              key_obj["id"] = i && index + 1;
-              key_obj["key"] = i && i.keyName ? i.keyName : "";
+            // let objj = {};
+            let key_obj = {};
+            key_obj["value"] = i && i.value ? i.value : "";
+            key_obj["editable"] =
+              i && i.editable == undefined ? false : i && i.editable;
+            key_obj["id"] = i && index + 1;
+            key_obj["key"] = i && i.keyName ? i.keyName : "";
 
-              return key_obj;
-            })
+            return key_obj;
+          })
           : [];
         obj["content"] = content_arr ? content_arr : [];
         obj["id"] = index;
@@ -429,7 +429,7 @@ const ReportDesignerNew = () => {
           : {};
         let chartList =
           layout_data["chart_details"] &&
-          layout_data["chart_details"].length > 0
+            layout_data["chart_details"].length > 0
             ? layout_data["chart_details"]
             : [];
         if (chartList.length > 0) setSelectedChartList(chartList);
