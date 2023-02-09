@@ -366,7 +366,7 @@ const ViewPageAnalysis = () => {
 				handleClose={handleClose}
 				screenName="Analytics"
 				PublishResponse={PublishResponse}
-				appType="ANALYSIS"
+				appType="AUTO_ML"
 				dispId={selectedViewData.viewData.pipeline_id}
 				version='1'
 				status={approveReject}
