@@ -12,8 +12,8 @@ export default function ContentRenderComponent(props) {
 
   const getResult = async () => {
     let result = await props.getData(request);
-    if (result.statuscode > 200) {
-      setStatusCode(result.statuscode);
+    if (result.Status > 200) {
+      setStatusCode(result.Status);
       setResult(JSON.stringify(result));
     } else {
       setStatusCode(200);

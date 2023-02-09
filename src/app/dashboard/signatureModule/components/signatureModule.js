@@ -140,7 +140,7 @@ const SignatureModule = () => {
 		let headers = {
 			"content-type": "application/json",
 			"resource-name":
-				params?.appType == "REPORT" ? "REPORT_DESIGNER" : params?.appType == "ANALYSIS" ? "ANALYTICS" : params?.appType,
+				params?.appType == "REPORT_DESIGNER" ? "REPORT_DESIGNER" : params?.appType == "ANALYSIS" ? "ANALYTICS" : params?.appType,
 			"x-access-token": login_response.token ? login_response.token : ""
 
 		};
