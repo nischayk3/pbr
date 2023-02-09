@@ -458,7 +458,7 @@ function ReportGenerator(props) {
 				handleClose={handleClose}
 				screenName='Report Designer'
 				PublishResponse={PublishResponse}
-				appType='REPORT'
+				appType='REPORT_DESIGNER'
 				dispId={reportId}
 				version={0}
 				status={approveReject}

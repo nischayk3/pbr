@@ -149,7 +149,7 @@ const Signature = (props) => {
 		let headers = {
 			"content-type": "application/json",
 			"resource-name":
-				props.appType == "REPORT"
+				props.appType == "REPORT_DESIGNER"
 					? "REPORT_DESIGNER"
 					: props.appType == "ANALYSIS"
 						? "ANALYTICS"
