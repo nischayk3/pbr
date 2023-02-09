@@ -391,10 +391,10 @@ class DataFormFirst extends Component {
         batch[0] && batch[0].value && process[0] && process[0].value
           ? batch[0].value + "_" + process[0].value
           : batch[0] && batch[0].value && location[0] && location[0].value
-          ? batch[0].value + "_" + location[0].value
-          : batch && batch[0] && batch[0].value
-          ? batch[0].value
-          : "",
+            ? batch[0].value + "_" + location[0].value
+            : batch && batch[0] && batch[0].value
+              ? batch[0].value
+              : "",
     };
     if (this.props.recording_id)
       save_req["recording_id"] = this.props.recording_id;
@@ -576,7 +576,7 @@ class DataFormFirst extends Component {
           handleClose={this.handleClose}
           screenName="ELOGBOOK-READING"
           PublishResponse={this.PublishResponse}
-          appType="ELOGBOOK-READING"
+          appType="ELOG_BOOK_DATA_ENTRY"
           dispId={
             this.props.recording_id ? this.props.recording_id.toString() : ""
           }
