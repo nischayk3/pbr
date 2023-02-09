@@ -59,18 +59,18 @@ const JobSchedule = (props) => {
 	// }
 
 	return (
-		<Modal title={props.app_type !== "REPORT" ? <span className="modal-title">Schedule alert</span> : <span className="modal-title">Notify Report</span>} className='schedule-modal' visible={props.visible} onCancel={props.handleCancel} footer={false} width={1300}  >
+		<Modal title={props.app_type !== "REPORT_DESIGNER" ? <span className="modal-title">Schedule alert</span> : <span className="modal-title">Notify Report</span>} className='schedule-modal' visible={props.visible} onCancel={props.handleCancel} footer={false} width={1300}  >
 			<Tabs tabPosition='left' className='schedule-menu' activeKey={activeTab} onChange={changeActiveTab} >
 				<TabPane tab={
 					<span style={{ color: activeTab == '1' ? 'white' : 'grey', fontFamily: 'Roboto', fontWeight: '400', fontSize: '16px' }}>
 						<BellOutlined style={{ fontSize: '18px' }} />
-						{props.app_type == 'REPORT' ? <span style={{ fontSize: '17px', marginBottom: '20px' }}> Notify</span> : <>Alerts</>}
+						{props.app_type == 'REPORT_DESIGNER' ? <span style={{ fontSize: '17px', marginBottom: '20px' }}> Notify</span> : <>Alerts</>}
 					</span>
 
 				}
 					key="1"
 				>
-					{props.app_type == 'REPORT' ? <ReportNotify appType={props.app_type} id={props.id} job={selectedJob} job_id={dagId} name={props.name} /> :
+					{props.app_type == 'REPORT_DESIGNER' ? <ReportNotify appType={props.app_type} id={props.id} job={selectedJob} job_id={dagId} name={props.name} /> :
 						<AlertEvaluation appType={props.app_type} id={props.id + '-' + props.version} job={selectedJob} job_id={dagId} name={props.name} />
 					}
 				</TabPane>
