@@ -5,9 +5,9 @@ function FormRadio({task}) {
   return (
     <div>
       <Radio.Group name="radiogroup" defaultValue={1}>
-        {task?.fieldData.map((i) => 
+        {task?.fieldData?.map((i) => 
      <Radio key={i.id}>
-     {i.value}
+     {i.value || `Enter a value ${i.id}`}
    </Radio>
     )}
 

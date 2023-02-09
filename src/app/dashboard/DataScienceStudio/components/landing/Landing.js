@@ -20,8 +20,8 @@ export default function Landing() {
 	}
 
 	const login_response = JSON.parse(localStorage.getItem('login_details'));
-	const JUPYTER_APP_URL = `${JUPYTER_APP}/hub/login?next=%2Fhub%2F&auth_token=${login_response.token}`;
-	console.log("JUPYTER_APP", JUPYTER_APP_URL);
+	const JUPYTER_APP_URL = `${JUPYTER_APP}/hub/login?next=%2Fjupyterhub/hub%2F&auth_token=${login_response.token}`;
+	console.log("JUPYTER_APP_URL", JUPYTER_APP_URL);
 	return (
 		<div>
 			<ScreenHeader

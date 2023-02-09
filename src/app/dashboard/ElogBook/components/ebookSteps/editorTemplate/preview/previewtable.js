@@ -83,10 +83,8 @@ const EditableCell = ({
   return <td {...restProps}>{childNode}</td>;
 };
 
-function Formtable({task, handleColumnTitle, handleRowName, layout, setLayout}) {
-    // const [dataSource,setDataSource] = useState(task.datasource)
+function Previewtable({task, handleColumnTitle, handleRowName, layout, setLayout}) {
 
-   
     const handleSave = row => {
         const newData = [...task.datasource];
         const index = newData.findIndex(item => row.key === item.key);
@@ -95,12 +93,11 @@ function Formtable({task, handleColumnTitle, handleRowName, layout, setLayout}) 
           ...item,
           ...row
         });
-        // setDataSource(newData);
+      
         layout.forEach(row => {
          row.children.forEach((col) => {
              col.children.forEach((component) => {
                  if(component.id === task.id){
-                    console.log(component,newData, task.id);
                          component.datasource= newData;
                         
                    
@@ -117,7 +114,7 @@ function Formtable({task, handleColumnTitle, handleRowName, layout, setLayout}) 
           cell: EditableCell
         }
       };
-      const columns2 = task.columns.map(col => {
+      const columns2 = layout.columns.map(col => {
         if (!col.editable) {
           return col;
         }
@@ -132,21 +129,16 @@ function Formtable({task, handleColumnTitle, handleRowName, layout, setLayout}) 
           })
         };
       });
-    console.log(task.datasource,task,layout,"ddddddd");
   return (
     <div>
-        <div><h3>{task.tableName}</h3></div>
-        <div>{task.description}</div>
-      <Table columns={columns2} dataSource={task.datasource}
+        <div><h3>{layout.tableName}</h3></div>
+        <div>{layout.description}</div>
+      <Table columns={layout.columns} dataSource={layout.datasource}
         components={components}
         rowClassName={() => "editable-row"}
         bordered
          pagination={{ pageSize: 50 }} scroll={{ y: 240 }}
-        // onRow={(record, rowIndex) => {
-        //     return {
-        //       onClick: event => { handleRowName(record,event.target.innerText)},
-        //     };
-        //   }}
+     
           onHeaderRow={column => {
             return {
               onClick: (i) => handleColumnTitle(column,i.target.innerText), 
@@ -157,4 +149,4 @@ function Formtable({task, handleColumnTitle, handleRowName, layout, setLayout}) 
   )
 }
 
-export default Formtable
+export default Previewtable

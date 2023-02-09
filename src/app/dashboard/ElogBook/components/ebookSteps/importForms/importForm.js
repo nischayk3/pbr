@@ -114,7 +114,7 @@ function ImportForm({ isTemplateModal, sendDataToParent }) {
         >
             <div className="main-form">
                 <div className="import-modal-left">
-                    <p className='paragraph-text'>Select the forms your want to add to the template.</p>
+                    <p className='paragraph-text'>Select the forms you want to add to the template.</p>
                 </div>
 
                 <div className="import-modal-right">

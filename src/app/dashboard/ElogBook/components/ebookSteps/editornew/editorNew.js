@@ -18,7 +18,6 @@ function EditorNew({ selecteddata, CreateNew }) {
         setState(true);
     }
     const sendDataToParent = (index) => { // callback   
-        console.log(index, 'EditorNew')
         selecteddata(index)
     };
     const handleCreate = () => {
