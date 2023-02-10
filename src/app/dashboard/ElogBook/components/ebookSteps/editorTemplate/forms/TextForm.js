@@ -40,7 +40,7 @@ function TextForm({layout, current, textData, setTextData,setLayout}) {
             <Radio checked={textData.mandatory} onChange={(e) => setTextData({...textData, mandatory: e.target.checked})}> Mandatory</Radio>
             </div>
            
-            <Button className='textlabels' onClick={handleSave}>Save changes</Button>
+            <Button className='textlabels custom-primary-btn'  type="primary" onClick={handleSave}>Save changes</Button>
         </form> : ""
 }
     </div>
