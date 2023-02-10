@@ -2,108 +2,17 @@ import { Button, Row, Table, Col } from "antd";
 import React, { useState } from "react";
 import "./tabContent.scss";
 import CodeEditor from "@uiw/react-textarea-code-editor";
-import { getGeanealogy } from "../../../../../services/genealogyService";
 
-export default function TabContent() {
-  const [withLevel, setWithLevel] = useState(
-    JSON.stringify({
-      batch_ids: ["1255|1322454|ABL2257-03"],
-      material_nums: ["1322454"],
-      sites: ["1255"],
-      level: 5,
-    })
-  );
-  const [withoutLevel, setWithoutLevel] = useState(
-    JSON.stringify({
-      batch_ids: ["1255|1322454|ABL2257-03"],
-      material_nums: ["1322454"],
-      sites: ["1255"],
-    })
-  );
-  const [level, setLevel] = useState("");
+export default function ContentRenderComponent(props) {
+
+  const [request, setRequest] = useState(JSON.stringify(props.request));
   const [statusCode, setStatusCode] = useState(0);
   const [result, setResult] = useState("");
   const [selectedDiv, setSelectedDiv] = useState("Overview");
 
-  const dataSource = [
-    {
-      key: "1",
-      query: "batch_ids",
-      type: "text",
-      desc: (
-        <>
-          <p>Comma separated array of batch ids </p>
-          <p>["1255|1322454|ABL2257-03","1255|1322454|ABL2257-04"]</p>{" "}
-        </>
-      ),
-    },
-    {
-      key: "1",
-      query: "material_nums",
-      type: "text",
-      desc: (
-        <>
-          <p>Comma separated array of material numbers </p>
-          <p>Material number : [“1322454”]</p>{" "}
-        </>
-      ),
-    },
-    {
-      key: "1",
-      query: "sites",
-      type: "integer",
-      desc: (
-        <>
-          <p>Comma separated array of sites</p>
-          <p>sites : [“1255”]</p>{" "}
-        </>
-      ),
-    },
-    {
-      key: "1",
-      query: "material_nums",
-      type: "text",
-      desc: "Level of detail needed  example 5",
-    },
-  ];
-
-  const columns = [
-    {
-      title: "Query Parameter",
-      dataIndex: "query",
-      key: "query",
-    },
-    {
-      title: "Type",
-      dataIndex: "type",
-      key: "type",
-    },
-    {
-      title: "Description",
-      dataIndex: "desc",
-      key: "desc",
-    },
-  ];
-
-  const handleLevel = (e) => {
-    setWithLevel(e.target.value);
-    setLevel("with");
-  };
-  const handleWithoutleLevel = (e) => {
-    setWithoutLevel(e.target.value);
-    setLevel("without");
-  };
-
-  const getData = async () => {
-    let req = {};
-    if (level == "with") {
-      let js = JSON.parse(withLevel);
-      req = js;
-    } else {
-      let js = JSON.parse(withoutLevel);
-      req = js;
-    }
-    let result = await getGeanealogy(req);
+  const getResult = async () => {
+    let result = await props.getData(request);
+    console.log(result);
     if (result.Status > 200) {
       setStatusCode(result.Status);
       setResult(JSON.stringify(result));
@@ -113,12 +22,17 @@ export default function TabContent() {
       const url = window.URL.createObjectURL(new Blob([result]));
       const a = document.createElement("a");
       a.href = url;
-      a.download = "download.csv";
+      a.download = `${props.selectedTab}-response.csv`;
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
     }
   };
+
+  const handleChange = (e) => {
+    setRequest(e.target.value);
+  };
+
   const scrollToSection = (e) => {
     const id_ = e.target.innerText;
     setSelectedDiv(id_);
@@ -132,6 +46,8 @@ export default function TabContent() {
       inline: "center",
     });
   };
+
+
   return (
     <div>
       <Row>
@@ -189,22 +105,16 @@ export default function TabContent() {
                 responses. This means that you must usually add the following
                 headers to your request:
               </p>
-
-              <div className="black-div2" id="projects">
-                <p className="black_text">
-                  <br />
-                  <span className="slash">/</span>mdhgenealogy
-                  <span className="slash">/</span>v1
-                  <span className="slash">/</span>get-genealogy
-                </p>
-              </div>
             </div>
+
+            {props.url}
             <Table
               className="parent_div"
-              dataSource={dataSource}
-              columns={columns}
+              dataSource={props.dataSource}
+              columns={props.columns}
               pagination={false}
             />
+            {props.content}
             <div className="parent_div" id="Versioning and Endpoint Lifecycle">
               <p className="overview">Versioning and Endpoint Lifecycle</p>
               <ul>
@@ -221,28 +131,13 @@ export default function TabContent() {
                 </li>
               </ul>
             </div>
+
             <div className="parent_div" id="section">
-              <p className="content">Request With level</p>
+              <p className="content">Request</p>
               <CodeEditor
-                value={withLevel}
-                onChange={(e) => handleLevel(e)}
+                value={request}
+                onChange={(e) => handleChange(e)}
                 language="json"
-                padding={15}
-                style={{
-                  fontSize: 12,
-                  backgroundColor: "#00000",
-                  fontFamily: "Courier,monospace",
-                  color: "white",
-                  border: ".5px solid black",
-                }}
-              />
-            </div>
-            <div className="parent_div" id="section">
-              <p className="content">Request without level</p>
-              <CodeEditor
-                value={withoutLevel}
-                language="json"
-                onChange={(e) => handleWithoutleLevel(e)}
                 padding={15}
                 style={{
                   fontSize: 12,
@@ -255,13 +150,29 @@ export default function TabContent() {
             </div>
             <div className="parent_div" id="Error Codes">
               <p className="overview">Error Codes</p>
-              <ol>
-                <li className="content">Success : 200 ok </li>
-                <li className="content">Unauthorised: 401</li>
-                <li className="content">Permission denied</li>
-                <li className="content">Bad request</li>
-                <li className="content">Not found</li>
-              </ol>
+              <ul>
+                <li className="content">
+                  Success : 200 when a successful .csv or pdf is generated with
+                  correct data
+                </li>
+                <li className="content">
+                  Unauthorised: 401 User does not have access to views or API
+                  execution
+                </li>
+                <li className="content">
+                  Permission denied: 403.User is not authorised to execute for
+                  certain molecule or plant{" "}
+                </li>
+                <li className="content">
+                  Bad request: 400 Input parameters are incorrect
+                </li>
+                <li className="content">
+                  Not found: 404: No data found for required filter
+                </li>
+                <li className="content">
+                  Internal Server Error: 500. Database is not reachable.
+                </li>
+              </ul>
               {result ? (
                 <p>
                   {statusCode ? (
@@ -281,34 +192,13 @@ export default function TabContent() {
                   ) : (
                     <></>
                   )}
-
-                  <p className="overview">
-                    Result :
-                    <CodeEditor
-                      value={result}
-                      language="json"
-                      padding={15}
-                      style={{
-                        fontSize: 12,
-                        backgroundColor: "#00000",
-                        fontFamily: "Courier,monospace",
-                        color: "white",
-                        border: ".5px solid black",
-                        minHeight: "100px",
-                        width: "600px",
-                        height: "200px",
-                        marginTop: "20px",
-                        overflow: "scroll",
-                      }}
-                    />
-                  </p>
                 </p>
               ) : (
                 <></>
               )}
             </div>
             <div className="parent_div" id="Try Code">
-              <Button className="button" onClick={() => getData()}>
+              <Button className="button" onClick={() => getResult()}>
                 Try code
               </Button>
             </div>
@@ -319,58 +209,16 @@ export default function TabContent() {
         </Col>
         <Col span={5}>
           <ul style={{ listStyle: "none", justifyContent: "space-around" }}>
-            <li
-              className={
-                selectedDiv == "Overview" ? "side_list_selected" : "side_list"
-              }
-              onClick={(e) => scrollToSection(e)}
-            >
-              Overview
-            </li>
-            <li
-              className={
-                selectedDiv == "Resources" ? "side_list_selected" : "side_list"
-              }
-              onClick={(e) => scrollToSection(e)}
-            >
-              Resources
-            </li>
-            <li
-              className={
-                selectedDiv == "Parameters" ? "side_list_selected" : "side_list"
-              }
-              onClick={(e) => scrollToSection(e)}
-            >
-              Parameters
-            </li>
-            <li
-              className={
-                selectedDiv == "Versioning and Endpoint Lifecycle"
-                  ? "side_list_selected"
-                  : "side_list"
-              }
-              onClick={(e) => scrollToSection(e)}
-            >
-              Versioning and Endpoint Lifecycle
-            </li>
-            <li
-              className={
-                selectedDiv == "Error Codes"
-                  ? "side_list_selected"
-                  : "side_list"
-              }
-              onClick={(e) => scrollToSection(e)}
-            >
-              Error Codes
-            </li>
-            <li
-              className={
-                selectedDiv == "Try Code" ? "side_list_selected" : "side_list"
-              }
-              onClick={(e) => scrollToSection(e)}
-            >
-              Try Code
-            </li>
+            {props.render_side_tab.map((i) => (
+              <li
+                className={
+                  selectedDiv == i ? "side_list_selected" : "side_list"
+                }
+                onClick={(e) => scrollToSection(e)}
+              >
+                {i}
+              </li>
+            ))}
           </ul>
         </Col>
       </Row>

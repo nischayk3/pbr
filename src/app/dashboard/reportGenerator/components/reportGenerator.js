@@ -448,7 +448,7 @@ function ReportGenerator(props) {
 			<SaveModal isSave={isSave} setIsSave={setIsSave} setIsSaved={setIsSaved} id={''} load={genLoad || isSaved} />
 			<JobSchedule
 				visible={alertVisible}
-				app_type='REPORT'
+				app_type='REPORT_DESIGNER'
 				handleCancel={handleCancel}
 				id={reportId}
 				name={reportName}
@@ -458,7 +458,7 @@ function ReportGenerator(props) {
 				handleClose={handleClose}
 				screenName='Report Designer'
 				PublishResponse={PublishResponse}
-				appType='REPORT'
+				appType='REPORT_DESIGNER'
 				dispId={reportId}
 				version={0}
 				status={approveReject}

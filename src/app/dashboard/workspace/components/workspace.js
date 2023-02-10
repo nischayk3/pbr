@@ -111,7 +111,7 @@ const Workspace = () => {
 	const getScheduleReportAlertsData = async () => {
 		let login_response = JSON.parse(localStorage.getItem("login_details"));
 		let req = {
-			app_type: "REPORT",
+			app_type: "REPORT_DESIGNER",
 		};
 		let headers = {
 			"content-type": "application/json",

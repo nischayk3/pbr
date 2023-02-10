@@ -29,9 +29,23 @@ function RadioForm({current,radioData,setRadioData,layout,setLayout}) {
         e.preventDefault();
         let tempData = []
         for(let i=0; i < Number(numFields); i++){
-            tempData.push({id: tempData.length+1, value:`Enter value${tempData.length+1}`})
+            tempData.push({id: tempData.length+1, value:''})
         }
         setDynamiclyData(tempData)
+        const templayout = JSON.parse(JSON.stringify(layout));
+        templayout.forEach(row => {
+         row.children.forEach((col) => {
+             col.children.forEach((component) => {
+                 if(component.id === radioData.id){
+                         component.textlabel= radioData.textlabel;
+                         component.fieldData = tempData;
+                       
+      
+                 }
+             })
+         } )
+        });
+        setLayout(templayout)
         
     }
 

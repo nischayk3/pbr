@@ -147,7 +147,7 @@ const ViewPageAnalysis = () => {
 			created_by: localStorage.getItem("username")
 				? localStorage.getItem("username")
 				: "",
-			app_type: "ANALYTICS",
+			app_type: "AUTO_ML",
 			app_id: selectedViewData.viewData.pipeline_id,
 			email_config: {},
 			frequency: "Once",
@@ -366,7 +366,7 @@ const ViewPageAnalysis = () => {
 				handleClose={handleClose}
 				screenName="Analytics"
 				PublishResponse={PublishResponse}
-				appType="ANALYSIS"
+				appType="AUTO_ML"
 				dispId={selectedViewData.viewData.pipeline_id}
 				version='1'
 				status={approveReject}
