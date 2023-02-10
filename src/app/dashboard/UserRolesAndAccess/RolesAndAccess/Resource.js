@@ -6,18 +6,19 @@
  * @Last Changed By - Dinesh Kumar
  */
 
+import { InfoCircleOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Modal, Select, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
 import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
-import { resourceActionUpdated } from '../../../../services/userRolesAndAccessService';
+import { resourceActionUpdated, resourceAuth } from '../../../../services/userRolesAndAccessService';
 
 const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackResource, callbackResourceCard, resourceDataTable, editResource, resourceType }) => {
 	const [resList, setResList] = useState([]);
 	const [selectedResource, setSelectedResource] = useState('');
-	const [isChecked, setIsChecked] = useState(false);
 	const [data, setData] = useState([]);
 	const [selectedAuth, setSelectedAuth] = useState([]);
+	const [rolePriv, setRolePriv] = useState();
 
 
 	const dispatch = useDispatch();
@@ -35,7 +36,6 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 	}, [resourceList])
 
 	useEffect(() => {
-
 		setResList([])
 		setSelectedResource(editResource)
 	}, [editResource])
@@ -68,8 +68,9 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 			key: 'isEnable',
 			dataIndex: 'isEnable',
 			render: (value, record, rowIndex) => {
+				console.log("recorddddd", value, record, rowIndex);
 				return (
-					<Checkbox checked={value} onChange={(e) => onChangeAuth(e, record, rowIndex)} />
+					<Checkbox checked={value} disabled={record.isAvailable} onChange={(e) => onChangeAuth(e, record, rowIndex)} />
 				)
 			}
 		},
@@ -79,6 +80,13 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 	const handleChange = (value) => {
 		setSelectedResource(value);
 		callbackResource(value)
+		let _priv = {
+			role_name: roleName,
+			resource: value,
+			auth: true
+		}
+
+		rolePriviledge(_priv)
 	};
 
 	const handleCancel = () => {
@@ -118,6 +126,20 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 		}
 	}
 
+	// roles priviledge
+	const rolePriviledge = async (_resourceAuth) => {
+		try {
+			const privilege = await resourceAuth(_resourceAuth)
+			if (privilege.statuscode === 200) {
+				setRolePriv(privilege.message)
+			} else {
+				dispatch(showNotification("error", privilege.message));
+			}
+		} catch (error) {
+			dispatch(showNotification("error", error));
+		}
+	}
+
 	const onChangeAuth = (e, record, rowIndex) => {
 		let authList = []
 		const tableData = [...data];
@@ -133,7 +155,6 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 		})
 
 		setSelectedAuth(authList)
-		setIsChecked(e.target.checked)
 		setData(tableData)
 	}
 
@@ -162,6 +183,7 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 						options={resList}
 					/>
 				</div>
+				<p className='warning'><InfoCircleOutlined className='warn-icon' />It is recommended to add access to <span className='highlight'>View</span> and <span className='highlight'>Chart</span> resources before adding this one.</p>
 				<p className='card-heading'>Authorizations</p>
 				<p className='card-heading-p'>Select the actions you want to authorize chart managers to take.</p>
 				<Table
