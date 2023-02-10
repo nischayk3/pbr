@@ -12,6 +12,7 @@ export default function ContentRenderComponent(props) {
 
   const getResult = async () => {
     let result = await props.getData(request);
+    console.log(result);
     if (result.Status > 200) {
       setStatusCode(result.Status);
       setResult(JSON.stringify(result));
@@ -46,7 +47,6 @@ export default function ContentRenderComponent(props) {
     });
   };
 
-  console.log(request)
 
   return (
     <div>

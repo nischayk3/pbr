@@ -2,7 +2,7 @@
     "app_data":"ANALYTICS",
     "dag_id":" ",
     "created_by":"Vinay",
-    "app_type":"ANALYTICS",
+    "app_type":"AUTO_ML",
     "app_id":"P352",
     "email_config":{
        

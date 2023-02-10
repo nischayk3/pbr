@@ -16,7 +16,7 @@
 			"text": "View Approval"
 		},
 		{
-			"application_type": "REPORT",
+			"application_type": "REPORT_DESIGNER",
 			"item_count": 2,
 			"text": "Report Approval"
 		},

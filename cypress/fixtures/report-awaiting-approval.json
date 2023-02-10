@@ -48,7 +48,7 @@
 			{
 				"Id": "R116",
 				"appl_url": "/dashboard/report_designer",
-				"application_type": "REPORT",
+				"application_type": "REPORT_DESIGNER",
 				"created_by": "binkita.tiwari@mareana.com",
 				"created_on": "2022-03-11T14:10:36.824287+00:00",
 				"event_id": 42,
@@ -57,7 +57,7 @@
 			{
 				"Id": "R112",
 				"appl_url": "/dashboard/report_designer",
-				"application_type": "REPORT",
+				"application_type": "REPORT_DESIGNER",
 				"created_by": "demo",
 				"created_on": "2022-03-09T10:30:35.021322+00:00",
 				"event_id": 25,

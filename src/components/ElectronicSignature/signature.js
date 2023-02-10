@@ -149,10 +149,10 @@ const Signature = (props) => {
 		let headers = {
 			"content-type": "application/json",
 			"resource-name":
-				props.appType == "REPORT"
+				props.appType == "REPORT_DESIGNER"
 					? "REPORT_DESIGNER"
-					: props.appType == "ANALYSIS"
-						? "ANALYTICS"
+					: props.appType == "AUTO_ML"
+						? "AUTO_ML"
 						: props.appType == "ELOGBOOK-READING"
 							? "DASHBOARD"
 							: props.appType,
@@ -194,7 +194,7 @@ const Signature = (props) => {
 				}
 
 				let publish_response = {};
-				if (props.appType == "ELOGBOOK-READING") {
+				if (props.appType == "ELOG_BOOK_DATA_ENTRY") {
 					publish_response = await publishEvent(reqs, headers);
 				} else {
 					publish_response =
