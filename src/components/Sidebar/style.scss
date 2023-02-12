@@ -18,4 +18,14 @@
 .remove-selected {
 	background-color: transparent !important;
 	color: #ffffffa6 !important;
+
+	span {
+		>a {
+			color: rgba(255, 255, 255, 0.65) !important;
+		}
+
+		svg {
+			color: rgba(255, 255, 255, 0.65);
+		}
+	}
 }

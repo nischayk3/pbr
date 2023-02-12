@@ -68,11 +68,21 @@ const Sidebar = () => {
 					<Link to="/dashboard/workspace">Workspace</Link>
 				</Menu.Item>
 
+				{permissions && permissions['GENEALOGY'] && (
+					<Menu.Item
+						key='genealogy'
+						icon={<PartitionOutlined className="menu-icons" />}
+						id='genealogy'
+						className={path == '/dashboard/genealogy' ? 'ant-menu-item-selected' : 'remove-selected'}
+					>
+						<Link to='/dashboard/genealogy'>Genealogy</Link>
+					</Menu.Item>
+				)}
+
 				{permissions &&
 					permissions['VIEW'] ||
 					permissions['CHART'] ||
 					permissions['DASHBOARD'] ||
-					permissions['GENEALOGY'] ||
 					permissions['WORKITEMS'] ?
 					(
 						<SubMenu
@@ -114,16 +124,7 @@ const Sidebar = () => {
 								</Menu.Item>
 							)}
 
-							{permissions['GENEALOGY'] && (
-								<Menu.Item
-									key='genealogy'
-									icon={<PartitionOutlined className="menu-icons" />}
-									id='genealogy'
-									className={path == '/dashboard/genealogy' ? 'ant-menu-item-selected' : 'remove-selected'}
-								>
-									<Link to='/dashboard/genealogy'>Genealogy</Link>
-								</Menu.Item>
-							)}
+
 
 							{permissions['WORKITEMS'] && (
 								<Menu.Item
@@ -179,7 +180,9 @@ const Sidebar = () => {
 				{permissions &&
 					permissions['AUDIT_REPORT'] ||
 					permissions['USER_REPORT'] ||
-					permissions['PARAM_DATA_FILE_UPLOAD'] ? (
+					permissions['PARAM_DATA_FILE_UPLOAD'] ||
+					permissions['REPORT_DESIGNER'] ||
+					permissions['REPORT_GENERATOR'] ? (
 					<SubMenu
 						key="sub4"
 						mode="inline"
@@ -218,32 +221,30 @@ const Sidebar = () => {
 								<Link to="/dashboard/manual_data_upload">Manual Data Upload</Link>
 							</Menu.Item>
 						)}
+
+						{permissions['REPORT_DESIGNER'] && (
+							<Menu.Item
+								key="report_designer"
+								icon={<AppstoreAddOutlined className="menu-icons" />}
+								id="1"
+								className={path === "/dashboard/report_designer" ? 'ant-menu-item-selected' : 'remove-selected'}
+							>
+								<Link to="/dashboard/report_designer">Report Designer</Link>
+							</Menu.Item>
+						)}
+
+						{permissions['REPORT_GENERATOR'] && (
+							<Menu.Item
+								key="report_generator"
+								icon={<BlockOutlined className="menu-icons" />}
+								id="2"
+								className={path === "/dashboard/report_generator" ? 'ant-menu-item-selected' : 'remove-selected'}
+							>
+								<Link to="/dashboard/report_generator">Report Generator</Link>
+							</Menu.Item>
+						)}
 					</SubMenu>
 				) : null}
-
-				{permissions &&
-					permissions['REPORT_DESIGNER'] && (
-						<Menu.Item
-							key="report_designer"
-							icon={<AppstoreAddOutlined className="menu-icons" />}
-							id="1"
-							className={path === "/dashboard/report_designer" ? 'ant-menu-item-selected' : 'remove-selected'}
-						>
-							<Link to="/dashboard/report_designer">Report Designer</Link>
-						</Menu.Item>
-					)}
-
-				{permissions &&
-					permissions['REPORT_GENERATOR'] && (
-						<Menu.Item
-							key="report_generator"
-							icon={<BlockOutlined className="menu-icons" />}
-							id="2"
-							className={path === "/dashboard/report_generator" ? 'ant-menu-item-selected' : 'remove-selected'}
-						>
-							<Link to="/dashboard/report_generator">Report Generator</Link>
-						</Menu.Item>
-					)}
 
 				{permissions &&
 					permissions['DSS'] ||
