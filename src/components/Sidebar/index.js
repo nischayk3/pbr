@@ -81,11 +81,21 @@ const Sidebar = () => {
 					</Menu.Item>
 				)}
 
+				{permissions && permissions['WORKITEMS'] && (
+					<Menu.Item
+						key='workflow'
+						icon={<FileDoneOutlined style={{ fontSize: "26px" }} />}
+						id='workflow'
+						className={path == '/dashboard/workflow' ? 'ant-menu-item-selected' : 'remove-selected'}
+					>
+						<Link to='/dashboard/workflow'>Workflow</Link>
+					</Menu.Item>
+				)}
+
 				{permissions &&
 					permissions['VIEW'] ||
 					permissions['CHART'] ||
-					permissions['DASHBOARD'] ||
-					permissions['WORKITEMS'] ?
+					permissions['DASHBOARD'] ?
 					(
 						<SubMenu
 							key="sub2"
@@ -125,20 +135,6 @@ const Sidebar = () => {
 									<Link to='/dashboard/dashboard'>Dashboard</Link>
 								</Menu.Item>
 							)}
-
-
-
-							{permissions['WORKITEMS'] && (
-								<Menu.Item
-									key='workflow'
-									icon={<FileDoneOutlined style={{ fontSize: "26px" }} />}
-									id='workflow'
-									className={path == '/dashboard/workflow' ? 'ant-menu-item-selected' : 'remove-selected'}
-								>
-									<Link to='/dashboard/workflow'>Workflow</Link>
-								</Menu.Item>
-							)}
-
 						</SubMenu>
 					) : null}
 

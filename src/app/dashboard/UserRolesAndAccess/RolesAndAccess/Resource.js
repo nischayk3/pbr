@@ -68,9 +68,8 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 			key: 'isEnable',
 			dataIndex: 'isEnable',
 			render: (value, record, rowIndex) => {
-				console.log("recorddddd", value, record, rowIndex);
 				return (
-					<Checkbox checked={value} disabled={record.isAvailable} onChange={(e) => onChangeAuth(e, record, rowIndex)} />
+					<Checkbox checked={value} disabled={record.isDisable} onChange={(e) => onChangeAuth(e, record, rowIndex)} />
 				)
 			}
 		},
