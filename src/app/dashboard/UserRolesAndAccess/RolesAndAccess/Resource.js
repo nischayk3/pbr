@@ -45,7 +45,7 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 		const resData = [...resourceDataTable]
 		resData.filter((item) => {
 			if (item.isEnable) {
-				auth.push(item.authorization)
+				return auth.push(item.authorization)
 			}
 		})
 		setData(resData)
@@ -155,9 +155,9 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 
 		tableData.filter((item) => {
 			if (item.isEnable) {
-				authList.push(item.authorization);
+				return authList.push(item.authorization);
 			} else {
-				authList.filter((v) => v !== record.authorization);
+				return authList.filter((v) => v !== record.authorization);
 			}
 		})
 
