@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect, useRef } from 'react';
 
 import { Table, Input, Button, Popconfirm, Form } from 'antd';
 const EditableContext = React.createContext(null);
-
 const EditableRow = ({ index, ...props }) => {
   const [form] = Form.useForm();
   return (
@@ -24,7 +23,7 @@ const EditableCell = ({
   ...restProps
 }) => {
   const [editing, setEditing] = useState(false);
-  const inputRef = useRef(null);
+  const inputRef = useRef();
   const form = useContext(EditableContext);
   useEffect(() => {
     if (editing) {
@@ -35,17 +34,17 @@ const EditableCell = ({
   const toggleEdit = () => {
     setEditing(!editing);
     form.setFieldsValue({
-      [dataIndex]: record[dataIndex],
+      [dataIndex]: record[dataIndex]
     });
   };
 
-  const save = async () => {
+  const save = async (e) => {
     try {
       const values = await form.validateFields();
       toggleEdit();
       handleSave({ ...record, ...values });
     } catch (errInfo) {
-      console.log('Save failed:', errInfo);
+      console.log("Save failed:", errInfo);
     }
   };
 
@@ -55,14 +54,14 @@ const EditableCell = ({
     childNode = editing ? (
       <Form.Item
         style={{
-          margin: 0,
+          margin: 0
         }}
         name={dataIndex}
         rules={[
           {
             required: true,
-            message: `${title} is required.`,
-          },
+            message: `${title} is required.`
+          }
         ]}
       >
         <Input ref={inputRef} onPressEnter={save} onBlur={save} />
@@ -71,7 +70,7 @@ const EditableCell = ({
       <div
         className="editable-cell-value-wrap"
         style={{
-          paddingRight: 24,
+          paddingRight: 24
         }}
         onClick={toggleEdit}
       >
@@ -86,7 +85,9 @@ const EditableCell = ({
 function Formtable({task, handleColumnTitle, handleRowName, layout, setLayout}) {
     // const [dataSource,setDataSource] = useState(task.datasource)
    
+console.log(layout);
     const handleSave = row => {
+      console.log(row);
         const newData = [...task.datasource];
         const index = newData.findIndex(item => row.key === item.key);
         const item = newData[index];
@@ -112,16 +113,17 @@ function Formtable({task, handleColumnTitle, handleRowName, layout, setLayout}) 
     const components = {
         body: {
           row: EditableRow,
-          cell: EditableCell
+          cell: EditableCell,
         }
       };
-      const columns2 = task?.columns?.map(col => {
+
+      const mapColumns = (col) => {
         if (!col.editable) {
           return col;
         }
-        return {
+        const newCol = {
           ...col,
-          onCell: record => ({
+          onCell: (record) => ({
             record,
             editable: col.editable,
             dataIndex: col.dataIndex,
@@ -129,113 +131,29 @@ function Formtable({task, handleColumnTitle, handleRowName, layout, setLayout}) 
             handleSave: handleSave
           })
         };
-      });
-      const columns = [
-        {
-          title: 'Serie',
-          dataIndex: 'serie',
-          key: 'serie',
-          width: 100,
-          fixed: 'left',
-          editable: true,
-          children: [
-            {
-              title: 'Sample',
-              dataIndex: 'sample',
-              key: 'sample',
-              width: 150,
-              editable: true,
-              // sorter: (a, b) => a.age - b.age,
-            },
-          ]
-        },
-        {
-          title: 'A',
-          editable: true,
-          children: [
-            {
-              title: 'mg',
-              dataIndex: 'mg',
-              key: 'mg',
-              width: 150,
-              editable: true,
-              // sorter: (a, b) => a.age - b.age,
-            },
-            {
-              title: 'Seri1',
-              dataIndex: 'seri1',
-              key: 'seri1',
-              width: 150,
-              editable: true,
-            },
-          ],
-        },
-        {
-          title: 'B',
-          editable: true,
-          children: [
-            {
-              title: 'mg',
-              dataIndex: 'mg',
-              key: 'mg',
-              width: 150,
-              editable: true,
-              // sorter: (a, b) => a.age - b.age,
-            },
-            {
-              title: 'Seri2',
-              dataIndex: 'seri2',
-              key: 'seri2',
-              width: 150,
-              editable: true,
-            },
-          ],
-        },
-        {
-          title: 'C',
-          editable: true,
-          children: [
-            {
-              title: 'mg',
-              dataIndex: 'mg',
-              key: 'mg',
-              width: 150,
-              editable: true,
-              // sorter: (a, b) => a.age - b.age,
-            },
-            {
-              title: 'Seri3',
-              dataIndex: 'seri3',
-              key: 'seri3',
-              width: 150,
-              editable: true,
-            },
-          ],
-        },
-        {
-          title: 'Actions',
-          dataIndex: 'actions',
-          key: 'actions',
-          width: 80,
-          editable: true,
-          // fixed: 'right',
-        },
-      ];
-      const columns3 = columns?.map(col => {
-        if (!col.editable) {
-          return col;
+        if (col.children) {
+          newCol.children = col.children.map(mapColumns);
         }
-        return {
-          ...col,
-          onCell: record => ({
-            record,
-            editable: col.editable,
-            dataIndex: col.dataIndex,
-            title: col.title,
-            handleSave: handleSave
-          })
-        };
-      });
+        return newCol;
+      };
+      // const columns3 = columns?.map(col => {
+      //   if (!col.editable) {
+      //     return col;
+      //   }
+      //   return {
+      //     ...col,
+      //     onCell: record => ({
+      //       record,
+      //       editable: col.editable,
+      //       dataIndex: col.dataIndex,
+      //       title: col.title,
+      //       handleSave: handleSave
+      //     })
+      //   };
+      // });
+      // const columns2 =task?.columns?.map(mapColumns);
+      const columns2 = task.columns.map(mapColumns);
+
   return (
     <div>
         <div><h3>{task.tableName}</h3></div>
