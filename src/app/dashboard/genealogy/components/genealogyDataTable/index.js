@@ -14,7 +14,6 @@ import navigate from "../../../../../assets/navigate.png";
 import { PRODUCT_FOR } from "../../../../../constants/apiBaseUrl";
 /* istanbul ignore next */
 function GenealogyDataTable(props) {
-	console.log(props);
 	const [batchData, setbatchData] = useState({});
 	const [limsBatchData, setLimsBatchData] = useState([]);
 	const [pbrDetails, setPbrDetails] = useState([]);
@@ -440,6 +439,7 @@ function GenealogyDataTable(props) {
 		);
 	};
 
+
 	return (
 		<Collapse
 			bordered={false}
@@ -843,16 +843,20 @@ function GenealogyDataTable(props) {
 					}
 					key="8"
 				>
-					<div className="elog_data">
+					<div className="batch-list">
 						{props?.elogBookData?.length ? (
 							props?.elogBookData?.map((ele) => {
 								return (
-									<>
-										<p>{ele?.record_name}</p>
-										<p onClick={() => handleNavigateElogbook(ele)}>
-											View Record
-										</p>
-									</>
+									<ul>
+										<li>
+											<p>
+												<span>{ele?.record_name}</span> &nbsp;&nbsp; <a onClick={() => handleNavigateElogbook(ele)}>
+													View Record
+												</a>
+											</p>
+										</li>
+									</ul>
+
 								);
 							})
 						) : (
@@ -861,6 +865,7 @@ function GenealogyDataTable(props) {
 							</>
 						)}
 					</div>
+
 				</Panel>
 			) : (
 				<></>
