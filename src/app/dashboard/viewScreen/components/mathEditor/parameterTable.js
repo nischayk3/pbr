@@ -311,7 +311,7 @@ const ParameterTable = ({
 				Object.assign({}, item, batchArr[i])
 			);
 
-			if (molBatchMerge != undefined || molBatchMerge.length > 0) {
+			if (molBatchMerge.length > 0) {
 				const molObjKey = Object.keys(molBatchMerge[0])
 				const molColumn = molObjKey.filter(uniqueArr);
 				molColumn.map((ele, i) => {
