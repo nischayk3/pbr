@@ -171,7 +171,8 @@ const TargetVariable = () => {
 			if (loadDssRes.Status === 200) {
 				/* istanbul ignore next */
 				dispatch(showNotification("success", loadDssRes.Message));
-				window.open(`${JUPYTER_APP}/user/${login_response?.firstname?.toLowerCase()} ${login_response?.lastname?.toLowerCase()}/lab/workspaces/auto-q/tree/Datascience_Studio`, "_blank")
+				const JUPYTER_APP_URL = `${JUPYTER_APP}/hub/login?next=%2Fjupyterhub/hub%2F&auth_token=${login_response.token}`;
+				window.open(`${JUPYTER_APP_URL}`, "_blank")
 			} else if (loadDssRes.Status === 400) {
 				/* istanbul ignore next */
 				dispatch(showNotification("error", loadDssRes.Message));

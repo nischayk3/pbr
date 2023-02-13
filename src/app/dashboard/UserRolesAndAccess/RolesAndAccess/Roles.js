@@ -794,20 +794,7 @@ const Roles = () => {
 								/>
 							</div>
 							<h4>Plant & Molecule</h4>
-							{/* <div>
-								<Button
-									type='primary'
-									className='custom-primary-btn'
-								>
-									Edit
-								</Button>
-								<Button
-									type='primary'
-									className='custom-secondary-btn'
-								>
-									Add data access
-								</Button>
-							</div> */}
+
 						</div>
 
 						<Table

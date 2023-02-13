@@ -65,7 +65,7 @@ function RadioForm({current,radioData,setRadioData,layout,setLayout}) {
                 <label className='textlabels'>Enter number field</label>
                 <Input type="number" name="fieldLength" value={numFields} onChange={(e) => setnumFields( e.target.value)} />
                 </div>
-                <Button className='textlabels' onClick={handleFields}>Add fields</Button>
+                <Button className='textlabels custom-primary-btn' type="primary"  onClick={handleFields}>Add fields</Button>
                 <div className='radiolabels'>
                 {dynamiclyData.map((i) => 
                 <div className='textfields' key={i.id}>
@@ -74,7 +74,7 @@ function RadioForm({current,radioData,setRadioData,layout,setLayout}) {
                 <Input type="text" name="textlabel" value={i.value} onChange={(e) => handleRadioData(e,i)} />
                 </div> 
                 )}
-              {dynamiclyData.length > 0 ? <Button className='textlabels' onClick={handleSave}>Save</Button> : ''}
+              {dynamiclyData.length > 0 ? <Button className='textlabels custom-primary-btn' onClick={handleSave} type="primary">Save</Button> : ''}
               </div>
             </form> : ""
     }

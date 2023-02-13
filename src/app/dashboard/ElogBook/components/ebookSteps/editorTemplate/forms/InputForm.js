@@ -58,7 +58,7 @@ function InputForm({ layout, current, inputData, setInputData,setLayout }) {
                         <label className='textlabels'>width</label>
                         <Input type="text" name="width" value={inputData.width} onChange={(e) => setInputData({...inputData, width: e.target.value})} />
                     </div>
-                    <Button onClick={handleSave}>Save changes</Button>
+                    <Button className={"custom-primary-btn"} type="primary" onClick={handleSave}>Save changes</Button>
                 </form> : ""
             }
         </div>

@@ -37,7 +37,6 @@ const Login = () => {
 			localStorage.removeItem('login_details');
 			localStorage.removeItem('username');
 			localStorage.removeItem('loginwith');
-
 		}
 		if (JSON.parse(localStorage.getItem("isRemember"))) {
 			setEmail(localStorage.getItem("user"))
@@ -174,12 +173,7 @@ const Login = () => {
 		setForgotPasswordFlag(false);
 		setSuccessfulAccountCreationFlag(false)
 	};
-	// const showModal = () => {
-	// 	setUsername("");
-	// 	setVisible(true);
-	// 	setForgotPasswordFlag(false);
-	// 	setSuccessfulAccountCreationFlag(false)
-	// };
+
 	const forgotPassword = () => {
 		setUsername("");
 		setVisible(true);
@@ -208,9 +202,6 @@ const Login = () => {
 			dispatch(showNotification("error", "Error while registering the user"));
 		}
 	};
-
-
-
 
 	return (
 		<>
@@ -291,7 +282,6 @@ const Login = () => {
 						<div className="card card-white card-changes">
 							<div className="card-content card-container-change">
 								<Form
-									// {...layout}
 									name="basic"
 									initialValues={{
 										remember: true
@@ -340,7 +330,6 @@ const Login = () => {
 											</Button>
 										</Form.Item>
 									) : (<></>)}
-
 								</Form>
 							</div>
 						</div>

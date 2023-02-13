@@ -126,3 +126,12 @@
 .ant-tabs-top>.ant-tabs-nav {
 	margin: 0px;
 }
+
+.ant-tabs-ink-bar {
+    position: absolute;
+    background: #162154;
+    pointer-events: none;
+    color: #162154;
+    border: 1px solid;
+}
+
