@@ -243,8 +243,8 @@ const DataEntryForm = () => {
                                   !drawervisible
                                     ? "records_view"
                                     : i.form_data && i.form_data.length <= 8
-                                    ? "records_view"
-                                    : "records_view_scroll"
+                                      ? "records_view"
+                                      : "records_view_scroll"
                                 }
                               >
                                 {drawervisible &&
@@ -291,8 +291,8 @@ const DataEntryForm = () => {
                           disableScreen
                             ? "data_form_first_collapsed"
                             : drawervisible
-                            ? "data_form_first"
-                            : "data_form_first_collapsed"
+                              ? "data_form_first"
+                              : "data_form_first_collapsed"
                         }
                       >
                         {i.form_data &&
@@ -323,6 +323,7 @@ const DataEntryForm = () => {
                                   batch={idx.record_name ? idx.record_name : ""}
                                   reloadData={reloadData}
                                   disableScreen={disableScreen}
+                                  site={selectedSite}
                                 />
                               )
                           )}
