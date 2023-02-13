@@ -18,7 +18,7 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 	const [selectedResource, setSelectedResource] = useState('');
 	const [data, setData] = useState([]);
 	const [selectedAuth, setSelectedAuth] = useState([]);
-	const [rolePriv, setRolePriv] = useState();
+	const [rolePriv, setRolePriv] = useState('');
 
 
 	const dispatch = useDispatch();
@@ -131,8 +131,15 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 		try {
 			const privilege = await resourceAuth(_resourceAuth)
 			if (privilege.statuscode === 200) {
-				setRolePriv(privilege.message)
+				if (privilege.message.length > 0) {
+					const text = privilege.message.toString()
+					console.log("text", text);
+					setRolePriv(text)
+				} else {
+					setRolePriv('')
+				}
 			} else {
+				setRolePriv('')
 				dispatch(showNotification("error", privilege.message));
 			}
 		} catch (error) {
@@ -183,7 +190,7 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 						options={resList}
 					/>
 				</div>
-				<p className='warning'><InfoCircleOutlined className='warn-icon' />It is recommended to add access to <span className='highlight'>View</span> and <span className='highlight'>Chart</span> resources before adding this one.</p>
+				{rolePriv != '' ? <p className='warning'><InfoCircleOutlined className='warn-icon' />It is recommended to add access to <span className='highlight'>{rolePriv}</span> resources before adding this one.</p> : null}
 				<p className='card-heading'>Authorizations</p>
 				<p className='card-heading-p'>Select the actions you want to authorize chart managers to take.</p>
 				<Table
