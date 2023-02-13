@@ -106,48 +106,48 @@ const Dashboard = () => {
 	};
 
 	useEffect(() => {
-		setAuthorised(true);
-		let view;
-		if (location.pathname.includes("chart_personalization")) {
-			view = "CHART";
-		} else if (location.pathname.includes("view_creation")) {
-			view = "VIEW";
-		} else if (location.pathname.includes("genealogy")) {
-			view = "GENEALOGY";
-		} else if (location.pathname.includes("workflow")) {
-			view = "WORKITEMS";
-		} else if (location.pathname.includes("molecule_hierarchy_configuration")) {
-			view = "CONFIGURATION";
-		} else if (location.pathname.includes("audit_trail_report")) {
-			view = "AUDIT_REPORT";
-		} else if (location.pathname.includes("user_trail_report")) {
-			view = "USER_REPORT";
-		} else if (location.pathname.includes("manual_data_upload")) {
-			view = "FILE_UPLOAD";
-		} else if (location.pathname.includes("report_designer")) {
-			view = "REPORT_DESIGNER";
-		} else if (location.pathname.includes("analysis")) {
-			view = "ANALYTICS";
-		} else if (location.pathname.includes("paper_batch_records")) {
-			view = "PBR";
-		} else if (location.pathname.includes("pbr_reviewer")) {
-			view = "PBR";
-		} else if (location.pathname.includes("signature_module")) {
-			view = "PBR";
-		} else if (location.pathname.includes("user-roles-and-access")) {
-			view = "CONFIGURATION";
-		} else if (location.pathname.includes("dashboard/dashboard")) {
-			view = "DASHBOARD";
-		} else if (location.pathname.includes("report_generator")) {
-			view = "REPORT_GENERATOR";
-		} else if (location.pathname.includes("cross_batch_comparison")) {
-			view = "ANALYTICS";
-		} else if (location.pathname.includes("data_science_studio")) {
-			view = "ANALYTICS";
-		}
-		if (view && view.length > 1) {
-			requiredAuth(view);
-		}
+		// setAuthorised(true);
+		// let view;
+		// if (location.pathname.includes("chart_personalization")) {
+		// 	view = "CHART";
+		// } else if (location.pathname.includes("view_creation")) {
+		// 	view = "VIEW";
+		// } else if (location.pathname.includes("genealogy")) {
+		// 	view = "GENEALOGY";
+		// } else if (location.pathname.includes("workflow")) {
+		// 	view = "WORKITEMS";
+		// } else if (location.pathname.includes("molecule_hierarchy_configuration")) {
+		// 	view = "CONFIGURATION";
+		// } else if (location.pathname.includes("audit_trail_report")) {
+		// 	view = "AUDIT_REPORT";
+		// } else if (location.pathname.includes("user_trail_report")) {
+		// 	view = "USER_REPORT";
+		// } else if (location.pathname.includes("manual_data_upload")) {
+		// 	view = "FILE_UPLOAD";
+		// } else if (location.pathname.includes("report_designer")) {
+		// 	view = "REPORT_DESIGNER";
+		// } else if (location.pathname.includes("analysis")) {
+		// 	view = "ANALYTICS";
+		// } else if (location.pathname.includes("paper_batch_records")) {
+		// 	view = "PBR";
+		// } else if (location.pathname.includes("pbr_reviewer")) {
+		// 	view = "PBR";
+		// } else if (location.pathname.includes("signature_module")) {
+		// 	view = "PBR";
+		// } else if (location.pathname.includes("user-roles-and-access")) {
+		// 	view = "CONFIGURATION";
+		// } else if (location.pathname.includes("dashboard/dashboard")) {
+		// 	view = "DASHBOARD";
+		// } else if (location.pathname.includes("report_generator")) {
+		// 	view = "REPORT_GENERATOR";
+		// } else if (location.pathname.includes("cross_batch_comparison")) {
+		// 	view = "ANALYTICS";
+		// } else if (location.pathname.includes("data_science_studio")) {
+		// 	view = "ANALYTICS";
+		// }
+		// if (view && view.length > 1) {
+		// 	requiredAuth(view);
+		// }
 	}, [location]);
 
 	return (
