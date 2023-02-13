@@ -49,6 +49,8 @@ const Sidebar = () => {
 		}
 	};
 
+	console.log("permissionssss", permissions);
+
 	return (
 		<Sider
 			collapsed={collapsed}
@@ -296,7 +298,6 @@ const Sidebar = () => {
 					permissions['PBR_FILE_UPLOAD'] ||
 					permissions['PBR_TEMPLATE'] ||
 					permissions['PBR_DASHBOARD'] ? (
-
 					<SubMenu
 						key="sub6"
 						mode="inline"
@@ -354,7 +355,7 @@ const Sidebar = () => {
 				) : null}
 
 				{permissions &&
-					permissions['ELOG_BOOK_DATA_ENTRY '] ||
+					permissions['ELOG_BOOK_DATA_ENTRY'] ||
 					permissions['ELOG_BOOK_TEMPLATE_CREATION'] ? (
 					<SubMenu
 						key="sub7"
@@ -362,7 +363,7 @@ const Sidebar = () => {
 						icon={<CheckCircleOutlined className="menu-icons" />}
 						title="ELog-book"
 					>
-						{permissions['ELOG_BOOK_DATA_ENTRY '] && (
+						{permissions['ELOG_BOOK_DATA_ENTRY'] && (
 							<Menu.Item
 								key="elog-boook"
 								icon={<CheckCircleOutlined className="menu-icons" />}
@@ -387,7 +388,7 @@ const Sidebar = () => {
 				) : null}
 
 				{permissions &&
-					permissions['DATA_ACCESS '] && (
+					permissions['DATA_ACCESS'] && (
 						<Menu.Item
 							key="data-access-service"
 							icon={<TeamOutlined className="menu-icons" />}
@@ -399,7 +400,7 @@ const Sidebar = () => {
 					)}
 
 				{permissions &&
-					permissions['TABLEAU_DASHBOARD '] && (
+					permissions['TABLEAU_DASHBOARD'] && (
 						<Menu.Item
 							key="tableau-dashboard"
 							icon={<TeamOutlined className="menu-icons" />}
