@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './Limitconfig.scss'
 import SelectField from "../../../../components/SelectField/SelectField";
-import { Col, Row, Table, Input, DatePicker, Button, Popconfirm } from 'antd';
+import { Col, Row, Table, Input, DatePicker, Button, Popconfirm, Tooltip } from 'antd';
 import { DeleteOutlined, CalendarOutlined, PlusOutlined } from '@ant-design/icons'
 import moment from 'moment';
 import { useDispatch } from "react-redux";
@@ -17,6 +17,10 @@ const LimitInputs = ({ setLimitsData, limitsData, openRow, selectedRowKey, param
 		'control',
 		'specification',
 		'warning'
+	]
+	let classList = [
+	     'CPP',
+		 'CQA'
 	]
 	let columns = [
 		{
@@ -55,6 +59,31 @@ const LimitInputs = ({ setLimitsData, limitsData, openRow, selectedRowKey, param
 								name="parameters"
 								value={data.parameters}
 								onChange={(e) => handleChange(index, e, "", "limits")}
+							/>
+						);
+					}
+				}),
+		},
+		{
+			title:(
+				<Tooltip title={<span>Crirical Quality Attribute</span>}>
+				  <span>Crirical Quali...</span>
+				</Tooltip>
+			  ),
+			dataIndex: 'parameter_class',
+			key: 'parameter_class',
+			render: (text, record) =>
+				limitsData.map((data, index) => {
+					if (record.key === data.key) {
+						if (selectedRowKey !== openRow) {
+							return <p style={{ margin: "0" }}>{data.parameter_class}</p>;
+						}
+						return (
+							<SelectField
+								name="parameter_class"
+								selectList={classList}
+								selectedValue={data.parameter_class}
+								onChangeSelect={(e) => handleChange(index, e, "", "parameter_class")}
 							/>
 						);
 					}
@@ -139,14 +168,10 @@ const LimitInputs = ({ setLimitsData, limitsData, openRow, selectedRowKey, param
 							if (!data.validity_date) {
 								return "";
 							} else {
-								const d = new Date(data.validity_date);
-								const year = d.getFullYear();
-								const month = d.getMonth();
-								const day = d.getDate();
 								return (
 									<span>
 										<CalendarOutlined style={{ color: '#6C63FF', display: "inline-block", marginRight: '10px' }} />
-										<p style={{ margin: "0", display: "inline-block" }}>{`${year}-${month + 1}-${day}`}</p>
+										<p style={{ margin: "0", display: "inline-block" }}>{moment(data.validity_date).format('YYYY-MM-DD')}</p>
 									</span>
 								);
 							}
@@ -167,6 +192,48 @@ const LimitInputs = ({ setLimitsData, limitsData, openRow, selectedRowKey, param
 					}
 				}),
 		},
+		{
+			title: 'Document Name',
+			dataIndex: 'document_name',
+			key: 'document_name',
+			render: (text, record) =>
+				limitsData.map((data, index) => {
+					if (record.key === data.key) {
+						if (selectedRowKey !== openRow) {
+							return <p style={{ margin: "0" }}>{data.document_name}</p>;
+						}
+						return (
+							<Input
+								name="document_name"
+								type='text'
+								value={data.document_name}
+								onChange={(e) => handleChange(index, e, "", "limits")}
+							/>
+						);
+					}
+				}),
+		},
+		{
+			title: 'Document URL',
+			dataIndex: 'document_url',
+			key: 'document_url',
+			render: (text, record) =>
+				limitsData.map((data, index) => {
+					if (record.key === data.key) {
+						if (selectedRowKey !== openRow) {
+							return <p style={{ margin: "0" }}>{data.document_url}</p>;
+						}
+						return (
+							<Input
+								name="document_url"
+								type='text'
+								value={data.document_url}
+								onChange={(e) => handleChange(index, e, "", "limits")}
+							/>
+						);
+					}
+				}),
+		}
 	];
 	const text = "Are you sure to delete this?";
 	const handleChange = (index, event, dateString, type) => {
@@ -181,6 +248,8 @@ const LimitInputs = ({ setLimitsData, limitsData, openRow, selectedRowKey, param
 			rowsInput[index][name] = value;
 		} else if (type === 'limitType') {
 			rowsInput[index]['limit_type'] = event;
+		} else if (type === 'parameter_class') {
+			rowsInput[index]['parameter_class'] = event;
 		}
 		setLimitsData(rowsInput);
 	};
