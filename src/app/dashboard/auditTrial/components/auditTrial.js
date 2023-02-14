@@ -145,7 +145,7 @@ class AuditTrials extends React.Component {
 					key: "6",
 					width: 200,
 					sorter: (a, b) => new Date(b.entry_date) - new Date(a.entry_date),
-					render: (text) => text
+					render: (text) => moment(text).format("DD-MM-YYYY HH:mm:ss")
 				},
 				{
 					title: "Table Name",
