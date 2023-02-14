@@ -128,7 +128,8 @@ function PbrReviewer() {
 		}
 		setTableLoading(true)
 		let res = await getPbrReviewerData(obj)
-		setTemplateData(res.Data);
+		let arr = res.Data.map((item, index) => ({ ...item, key: index }))
+		setTemplateData(arr);
 		setTableLoading(false)
 		setReviewerReq(obj)
 		dispatch(hideLoader());
@@ -142,7 +143,8 @@ function PbrReviewer() {
 		}
 		setTableLoading(true)
 		let res = await getPbrReviewerData(obj)
-		setTemplateData(res.Data);
+		let arr = res.Data.map((item, index) => ({ ...item, key: index }))
+		setTemplateData(arr);
 		setTableLoading(false)
 		setReviewerReq(obj)
 		dispatch(hideLoader());
@@ -648,7 +650,8 @@ function PbrReviewer() {
 		let obj = { ...reviewerReq, confidence: null }
 		setTableLoading(true)
 		let res = await getPbrReviewerData(obj)
-		setTemplateData(res.Data);
+		let arr = res.Data.map((item, index) => ({ ...item, key: index }))
+		setTemplateData(arr);
 		setTableLoading(false)
 		setReviewerReq(obj)
 		setShowResetConfidence(false)
@@ -661,7 +664,8 @@ function PbrReviewer() {
 		let obj = { ...reviewerReq, status: null }
 		setTableLoading(true)
 		let res = await getPbrReviewerData(obj)
-		setTemplateData(res.Data);
+		let arr = res.Data.map((item, index) => ({ ...item, key: index }))
+		setTemplateData(arr);
 		setTableLoading(false)
 		setReviewerReq(obj)
 		setShowReset(false)
@@ -712,6 +716,7 @@ function PbrReviewer() {
 		selectedRowKeys,
 		onChange: (selectedRowKeys, selectedRows) => {
 			setSelectedRowKeys(selectedRowKeys);
+			console.log("selectedRowKeys",selectedRowKeys)
 			let arr = selectedRows.map(item => item.id)
 			setArr(arr)
 		},

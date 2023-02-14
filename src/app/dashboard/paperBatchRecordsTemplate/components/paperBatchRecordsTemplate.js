@@ -738,7 +738,7 @@ const PaperBatchRecordsTemplate = () => {
 	useEffect(() => {
 
 		getImage()
-		getTimeZone()
+		
 		// let loadData =  getIdTemplateData()
 		const params = QueryString.parse(location?.search)
 		const getIdTemplateData = async () => {
@@ -756,6 +756,7 @@ const PaperBatchRecordsTemplate = () => {
 					batch: loadData[0].batch_num,
 					site: loadData[0].site_code
 				}
+				getTimeZone(loadMatBatch)
 				let additional = {
 					pbrDisplayId: loadData[0]?.pbr_template_disp_id,
 					pbrTempId: loadData[0]?.pbr_temp_int_id,
@@ -774,6 +775,8 @@ const PaperBatchRecordsTemplate = () => {
 				// 	}
 				// 	setPageIdentifierData(obj1)
 				// }
+			}else{
+				getTimeZone()
 			}
 
 			if (params?.temp_disp_id || localStorage.getItem("test_enabled") == !null) {
@@ -981,13 +984,13 @@ const PaperBatchRecordsTemplate = () => {
 		}
 	}, [imageWidth, imageHeight]);
 
-	const getTimeZone = async () => {
+	const getTimeZone = async (val) => {
 		try {
 			let req = {
 				filename: params?.file,
-				batchNum: matBatch?.batch,
-				siteCode: matBatch?.site,
-				productNum: matBatch?.material_num
+				batchNum: val.batch? val.batch: matBatch?.batch,
+				siteCode: val.site? val.site:matBatch?.site,
+				productNum: val.material_num? val.material_num:matBatch?.material_num
 			}
 			let res = await timeZone(req)
 			if (res["status-code"] === 200) {
@@ -2032,9 +2035,9 @@ const PaperBatchRecordsTemplate = () => {
 											setApproveReject("A");
 										}}
 									>Approve</Button>
-									<Button style={{ marginRight: 10 }} className='custom-secondary-btn'
+									{/* <Button style={{ marginRight: 10 }} className='custom-secondary-btn'
 										onClick={() => { setWorkflowPreviewModal(true) }}
-									>Preview</Button>
+									>Preview</Button> */}
 								</div>
 							)
 						}
@@ -2933,7 +2936,7 @@ const PaperBatchRecordsTemplate = () => {
                                         <EditOutlined />
                                         Draw Snippet
                                     </div> */}
-									{params?.fromScreen == "Workflow" ?
+									{/* {params?.fromScreen == "Workflow" ?
 										<div className='btns' style={{ marginLeft: 40 }}>
 											<Button
 												className='custom-primary-btn'
@@ -2947,7 +2950,7 @@ const PaperBatchRecordsTemplate = () => {
 													handleWorkFlowApprove()
 												}}
 											>Approve Page</Button>
-										</div> : ""}
+										</div> : ""} */}
 									{params?.fromScreen == "Workflow" ? "" :
 										<div>
 											<div className='cropSnippet'>
