@@ -118,7 +118,7 @@ function ImportUser(prop) {
 										style={{ marginBottom: 16, width: 187 }}
 										id="editable-table-button-add-new-user"
 									>
-										Upload filled CSV
+										Upload spreadsheet
 									</Button>
 								</Upload>
 
@@ -160,7 +160,7 @@ function ImportUser(prop) {
 										style={{ marginBottom: 16, width: 187 }}
 										id="editable-table-button-add-new-user"
 									>
-										Upload filled CSV
+										Upload spreadsheet
 									</Button>
 								</Upload>
 							</div>

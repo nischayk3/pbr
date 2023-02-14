@@ -312,7 +312,7 @@ const ParameterTable = ({
 			);
 
 			if (molBatchMerge.length > 0) {
-				const molObjKey = molBatchMerge != undefined ? Object.keys(molBatchMerge[0]) : []
+				const molObjKey = Object.keys(molBatchMerge[0])
 				const molColumn = molObjKey.filter(uniqueArr);
 				molColumn.map((ele, i) => {
 					if (ele === 'batch') {
