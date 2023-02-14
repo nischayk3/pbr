@@ -38,7 +38,6 @@ export default function ContentRenderComponent(props) {
     </div>
   );
   const getResult = async () => {
-    console.log(request)
     let result = await props.getData(request);
     if (result.Status > 200) {
       setStatusCode(result.Status);
@@ -82,7 +81,6 @@ export default function ContentRenderComponent(props) {
     });
   };
 
-  console.log(request)
 
   return (
     <div>
