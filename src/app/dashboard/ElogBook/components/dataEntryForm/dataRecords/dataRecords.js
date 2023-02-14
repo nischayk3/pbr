@@ -387,7 +387,7 @@ class DataFormFirst extends Component {
         process && process[0] && process[0].value ? process[0].value : "",
       readings: getTableData,
       product_num: productNum && productNum[0] && productNum[0].value ? productNum[0].value : "",
-      site: this.props.selectedSite,
+      site: this.props.site,
       molecule: this.props.selectedMolecule,
       template_id: this.props.template_disp_id,
       version: this.props.form_version,
