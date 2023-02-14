@@ -152,7 +152,7 @@ const LimitTable = () => {
 		try {
 			dispatch(showLoader());
 			const apiResponse = await saveLimitConfigApi(data);
-      getLimitConfig();
+      getLimitConfigApi();
       setOpenRow('')
 			dispatch(hideLoader());
 		} catch (error) {
