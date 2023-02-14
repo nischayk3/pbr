@@ -863,11 +863,11 @@ const PaperBatchRecordsTemplate = () => {
 					sideData["keyCount"] = item.keys.length
 					pageID.users.push(sideData)
 				})
-				setPageIdFormValues(pageID.users)
+				setPageIdFormValues(pageID?.users)
 				setInitialSideTableData(table)
 				setInitialPageIdentifierData(pageID)
 				setFormLoadParameter(demoValues)
-				setParameterFormData(demoValues.users)
+				setParameterFormData(demoValues?.users)
 				setFormTableData(loadData[0]?.pbr_template_info?.tableData)
 			}
 		}
@@ -988,13 +988,13 @@ const PaperBatchRecordsTemplate = () => {
 		try {
 			let req = {
 				filename: params?.file,
-				batchNum: val.batch? val.batch: matBatch?.batch,
-				siteCode: val.site? val.site:matBatch?.site,
-				productNum: val.material_num? val.material_num:matBatch?.material_num
+				batchNum: val?.batch? val.batch: matBatch?.batch,
+				siteCode: val?.site? val.site:matBatch?.site,
+				productNum: val?.material_num? val.material_num:matBatch?.material_num
 			}
 			let res = await timeZone(req)
 			if (res["status-code"] === 200) {
-				setFileTimezoneData(res.Data)
+				setFileTimezoneData(res?.Data)
 			} else {
 				dispatch(showNotification('error', res.Message))
 			}
