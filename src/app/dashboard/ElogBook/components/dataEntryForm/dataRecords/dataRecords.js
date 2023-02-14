@@ -377,12 +377,17 @@ class DataFormFirst extends Component {
       return el.id == "location";
     });
 
+    var productNum = formDetails.filter(function (el) {
+      return el.id == "material";
+    });
     let save_req = {
       archive: boolean_value,
       batch: batch && batch[0] && batch[0].value ? batch[0].value : "",
       process_step:
         process && process[0] && process[0].value ? process[0].value : "",
       readings: getTableData,
+      product_num: productNum && productNum[0] && productNum[0].value ? productNum[0].value : "",
+      site: this.props.selectedSite,
       molecule: this.props.selectedMolecule,
       template_id: this.props.template_disp_id,
       version: this.props.form_version,

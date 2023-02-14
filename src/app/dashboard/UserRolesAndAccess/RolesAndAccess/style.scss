@@ -402,3 +402,26 @@
 		width: 100px;
 	}
 }
+
+.warning {
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 300;
+	font-size: 14px;
+	line-height: 22px;
+	/* identical to box height, or 157% */
+	/* Gray / gray-9 */
+	color: #262626;
+
+	.highlight {
+		color: #486bc9;
+		font-weight: 600;
+		font-style: oblique;
+	}
+
+	.warn-icon {
+		color: #FAAD14;
+		font-size: 20px;
+		margin: 0 5px;
+	}
+}

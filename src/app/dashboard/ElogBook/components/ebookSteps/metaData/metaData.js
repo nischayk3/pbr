@@ -219,7 +219,7 @@ function metaData({ sendDataToParentTab, tempName }) {
 				title: "Allow user to edit",
 				dataIndex: "Allowedit",
 				key: "Allowedit",
-				width: '12%',
+				width: '14%',
 				editable: true,
 				render: (text, record) => {
 					return <input className="input_content" type="checkbox" checked={record.Allowedit}

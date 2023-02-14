@@ -1,6 +1,7 @@
 import { DeleteOutlined } from "@ant-design/icons";
 import { Table } from "antd";
 import queryString from "query-string";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import {
 	hideLoader, showLoader, showNotification
@@ -16,6 +17,7 @@ const ExclusionTable = ({
 }) => {
 	const dispatch = useDispatch();
 	const params = queryString.parse(location.search);
+	const [exclusionData, setExclusionData] = useState(exclusionTable);
 
 	let columns = [];
 	const objkeys =
@@ -40,10 +42,14 @@ const ExclusionTable = ({
 		newArr[0].exclusions = newArr[0].exclusions.filter(
 			(ele) => Number(ele.exclusion_id) !== Number(id)
 		);
-		const exclusionData = exclusionTable.filter(
+		const tempExclusionData = exclusionTable.filter(
 			(ele) => Number(ele.exclusion_id) !== Number(id)
 		);
-		setExclusionTable(exclusionData);
+		setExclusionData(tempExclusionData);
+		setExclusionTable(tempExclusionData);
+		if(!tempExclusionData?.length) {
+			newArr[0].layout.annotations =  newArr[0]?.layout?.annotations.filter((annot) => annot?.id !== 2)
+		}
 		exclusionIdCounter.current = exclusionIdCounter.current - 1;
 		setPostChartData({ ...postChartData, data: newArr });
 		let errorMsg = "";
@@ -62,6 +68,41 @@ const ExclusionTable = ({
 			}
 		}
 	};
+
+	useEffect(() => {
+		if(postChartData?.data) {
+			const newArr = [...postChartData.data];
+			const annotations = {
+				text: "This chart has batch numbers which are excluded.",
+				font: {
+				  size: 13,
+				  color: "rgb(116, 101, 130)",
+				},
+				showarrow: false,
+				align: "left",
+				x: 0,
+				y: 1.26,
+				xref: "paper",
+				yref: "paper",
+				id:2
+			  }
+			newArr.forEach((ele) => {
+				if(exclusionData?.length) {
+					if(ele?.layout?.annotations?.length) {
+						if(ele?.layout?.annotations?.some((annot) => annot?.id !== 2)) {
+							ele.layout.annotations.push(annotations);
+						}
+					} else {
+						ele.layout.annotations = [annotations]
+					}
+				} else {
+					ele.layout.annotations =  ele.layout.annotations.filter((annot) => annot?.id !== 2)
+				}
+			});
+			setPostChartData({ ...postChartData, data: newArr });
+		}
+	}, [exclusionData])
+
 
 	const deleteColumn = {
 		title: "",

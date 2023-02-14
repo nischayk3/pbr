@@ -161,28 +161,39 @@ function editorTemplate() {
 									] : tableData.tableType === "Nested table" ? [
 
 										{
-											"column1": "Mean1",
-											"key": uuidv4(),
-											"column2": "Row1",
-											"column3": "Row1",
-											"tableId": 25
+										  "subcolumn1": "Row1",
+										  "key": uuidv4(),
+										  "subcolumn11": "Row1",
+										  "subcolumn12": "Row1",
+										  "subcolumn21": "Row1",
+										  "subcolumn22": "Row1",
+										  "subcolumn31": "Row1",
+										  "subcolumn32": "Row1",
+										  "tableId": 25
 										},
 										{
-											"column1": "Mean2",
-											"key": uuidv4(),
-											"column2": "Row2",
-											"column3": "Row2",
-											"tableId": 25
+										  "subcolumn1": "Row2",
+										  "key": uuidv4(),
+										  "subcolumn11": "Row2",
+										  "subcolumn12": "Row2",
+										  "subcolumn21": "Row2",
+										  "subcolumn22": "Row2",
+										  "subcolumn31": "Row2",
+										  "subcolumn32": "Row2",
+										  "tableId": 25
 										},
 										{
-											"column1": "Mean3",
-											"key": uuidv4(),
-											"column2": "Row3",
-											"column3": "Row3",
-											"tableId": 25
-										}
-
-									] : "",
+										  "subcolumn1": "Row3",
+										  "key": uuidv4(),
+										  "subcolumn11": "Row3",
+										  "subcolumn12": "Row3",
+										  "subcolumn21": "Row3",
+										  "subcolumn22": "Row3",
+										  "subcolumn31": "Row3",
+										  "subcolumn32": "Row3",
+										  "tableId": 25
+										},
+									  ] : "",
 									columns: tableData.tableType === "Normal table" ? [
 
 										{
@@ -219,126 +230,126 @@ function editorTemplate() {
 									] : tableData.tableType == "Nested table" ? [
 
 										{
-											"align": "",
-											"dataIndex": "column1",
-											"editable": true,
-											"key": uuidv4(),
-											"label": "",
-											"name": "",
-											"title": "column1",
-											"type": "",
-											"children": [
-												{
-													"align": "",
-													"dataIndex": "subcolumn1",
-													"editable": true,
-													"key": "168255f7-fa56-4dcf-88da-293441125be4",
-													"label": "",
-													"name": "",
-													"title": "subcolumn1",
-													"type": ""
-												}
-											]
+										  "align": "",
+										  "dataIndex": "column1",
+										  "editable": true,
+										  "key": uuidv4(),
+										  "label": "",
+										  "name": "",
+										  "title": "column1",
+										  "type": "",
+										  "children": [
+											{
+											  "align": "",
+											  "dataIndex": "subcolumn1",
+											  "editable": true,
+											  "key": "168255f7-fa56-4dcf-88da-293441125be4",
+											  "label": "",
+											  "name": "",
+											  "title": "subcolumn1",
+											  "type": ""
+											}
+										  ]
 										},
 										{
-											"align": "",
-											"dataIndex": "column2",
-											"editable": true,
-											"key": uuidv4(),
-											"label": "",
-											"name": "",
-											"title": "column2",
-											"type": "",
-											"children": [
-												{
-													"align": "",
-													"dataIndex": "subcolumn1",
-													"editable": true,
-													"key": "11e92ebe-5d1e-43cb-8ebb-2bffdf4a4dc7",
-													"label": "",
-													"name": "",
-													"title": "subcolumn1",
-													"type": ""
-												},
-												{
-													"align": "",
-													"dataIndex": "subcolumn2",
-													"editable": true,
-													"key": "0f58d30a-22eb-4438-8311-d76af4ef161e",
-													"label": "",
-													"name": "",
-													"title": "subcolumn2",
-													"type": ""
-												}
-											]
+										  "align": "",
+										  "dataIndex": "column2",
+										  "editable": true,
+										  "key": uuidv4(),
+										  "label": "",
+										  "name": "",
+										  "title": "column2",
+										  "type": "",
+										  "children": [
+											{
+											  "align": "",
+											  "dataIndex": "subcolumn11",
+											  "editable": true,
+											  "key": "11e92ebe-5d1e-43cb-8ebb-2bffdf4a4dc7",
+											  "label": "",
+											  "name": "",
+											  "title": "subcolumn11",
+											  "type": ""
+											},
+											{
+											  "align": "",
+											  "dataIndex": "subcolumn12",
+											  "editable": true,
+											  "key": "0f58d30a-22eb-4438-8311-d76af4ef161e",
+											  "label": "",
+											  "name": "",
+											  "title": "subcolumn12",
+											  "type": ""
+											}
+										  ]
 										},
 										{
-											"align": "",
-											"dataIndex": "column3",
-											"editable": true,
-											"key": uuidv4(),
-											"label": "",
-											"name": "",
-											"title": "column3",
-											"type": "",
-											"children": [
-												{
-													"align": "",
-													"dataIndex": "subcolumn1",
-													"editable": true,
-													"key": "2bc42260-b687-4d65-ac47-f59a2f4a1acc",
-													"label": "",
-													"name": "",
-													"title": "subcolumn1",
-													"type": ""
-												},
-												{
-													"align": "",
-													"dataIndex": "subcolumn2",
-													"editable": true,
-													"key": "08c70fc1-f95f-4efc-9c0e-c261dd6d3a98",
-													"label": "",
-													"name": "",
-													"title": "subcolumn2",
-													"type": ""
-												}
-											]
+										  "align": "",
+										  "dataIndex": "column3",
+										  "editable": true,
+										  "key": uuidv4(),
+										  "label": "",
+										  "name": "",
+										  "title": "column3",
+										  "type": "",
+										  "children": [
+											{
+											  "align": "",
+											  "dataIndex": "subcolumn21",
+											  "editable": true,
+											  "key": "2bc42260-b687-4d65-ac47-f59a2f4a1acc",
+											  "label": "",
+											  "name": "",
+											  "title": "subcolumn21",
+											  "type": ""
+											},
+											{
+											  "align": "",
+											  "dataIndex": "subcolumn22",
+											  "editable": true,
+											  "key": "08c70fc1-f95f-4efc-9c0e-c261dd6d3a98",
+											  "label": "",
+											  "name": "",
+											  "title": "subcolumn22",
+											  "type": ""
+											}
+										  ]
 										},
 										{
-											"align": "",
-											"dataIndex": "column4",
-											"editable": true,
-											"key": uuidv4(),
-											"label": "",
-											"name": "",
-											"title": "column4",
-											"type": "",
-											"children": [
-												{
-													"align": "",
-													"dataIndex": "subcolumn1",
-													"editable": true,
-													"key": uuidv4(),
-													"label": "",
-													"name": "",
-													"title": "subcolumn1",
-													"type": ""
-												},
-												{
-													"align": "",
-													"dataIndex": "subcolumn2",
-													"editable": true,
-													"key": uuidv4(),
-													"label": "",
-													"name": "",
-													"title": "subcolumn2",
-													"type": ""
-												}
-											]
+										  "align": "",
+										  "dataIndex": "column4",
+										  "editable": true,
+										  "key": uuidv4(),
+										  "label": "",
+										  "name": "",
+										  "title": "column4",
+										  "type": "",
+										  "children": [
+											{
+											  "align": "",
+											  "dataIndex": "subcolumn31",
+											  "editable": true,
+											  "key": uuidv4(),
+											  "label": "",
+											  "name": "",
+											  "title": "subcolumn31",
+											  "type": ""
+											},
+											{
+											  "align": "",
+											  "dataIndex": "subcolumn32",
+											  "editable": true,
+											  "key": uuidv4(),
+											  "label": "",
+											  "name": "",
+											  "title": "subcolumn32",
+											  "type": ""
+											}
+										  ]
 										}
-
-
-									] : ""
+								  
+								  
+									  ]  : ""
 								} : newComponent.type === "Multiple choice" ?
 									{
 										id: newComponent.id,
@@ -590,6 +601,17 @@ function editorTemplate() {
 					</div>
 				</div>
 				<div className="button-layout">
+				{/* <div style={{ textAlign: 'end', padding: '10px' }}> */}
+				<span className="data-button">
+						<Button
+						className={"custom-primary-btn"}
+						type="primary"
+						onClick={
+						onClickPreview
+					}>Preview</Button>
+						<PreviewModel previewData={previewData} layout={layout} />
+						</span>
+					{/* </div> */}
 					<span className="data-button">
 						<Button
 							className="custom-secondary-btn "
@@ -634,11 +656,15 @@ function editorTemplate() {
 							))}
 						</div>
 					</div>
-					<div style={{ textAlign: 'end', padding: '10px' }}><Button onClick={
+					{/* <div style={{ textAlign: 'end', padding: '10px' }}>
+						<Button
+						className={"custom-primary-btn"}
+						type="primary"
+						onClick={
 						onClickPreview
 					}>Preview</Button>
 						<PreviewModel previewData={previewData} layout={layout} />
-					</div>
+					</div> */}
 					<div className="pageContainer">
 						<div className="page">
 							{layout.map((row, index) => {

@@ -49,7 +49,7 @@ function LineForm({ current, lineData, setLineData, layout, setLayout}) {
                 <label className='textlabels'>width</label>
                 <Input type="number" name="width" value={lineData.width} onChange={(e) => setLineData({...lineData, width: e.target.value})} />
             </div>
-            <Button onClick={handleSave}>Save changes</Button>
+            <Button onClick={handleSave} className={"custom-primary-btn"} type="primary">Save changes</Button>
         </form> 
         {/* : "" */}
     {/* } */}

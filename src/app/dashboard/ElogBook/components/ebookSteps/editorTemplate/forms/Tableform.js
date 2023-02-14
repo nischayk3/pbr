@@ -190,22 +190,22 @@ setColumns(tempColumns)
         "children": [
           {
             "align": "",
-            "dataIndex": "subcolumn1",
+            "dataIndex": "subcolumn11",
             "editable": true,
             "key": "11e92ebe-5d1e-43cb-8ebb-2bffdf4a4dc7",
             "label": "",
             "name": "",
-            "title": "subcolumn1",
+            "title": "subcolumn11",
             "type": ""
           },
           {
             "align": "",
-            "dataIndex": "subcolumn2",
+            "dataIndex": "subcolumn12",
             "editable": true,
             "key": "0f58d30a-22eb-4438-8311-d76af4ef161e",
             "label": "",
             "name": "",
-            "title": "subcolumn2",
+            "title": "subcolumn12",
             "type": ""
           }
         ]
@@ -222,22 +222,22 @@ setColumns(tempColumns)
         "children": [
           {
             "align": "",
-            "dataIndex": "subcolumn1",
+            "dataIndex": "subcolumn21",
             "editable": true,
             "key": "2bc42260-b687-4d65-ac47-f59a2f4a1acc",
             "label": "",
             "name": "",
-            "title": "subcolumn1",
+            "title": "subcolumn21",
             "type": ""
           },
           {
             "align": "",
-            "dataIndex": "subcolumn2",
+            "dataIndex": "subcolumn22",
             "editable": true,
             "key": "08c70fc1-f95f-4efc-9c0e-c261dd6d3a98",
             "label": "",
             "name": "",
-            "title": "subcolumn2",
+            "title": "subcolumn22",
             "type": ""
           }
         ]
@@ -254,22 +254,22 @@ setColumns(tempColumns)
         "children": [
           {
             "align": "",
-            "dataIndex": "subcolumn1",
+            "dataIndex": "subcolumn31",
             "editable": true,
             "key": uuidv4(),
             "label": "",
             "name": "",
-            "title": "subcolumn1",
+            "title": "subcolumn31",
             "type": ""
           },
           {
             "align": "",
-            "dataIndex": "subcolumn2",
+            "dataIndex": "subcolumn32",
             "editable": true,
             "key": uuidv4(),
             "label": "",
             "name": "",
-            "title": "subcolumn2",
+            "title": "subcolumn32",
             "type": ""
           }
         ]
@@ -277,6 +277,69 @@ setColumns(tempColumns)
 
 
     ] 
+
+    const tempdatasource = [
+
+      {
+        "column1": "Mean1",
+        "key": uuidv4(),
+        "column2": "Row1",
+        "column3": "Row1",
+        "tableId": 25
+      },
+      {
+        "column1": "Mean2",
+        "key": uuidv4(),
+        "column2": "Row2",
+        "column3": "Row2",
+        "tableId": 25
+      },
+      {
+        "column1": "Mean3",
+        "key": uuidv4(),
+        "column2": "Row3",
+        "column3": "Row3",
+        "tableId": 25
+      }
+
+    ]
+    const tempdamultidasource = [
+
+      {
+        "subcolumn1": "Row1",
+        "key": uuidv4(),
+        "subcolumn11": "Row1",
+        "subcolumn12": "Row1",
+        "subcolumn21": "Row1",
+        "subcolumn22": "Row1",
+        "subcolumn31": "Row1",
+        "subcolumn32": "Row1",
+        "tableId": 25
+      },
+      {
+        "subcolumn1": "Row2",
+        "key": uuidv4(),
+        "subcolumn11": "Row2",
+        "subcolumn12": "Row2",
+        "subcolumn21": "Row2",
+        "subcolumn22": "Row2",
+        "subcolumn31": "Row2",
+        "subcolumn32": "Row2",
+        "tableId": 25
+      },
+      {
+        "subcolumn1": "Row3",
+        "key": uuidv4(),
+        "subcolumn11": "Row3",
+        "subcolumn12": "Row3",
+        "subcolumn21": "Row3",
+        "subcolumn22": "Row3",
+        "subcolumn31": "Row3",
+        "subcolumn32": "Row3",
+        "tableId": 25
+      },
+    ]
+
     setColumns(tableData.tableType === "Nested table" ? tempMultiColumns: tempMultiColumns)
     const templayout = JSON.parse(JSON.stringify(layout));
     templayout.forEach(row => {
@@ -286,6 +349,7 @@ setColumns(tempColumns)
                     
                      component.tableType= e;
                      component.columns= e === "Normal table" ? tempColumns : tempMultiColumns;
+                     component.datasource = e === "Normal table" ? tempdatasource: tempdamultidasource;
              }
          })
      } )
@@ -380,7 +444,7 @@ setColumns(tempColumns)
           <Input name="rows" type="number" value={formData.rows } onChange={(e) => setFormData({ ...formData, rows: e.target.value })} />
         </div>
         <div className='textfields'>
-          <button type="submit">Create Table</button>
+          <Button className={"custom-primary-btn"} type="primary" type="submit">Create Table</Button>
         </div>
       <div className='textfields'>
           <label className='textlabels'>Enter Column title</label>
@@ -455,7 +519,7 @@ setColumns(tempColumns)
     </Collapse>
         </div>    
         <div className='tablebuttons'>
-        <Button onClick={handleColSave}>Save  </Button>
+        <Button className={"custom-primary-btn"} type="primary" onClick={handleColSave}>Save  </Button>
        </div> 
        </form>  
         </div> }
