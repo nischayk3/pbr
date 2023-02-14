@@ -49,7 +49,7 @@ const Sidebar = () => {
 		}
 	};
 
-	console.log("permissionssss", permissions);
+
 
 	return (
 		<Sider

@@ -44,8 +44,8 @@ const App = () => {
 						<Route path={`${match.url}user`} key="user">
 							<Account />
 						</Route>
-
 						<Route exact path="/" key="login">
+							{/* <Redirect to={'/auth/saml-login?redirect_url=' + MDH_APP_PYTHON_SERVICE + '/%23/dashboard/redirect&from_=UI'} /> */}
 							<Redirect to={"/user/login"} />
 						</Route>
 					</Switch>
