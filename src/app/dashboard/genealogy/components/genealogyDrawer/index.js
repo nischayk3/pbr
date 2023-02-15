@@ -5,7 +5,6 @@
  * @Last Modified - 15 March, 2022
  * @Last Changed By - Dinesh Kumar
  */
-import { DownloadOutlined } from "@ant-design/icons";
 import { Drawer } from "antd";
 import React, { useEffect, useState } from "react";
 import batchIcon from "../../../../../assets/images/material.png";
@@ -44,9 +43,9 @@ function GenealogyDrawer(props) {
 						<p>
 							{props.nodeTitle} - {props.type}
 						</p>
-						<span >
-							{PRODUCT_FOR === 'MI' || PRODUCT_FOR === 'BMS' && (<DownloadOutlined />)}
-						</span>
+						{/* <span >
+							<DownloadOutlined />
+						</span> */}
 					</div>
 					<span
 						className="expand-drawer"

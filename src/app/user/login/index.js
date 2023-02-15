@@ -9,7 +9,7 @@ import Banner from "../../../assets/images/dashboard_login_1.png";
 import microsoft from "../../../assets/images/icons8-microsoft-48.png";
 import ldapIcon from "../../../assets/images/ldap-icon.png";
 import { adenabled } from "../../../config/config";
-import { BMS_APP_LOGIN_PASS, LDAP_LOGIN, MDH_APP_PYTHON_SERVICE, SSO_LOGIN, WITHOUT_AD_LOGIN, WITH_AD_LOGIN } from "../../../constants/apiBaseUrl";
+import { BMS_APP_LOGIN_PASS, LDAP_LOGIN, MDH_APP_PYTHON_SERVICE, PRODUCT_FOR, SSO_LOGIN, WITHOUT_AD_LOGIN, WITH_AD_LOGIN } from "../../../constants/apiBaseUrl";
 import {
 	hideLoader,
 	showLoader,
@@ -46,6 +46,13 @@ const Login = () => {
 			setIsChecked(false)
 		}
 	}, []);
+
+	useEffect(() => {
+		if (PRODUCT_FOR === 'BMS') {
+			window.open(`${window.location.origin}${BMS_APP_LOGIN_PASS}/saml-login?redirect_url=${MDH_APP_PYTHON_SERVICE}/%23/dashboard/redirect&from_=UI`, '_self');
+			localStorage.setItem("loginwith", 'WITH_SAML')
+		}
+	}, [])
 
 	const consumerSamlLogin = async () => {
 		if (localStorage.getItem("login_details")) {

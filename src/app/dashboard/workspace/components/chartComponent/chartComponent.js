@@ -1,5 +1,4 @@
 import { Alert } from 'antd';
-import 'antd/dist/antd.css';
 import React, { useEffect, useState } from 'react';
 import Plot from 'react-plotly.js';
 import { useDispatch } from 'react-redux';

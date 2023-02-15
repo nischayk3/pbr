@@ -152,8 +152,6 @@ function Filter(props) {
 
 	const onSearchParam = debounce((type, field) => {
 		if (type != null) {
-
-
 			if (field === 'plant') {
 				getGenealogyFilterData(
 					selectParam['plant'],
@@ -188,7 +186,7 @@ function Filter(props) {
 				setIsEmptyBatch(false);
 			}
 		}
-	}, 500);
+	}, 1500);
 
 	const getGenealogyFilterData = async (
 		selectedPlantValue,
