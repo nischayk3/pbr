@@ -5,7 +5,7 @@
  * @Last Modified - 31 March, 2022
  * @Last Changed By - binkita
  */
-import { DownloadOutlined } from "@ant-design/icons";
+// import { DownloadOutlined } from "@ant-design/icons";
 import { Avatar, Button, Card, Empty, Table, Tabs } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
@@ -302,13 +302,13 @@ const Workflow = () => {
 								title={
 									<div className="table-head">
 										{cardTitle}
-										<DownloadOutlined
+										{/* <DownloadOutlined
 											style={{
 												color: "#093185",
 												marginLeft: "25px",
 												fontSize: "20px",
 											}}
-										/>
+										/> */}
 									</div>
 								}
 							>

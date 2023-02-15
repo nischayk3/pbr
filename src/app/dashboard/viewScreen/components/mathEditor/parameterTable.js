@@ -426,9 +426,10 @@ const ParameterTable = ({
 
 		if (variableCreate) {
 			const varParameter = JSON.parse(JSON.stringify(parameters));
-			const varParam = { ...variableParam, }
+			const varParam = { ...parameter_obj, }
 
 			varParam[variableName] = JSON.parse(JSON.stringify(varParameter));
+
 			setVariableParam(varParam);
 
 			const viewDataJson = [...viewJson];
