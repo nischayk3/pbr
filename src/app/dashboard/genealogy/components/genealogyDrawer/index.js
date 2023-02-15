@@ -10,6 +10,7 @@ import React, { useEffect, useState } from "react";
 import batchIcon from "../../../../../assets/images/material.png";
 import popupicon from "../../../../../assets/images/popup.png";
 import GenealogyDataTable from "../genealogyDataTable";
+import { PRODUCT_FOR } from "../../../../../constants/apiBaseUrl";
 import "./style.scss";
 
 function GenealogyDrawer(props) {
