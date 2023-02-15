@@ -163,7 +163,8 @@ const pbrTableUpdate = () => {
 			id: Number(params.id),
 			limit: null,
 			status: null,
-			template_id: []
+			template_id: [],
+			date_range:null
 		}
 		let res = await getPbrReviewerData(req);
 		let arr = res?.Data[0]?.table_value.map((item, index) => ({ ...item, key: index }))
@@ -179,7 +180,8 @@ const pbrTableUpdate = () => {
 			id: Number(params.id),
 			limit: null,
 			status: null,
-			template_id: []
+			template_id: [],
+			date_range:null
 		}
 		let res = await getPbrReviewerData(req);
 		let arr = res?.Data[0]?.table_value.map((item, index) => ({ ...item, key: index }))
@@ -250,7 +252,8 @@ const pbrTableUpdate = () => {
 			snippet_value: null,
 			status: "approved",
 			uom: null,
-			table_value: templateData
+			table_value: templateData,
+			esign_id:null
 		};
 
 		let res = await updateApprove(req);

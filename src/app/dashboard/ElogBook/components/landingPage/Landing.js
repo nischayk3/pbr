@@ -175,7 +175,7 @@ export default function Landing() {
 						<Panel header={
 							(<Tag color="yellow">In progress</Tag>)
 						} key="1">
-							<Table bordered={false} columns={columns} dataSource={isProgress} className="elog-table" />
+							<Table bordered={false} columns={columns} className="elog-table" />
 						</Panel>
 						<Panel header={
 							(<Tag color="green">Approved</Tag>)
