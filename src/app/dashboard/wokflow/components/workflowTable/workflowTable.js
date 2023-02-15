@@ -217,11 +217,26 @@ const WorkflowTable = (props) => {
 									</a>
 								);
 							} else if (text == "/dashboard/paper_batch_records") {
+
 								return (
 									<a
 										onClick={() =>
 											history.push(
 												`${text}/${row.Id}?id=${row.Id}&temp_disp_id=${row.Id}&file=${row.filename}&fromScreen=Workflow&version=${row.version}&tempalteName=${row.pbr_template_name}`
+											)
+										}
+										className="review-submission"
+									>
+										Review Submission
+									</a>
+								);
+							}
+							else if (text == "/dashboard/elog_book_template") {
+								return (
+									<a
+										onClick={() =>
+											history.push(
+												`/dashboard/elog_book_data_entry/data_entry_forms?molecule=${row.molecule}&version=${row.version}&template_disp_id=${row.template_disp_id}&site=${row.site}&recording_id=${row.recording_id}&publish=true`
 											)
 										}
 										className="review-submission"
