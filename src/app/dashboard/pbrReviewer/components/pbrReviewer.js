@@ -128,7 +128,8 @@ function PbrReviewer() {
 		}
 		setTableLoading(true)
 		let res = await getPbrReviewerData(obj)
-		setTemplateData(res.Data);
+		let arr = res.Data.map((item, index) => ({ ...item, key: index }))
+		setTemplateData(arr);
 		setTableLoading(false)
 		setReviewerReq(obj)
 		dispatch(hideLoader());
@@ -142,7 +143,8 @@ function PbrReviewer() {
 		}
 		setTableLoading(true)
 		let res = await getPbrReviewerData(obj)
-		setTemplateData(res.Data);
+		let arr = res.Data.map((item, index) => ({ ...item, key: index }))
+		setTemplateData(arr);
 		setTableLoading(false)
 		setReviewerReq(obj)
 		dispatch(hideLoader());
@@ -173,7 +175,8 @@ function PbrReviewer() {
 			snippet_value: null,
 			status: "approved",
 			uom: null,
-			table_value: null
+			table_value: null,
+			esign_id: `${esign}`
 		}
 		if (esign) {
 			let res = await updateApprove(req)
@@ -182,8 +185,8 @@ function PbrReviewer() {
 				setArr([])
 				setSelectedRowKeys([]);
 				dispatch(hideLoader());
-				dispatch(showNotification("success", "Approved Successfully")),
-					cardTableData()
+				dispatch(showNotification("success", "Approved Successfully"))
+				cardTableData()
 				getTemplateID()
 				chart();
 				chart1();
@@ -648,7 +651,8 @@ function PbrReviewer() {
 		let obj = { ...reviewerReq, confidence: null }
 		setTableLoading(true)
 		let res = await getPbrReviewerData(obj)
-		setTemplateData(res.Data);
+		let arr = res.Data.map((item, index) => ({ ...item, key: index }))
+		setTemplateData(arr);
 		setTableLoading(false)
 		setReviewerReq(obj)
 		setShowResetConfidence(false)
@@ -661,7 +665,8 @@ function PbrReviewer() {
 		let obj = { ...reviewerReq, status: null }
 		setTableLoading(true)
 		let res = await getPbrReviewerData(obj)
-		setTemplateData(res.Data);
+		let arr = res.Data.map((item, index) => ({ ...item, key: index }))
+		setTemplateData(arr);
 		setTableLoading(false)
 		setReviewerReq(obj)
 		setShowReset(false)
@@ -712,6 +717,7 @@ function PbrReviewer() {
 		selectedRowKeys,
 		onChange: (selectedRowKeys, selectedRows) => {
 			setSelectedRowKeys(selectedRowKeys);
+			console.log("selectedRowKeys", selectedRowKeys)
 			let arr = selectedRows.map(item => item.id)
 			setArr(arr)
 		},
@@ -736,7 +742,7 @@ function PbrReviewer() {
 				endDate: null,
 			});
 			let req = {
-				...reviewerReq,date_range: null
+				...reviewerReq, date_range: null
 			}
 			let req1 = {
 				date_range: null, id: selectedTemplateArray
@@ -749,7 +755,7 @@ function PbrReviewer() {
 	const handleVisibleChange = (visible) => {
 		setIsDatePopupVisible(visible);
 	};
-	
+
 	return (
 		<>
 			<BreadCrumbWrapper />
@@ -871,7 +877,7 @@ function PbrReviewer() {
 														<FilterOutlined style={{ marginLeft: 5, fontSize: 20 }} />
 													</Tooltip>
 												</Popover>
-												
+
 											</div>
 											<Button id="applyFilter" style={{
 												margin: "7px 20px",

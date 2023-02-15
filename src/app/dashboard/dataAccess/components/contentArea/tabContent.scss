@@ -26,6 +26,10 @@
 .parent_div {
     margin-top: 30px;
 }
+.try_area
+{
+    display: flex;
+}
 
 .overview {
     font-family: 'Roboto';
@@ -44,7 +48,20 @@
     line-height: 22px;
     color: #000000;
 }
-
+.content_try
+{
+    margin-top: 23px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 22px;
+    color: #000000;
+}
+.status_codes
+{
+    margin-left: 305px;
+}
 .black-div {
     height: 78px;
     width: 700px;
@@ -77,9 +94,13 @@
 }
 
 .button {
-    width: 150px;
+    width: 474px;
+    height: 32px;
+    background: #093185;
+    border: 1px solid #093185;
     border-radius: 4px;
     background: #093185;
+    margin-top: 16px;
     color: white;
 }
 
@@ -88,6 +109,39 @@
     border-radius: 4px;
     background: black;
     color: red;
+}
+.result_status
+{
+    margin-top: 24px;
+    .result_key{
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 22px;
+        color: #000000;
+    }
+    .status_box
+    {
+        box-sizing: border-box;
+        margin-left: 320px;
+        align-items: center;
+        padding: 1px 8px;
+        gap: 4px;
+        position: absolute;
+        width: 110px;
+        height: 22px;
+        background: #F0F5FF;
+        border: 1px solid #ADC6FF;
+        border-radius: 2px;
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 20px;
+        color: #2F54EB;
+
+    }
 }
 
 .success-code-button {
