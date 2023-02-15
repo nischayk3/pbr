@@ -1,9 +1,10 @@
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { Button, Col, Collapse, Popover, Row } from "antd";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import InputField from "../../../../../components/InputField/InputField";
 import Modal from "../../../../../components/Modal/Modal";
+import { createVariable, viewParamMap } from "../../../../../duck/actions/viewAction";
 import CreateVariable from "./createVariable";
 import MathFunction from "./mathFunction";
 import { MemoizedParameterTable } from "./parameterTable";
@@ -37,6 +38,7 @@ const MathEditor = ({
 	//const [showVariable, setShowVariable] = useState(false);
 
 	const { Panel } = Collapse;
+	const dispatch = useDispatch();
 
 	const content = (
 		<div className="script-info">
@@ -268,6 +270,7 @@ if var_bact_endotoxin.isnull().sum().sum() > 0:
 		}
 	}, [isLoadView]);
 
+
 	const addVariable = () => {
 		setCardTitle("Select parameters");
 		setRowDisable(true);
@@ -306,7 +309,6 @@ if var_bact_endotoxin.isnull().sum().sum() > 0:
 	};
 
 	const deleteVariable = (param) => {
-
 		let lastIndex;
 		/* istanbul ignore next */
 		varData.forEach((item, i) => {
@@ -334,15 +336,19 @@ if var_bact_endotoxin.isnull().sum().sum() > 0:
 
 		/* istanbul ignore next */
 		const parameter = { ...paramData }
+
 		/* istanbul ignore next */
 
 		delete parameter[param];
 		/* istanbul ignore next */
+
 		setParamData(parameter)
 		/* istanbul ignore next */
-
+		dispatch(viewParamMap(parameter));
+		dispatch(createVariable(parameter));
 		variableData = [...varDataArr];
 		/* istanbul ignore next */
+
 		const newVar = [...varArr]
 
 		/* istanbul ignore next */
@@ -353,6 +359,7 @@ if var_bact_endotoxin.isnull().sum().sum() > 0:
 		setVariableName("");
 		setCreateNameModal(!createNameModal);
 	};
+
 	return (
 		<>
 			<Collapse

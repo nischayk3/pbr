@@ -15,6 +15,7 @@ import batchIcon from "../../../../assets/images/material.png";
 import popupicon from "../../../../assets/images/popup.png";
 import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
 import ScreenHeader from "../../../../components/ScreenHeader/screenHeader";
+import { PRODUCT_FOR } from "../../../../constants/apiBaseUrl";
 import {
 	hideLoader,
 	showLoader,
@@ -290,7 +291,10 @@ function Genealogy() {
 	const selectedParameter = (param) => {
 		const product = param && param.product.split("-");
 		const plant = param && param.plant.split("-");
-		const selectedValue = plant[0] + "|" + product[0] + "|" + param.batch;
+		const batch = param && param.batch.split("-")
+		const batchSplit = PRODUCT_FOR == 'BMS' ? batch[0] : param.batch
+
+		const selectedValue = plant[0] + "|" + product[0] + "|" + batchSplit;
 		setShowView(false);
 		setGenealogyData([]);
 		if (param.treeType === "Backward") {
@@ -747,6 +751,11 @@ function Genealogy() {
 					showNotification("success", "Golden batch updated succesfully")
 				);
 			} else {
+				if (chartType === "backward") {
+					getBackwardGeneology(batchNodeId);
+				} else {
+					getForwardGeneology(batchNodeId);
+				}
 				dispatch(showNotification("error", goldenRes.Message));
 			}
 		} catch (error) {

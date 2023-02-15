@@ -49,14 +49,10 @@ const Login = () => {
 
 	useEffect(() => {
 		if (PRODUCT_FOR === 'BMS') {
-			console.log("url", `${window.location.origin}${BMS_APP_LOGIN_PASS}/saml-login?redirect_url=${MDH_APP_PYTHON_SERVICE}/%23/dashboard/redirect&from_=UI`);
-			//window.open(`${window.location.origin}${BMS_APP_LOGIN_PASS}/saml-login?redirect_url=${MDH_APP_PYTHON_SERVICE}/%23/dashboard/redirect&from_=UI`, '_self');
+			window.open(`${window.location.origin}${BMS_APP_LOGIN_PASS}/saml-login?redirect_url=${MDH_APP_PYTHON_SERVICE}/%23/dashboard/redirect&from_=UI`, '_self');
 			localStorage.setItem("loginwith", 'WITH_SAML')
 		}
 	}, [])
-
-
-	console.log("PRODUCT_FOR", PRODUCT_FOR);
 
 	const consumerSamlLogin = async () => {
 		if (localStorage.getItem("login_details")) {
