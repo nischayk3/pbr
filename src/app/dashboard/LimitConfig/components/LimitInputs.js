@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './Limitconfig.scss'
 import SelectField from "../../../../components/SelectField/SelectField";
-import { Col, Row, Table, Input, DatePicker, Button, Popconfirm, Tooltip } from 'antd';
+import { Col, Row, Table, Input, DatePicker, Button, Popconfirm, Tooltip, Select } from 'antd';
 import { DeleteOutlined, CalendarOutlined, PlusOutlined } from '@ant-design/icons'
 import moment from 'moment';
 import { useDispatch } from "react-redux";
@@ -19,8 +19,8 @@ const LimitInputs = ({ setLimitsData, limitsData, openRow, selectedRowKey, param
 		'warning'
 	]
 	let classList = [
-	     'CPP',
-		 'CQA'
+		'CPP',
+		'CQA'
 	]
 	let columns = [
 		{
@@ -65,26 +65,44 @@ const LimitInputs = ({ setLimitsData, limitsData, openRow, selectedRowKey, param
 				}),
 		},
 		{
-			title:(
+			title: (
 				<Tooltip title={<span>Crirical Quality Attribute</span>}>
-				  <span>Crirical Quali...</span>
+					<span>Crirical Quali...</span>
 				</Tooltip>
-			  ),
+			),
 			dataIndex: 'parameter_class',
 			key: 'parameter_class',
+			width: '200',
 			render: (text, record) =>
 				limitsData.map((data, index) => {
+					console.log(data.parameter_class, 'data.parameter_class')
 					if (record.key === data.key) {
 						if (selectedRowKey !== openRow) {
-							return <p style={{ margin: "0" }}>{data.parameter_class}</p>;
+							return (
+								data?.parameter_class?.map((paramClass) => {
+									console.log(paramClass, 'apara')
+									return(
+										<p style={{ margin: "0" }}>{paramClass}</p>
+									)
+								})
+							)
 						}
 						return (
-							<SelectField
+							<Select
+								mode="multiple"
+								allowClear
+								style={{
+									width: "100%",
+								}}
+								value={data.parameter_class || null}
 								name="parameter_class"
-								selectList={classList}
-								selectedValue={data.parameter_class}
-								onChangeSelect={(e) => handleChange(index, e, "", "parameter_class")}
-							/>
+								onChange={(e) => handleChange(index, e, "", "parameter_class")}
+							>
+								{classList &&
+									classList.map((ele) => {
+										return <Option key={ele}>{ele}</Option>;
+									})}
+							</Select>
 						);
 					}
 				}),
@@ -258,14 +276,14 @@ const LimitInputs = ({ setLimitsData, limitsData, openRow, selectedRowKey, param
 		let tempParamData;
 		try {
 			dispatch(showLoader());
-			if(record?.int_id) {
+			if (record?.int_id) {
 				const obj = {
 					data: [
 						record?.int_id
 					]
 				}
 				const apiResponse = await deleteLimitsApi(obj);
-				if(apiResponse?.Status === 200) {
+				if (apiResponse?.Status === 200) {
 					tempParamData = limitsData.filter((limit) => limit?.int_id !== record?.int_id)
 				}
 			} else {
@@ -351,7 +369,7 @@ const LimitInputs = ({ setLimitsData, limitsData, openRow, selectedRowKey, param
 					/>
 					{(selectedRowKey === openRow) && <div className="add-button-limit">
 						<Button
-						onClick={() => handleAdd()}
+							onClick={() => handleAdd()}
 						// disabled={
 						// 	Object.keys(params).length > 0 &&
 						// 	params.fromScreen !== "Workspace"
