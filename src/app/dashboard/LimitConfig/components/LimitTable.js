@@ -100,6 +100,7 @@ const LimitTable = () => {
       tempMoleculeArray?.forEach((ele) => { 
         ele?.paramData.forEach((param, index) => {
            param.key = index + 1
+           param.parameter_class = param.parameter_class ? param.parameter_class : [];
         })
       });
       setMoleculeData(tempMoleculeArray)
