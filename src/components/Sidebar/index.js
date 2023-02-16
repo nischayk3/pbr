@@ -172,6 +172,17 @@ const Sidebar = () => {
 								</Link>
 							</Menu.Item>
 						)}
+
+						{/* <Menu.Item
+							key="system-config"
+							icon={<DeploymentUnitOutlined className="menu-icons" />}
+							id="limit-config"
+							className={path === "/dashboard/system-config" ? 'ant-menu-item-selected' : 'remove-selected'}
+						>
+							<Link to="/dashboard/system-config">
+								System Config
+							</Link>
+						</Menu.Item> */}
 					</SubMenu>
 				) : null}
 
