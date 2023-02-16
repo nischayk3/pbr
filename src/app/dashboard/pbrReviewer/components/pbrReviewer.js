@@ -700,9 +700,9 @@ function PbrReviewer() {
 					: null, id: []
 			}
 			setSelectedTemplateArray([])
-			cardTableData(req)
-			chart(req1)
-			chart1(req2)
+			// cardTableData(req)
+			// chart(req1)
+			// chart1(req2)
 		}
 		setSelectedTemplateArray(val)
 	}
@@ -736,21 +736,21 @@ function PbrReviewer() {
 				endDate: e[1].format("YYYY-MM-DD"),
 			});
 		} 
-		// else {
-		// 	setBatchFilters({
-		// 		...batchFilters,
-		// 		startDate: null,
-		// 		endDate: null,
-		// 	});
-		// 	let req = {
-		// 		...reviewerReq, date_range: null
-		// 	}
-		// 	let req1 = {
-		// 		date_range: null, id: selectedTemplateArray
-		// 	}
-		// 	cardTableData(req)
-		// 	chart(req1)
-		// }
+		else {
+			setBatchFilters({
+				...batchFilters,
+				startDate: null,
+				endDate: null,
+			});
+			// let req = {
+			// 	...reviewerReq, date_range: null
+			// }
+			// let req1 = {
+			// 	date_range: null, id: selectedTemplateArray
+			// }
+			// cardTableData(req)
+			// chart(req1)
+		}
 	};
 
 	const handleVisibleChange = (visible) => {
@@ -837,7 +837,7 @@ function PbrReviewer() {
 												disabled={arr?.length == 0 ? true : false}
 											>Approve</Button>
 											<Search
-												placeholder="Search"
+												placeholder="Find"
 												allowClear
 												onSearch={landingSearch}
 												style={{ width: 300, marginTop: 7 }}
@@ -848,7 +848,6 @@ function PbrReviewer() {
 											<div>
 												<RangePicker
 													className='dateFilter'
-													clearIcon={null}
 													value={
 														batchFilters.startDate
 															? [

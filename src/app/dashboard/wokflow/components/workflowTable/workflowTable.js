@@ -174,15 +174,15 @@ const WorkflowTable = (props) => {
 							setSearchedColumn
 						),
 						sorter: (a, b) => {
-							return a.field_name === null ||
-								a.field_name === undefined ||
-								a.field_name === ""
+							return a[field_name] === null ||
+								a[field_name] === undefined ||
+								a[field_name] === ""
 								? -1
-								: b.field_name == null ||
-									b.field_name == undefined ||
-									b.field_name == ""
+								: b[field_name] == null ||
+									b[field_name] == undefined ||
+									b[field_name] == ""
 									? 1
-									: a.field_name.toString().localeCompare(b.field_name);
+									: a[field_name].toString().localeCompare(b[field_name]);
 						},
 						title: display_name,
 					};
@@ -334,15 +334,15 @@ const WorkflowTable = (props) => {
 							setSearchedColumn
 						),
 						sorter: (a, b) => {
-							return a.field_name === null ||
-								a.field_name === undefined ||
-								a.field_name === ""
+							return a[field_name] === null ||
+								a[field_name] === undefined ||
+								a[field_name] === ""
 								? -1
-								: b.field_name == null ||
-									b.field_name == undefined ||
-									b.field_name == ""
+								: b[field_name] == null ||
+									b[field_name] == undefined ||
+									b[field_name] == ""
 									? 1
-									: a.field_name.toString().localeCompare(b.field_name);
+									: a[field_name].toString().localeCompare(b[field_name]);
 						},
 						title: display_name,
 					};
