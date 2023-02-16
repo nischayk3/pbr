@@ -1,28 +1,26 @@
-import { Collapse, Tag } from "antd";
+import { Collapse } from "antd";
 import React from 'react';
+import DataTable from "./dataTable";
+import "./style.scss";
 
 const ConfigTable = () => {
 
 	const { Panel } = Collapse;
 	return (
-		<div>
-			<Collapse bordered={false}
+		<div className="config-wrap">
+			<Collapse
 			// defaultActiveKey={['1']}
 			>
-
-				<Panel header={
-					(<Tag color="yellow">In progress</Tag>)
-				} key="1">
-					{/* <Table bordered={false} columns={columns} className="elog-table" /> */}
+				<Panel header="Data sources" key="1">
+					<DataTable />
 				</Panel>
-				<Panel header={
-					(<Tag color="green">Approved</Tag>)
-				} key="2">
+				<Panel header="E-sign reasons" key="2">
 					{/* <Table bordered={false} columns={columns} dataSource={isApproved} className="elog-table" /> */}
 				</Panel>
-				<Panel header={
-					(<Tag color="red">Rejected</Tag>)
-				} key="3">
+				<Panel header="Product types" key="3">
+					{/* <Table bordered={false} columns={columns} dataSource={isRejected} className="elog-table" /> */}
+				</Panel>
+				<Panel header="System session timeout" key="4">
 					{/* <Table bordered={false} columns={columns} dataSource={isRejected} className="elog-table" /> */}
 				</Panel>
 			</Collapse>

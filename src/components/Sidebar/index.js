@@ -173,7 +173,7 @@ const Sidebar = () => {
 							</Menu.Item>
 						)}
 
-						<Menu.Item
+						{/* <Menu.Item
 							key="system-config"
 							icon={<DeploymentUnitOutlined className="menu-icons" />}
 							id="limit-config"
@@ -182,7 +182,7 @@ const Sidebar = () => {
 							<Link to="/dashboard/system-config">
 								System Config
 							</Link>
-						</Menu.Item>
+						</Menu.Item> */}
 					</SubMenu>
 				) : null}
 
