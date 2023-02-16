@@ -444,6 +444,7 @@ class DataFormFirst extends Component {
       return null;
     }
     const { dataSource, formDetails, status } = this.state;
+    console.log(this.props.template_disp_id)
     const components = {
       body: {
         row: EditableRow,
@@ -463,53 +464,71 @@ class DataFormFirst extends Component {
             <canvas className="status_box" />
             <span className="status_line">{status}</span>
           </span>
-          {!this.props.disableScreen ? (
-            <span className="buttons-head">
-              <Popconfirm
-                onConfirm={() => this.onSaveTable(true)}
-                title="Are you sure?"
-              >
-                <DeleteTwoTone
-                  twoToneColor="red"
-                  style={{
-                    fontSize: "25px",
-                    marginRight: "24px",
-                    top: "2%",
-                    verticalAlign: "top",
-                  }}
-                />
-              </Popconfirm>
-              <Button
-                className="delete-btn"
-                onClick={() => this.setState({ isPublish: true })}
-              >
-                Publish
-              </Button>
-              <Button
-                className="publish-btn"
-                onClick={() => this.onSaveTable(false)}
-              >
-                Save
-              </Button>
-              <Dropdown
-                overlay={menu}
-                placement="bottomLeft"
-                arrow={{ pointAtCenter: true }}
-              >
-                <EllipsisOutlined
-                  style={{
-                    transform: "rotate(-90deg)",
-                    fontSize: "24px",
-                    verticalAlign: "top",
-                    height: "30px",
-                    marginLeft: "6px",
-                  }}
-                />
-              </Dropdown>
-            </span>
-          ) : (
-            <></>
-          )}
+          <span className="buttons-head">
+            {!this.props.disableScreen ? (
+              <>
+                <Popconfirm
+                  onConfirm={() => this.onSaveTable(true)}
+                  title="Are you sure?"
+                >
+                  <DeleteTwoTone
+                    twoToneColor="red"
+                    style={{
+                      fontSize: "25px",
+                      marginRight: "24px",
+                      top: "2%",
+                      verticalAlign: "top",
+                    }}
+                  />
+                </Popconfirm>
+                <Button
+                  className="delete-btn"
+                  onClick={() => this.setState({ isPublish: true, publishStatus: 'P' })}
+                >
+                  Publish
+                </Button>
+                <Button
+                  className="publish-btn"
+                  onClick={() => this.onSaveTable(false)}
+                >
+                  Save
+                </Button>
+                <Dropdown
+                  overlay={menu}
+                  placement="bottomLeft"
+                  arrow={{ pointAtCenter: true }}
+                >
+                  <EllipsisOutlined
+                    style={{
+                      transform: "rotate(-90deg)",
+                      fontSize: "24px",
+                      verticalAlign: "top",
+                      height: "30px",
+                      marginLeft: "6px",
+                    }}
+                  />
+                </Dropdown>
+              </>) : (
+              <></>
+            )}
+            {this.props.publishScreen && (
+              <>
+                <Button
+                  className="delete-btn"
+                  onClick={() => this.setState({ isPublish: true, publishStatus: 'A' })}
+                >
+                  Approve
+                </Button>
+                <Button
+                  className="delete-btn"
+                  onClick={() => this.setState({ isPublish: true, publishStatus: 'R' })}
+                >
+                  Reject
+                </Button></>)
+
+            }
+          </span>
+
         </div>
         <div className="form-details">
           {this.state.deleteActionColumnAdded && (

@@ -453,13 +453,13 @@ function GenealogyDataTable(props) {
 					header={
 						<div className="panel-header">
 							<p>Batch details</p>
-							<Button
+							{PRODUCT_FOR === 'MI' || PRODUCT_FOR === 'BMS' && (<Button
 								type="primary"
 								className="custom-primary-btn"
 								size="small"
 							>
 								Download
-							</Button>
+							</Button>)}
 						</div>
 					}
 					key="1"
@@ -499,13 +499,13 @@ function GenealogyDataTable(props) {
 						header={
 							<div className="panel-header">
 								<p>LIMS details</p>
-								<Button
+								{PRODUCT_FOR === 'MI' || PRODUCT_FOR === 'BMS' && (<Button
 									type="primary"
 									className="custom-primary-btn"
 									size="small"
 								>
 									Download
-								</Button>
+								</Button>)}
 							</div>
 						}
 						key="2"
@@ -529,13 +529,13 @@ function GenealogyDataTable(props) {
 					header={
 						<div className="panel-header">
 							<p>Into process order</p>
-							<Button
+							{PRODUCT_FOR === 'MI' || PRODUCT_FOR === 'BMS' && (<Button
 								type="primary"
 								className="custom-primary-btn"
 								size="small"
 							>
 								Download
-							</Button>
+							</Button>)}
 						</div>
 					}
 					key="3"
@@ -560,13 +560,13 @@ function GenealogyDataTable(props) {
 					header={
 						<div className="panel-header">
 							<p>From process order</p>
-							<Button
+							{PRODUCT_FOR === 'MI' || PRODUCT_FOR === 'BMS' && (<Button
 								type="primary"
 								className="custom-primary-btn"
 								size="small"
 							>
 								Download
-							</Button>
+							</Button>)}
 						</div>
 					}
 					key="4"
@@ -591,13 +591,13 @@ function GenealogyDataTable(props) {
 					header={
 						<div className="panel-header">
 							<p>Sub process order</p>
-							<Button
+							{PRODUCT_FOR === 'MI' || PRODUCT_FOR === 'BMS' && (<Button
 								type="primary"
 								className="custom-primary-btn"
 								size="small"
 							>
 								Download
-							</Button>
+							</Button>)}
 						</div>
 					}
 					key="9"
@@ -623,13 +623,13 @@ function GenealogyDataTable(props) {
 						header={
 							<div className="panel-header">
 								<p>Batch Equipment</p>
-								<Button
+								{PRODUCT_FOR === 'MI' || PRODUCT_FOR === 'BMS' && (<Button
 									type="primary"
 									className="custom-primary-btn"
 									size="small"
 								>
 									Download
-								</Button>
+								</Button>)}
 							</div>
 						}
 						key="7"
@@ -653,13 +653,13 @@ function GenealogyDataTable(props) {
 					header={
 						<div className="panel-header">
 							<p>Purchase information</p>
-							<Button
+							{PRODUCT_FOR === 'MI' || PRODUCT_FOR === 'BMS' && (<Button
 								type="primary"
 								className="custom-primary-btn"
 								size="small"
 							>
 								Download
-							</Button>
+							</Button>)}
 						</div>
 					}
 					key="5"
@@ -698,13 +698,13 @@ function GenealogyDataTable(props) {
 					header={
 						<div className="panel-header">
 							<p>PBR details</p>
-							<Button
+							{PRODUCT_FOR === 'MI' || PRODUCT_FOR === 'BMS' && (<Button
 								type="primary"
 								className="custom-primary-btn"
 								size="small"
 							>
 								Download
-							</Button>
+							</Button>)}
 						</div>
 					}
 					key="6"
@@ -809,13 +809,13 @@ function GenealogyDataTable(props) {
 						header={
 							<div className="panel-header">
 								<p>Batch Equipment</p>
-								<Button
+								{PRODUCT_FOR === 'MI' || PRODUCT_FOR === 'BMS' && (<Button
 									type="primary"
 									className="custom-primary-btn"
 									size="small"
 								>
 									Download
-								</Button>
+								</Button>)}
 							</div>
 						}
 						key="7"

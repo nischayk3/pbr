@@ -5,12 +5,12 @@
  * @Last Modified - 15 March, 2022
  * @Last Changed By - Dinesh Kumar
  */
-import { DownloadOutlined } from "@ant-design/icons";
 import { Drawer } from "antd";
 import React, { useEffect, useState } from "react";
 import batchIcon from "../../../../../assets/images/material.png";
 import popupicon from "../../../../../assets/images/popup.png";
 import GenealogyDataTable from "../genealogyDataTable";
+import { PRODUCT_FOR } from "../../../../../constants/apiBaseUrl";
 import "./style.scss";
 
 function GenealogyDrawer(props) {
@@ -43,9 +43,9 @@ function GenealogyDrawer(props) {
 						<p>
 							{props.nodeTitle} - {props.type}
 						</p>
-						<span >
+						{/* <span >
 							<DownloadOutlined />
-						</span>
+						</span> */}
 					</div>
 					<span
 						className="expand-drawer"
