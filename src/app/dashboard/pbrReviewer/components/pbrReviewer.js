@@ -49,8 +49,8 @@ function PbrReviewer() {
 	});
 	const [batchFilters, setBatchFilters] = useState({
 		site: null,
-		startDate: null,
-		endDate: null,
+		startDate: moment(),
+		endDate: moment().subtract(3,'d'),
 		time: "",
 		duration: null,
 		unApproved: 0,
@@ -735,21 +735,22 @@ function PbrReviewer() {
 				startDate: e[0].format("YYYY-MM-DD"),
 				endDate: e[1].format("YYYY-MM-DD"),
 			});
-		} else {
-			setBatchFilters({
-				...batchFilters,
-				startDate: null,
-				endDate: null,
-			});
-			let req = {
-				...reviewerReq, date_range: null
-			}
-			let req1 = {
-				date_range: null, id: selectedTemplateArray
-			}
-			cardTableData(req)
-			chart(req1)
-		}
+		} 
+		// else {
+		// 	setBatchFilters({
+		// 		...batchFilters,
+		// 		startDate: null,
+		// 		endDate: null,
+		// 	});
+		// 	let req = {
+		// 		...reviewerReq, date_range: null
+		// 	}
+		// 	let req1 = {
+		// 		date_range: null, id: selectedTemplateArray
+		// 	}
+		// 	cardTableData(req)
+		// 	chart(req1)
+		// }
 	};
 
 	const handleVisibleChange = (visible) => {
@@ -847,13 +848,14 @@ function PbrReviewer() {
 											<div>
 												<RangePicker
 													className='dateFilter'
+													clearIcon={null}
 													value={
 														batchFilters.startDate
 															? [
 																moment(batchFilters.startDate, dateFormat),
 																moment(batchFilters.endDate, dateFormat),
 															]
-															: ""
+															: ''
 													}
 													format={dateFormat}
 													onChange={(dateString) => handledatechange(dateString)}
