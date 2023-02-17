@@ -142,7 +142,8 @@ const PbrUpdate = () => {
 			id: Number(params.id),
 			limit: null,
 			status: null,
-			template_id: []
+			template_id: [],
+			date_range:null
 		}
 		let res = await getPbrReviewerData(req);
 		setTemplateData(res.Data);
@@ -230,7 +231,8 @@ const PbrUpdate = () => {
 			snippet_value: textInput?.snippet_value ? textInput?.snippet_value : null,
 			status: textInput?.status ? textInput?.status : null,
 			uom: textInput?.uom ? textInput?.uom : null,
-			table_value: null
+			table_value: null,
+			esign_id:null
 		};
 
 		let res = await updateApprove(formvalues);

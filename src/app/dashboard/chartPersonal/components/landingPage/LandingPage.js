@@ -130,7 +130,7 @@ const LandingPage = () => {
 							<Col span={6} />
 							<Col span={12} className="p36 table-data" ref={ref}>
 								<Search
-									placeholder="Search by view ID, name, product number, creator, status"
+									placeholder="Search by chart ID, name, product number, creator, status"
 									allowClear
 									enterButton="Search"
 									size="large"

@@ -29,7 +29,7 @@ export default function DataEntryFormTabs(props) {
     dispatch(showLoader());
     let req = {
       molecule: mol,
-      limit: 6,
+      limit: 100,
     };
     let templates_list = await getTemplatesList(req);
     if (templates_list.statuscode == 200) {

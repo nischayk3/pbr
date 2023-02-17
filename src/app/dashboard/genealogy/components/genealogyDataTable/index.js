@@ -126,7 +126,13 @@ function GenealogyDataTable(props) {
 		clearFilters();
 		setSearchText("");
 	}
+	console.log("PRODUCT_FOR === 'MI'", PRODUCT_FOR === 'MI', PRODUCT_FOR == 'MI', PRODUCT_FOR);
 
+	if (PRODUCT_FOR === 'MI' || PRODUCT_FOR === 'BMS') {
+		console.log("mibms true");
+	} else {
+		console.log("merck true");
+	}
 	// const pbrColumns = [
 	// 	{ title: "Site", dataIndex: "site_code", key: "1", width: 100, ...getColumnSearchProps('site_code') },
 	// 	{ title: "Product", dataIndex: "product_num", key: "2", width: 100, ...getColumnSearchProps('product_num') },
@@ -453,13 +459,13 @@ function GenealogyDataTable(props) {
 					header={
 						<div className="panel-header">
 							<p>Batch details</p>
-							<Button
+							{PRODUCT_FOR === 'MI' || PRODUCT_FOR === 'BMS' && (<Button
 								type="primary"
 								className="custom-primary-btn"
 								size="small"
 							>
 								Download
-							</Button>
+							</Button>)}
 						</div>
 					}
 					key="1"
@@ -493,35 +499,39 @@ function GenealogyDataTable(props) {
 				<></>
 			)}
 
-			{PRODUCT_FOR === 'MI' || PRODUCT_FOR === 'BMS' &&
-				props.type === "Material" && (
-					<Panel
-						header={
-							<div className="panel-header">
-								<p>LIMS details</p>
-								<Button
-									type="primary"
-									className="custom-primary-btn"
-									size="small"
-								>
-									Download
-								</Button>
-							</div>
-						}
-						key="2"
-					>
-						<Table
-							rowClassName={(record, index) =>
-								index % 2 === 0 ? "table-row-light" : "table-row-dark"
+			{PRODUCT_FOR === 'MI' || PRODUCT_FOR === 'BMS' ? (
+				<>
+					{props.type === "Material" ? (
+						<Panel
+							header={
+								<div className="panel-header">
+									<p>LIMS details</p>
+									{PRODUCT_FOR === 'MI' || PRODUCT_FOR === 'BMS' && (<Button
+										type="primary"
+										className="custom-primary-btn"
+										size="small"
+									>
+										Download
+									</Button>)}
+								</div>
 							}
-							size="small"
-							columns={limsColumns}
-							dataSource={limsBatchData}
-							scroll={{ x: 1600, y: 350 }}
-							pagination={false}
-						/>
-					</Panel>
-				)
+							key="2"
+						>
+							<Table
+								rowClassName={(record, index) =>
+									index % 2 === 0 ? "table-row-light" : "table-row-dark"
+								}
+								size="small"
+								columns={limsColumns}
+								dataSource={limsBatchData}
+								scroll={{ x: 1600, y: 350 }}
+								pagination={false}
+							/>
+						</Panel>
+					) : <></>}
+				</>
+			)
+				: <></>
 			}
 
 			{props.type === "Process Order" ? (
@@ -529,13 +539,13 @@ function GenealogyDataTable(props) {
 					header={
 						<div className="panel-header">
 							<p>Into process order</p>
-							<Button
+							{PRODUCT_FOR === 'MI' || PRODUCT_FOR === 'BMS' && (<Button
 								type="primary"
 								className="custom-primary-btn"
 								size="small"
 							>
 								Download
-							</Button>
+							</Button>)}
 						</div>
 					}
 					key="3"
@@ -560,13 +570,13 @@ function GenealogyDataTable(props) {
 					header={
 						<div className="panel-header">
 							<p>From process order</p>
-							<Button
+							{PRODUCT_FOR === 'MI' || PRODUCT_FOR === 'BMS' && (<Button
 								type="primary"
 								className="custom-primary-btn"
 								size="small"
 							>
 								Download
-							</Button>
+							</Button>)}
 						</div>
 					}
 					key="4"
@@ -591,13 +601,13 @@ function GenealogyDataTable(props) {
 					header={
 						<div className="panel-header">
 							<p>Sub process order</p>
-							<Button
+							{PRODUCT_FOR === 'MI' || PRODUCT_FOR === 'BMS' && (<Button
 								type="primary"
 								className="custom-primary-btn"
 								size="small"
 							>
 								Download
-							</Button>
+							</Button>)}
 						</div>
 					}
 					key="9"
@@ -617,35 +627,39 @@ function GenealogyDataTable(props) {
 				<></>
 			)}
 
-			{PRODUCT_FOR === 'MI' || PRODUCT_FOR === 'BMS' &&
-				props.type === "Process Order" && (
-					<Panel
-						header={
-							<div className="panel-header">
-								<p>Batch Equipment</p>
-								<Button
-									type="primary"
-									className="custom-primary-btn"
-									size="small"
-								>
-									Download
-								</Button>
-							</div>
-						}
-						key="7"
-					>
-						<Table
-							rowClassName={(record, index) =>
-								index % 2 === 0 ? "table-row-light" : "table-row-dark"
+			{PRODUCT_FOR === 'MI' || PRODUCT_FOR === 'BMS' ? (
+				<>
+					{props.type === "Process Order" ? (
+						<Panel
+							header={
+								<div className="panel-header">
+									<p>Batch Equipment</p>
+									{PRODUCT_FOR === 'MI' || PRODUCT_FOR === 'BMS' && (<Button
+										type="primary"
+										className="custom-primary-btn"
+										size="small"
+									>
+										Download
+									</Button>)}
+								</div>
 							}
-							size="small"
-							columns={batchEquColumn}
-							dataSource={batchEqupData}
-							scroll={{ x: 1200, y: 350 }}
-							pagination={false}
-						/>
-					</Panel>
-				)
+							key="7"
+						>
+							<Table
+								rowClassName={(record, index) =>
+									index % 2 === 0 ? "table-row-light" : "table-row-dark"
+								}
+								size="small"
+								columns={batchEquColumn}
+								dataSource={batchEqupData}
+								scroll={{ x: 1200, y: 350 }}
+								pagination={false}
+							/>
+						</Panel>
+					) : <></>}
+				</>
+			)
+				: <></>
 			}
 
 			{props.type === "Purchase Order" ? (
@@ -653,13 +667,13 @@ function GenealogyDataTable(props) {
 					header={
 						<div className="panel-header">
 							<p>Purchase information</p>
-							<Button
+							{PRODUCT_FOR === 'MI' || PRODUCT_FOR === 'BMS' && (<Button
 								type="primary"
 								className="custom-primary-btn"
 								size="small"
 							>
 								Download
-							</Button>
+							</Button>)}
 						</div>
 					}
 					key="5"
@@ -698,27 +712,18 @@ function GenealogyDataTable(props) {
 					header={
 						<div className="panel-header">
 							<p>PBR details</p>
-							<Button
+							{PRODUCT_FOR === 'MI' || PRODUCT_FOR === 'BMS' && (<Button
 								type="primary"
 								className="custom-primary-btn"
 								size="small"
 							>
 								Download
-							</Button>
+							</Button>)}
 						</div>
 					}
 					key="6"
 				>
-					{/* <Table
-						rowClassName={(record, index) =>
-							index % 2 === 0 ? "table-row-light" : "table-row-dark"
-						}
-						size="small"
-						columns={pbrColumns}
-						dataSource={pbrDetails}
-						scroll={{ x: 1600, y: 350 }}
-						pagination={false}
-					/> */}
+
 					<Collapse className={props.className} bordered={false} accordion>
 						<Panel
 							header={
@@ -803,35 +808,39 @@ function GenealogyDataTable(props) {
 				<></>
 			)}
 
-			{PRODUCT_FOR === 'MI' || PRODUCT_FOR === 'BMS' &&
-				props.type === "Material" && (
-					<Panel
-						header={
-							<div className="panel-header">
-								<p>Batch Equipment</p>
-								<Button
-									type="primary"
-									className="custom-primary-btn"
-									size="small"
-								>
-									Download
-								</Button>
-							</div>
-						}
-						key="7"
-					>
-						<Table
-							rowClassName={(record, index) =>
-								index % 2 === 0 ? "table-row-light" : "table-row-dark"
+			{PRODUCT_FOR === 'MI' || PRODUCT_FOR === 'BMS' ? (
+				<>
+					{props.type === "Material" ? (
+						<Panel
+							header={
+								<div className="panel-header">
+									<p>Batch Equipment</p>
+									{PRODUCT_FOR === 'MI' || PRODUCT_FOR === 'BMS' && (<Button
+										type="primary"
+										className="custom-primary-btn"
+										size="small"
+									>
+										Download
+									</Button>)}
+								</div>
 							}
-							size="small"
-							columns={batchEquColumn}
-							dataSource={batchEqupData}
-							scroll={{ x: 1200, y: 350 }}
-							pagination={false}
-						/>
-					</Panel>
-				)
+							key="7"
+						>
+							<Table
+								rowClassName={(record, index) =>
+									index % 2 === 0 ? "table-row-light" : "table-row-dark"
+								}
+								size="small"
+								columns={batchEquColumn}
+								dataSource={batchEqupData}
+								scroll={{ x: 1200, y: 350 }}
+								pagination={false}
+							/>
+						</Panel>
+					) : <></>}
+				</>
+			)
+				: <></>
 			}
 
 			{props.type === "Material" ? (

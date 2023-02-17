@@ -50,6 +50,9 @@ const DataEntryForm = () => {
   const [drawervisible, setDrawerVisible] = useState(true);
   const [templateData, setTemplateData] = useState([]);
   const [disableScreen, setDisableScreen] = useState(false);
+  const [publishScreen, setPublishScreen] = useState(false);
+  const [templateId, setTemplateId] = useState('');
+
 
   let template_Data = useSelector((state) => state.elogReducer.templateData);
 
@@ -67,6 +70,7 @@ const DataEntryForm = () => {
       temp_disp_id: params.template_disp_id,
       molecule: params.molecule,
     };
+    setTemplateId(params.template_disp_id.replace(/[^0-9]/g, ''))
     if (params.recording_id) {
       template_req["recording_id"] = params.recording_id;
     }
@@ -101,8 +105,9 @@ const DataEntryForm = () => {
       unloadUrl(params);
       if (params.recording_id) {
         setDisableScreen(true);
-      } else {
-        setDisableScreen(false);
+      }
+      if (params.publish) {
+        setPublishScreen(true);
       }
     }
   }, []);
@@ -142,7 +147,7 @@ const DataEntryForm = () => {
         ) {
           template_Data[index_].form_data.unshift({
             status: "DRFT",
-            template_id: 1,
+            template_id: parseInt(templateId),
             version: 1,
             readings: dummyresult.Data[0].layout,
           });
@@ -178,6 +183,8 @@ const DataEntryForm = () => {
       dispatch(hideLoader());
     }
   };
+
+  console.log(templateId)
 
   return (
     <div className="custom-wrapper bread-wrap">
@@ -308,7 +315,7 @@ const DataEntryForm = () => {
                                   form_id={i.form_id ? i.form_id : "1"}
                                   form_version={i.version ? i.version : 1}
                                   template_disp_id={
-                                    idx.template_id ? idx.template_id : 1
+                                    idx.template_id ? idx.template_id : parseInt(templateId)
                                   }
                                   selectedMolecule={
                                     selectedMolecule ? selectedMolecule : "_"
@@ -324,6 +331,7 @@ const DataEntryForm = () => {
                                   reloadData={reloadData}
                                   disableScreen={disableScreen}
                                   site={selectedSite}
+                                  publishScreen={publishScreen}
                                 />
                               )
                           )}

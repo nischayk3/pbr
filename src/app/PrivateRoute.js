@@ -2,8 +2,6 @@ import React from "react";
 import { Redirect, Route } from "react-router-dom";
 
 const ProctectedRoute = ({ authorised, errorStatus, component: Component, ...rest }) => {
-	console.log("authorised", authorised,);
-	console.log(" errorStatus", errorStatus);
 	return (
 		<Route
 			{...rest}

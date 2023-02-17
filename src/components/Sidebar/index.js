@@ -23,7 +23,7 @@ const Sidebar = () => {
 
 	const validResource = JSON.parse(localStorage.getItem('login_details'));
 
-	let resourceKey = validResource.resource_action
+	let resourceKey = validResource?.resource_action
 	let resKey = resourceKey && Object.keys(resourceKey)
 
 	useEffect(() => {
@@ -49,7 +49,7 @@ const Sidebar = () => {
 		}
 	};
 
-	console.log("permissionssss", permissions);
+
 
 	return (
 		<Sider
@@ -172,6 +172,17 @@ const Sidebar = () => {
 								</Link>
 							</Menu.Item>
 						)}
+
+						{/* <Menu.Item
+							key="system-config"
+							icon={<DeploymentUnitOutlined className="menu-icons" />}
+							id="limit-config"
+							className={path === "/dashboard/system-config" ? 'ant-menu-item-selected' : 'remove-selected'}
+						>
+							<Link to="/dashboard/system-config">
+								System Config
+							</Link>
+						</Menu.Item> */}
 					</SubMenu>
 				) : null}
 

@@ -1,5 +1,6 @@
-import { Button, Row, Table, Col } from "antd";
+import { Button, Row, Table, Col, Popover } from "antd";
 import React, { useState } from "react";
+import { ExclamationCircleOutlined } from "@ant-design/icons"
 import "./tabContent.scss";
 import CodeEditor from "@uiw/react-textarea-code-editor";
 
@@ -9,23 +10,56 @@ export default function ContentRenderComponent(props) {
   const [statusCode, setStatusCode] = useState(0);
   const [result, setResult] = useState("");
   const [selectedDiv, setSelectedDiv] = useState("Overview");
-
+  const content = (
+    <div className="parent_div" id="Error Codes">
+      <ul>
+        <li className="content">
+          Success : 200 when a successful .csv or pdf is generated with
+          correct data
+        </li>
+        <li className="content">
+          Unauthorised: 401 User does not have access to views or API
+          execution
+        </li>
+        <li className="content">
+          Permission denied: 403.User is not authorised to execute for
+          certain molecule or plant{" "}
+        </li>
+        <li className="content">
+          Bad request: 400 Input parameters are incorrect
+        </li>
+        <li className="content">
+          Not found: 404: No data found for required filter
+        </li>
+        <li className="content">
+          Internal Server Error: 500. Database is not reachable.
+        </li>
+      </ul>
+    </div>
+  );
   const getResult = async () => {
     let result = await props.getData(request);
-    console.log(result);
     if (result.Status > 200) {
       setStatusCode(result.Status);
       setResult(JSON.stringify(result));
-    } else {
-      setStatusCode(200);
-      setResult(result);
-      const url = window.URL.createObjectURL(new Blob([result]));
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `${props.selectedTab}-response.csv`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
+    }
+    else if (result) {
+      if (result.status) {
+        setStatusCode(result.status);
+        setResult('');
+
+      }
+      else {
+        setStatusCode(200);
+        setResult(result);
+        const url = window.URL.createObjectURL(new Blob([result]));
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${props.selectedTab}-response.csv`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+      }
     }
   };
 
@@ -133,7 +167,8 @@ export default function ContentRenderComponent(props) {
             </div>
 
             <div className="parent_div" id="section">
-              <p className="content">Request</p>
+              <p className="overview">Try it yourself</p>
+              <span className="content_try">Request</span> <span className="status_codes">See error codes <Popover content={content}> <ExclamationCircleOutlined style={{ color: '#162154' }} /> </Popover></span>
               <CodeEditor
                 value={request}
                 onChange={(e) => handleChange(e)}
@@ -141,66 +176,45 @@ export default function ContentRenderComponent(props) {
                 padding={15}
                 style={{
                   fontSize: 12,
-                  backgroundColor: "#00000",
+                  height: '146px',
+                  width: '474px',
+                  backgroundColor: "#11171A",
                   fontFamily: "Courier,monospace",
                   color: "white",
                   border: ".5px solid black",
+                  marginTop: '14px'
                 }}
               />
-            </div>
-            <div className="parent_div" id="Error Codes">
-              <p className="overview">Error Codes</p>
-              <ul>
-                <li className="content">
-                  Success : 200 when a successful .csv or pdf is generated with
-                  correct data
-                </li>
-                <li className="content">
-                  Unauthorised: 401 User does not have access to views or API
-                  execution
-                </li>
-                <li className="content">
-                  Permission denied: 403.User is not authorised to execute for
-                  certain molecule or plant{" "}
-                </li>
-                <li className="content">
-                  Bad request: 400 Input parameters are incorrect
-                </li>
-                <li className="content">
-                  Not found: 404: No data found for required filter
-                </li>
-                <li className="content">
-                  Internal Server Error: 500. Database is not reachable.
-                </li>
-              </ul>
+              <div id="Try Code">
+                <Button className="button" onClick={() => getResult()}>
+                  Try code
+                </Button>
+              </div>
               {result ? (
-                <p>
-                  {statusCode ? (
-                    <p className="overview">
-                      {" "}
-                      Statuscode :{" "}
-                      <Button
-                        className={
-                          statusCode == 200
-                            ? "success-code-button"
-                            : "error-code-button"
-                        }
-                      >
-                        {statusCode}
-                      </Button>{" "}
-                    </p>
-                  ) : (
-                    <></>
-                  )}
-                </p>
-              ) : (
-                <></>
-              )}
-            </div>
-            <div className="parent_div" id="Try Code">
-              <Button className="button" onClick={() => getResult()}>
-                Try code
-              </Button>
+                <>
+                  <div className="result_status">
+                    <span className="result_key">Result</span> <span className="status_box">Status Code: {statusCode}</span>
+                  </div>
+                  <p className="overview">
+                    <CodeEditor
+                      value={result}
+                      language="json"
+                      padding={15}
+                      style={{
+                        fontSize: 12,
+                        backgroundColor: "#B2E6FF",
+                        fontFamily: "Courier,monospace",
+                        color: "black",
+                        border: ".5px solid black",
+                        minHeight: "100px",
+                        width: "474px",
+                        height: "146px",
+                        marginTop: "14px",
+                        overflow: "auto",
+                      }}
+                    />
+                  </p></>
+              ) : <></>}
             </div>
           </div>
         </Col>

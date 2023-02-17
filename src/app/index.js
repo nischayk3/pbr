@@ -4,6 +4,7 @@ import { Redirect, Route, Switch, useRouteMatch } from "react-router-dom";
 import Loading from "../components/Loading";
 import Notification from "../components/Notification";
 import SuspenseWrapper from "../components/SuspenseWrapper";
+import { MDH_APP_PYTHON_SERVICE, PRODUCT_FOR } from "../constants/apiBaseUrl";
 import ErrorPage from "./errorPage";
 import ProctectedRoute from "./PrivateRoute";
 import TokenExpired from "./tokenexpired";
@@ -44,9 +45,12 @@ const App = () => {
 						<Route path={`${match.url}user`} key="user">
 							<Account />
 						</Route>
-
 						<Route exact path="/" key="login">
-							<Redirect to={"/user/login"} />
+							{PRODUCT_FOR == 'BMS' ? (
+								<Redirect to={'/auth/saml-login?redirect_url=' + MDH_APP_PYTHON_SERVICE + '/%23/dashboard/redirect&from_=UI'} />
+							) : (
+								<Redirect to={"/user/login"} />
+							)}
 						</Route>
 					</Switch>
 				</SuspenseWrapper>
