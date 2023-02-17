@@ -310,6 +310,14 @@ const Sidebar = () => {
 								<Link to="/dashboard/pbr_file_upload">File Upload</Link>
 							</Menu.Item>
 						)}
+						<Menu.Item
+							key="pbr-pdf-viewer"
+							icon={<CheckCircleOutlined className="menu-icons" />}
+							id="pbr-pdf-viewer"
+							className={path === "/dashboard/pbr-pdf-viewer" ? 'ant-menu-item-selected' : 'remove-selected'}
+						>
+							<Link to="/dashboard/pbr-pdf-viewer">Pdf Search</Link>
+						</Menu.Item>
 
 						{permissions['PBR_TEMPLATE'] && (
 							<Menu.Item
@@ -332,6 +340,7 @@ const Sidebar = () => {
 								<Link to="/dashboard/pbr_reviewer">Dashboard</Link>
 							</Menu.Item>
 						)}
+
 
 					</SubMenu>
 				) : null}
