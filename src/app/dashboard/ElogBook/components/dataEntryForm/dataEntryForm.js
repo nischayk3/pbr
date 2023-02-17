@@ -38,6 +38,7 @@ const DataEntryForm = () => {
   const history = useHistory();
   const pageSize = 1;
 
+
   const selectedMolecule = useSelector(
     (state) => state.elogReducer.selectedMolecule
   );
@@ -112,6 +113,7 @@ const DataEntryForm = () => {
     }
   }, []);
 
+
   const handleChange = (page, inx) => {
     dispatch(showLoader());
     try {
@@ -154,12 +156,14 @@ const DataEntryForm = () => {
           setTemplateData(template_Data);
         }
       }
+      else {
+        dispatch(showNotification("error", "Error in adding form"));
+      }
     } catch (err) {
       dispatch(showNotification("error", "Error in adding form"));
     } finally {
-      handleChange(2, index_);
-      handleChange(1, index_);
-      dispatch(hideLoader());
+      handleChange(2, index_)
+      setTimeout(() => { handleChange(1, index_) }, 100)
     }
   };
 
@@ -184,7 +188,6 @@ const DataEntryForm = () => {
     }
   };
 
-  console.log(templateId)
 
   return (
     <div className="custom-wrapper bread-wrap">
@@ -302,7 +305,7 @@ const DataEntryForm = () => {
                               : "data_form_first_collapsed"
                         }
                       >
-                        {i.form_data &&
+                        {templateData && i.form_data &&
                           i.form_data.length > 0 &&
                           i.form_data.map(
                             (idx, index) =>
