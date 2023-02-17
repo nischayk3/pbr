@@ -1,0 +1,195 @@
+.pbr-container {
+	overflow-y: scroll;
+	height: 90vh;
+    overflow-x : hidden
+}
+.search-bar{
+    background: #a5a5ec;
+    height: 61px;
+    border-radius: 12px;
+    .search{
+        margin: 14px 53px;
+        width: 1100px;
+        border-radius: 20px;
+    }
+}
+.landingDiv{
+    padding: 15px 40px;
+}
+.cardStyle{
+    height: 240px;
+}
+.pdfHeader{
+    color: #8b8be8;
+    font-size: 17px;
+    font-weight: 500;
+    margin: 0px;
+}
+.divContainer{
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 1px;
+    margin-top: 10px;
+}
+.pStyle{
+    margin: 0px;
+    margin-bottom: 6px;
+    color: #969090;
+    font-weight: 500;
+}
+.pValue{
+    font-weight: 500;
+    font-size: 16px;
+    margin: 0px;
+}
+.avatar-text{
+    font-weight: 500;
+}
+.buttonDiv{
+    display: flex;
+    justify-content: space-between;
+    
+}
+.pagination{
+    display: flex;
+    justify-content: right;
+    margin-bottom: 8px;
+}
+.landing-content {
+	margin-top: 5px;
+
+	.ant-card-body {
+		min-height: 65vh;
+	}
+	.ant-input-search-button {
+		background-color: var(--primary-color) !important;
+	}
+	.ant-input-search-button:hover {
+		background: #486bc9 !important;
+	}
+	.p36 {
+		padding: 12px 18px;
+		.title-legends {
+			display: flex;
+			justify-content: flex-end;
+			dl dt {
+				display: inline-block;
+				width: 14px;
+				height: 14px;
+				border-radius: 50%;
+				vertical-align: middle;
+			}
+			dl dd {
+				display: inline-block;
+				margin: 0px 12px;
+				padding-bottom: 0;
+				vertical-align: middle;
+				font-family: var(--primary-font-family);
+				font-style: normal;
+				font-weight: 400;
+				font-size: 12px;
+				line-height: 10px;
+			}
+			dl dt.grey {
+				background: #363636;
+			}
+			dl dt.yellow {
+				background: #f6ba60;
+			}
+			dl dt.green {
+				background: #a4f588;
+			}
+			dl dt.red {
+				background: #D64045;
+			}
+		}
+	}
+	.create-new {
+		height: 137px;
+		width: 175px;
+		border-radius: 4px;
+		background: #ffffff;
+		border: 1px dashed #d9d9d9;
+		box-sizing: border-box;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 10px;
+		margin-top: 13px;
+		margin-bottom: 10px;
+		svg {
+			cursor: pointer;
+			margin-top: 10px !important;
+			font-size: 40px;
+			color: #cbcbcb;
+		}
+		p {
+			font-size: 14px;
+			font-weight: 400;
+			line-height: 22px;
+			color: #494949;
+		}
+	}
+	.create-new:hover {
+		border: 1px dashed #40a9ff;
+		p {
+			color: #40a9ff;
+		}
+	}
+}
+
+.p-28
+.banner {
+	margin: 10px 0px 20px !important;
+	.ant-card-body {
+		height: 168px;
+		background: linear-gradient(180deg, #e7e5ff 0%, #fff4f4 100%);
+	}
+	.card-body-div {
+		padding-left: 6px;
+		padding-right: 8px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		:nth-child(3) {
+			margin-top: -80px;
+		}
+		img {
+			width: 230px;
+		}
+		h6 {
+			font-size: 16px;
+			font-weight: 400;
+			line-height: 22px;
+			color: #666666;
+		}
+		.text-descp {
+			h2 {
+				font-size: 24px;
+				font-weight: 400;
+				line-height: 22px;
+			}
+			p {
+				font-size: 18px;
+				font-weight: 300;
+				line-height: 22px;
+			}
+		}
+	}
+}
+
+.viewPdfCard{
+    padding: 30px 60px;
+}
+
+.metaData{
+    display: flex;
+    justify-content: space-between;
+    width: 264px;
+}
+.metaData1{
+    display: flex;
+    justify-content: space-between;
+    width: 278px;
+}
