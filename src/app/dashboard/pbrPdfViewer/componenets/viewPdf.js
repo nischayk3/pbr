@@ -1,36 +1,65 @@
 import React, { useEffect, useState } from 'react'
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
-import { useLocation, useParams } from 'react-router-dom';
-import { Input, Col, Row, Card, Avatar } from 'antd';
+import { useParams } from 'react-router-dom';
+import { Col, Row, Card, Avatar } from 'antd';
 import { getPdfData } from '../../../../services/pbrService'
 import greenCircle from '../../../../assets/greenCircle.png'
 import red_circle from '../../../../assets/red_circle.png'
-import QueryString from 'query-string';
 import { Worker, Viewer } from "@react-pdf-viewer/core";
+import { MDH_APP_PYTHON_SERVICE } from '../../../../constants/apiBaseUrl';
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
-import { toolbarPlugin, ToolbarSlot } from "@react-pdf-viewer/toolbar";
+import { useDispatch } from 'react-redux';
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
-import { pdfjs } from 'react-pdf';
 import BatchRecordPdf from '../../../../assets/images/BatchRecordPdf.pdf'
-
+import {
+	hideLoader,
+	showLoader,
+	showNotification
+} from '../../../../duck/actions/commonActions';
 import './style.scss'
 
-
-
 function ViewPdf() {
+    const dispatch = useDispatch();
     const { id } = useParams()
     const [cardData, setCardData] = useState([])
+    const [pdfFile, setPdfFile] = useState(BatchRecordPdf)
 
     const defaultLayoutPluginInstance = defaultLayoutPlugin();
     const pdfVersion = "3.3.122"
-    const pdfWorkerUrl = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfVersion}/pdf.worker.js`
+    const pdfWorkerUrl = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfVersion}/pdf.worker.min.js`
 
     useEffect(() => {
         getPdfMetaData()
     }, [])
 
+    const getPdf = async (val) => {
+		dispatch(showLoader());
+		let login_response = JSON.parse(localStorage.getItem('login_details'));
+		var requestOptions = {
+			method: "GET",
+			response: "application/pdf",
+			psId: "",
+			redirect: "follow",
+			headers: new Headers({
+				"x-access-token": login_response?.token ? login_response?.token : '',
+				"resource-name": 'PBR'
+			})
+		};
+		let response = await fetch(
+			MDH_APP_PYTHON_SERVICE + `/pbr/udh/get_embedded_pdf?filename=${val}`,
+			requestOptions
+		)
+			.then((resp) => resp)
+			.then((result) => result)
+			.catch((error) => console.log("error", error));
+		let res = await response.blob();
+		setPdfFile(URL.createObjectURL(res));
+        dispatch(hideLoader());
+	}
+
     const getPdfMetaData = async (value) => {
+        dispatch(showLoader());
         try {
             let req = {
                 search_text: null,
@@ -39,11 +68,15 @@ function ViewPdf() {
             }
             let res = await getPdfData(req)
             if (res['status-code'] === 200) {
+                dispatch(hideLoader());
                 setCardData(res.Data)
+                getPdf(res?.Data[0]?.filename)
             } else {
+                dispatch(hideLoader());
                 setCardData([])
             }
         } catch (err) {
+            dispatch(hideLoader());
             console.log(err)
         }
 
@@ -103,7 +136,7 @@ function ViewPdf() {
                                             <p className='pStyle' >Time Zone</p>
                                             <p className='pValue'> {cardData[0]?.timezon}</p>
                                         </div>
-                                        <div>
+                                        <div style={{ width: 195 }}>
                                             <p className='pStyle' >Uploaded By</p>
                                             <Avatar
                                                 className='avatar-icon'
@@ -118,7 +151,7 @@ function ViewPdf() {
                             <Col span={14}>
                                 <Worker workerUrl={pdfWorkerUrl}>
                                     <div style={{ height: "720px" }}>
-                                        <Viewer fileUrl={BatchRecordPdf} plugins={[defaultLayoutPluginInstance]} />
+                                        <Viewer fileUrl={pdfFile} plugins={[defaultLayoutPluginInstance]} />
                                     </div>
                                 </Worker>
                             </Col>
