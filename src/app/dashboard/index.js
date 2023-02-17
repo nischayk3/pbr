@@ -9,6 +9,7 @@ import {
 	useRouteMatch
 } from "react-router-dom";
 import SuspenseWrapper from "../../components/SuspenseWrapper";
+import { PRODUCT_FOR } from "../../constants/apiBaseUrl";
 import { showNotification } from "../../duck/actions/commonActions";
 import LoginRedirect from "../user/login/redirect";
 import RedirectSign from "../user/login/redirectSign";
@@ -88,6 +89,9 @@ const Dashboard = () => {
 				history.push('/user/login');
 				window.location.reload()
 			}, 3000)
+		}
+		if (PRODUCT_FOR == 'BMS') {
+			localStorage.setItem("loginwith", 'WITH_SAML')
 		}
 	}, []);
 

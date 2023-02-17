@@ -2,13 +2,14 @@ import { PublicClientApplication } from "@azure/msal-browser";
 import { MsalProvider } from "@azure/msal-react";
 import "antd/dist/antd.min.css";
 import axios from "axios";
+import { ConnectedRouter } from "connected-react-router";
 import React from "react";
 import { CookiesProvider } from "react-cookie";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import { BrowserRouter, Route } from "react-router-dom";
 import App from "./app";
-import { Store } from "./duck/store";
+import { history, Store } from "./duck/store";
 import "./index.scss";
 import { msalConfig } from "./services/authProvider";
 import * as serviceWorker from "./serviceWorker";
@@ -46,11 +47,11 @@ root.render(
 			<MsalProvider instance={msalInstance}>
 				<Provider store={Store}>
 					{/* enable '#' in URL, uncommemt connectedRouter */}
-					{/* <ConnectedRouter history={history}> */}
-					<Route>
-						<App />
-					</Route>
-					{/* </ConnectedRouter> */}
+					<ConnectedRouter history={history}>
+						<Route>
+							<App />
+						</Route>
+					</ConnectedRouter>
 				</Provider>
 			</MsalProvider>
 		</CookiesProvider>
