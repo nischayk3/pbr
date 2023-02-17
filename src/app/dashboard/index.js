@@ -70,6 +70,8 @@ const ElogBookEntry = lazy(() => import("./ElogBook/components/dataEntryForm/dat
 const EBookStep = lazy(() => import("./ElogBook/components/ebookSteps/eBookStep"))
 const ELogBookTemplate = lazy(() => import("./ElogBook/components/landingPage/Landing"))
 const TableauDashboard = lazy(() => import("./TableauDashboard/tableauDashboard"))
+const PbrPdfViewer = lazy(() => import("./pbrPdfViewer"))
+const PbrViewPdf = lazy(() => import("./pbrPdfViewer/componenets/viewPdf"))
 
 const { Content } = Layout;
 
@@ -505,6 +507,31 @@ const Dashboard = () => {
 									exact
 									component={TableauDashboard}
 									authorised={authorised}
+								/>
+								{/* <PrivateRoute
+									key="pbr-pdf-viewer"
+									path={`${match.url}/pbr-pdf-viewer`}
+									exact
+									component={PbrPdfViewer}
+									authorised={authorised}
+								/> */}
+								<Route
+									path={`${match.url}/pbr-pdf-viewer`}
+									render={({ match: { url } }) => (
+										<>
+											<PrivateRoute
+												path={`${url}/`}
+												authorised={authorised}
+												component={PbrPdfViewer}
+												exact
+											/>
+											<PrivateRoute
+												path={`${url}/:id`}
+												authorised={authorised}
+												component={PbrViewPdf}
+											/>
+										</>
+									)}
 								/>
 							</Switch>
 						</SuspenseWrapper>
