@@ -3,8 +3,15 @@
 
 <head>
 	<!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'"> -->
-	<meta http-equiv="Content-Security-Policy"
-		content="default-src 'self' ws: wss: https;  script-src 'self' https://online.tableausoftware.com 'unsafe-eval' 'unsafe-inline'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline' data:;font-src 'self' https://fonts.gstatic.com 'unsafe-inline' data:; img-src 'self' https data: blob:;frame-src *;">
+	<!-- <meta http-equiv="Content-Security-Policy"
+		content="default-src 'self' ws: wss: https;  script-src 'self'
+		 https://online.tableausoftware.com 'unsafe-eval' 'unsafe-inline';
+		 style-src 'self' https://fonts.googleapis.com 'unsafe-inline' data:;font-src
+		 'self' https://fonts.gstatic.com 'unsafe-inline' data:; img-src https://mi-demo.mareana.com 'self' https data: blob:;frame-src *;"> -->
+	<meta http-equiv="Content-Security-Policy" content="default-src 'self' ws: wss: https;  script-src 'self'
+		 https://online.tableausoftware.com 'unsafe-eval' 'unsafe-inline';
+		 style-src 'self' https://fonts.googleapis.com 'unsafe-inline' data:;font-src
+		 'self' https://fonts.gstatic.com 'unsafe-inline' data:; img-src localhost 'self' https data: blob:;frame-src *;">
 	<meta charset="utf-8" />
 	<link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />

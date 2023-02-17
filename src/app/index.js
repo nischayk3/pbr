@@ -22,6 +22,7 @@ const App = () => {
 	const error = useSelector(
 		(state) => state.commonReducer.isError
 	);
+
 	return (
 		<>
 			<Loading show={showLoading} />
