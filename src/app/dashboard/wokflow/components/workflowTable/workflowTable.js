@@ -236,7 +236,7 @@ const WorkflowTable = (props) => {
 									<a
 										onClick={() =>
 											history.push(
-												`/dashboard/elog_book_data_entry/data_entry_forms?id=${row.Id}&molecule=${row.molecule}&version=${row.version}&template_disp_id=${row.template_disp_id}&site=${row.site}&recording_id=${row.recording_id}&publish=true&fromScreen=Workflow`
+												`/dashboard/elog_book_data_entry/data_entry_forms?id=${row.template_disp_id}&molecule=${row.molecule}&version=${row.version}&template_disp_id=${row.template_disp_id}&site=${row.site}&recording_id=${row.recording_id}&publish=true&fromScreen=Workflow`
 											)
 										}
 										className="review-submission"
