@@ -10,13 +10,13 @@ import {
 } from "react-router-dom";
 import SuspenseWrapper from "../../components/SuspenseWrapper";
 import { showNotification } from "../../duck/actions/commonActions";
-import { getAuthorisedPermission } from "../../services/authProvider";
 import LoginRedirect from "../user/login/redirect";
 import RedirectSign from "../user/login/redirectSign";
 import RedirectSAMLSign from "../user/login/samlRedirectSign";
 import "./dashboard.scss";
 import LimitConfig from "./LimitConfig/components/landing/LimitConfig";
 import PrivateRoute from "./ProtectedRoute";
+import SystemConfig from "./SystemConfig/components/systemConfig";
 // DASHBOARD ROUTE COMPONENTS
 
 const HeaderBar = lazy(() => import("../../components/Header"))
@@ -93,19 +93,19 @@ const Dashboard = () => {
 		}
 	}, []);
 
-	const requiredAuth = async (resource) => {
-		let authResponse = {};
-		try {
-			authResponse = await getAuthorisedPermission("", resource);
-			if (authResponse.status === 200) {
-				setAuthorised(true);
-			} else {
-				setAuthorised(false);
-			}
-		} catch (err) {
-			setAuthorised(false);
-		}
-	};
+	// const requiredAuth = async (resource) => {
+	// 	let authResponse = {};
+	// 	try {
+	// 		authResponse = await getAuthorisedPermission("", resource);
+	// 		if (authResponse.status === 200) {
+	// 			setAuthorised(true);
+	// 		} else {
+	// 			setAuthorised(false);
+	// 		}
+	// 	} catch (err) {
+	// 		setAuthorised(false);
+	// 	}
+	// };
 
 	useEffect(() => {
 		// setAuthorised(true);
@@ -405,6 +405,12 @@ const Dashboard = () => {
 									key="limit-config"
 									path={`${match.url}/limit-config`}
 									component={LimitConfig}
+									authorised={authorised}
+								/>
+								<PrivateRoute
+									key="system-config"
+									path={`${match.url}/system-config`}
+									component={SystemConfig}
 									authorised={authorised}
 								/>
 								<Route
