@@ -49,8 +49,8 @@ function PbrReviewer() {
 	});
 	const [batchFilters, setBatchFilters] = useState({
 		site: null,
-		startDate: moment(),
-		endDate: moment().subtract(3,'d'),
+		startDate: moment().subtract(3,'d'),
+		endDate: moment(),
 		time: "",
 		duration: null,
 		unApproved: 0,
@@ -76,6 +76,7 @@ function PbrReviewer() {
 					new Date(batchFilters.endDate).toISOString()
 					: null
 			}
+			console.log("req",req)
 			setTableLoading(true)
 			const tableResponse = await getPbrReviewerData(val ? val : req);
 			if (tableResponse['status-code'] === 200) {
