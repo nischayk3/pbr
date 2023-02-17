@@ -76,7 +76,6 @@ function PbrReviewer() {
 					new Date(batchFilters.endDate).toISOString()
 					: null
 			}
-			console.log("req",req)
 			setTableLoading(true)
 			const tableResponse = await getPbrReviewerData(val ? val : req);
 			if (tableResponse['status-code'] === 200) {
