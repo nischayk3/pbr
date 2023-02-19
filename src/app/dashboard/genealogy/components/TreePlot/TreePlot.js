@@ -690,17 +690,14 @@ function TreePlot(props) {
 						}
 					})
 					.attr("xlink:href", function (d) {
-
 						if (d.OpenNC === true) {
 							return `${MDH_APP_PYTHON_SERVICE}/img/genealogy/non-material.png`;
 						} else if (d.type === "Material") {
-							return 'https://mi-demo.mareana.com/img/genealogy/material.png';
+							return `${MDH_APP_PYTHON_SERVICE}/img/genealogy/material.png`;
 						} else if (d.type === "Process Order") {
-							return "img/genealogy/processorder.png";
+							return `${MDH_APP_PYTHON_SERVICE}/img/genealogy/processorder.png`;
 						} else if (d.type === "Purchase Order") {
-							return "img/genealogy/purchaseorder.png";
-						} else if (d.matNo === "1101738") {
-							return "img/genealogy/purchaseorder.png";
+							return `${MDH_APP_PYTHON_SERVICE}/img/genealogy/purchaseorder.png`;
 						}
 					})
 					.attr("id", function (d) {

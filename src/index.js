@@ -42,11 +42,10 @@ axios.interceptors.response.use(
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
-	<Router>
+	<Router >
 		<CookiesProvider>
 			<MsalProvider instance={msalInstance}>
 				<Provider store={Store}>
-					{/* enable '#' in URL, uncommemt connectedRouter */}
 					<ConnectedRouter history={history}>
 						<Route>
 							<App />

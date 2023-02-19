@@ -1,12 +1,13 @@
 /* eslint-env browser, node */
 import { routerMiddleware } from "connected-react-router";
-import { createBrowserHistory } from "history";
+import { createHashHistory } from "history";
 import { applyMiddleware, compose, createStore } from "redux";
 import logger from "redux-logger";
 import thunk from "redux-thunk";
 import rootReducer from "./reducers/rootReducer";
 
-export const history = createBrowserHistory();
+{/* remove '#' in URL, use  createBrowserHistory() */ }
+export const history = createHashHistory();
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const reactRouterMiddleware = routerMiddleware(history);
