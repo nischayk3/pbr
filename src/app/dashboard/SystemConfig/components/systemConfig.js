@@ -15,8 +15,8 @@ const SystemConfig = () => {
 						background:
 							"linear-gradient(180deg, rgba(202, 253, 190, 0.65) 0%, #FCF6BE 100%)",
 					}}
-					title={`Howdy ${localStorage.getItem("username")},`}
-					description="Ready to configure some limits for the molecules?Let's go!"
+					title={`Howdy ${localStorage.getItem("username")}`}
+					description="Ready to add new customers and define their controls? Let’s go!"
 					source={Banner}
 					sourceClass="geanealogy-image"
 				/>

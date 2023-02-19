@@ -1,3 +1,19 @@
 .config-wrap {
 	padding: 10px 0;
 }
+
+.config-table {
+	.ant-table {
+		.ant-table-container {
+			.ant-table-content {
+				.ant-table-thead {
+					width: 100px;
+
+					.ant-table-cell {
+						background: #E7E5FF !important;
+					}
+				}
+			}
+		}
+	}
+}
