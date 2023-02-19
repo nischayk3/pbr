@@ -2,8 +2,6 @@ import { Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {
-	hideLoader,
-	showLoader,
 	showNotification
 } from '../../../../../duck/actions/commonActions';
 import { getDataQualityData } from '../../../../../services/workSpaceServices';
@@ -49,20 +47,16 @@ const DataQuality = () => {
 	const dataQualityTableData = async () => {
 		let req = { limit: 5 }
 		try {
-			dispatch(showLoader());
 			const tableResponse = await getDataQualityData(req);
 			if (tableResponse['status-code'] === 200) {
 				setDataSource(tableResponse.Data);
-				dispatch(hideLoader());
 			}
 			else if (tableResponse['status-code'] === 404) {
 				setDataSource(tableResponse.Data);
-				dispatch(hideLoader());
 				dispatch(showNotification('error', tableResponse.Message));
 			}
 
 		} catch (error) {
-			dispatch(hideLoader());
 			dispatch(showNotification('error', error.Message));
 		}
 	}
