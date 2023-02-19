@@ -567,7 +567,7 @@ function Genealogy() {
 					const reqData = {
 						batchNum: data[2],
 						changedBy: null,
-						createdBy: login_response.firstname + login_response.lastname,
+						createdBy: login_response?.email_id,
 						custKey: "1000",
 						filename: fileName,
 						fileSize: fileSize,

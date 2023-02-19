@@ -49,8 +49,8 @@ function PbrReviewer() {
 	});
 	const [batchFilters, setBatchFilters] = useState({
 		site: null,
-		startDate: null,
-		endDate: null,
+		startDate: moment().subtract(3,'d'),
+		endDate: moment(),
 		time: "",
 		duration: null,
 		unApproved: 0,
@@ -700,9 +700,9 @@ function PbrReviewer() {
 					: null, id: []
 			}
 			setSelectedTemplateArray([])
-			cardTableData(req)
-			chart(req1)
-			chart1(req2)
+			// cardTableData(req)
+			// chart(req1)
+			// chart1(req2)
 		}
 		setSelectedTemplateArray(val)
 	}
@@ -735,20 +735,21 @@ function PbrReviewer() {
 				startDate: e[0].format("YYYY-MM-DD"),
 				endDate: e[1].format("YYYY-MM-DD"),
 			});
-		} else {
+		} 
+		else {
 			setBatchFilters({
 				...batchFilters,
 				startDate: null,
 				endDate: null,
 			});
-			let req = {
-				...reviewerReq, date_range: null
-			}
-			let req1 = {
-				date_range: null, id: selectedTemplateArray
-			}
-			cardTableData(req)
-			chart(req1)
+			// let req = {
+			// 	...reviewerReq, date_range: null
+			// }
+			// let req1 = {
+			// 	date_range: null, id: selectedTemplateArray
+			// }
+			// cardTableData(req)
+			// chart(req1)
 		}
 	};
 
@@ -836,7 +837,7 @@ function PbrReviewer() {
 												disabled={arr?.length == 0 ? true : false}
 											>Approve</Button>
 											<Search
-												placeholder="Search"
+												placeholder="Find"
 												allowClear
 												onSearch={landingSearch}
 												style={{ width: 300, marginTop: 7 }}
@@ -853,7 +854,7 @@ function PbrReviewer() {
 																moment(batchFilters.startDate, dateFormat),
 																moment(batchFilters.endDate, dateFormat),
 															]
-															: ""
+															: ''
 													}
 													format={dateFormat}
 													onChange={(dateString) => handledatechange(dateString)}
