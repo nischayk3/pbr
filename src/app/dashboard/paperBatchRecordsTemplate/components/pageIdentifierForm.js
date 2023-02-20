@@ -17,6 +17,7 @@ const { Option } = Select;
 function PageIdentifierForm(props) {
 	let { pageDragValue, setPageIdFormValues, handleOnFinishFailed, parameterFormFinish, initialPageIdentifierData, matBatch, params } = props
 	const dispatch = useDispatch();
+	const [form] = Form.useForm()
 	const [pageIdentifierFormValues, setPageIdentifierFormValues] = useState(initialPageIdentifierData ? initialPageIdentifierData : { users: [] });
 	const [activeKey, setActiveKey] = useState(0);
 	const [parameterCount, setParameterCount] = useState(0);
@@ -40,6 +41,10 @@ function PageIdentifierForm(props) {
 		}
 
 	}, [fieldCount])
+
+	useEffect(() => {
+		form.setFieldsValue(pageIdentifierFormValues)
+	   }, [form, pageIdentifierFormValues])
 
 	useEffect(() => {
 		if (pageIdentifierFormValues?.users[activeKey]?.keyCount) {
@@ -113,6 +118,7 @@ function PageIdentifierForm(props) {
 		/>
 	);
 	useEffect(() => {
+		console.log("pageDragValue", pageDragValue)
 		if (Object.keys(pageDragValue).length) {
 			let obj = { ...pageIdentifierFormValues.users[activeKey] }
 			obj[updateKeyValueClicked] = pageDragValue.areaValue
@@ -170,6 +176,7 @@ function PageIdentifierForm(props) {
 
 	return (
 		<Form name="dynamic_form_nest_item"
+			form={form}
 			onValuesChange={parameterValuesChange}
 			disabled={params.fromScreen == "Workflow"}
 			// onFinishFailed={handleOnFinishFailed}

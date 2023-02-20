@@ -28,13 +28,15 @@ function LandingPage() {
         getPdfMetaData()
     }, [])
 
-    const getPdfMetaData = async (value) => {
+    const getPdfMetaData = async (value,index) => {
         dispatch(showLoader());
         try {
             let req = {
                 search_text: value ? value : null,
                 file_id: null,
-                duration: null
+                duration: null,
+                limit:8,
+                page_index:index ? index : number
             }
             let res = await getPdfData(req)
             if (res['status-code'] === 200) {
@@ -56,7 +58,7 @@ function LandingPage() {
         setPostsPerPage(size)
     }
 
-    let newData = cardData.slice((number - 1) * postsPerPage, postsPerPage * number);
+    // let newData = cardData.slice((number - 1) * postsPerPage, postsPerPage * number);
 
     const onSearch = (value) => {
         if (value) {
@@ -71,7 +73,12 @@ function LandingPage() {
         history.push(`${match.url}/${val}`);
     }
 
-    const handlePage = (pageNumber) => setNumber(pageNumber);
+    const handlePage = (pageNumber,size) => {
+        console.log("pageNumber,size",pageNumber,size)
+        setNumber(pageNumber)
+        getPdfMetaData(null,pageNumber)
+
+    }
     return (
         <div className='landingDiv'>
             <div className='search-bar'>
@@ -96,7 +103,7 @@ function LandingPage() {
                     />
                 </div>
                 <Row gutter={[32, 16]}>
-                    {newData.map((item, index) => (
+                    {cardData.map((item, index) => (
                         <Col span={12} key={index}>
                             <Card className='cardStyle' bordered={false} key={index}>
                                 <Row>
