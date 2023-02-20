@@ -24,6 +24,7 @@ function LandingPage() {
     const [cardData, setCardData] = useState([])
     const [number, setNumber] = useState(1);
     const [postsPerPage, setPostsPerPage] = useState(8);
+    const [countFile, setCountFile] = useState(0);
     useEffect(() => {
         getPdfMetaData()
     }, [])
@@ -42,6 +43,7 @@ function LandingPage() {
             if (res['status-code'] === 200) {
                 dispatch(hideLoader());
                 setCardData(res.Data)
+                setCountFile(res.Count)
             } else {
                 setCardData([])
                 dispatch(hideLoader());
@@ -94,7 +96,7 @@ function LandingPage() {
             <div style={{ marginTop: 30 }}>
                 <div className='pagination'>
                     <Pagination size="small"
-                        total={cardData.length}
+                        total={countFile}
                         showTotal={(total) => `Total ${total} items`}
                         // defaultCurrent={number}
                         pageSize={postsPerPage}
