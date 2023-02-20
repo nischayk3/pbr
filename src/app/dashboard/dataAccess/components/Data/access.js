@@ -1,17 +1,17 @@
-export const dataSourceView = [
+export const dataSourceAccess = [
     {
         key: "1",
-        query: "view_disp_id",
+        query: "No input parameters",
         type: "text",
         desc: (
             <>
-                <p>The ID of the view to retrieve the data for </p>
+                <p>When no input parameters are passed The api will work for all users.   </p>
             </>
         ),
     },
     {
         key: "1",
-        query: "view_version",
+        query: "date_from",
         type: "text",
         desc: (
             <>
@@ -21,11 +21,31 @@ export const dataSourceView = [
     },
     {
         key: "1",
-        query: "type",
-        type: "integer",
+        query: "date_to",
+        type: "text",
         desc: (
             <>
                 <p>The format of the data to return, either csv or pdf</p>
+            </>
+        ),
+    },
+    {
+        key: "1",
+        query: "type",
+        type: "text",
+        desc: (
+            <>
+                <p>Options are  changed or created. Based on this type and data all users in this category are fetched. </p>
+            </>
+        ),
+    },
+    {
+        key: "1",
+        query: "user",
+        type: "text",
+        desc: (
+            <>
+                <p>Userid of the user whose details need to be fetched. </p>
             </>
         ),
     },
@@ -43,7 +63,7 @@ export const dataSourceView = [
     }
 ];
 
-export const columnsView = [
+export const columnsAccess = [
     {
         title: "Query Parameter",
         dataIndex: "query",
@@ -61,7 +81,7 @@ export const columnsView = [
     },
 ];
 
-export const versioningView = (
+export const versioningAccess = (
     <>
         {" "}
         <p className="overview">Versioning and Endpoint Lifecycle</p>
@@ -77,37 +97,37 @@ export const versioningView = (
     </>
 );
 
-export const parametersView_url = (
+export const parametersAccess_url = (
     <>
         <div className="black-div2" id="projects">
             <p className="black_text">
                 <br />
                 <span className="slash">/</span>services
                 <span className="slash">/</span>v1
-                <span className="slash">/</span>view-download
+                <span className="slash">/</span>download-all-user-details
             </p>
         </div>
     </>
 );
 
-export const view_request = {
-    download_type: "csv",
-    view_disp_id: "V475",
-    view_version: 2
-}
-export const render_side_tab_view = [
+export const access_request = [{
+    date_from: "",
+    date_to: "",
+    type: "",
+    user: ""
+
+}]
+export const render_side_tab_access = [
     "Overview",
     "Resources",
     "Parameters",
     "Versioning and Endpoint Lifecycle",
     "Conventions",
     "Output",
-    "Implementation",
     "Try Code",
 ];
 
-
-export const content_view = (<>
+export const content_access = (<>
     <div className="parent_div" id="Conventions">
         <p className="overview">Conventions</p>
         <ul>
@@ -139,7 +159,7 @@ export const content_view = (<>
     <div className="parent_div" id="Implementation">
         <p className="overview">Implementation</p>
         <ol>
-            <li className="content">	The function retrieves the view_disp_id, view_version, and type parameters from the request and stores them in a dictionary params. </li>
+            <li className="content">The function retrieves the view_disp_id, view_version, and type parameters from the request and stores them in a dictionary params. </li>
             <li className="content">The function then retrieves the access token from the x-access-token header and uses the get_data_from_token function to get the token data. </li>
             <li className="content">The function checks if the user has access to the view using the get_resource_names function and raising a UserDontHaveAccessError if the user does not have access.</li>
             <li className="content">The function uses the get_view_calculation function to retrieve the data for the view.</li>
@@ -152,4 +172,44 @@ export const content_view = (<>
     </div>
 </>
 )
+
+export const parameterContent_access = (
+    <>
+        <br />
+        <p className="content">
+            This code is a Python Flask endpoint that retrieves user details based on a role, and returns the data in a CSV format.
+            It uses the DownloadDetails class from the dataaccess.download_roles_users_details module to retrieve the data,
+            and uses the os and http libraries to handle file downloads and HTTP responses.
+        </p>
+        <p className="content">
+            The endpoint requires authentication and authorization, and uses a decorator for this purpose: user_authenticator .
+            User_authenticator is a custom decorator that verifies that the user has the correct role ('get-download-roles-users-details')
+            to access this endpoint, and ensures that the user has a valid token in their request headers.
+        </p>
+        <ol>
+            <li>
+                API has  following filters
+                <ol type="a">
+                    <li>
+                        No input parameters → gives list of all users +their role+ locked/unlocked + roles accessible resources and their action +roles data access restriction (molecule include, exclude, site include,exclude ) unapproved data is visible
+                    </li>
+                    <li>
+                        Dates from and to and type created → gives list of users created in that interval of time +their role+ locked/unlocked + roles accessible resources and their action +roles data access restriction (molecule include, exclude, site include,exclude ) unapproved data visible ?
+                    </li>
+                    <li>
+                        Dates from and to and type changed → gives list of users changed in that interval of time +their role+ locked/unlocked + roles accessible resources and their action +roles data access restriction (molecule include, exclude, site include,exclude ) unapproved data visible ?
+                    </li>
+                    <li>
+                        For a given user → user id +role+ locked/unlocked + roles accessible resources and their action +roles data access restriction (molecule include, exclude, site include,exclude ) unapproved data visible ?
+                    </li>
+                </ol>
+            </li>
+        </ol>
+
+    </>
+)
+
+
+
+
 

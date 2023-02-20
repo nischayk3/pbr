@@ -62,6 +62,7 @@ function ReportGenerator(props) {
 	const [reportStatus, setReportStatus] = useState('');
 	const [approveReject, setApproveReject] = useState('')
 	const [chartLayout, setChartLayout] = useState({});
+	const [isProcess, setProcess] = useState(false);
 	const selectedDays = {
 		Sunday: false,
 		Monday: false,
@@ -101,6 +102,9 @@ function ReportGenerator(props) {
 				res_obj['violation'] = true;
 				res_obj['exclusion'] = true;
 				res_obj['data_table'] = true;
+				if (isProcess)
+					res_obj['process_capabilites'] = true;
+
 				res_obj['layout'] = {};
 				res_obj['data'] = {};
 				res_obj['chartType'] = '';
@@ -433,9 +437,10 @@ function ReportGenerator(props) {
 																	}>
 																	Data Table
 																</Tag>
+
 															</span>{' '}
 														</p>
-														<Chart chartName={j} />
+														<Chart setProcess={setProcess} chartName={j} />
 													</div>
 												))}
 										</Panel>

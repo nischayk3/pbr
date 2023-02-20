@@ -1,15 +1,26 @@
 import { Button, Row, Table, Col, Popover } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ExclamationCircleOutlined } from "@ant-design/icons"
 import "./tabContent.scss";
 import CodeEditor from "@uiw/react-textarea-code-editor";
+import { showNotification } from "../../../../../duck/actions/commonActions";
+import { useDispatch } from "react-redux";
 
 export default function ContentRenderComponent(props) {
 
-  const [request, setRequest] = useState(JSON.stringify(props.request));
+  let request_props = props.request[0]
+  console.log(props)
+
+  const [request, setRequest] = useState(JSON.stringify(request_props));
+  const dispatch = useDispatch()
   const [statusCode, setStatusCode] = useState(0);
   const [result, setResult] = useState("");
   const [selectedDiv, setSelectedDiv] = useState("Overview");
+
+  useState(() => {
+    setRequest(props.request[0])
+  }, [props])
+
   const content = (
     <div className="parent_div" id="Error Codes">
       <ul>
@@ -38,28 +49,33 @@ export default function ContentRenderComponent(props) {
     </div>
   );
   const getResult = async () => {
-    let result = await props.getData(request);
-    if (result.Status > 200) {
-      setStatusCode(result.Status);
-      setResult(JSON.stringify(result));
+    if (request.length > 0) {
+      let result = await props.getData(JSON.parse(request));
+      if (result.Status > 200 || result.statuscode > 200) {
+        setStatusCode(result.Status || result.statuscode);
+        setResult(JSON.stringify(result));
+      }
+      else if (result) {
+        if (result.status || result.statuscode > 200) {
+          setStatusCode(result.status);
+          setResult('');
+        }
+        else {
+          setStatusCode(200);
+          setResult(result);
+          const url = window.URL.createObjectURL(new Blob([result]));
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `${props.selectedTab}-response.csv`;
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
+        }
+      }
     }
-    else if (result) {
-      if (result.status) {
-        setStatusCode(result.status);
-        setResult('');
-
-      }
-      else {
-        setStatusCode(200);
-        setResult(result);
-        const url = window.URL.createObjectURL(new Blob([result]));
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `${props.selectedTab}-response.csv`;
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-      }
+    else {
+      dispatch(showNotification('error', 'Request is empty'))
+      setResult(""); S
     }
   };
 
@@ -81,6 +97,9 @@ export default function ContentRenderComponent(props) {
     });
   };
 
+  useEffect(() => {
+    setRequest(JSON.stringify(props.request))
+  }, [props.selectedTab])
 
   return (
     <div>
@@ -90,7 +109,7 @@ export default function ContentRenderComponent(props) {
             <div className="parent_div" id="Overview">
               <p className="overview">Overview</p>
               <p className="content">
-                To facilitate management, Apache Airflow supports a range of
+                To facilitate management,  MI  supports a range of
                 REST API endpoints across its objects. This section provides an
                 overview of the API design, methods, and supported use cases.
               </p>
@@ -142,6 +161,7 @@ export default function ContentRenderComponent(props) {
             </div>
 
             {props.url}
+            {props.parameterContent}
             <Table
               className="parent_div"
               dataSource={props.dataSource}
@@ -167,9 +187,11 @@ export default function ContentRenderComponent(props) {
             </div>
 
             <div className="parent_div" id="section">
-              <p className="overview">Try it yourself</p>
-              <span className="content_try">Request</span> <span className="status_codes">See error codes <Popover content={content}> <ExclamationCircleOutlined style={{ color: '#162154' }} /> </Popover></span>
+              <span className="overview">Try it yourself</span>
+              <span className="status_codes">See error codes <Popover content={content}> <ExclamationCircleOutlined style={{ color: '#162154' }} /> </Popover></span>
+              <p className="content_try">Request</p>
               <CodeEditor
+                key={1}
                 value={request}
                 onChange={(e) => handleChange(e)}
                 language="json"
@@ -197,6 +219,7 @@ export default function ContentRenderComponent(props) {
                   </div>
                   <p className="overview">
                     <CodeEditor
+                      key={2}
                       value={result}
                       language="json"
                       padding={15}
