@@ -2,7 +2,7 @@ import {
 	AppstoreAddOutlined, AppstoreOutlined, AreaChartOutlined, BarChartOutlined, BlockOutlined,
 	CheckCircleOutlined, CloudUploadOutlined, ClusterOutlined, CodeOutlined, DeploymentUnitOutlined, DiffOutlined, FileDoneOutlined,
 	FileProtectOutlined, FileSearchOutlined, FileSyncOutlined, FundOutlined, FundProjectionScreenOutlined,
-	NodeIndexOutlined, PartitionOutlined, SisternodeOutlined, TeamOutlined, UploadOutlined, UserOutlined,FilePdfOutlined
+	NodeIndexOutlined, PartitionOutlined, SisternodeOutlined, TeamOutlined, UploadOutlined, UserOutlined, FilePdfOutlined
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import React, { useEffect, useState } from "react";
@@ -305,7 +305,7 @@ const Sidebar = () => {
 					permissions['PBR_FILE_UPLOAD'] ||
 					permissions['PBR_TEMPLATE'] ||
 					permissions['PBR_DASHBOARD'] ||
-					permissions['PBR_PDF_SEARCH'] ? (
+					permissions['PBR_FILE_SEARCH'] ? (
 					<SubMenu
 						key="sub6"
 						mode="inline"
@@ -322,7 +322,7 @@ const Sidebar = () => {
 								<Link to="/dashboard/pbr_file_upload">File Upload</Link>
 							</Menu.Item>
 						)}
-						{permissions['PBR_PDF_SEARCH']&&<Menu.Item
+						{permissions['PBR_FILE_SEARCH'] && <Menu.Item
 							key="pbr-pdf-viewer"
 							icon={<FilePdfOutlined className="menu-icons" />}
 							id="pbr-pdf-viewer"
