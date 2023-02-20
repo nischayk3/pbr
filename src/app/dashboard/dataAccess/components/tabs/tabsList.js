@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import "./tabs.scss";
 
 export default function DataAccessTabs(props) {
+
   const [tabsList, setTabsList] = useState([
     {
       title: "Genealogy",
@@ -11,6 +12,11 @@ export default function DataAccessTabs(props) {
     },
     {
       title: "View",
+      icon: <BarChartOutlined style={{ color: "#162154" }} />,
+      selected: false,
+    },
+    {
+      title: "Roles and Access",
       icon: <BarChartOutlined style={{ color: "#162154" }} />,
       selected: false,
     },
