@@ -2,7 +2,7 @@ import {
 	AppstoreAddOutlined, AppstoreOutlined, AreaChartOutlined, BarChartOutlined, BlockOutlined,
 	CheckCircleOutlined, CloudUploadOutlined, ClusterOutlined, CodeOutlined, DeploymentUnitOutlined, DiffOutlined, FileDoneOutlined,
 	FileProtectOutlined, FileSearchOutlined, FileSyncOutlined, FundOutlined, FundProjectionScreenOutlined,
-	NodeIndexOutlined, PartitionOutlined, SisternodeOutlined, TeamOutlined, UploadOutlined, UserOutlined
+	NodeIndexOutlined, PartitionOutlined, SisternodeOutlined, TeamOutlined, UploadOutlined, UserOutlined,FilePdfOutlined
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import React, { useEffect, useState } from "react";
@@ -173,7 +173,7 @@ const Sidebar = () => {
 							</Menu.Item>
 						)}
 
-						{/* <Menu.Item
+						<Menu.Item
 							key="system-config"
 							icon={<DeploymentUnitOutlined className="menu-icons" />}
 							id="limit-config"
@@ -182,7 +182,7 @@ const Sidebar = () => {
 							<Link to="/dashboard/system-config">
 								System Config
 							</Link>
-						</Menu.Item> */}
+						</Menu.Item>
 					</SubMenu>
 				) : null}
 
@@ -323,7 +323,7 @@ const Sidebar = () => {
 						)}
 						<Menu.Item
 							key="pbr-pdf-viewer"
-							icon={<CheckCircleOutlined className="menu-icons" />}
+							icon={<FilePdfOutlined className="menu-icons" />}
 							id="pbr-pdf-viewer"
 							className={path === "/dashboard/pbr-pdf-viewer" ? 'ant-menu-item-selected' : 'remove-selected'}
 						>

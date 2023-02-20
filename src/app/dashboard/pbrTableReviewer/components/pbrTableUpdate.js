@@ -280,7 +280,8 @@ const pbrTableUpdate = () => {
 			id: Number(params.id),
 			limit: null,
 			status: null,
-			template_id: []
+			template_id: [],
+			date_range:null
 		}
 		let res = await getPbrReviewerData(req);
 		let arr = res?.Data[0]?.table_value.map((item, index) => ({ ...item, key: index }))

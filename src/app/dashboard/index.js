@@ -8,20 +8,20 @@ import {
 	useLocation,
 	useRouteMatch
 } from "react-router-dom";
+import HeaderBar from "../../components/Header";
+import Sidebar from "../../components/Sidebar";
 import SuspenseWrapper from "../../components/SuspenseWrapper";
+import { PRODUCT_FOR } from "../../constants/apiBaseUrl";
 import { showNotification } from "../../duck/actions/commonActions";
 import LoginRedirect from "../user/login/redirect";
 import RedirectSign from "../user/login/redirectSign";
 import RedirectSAMLSign from "../user/login/samlRedirectSign";
 import "./dashboard.scss";
-import LimitConfig from "./LimitConfig/components/landing/LimitConfig";
 import PrivateRoute from "./ProtectedRoute";
-import SystemConfig from "./SystemConfig/components/systemConfig";
 // DASHBOARD ROUTE COMPONENTS
-
-const HeaderBar = lazy(() => import("../../components/Header"))
+// const HeaderBar = lazy(() => import("../../components/Header"))
+//const Sidebar = lazy(() => import("../../components/Sidebar"))
 const Help = lazy(() => import("../../components/Help"))
-const Sidebar = lazy(() => import("../../components/Sidebar"))
 const ViewPage = lazy(() => import("./chartPersonal/components/viewPage/ViewPage"));
 const RolesAndAccess = lazy(() => import("./UserRolesAndAccess/RolesAndAccess/RolesAndAccess"));
 const RolesAndAccessV2 = lazy(() => import("./UserRolesAndAccess/RolesAndAccess/RolesAndAccessV2"));
@@ -65,13 +65,16 @@ const Profile = lazy(() => import("./profile"));
 const CrossBatchComparison = lazy(() => import("./crossBatchComparison"));
 const DataScienceStudio = lazy(() => import("./DataScienceStudio"));
 const TargetVariable = lazy(() => import("./DataScienceStudio/components/targetVariable/TargetVariable"));
-const ElogBook = lazy(() => import("./ElogBook/components/entryLanding/entryLanding"))
-const ElogBookEntry = lazy(() => import("./ElogBook/components/dataEntryForm/dataEntryForm"))
-const EBookStep = lazy(() => import("./ElogBook/components/ebookSteps/eBookStep"))
-const ELogBookTemplate = lazy(() => import("./ElogBook/components/landingPage/Landing"))
-const TableauDashboard = lazy(() => import("./TableauDashboard/tableauDashboard"))
-const PbrPdfViewer = lazy(() => import("./pbrPdfViewer"))
-const PbrViewPdf = lazy(() => import("./pbrPdfViewer/componenets/viewPdf"))
+const ElogBook = lazy(() => import("./ElogBook/components/entryLanding/entryLanding"));
+const ElogBookEntry = lazy(() => import("./ElogBook/components/dataEntryForm/dataEntryForm"));
+const EBookStep = lazy(() => import("./ElogBook/components/ebookSteps/eBookStep"));
+const ELogBookTemplate = lazy(() => import("./ElogBook/components/landingPage/Landing"));
+const TableauDashboard = lazy(() => import("./TableauDashboard/tableauDashboard"));
+const PbrPdfViewer = lazy(() => import("./pbrPdfViewer"));
+const PbrViewPdf = lazy(() => import("./pbrPdfViewer/componenets/viewPdf"));
+const SystemConfig = lazy(() => import("./SystemConfig/components/systemConfig"));
+const LimitConfig = lazy(() => import("./LimitConfig/components/landing/LimitConfig"));
+
 
 const { Content } = Layout;
 
@@ -90,6 +93,9 @@ const Dashboard = () => {
 				history.push('/user/login');
 				window.location.reload()
 			}, 3000)
+		}
+		if (PRODUCT_FOR == 'BMS') {
+			localStorage.setItem("loginwith", 'WITH_SAML')
 		}
 	}, []);
 

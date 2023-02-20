@@ -5,7 +5,7 @@
 }
 .search-bar{
     background: #a5a5ec;
-    height: 61px;
+    height: 71px;
     border-radius: 12px;
     .search{
         margin: 14px 53px;
@@ -191,5 +191,17 @@
 .metaData1{
     display: flex;
     justify-content: space-between;
-    width: 278px;
+    width: 352px;
+}
+.search-bar{
+.ant-input-affix-wrapper{
+	border-radius: 11px !important;
+    height: 40px !important;
+}
+.ant-input-group-addon{
+	background: #a5a5ec;
+}
+.ant-input-search-button{
+	height: 36px;
+}
 }

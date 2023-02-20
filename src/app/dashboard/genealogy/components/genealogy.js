@@ -291,7 +291,7 @@ function Genealogy() {
 	const selectedParameter = (param) => {
 		const product = param && param.product.split("-");
 		const plant = param && param.plant.split("-");
-		const batch = param && param.batch.split("-")
+		const batch = param && param.batch.split("|")
 		const batchSplit = PRODUCT_FOR == 'BMS' ? batch[0] : param.batch
 
 		const selectedValue = plant[0] + "|" + product[0] + "|" + batchSplit;
