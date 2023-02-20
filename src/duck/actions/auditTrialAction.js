@@ -1,19 +1,7 @@
 import {
-	API_RESULTSET_URL,
 	BMS_APP_PYTHON_SERVICE
 } from '../../constants/apiBaseUrl';
 import Service from '../../services/AjaxService';
-
-export const loadFilter = (request) => {
-	return Service.post(API_RESULTSET_URL + '/loadFilter', request).then(
-		(response) => {
-			return response;
-		},
-		(error) => {
-			return error.response.data;
-		}
-	);
-};
 
 export const auditDataChange = (request) => {
 	return Service.post(

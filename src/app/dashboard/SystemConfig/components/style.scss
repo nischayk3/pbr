@@ -1,5 +1,13 @@
 .config-wrap {
 	padding: 10px 0;
+
+	.table-wrap {
+		.table-head {
+			button {
+				float: right
+			}
+		}
+	}
 }
 
 .config-table {
@@ -16,4 +24,10 @@
 			}
 		}
 	}
+}
+
+.editable-row .ant-form-item-explain {
+	position: absolute;
+	top: 100%;
+	font-size: 12px;
 }
