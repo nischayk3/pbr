@@ -5,7 +5,6 @@ import { v1 as uuid } from "uuid";
 import ROW_ICON from '../../../../assets/icons/add-row.png';
 import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
 import { deleteConfig, updateConfig } from '../../../../services/systemConfigService';
-
 const EditableCell = ({
 	editing,
 	dataIndex,
@@ -41,7 +40,7 @@ const EditableCell = ({
 	);
 };
 
-const DataTable = ({ tableData }) => {
+const EsignTable = ({ tableData }) => {
 	const [form] = Form.useForm();
 	const dispatch = useDispatch();
 	const [data, setData] = useState([]);
@@ -131,17 +130,12 @@ const DataTable = ({ tableData }) => {
 		setData(newData);
 	};
 
+
 	const handleAdd = () => {
 		const newData = {
-			email_id: "",
-			imap_port: "",
-			imap_server: "",
-			pop_port: "",
-			pop_server: "",
-			smtp_enable: false,
-			smtp_port: "",
-			smtp_server: "",
-			use_type: "",
+			language: "",
+			reason_code: "",
+			reason_text: "",
 			key: uuid(),
 		};
 		setEditingKey(newData.key);
@@ -152,7 +146,7 @@ const DataTable = ({ tableData }) => {
 		delete _req['key'];
 		let payload = {
 			data: _req,
-			type: "emails"
+			type: "esign_reasons"
 		}
 		try {
 			dispatch(showLoader())
@@ -176,7 +170,7 @@ const DataTable = ({ tableData }) => {
 		delete _req['key'];
 		let payload = {
 			data: _req,
-			type: "emails"
+			type: "esign_reasons"
 		}
 		try {
 			dispatch(showLoader())
@@ -196,19 +190,14 @@ const DataTable = ({ tableData }) => {
 	};
 
 
+
 	const handleEdit = (record) => {
 		setEditingKey(record.key);
 
 		form.setFieldsValue({
-			email_id: "",
-			imap_port: "",
-			imap_server: "",
-			pop_port: "",
-			pop_server: "",
-			smtp_enable: "",
-			smtp_port: "",
-			smtp_server: "",
-			use_type: "",
+			language: "",
+			reason_code: "",
+			reason_text: "",
 			...record,
 		});
 	};
@@ -253,7 +242,7 @@ const DataTable = ({ tableData }) => {
 			...col,
 			onCell: (record) => ({
 				record,
-				inputType: col.dataIndex === 'imap_port' || col.dataIndex === 'pop_port' || col.dataIndex === 'smtp_port' ? 'number' : 'text',
+				inputType: 'text',
 				dataIndex: col.dataIndex,
 				title: col.title,
 				editing: isEditing(record),
@@ -276,12 +265,15 @@ const DataTable = ({ tableData }) => {
 					</Button>
 				</Tooltip>
 			</div>
+
 			< Table
 				components={{
 					body: {
 						cell: EditableCell,
 					},
 				}}
+				bordered={false}
+				className="config-table"
 				dataSource={data}
 				columns={mergedColumns}
 				rowClassName="editable-row"
@@ -289,9 +281,8 @@ const DataTable = ({ tableData }) => {
 					onChange: cancel,
 				}}
 				rowKey={(record) => record.email_id}
-				bordered={false} className="config-table"
 			/>
 		</Form>
 	);
 };
-export default DataTable;
+export default EsignTable;

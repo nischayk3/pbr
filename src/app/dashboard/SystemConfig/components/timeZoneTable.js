@@ -41,7 +41,7 @@ const EditableCell = ({
 	);
 };
 
-const DataTable = ({ tableData }) => {
+const TimeZoneTable = ({ tableData }) => {
 	const [form] = Form.useForm();
 	const dispatch = useDispatch();
 	const [data, setData] = useState([]);
@@ -131,17 +131,11 @@ const DataTable = ({ tableData }) => {
 		setData(newData);
 	};
 
+
 	const handleAdd = () => {
 		const newData = {
-			email_id: "",
-			imap_port: "",
-			imap_server: "",
-			pop_port: "",
-			pop_server: "",
-			smtp_enable: false,
-			smtp_port: "",
-			smtp_server: "",
-			use_type: "",
+			site_code: "",
+			timezone: "",
 			key: uuid(),
 		};
 		setEditingKey(newData.key);
@@ -152,7 +146,7 @@ const DataTable = ({ tableData }) => {
 		delete _req['key'];
 		let payload = {
 			data: _req,
-			type: "emails"
+			type: "timezone"
 		}
 		try {
 			dispatch(showLoader())
@@ -171,12 +165,11 @@ const DataTable = ({ tableData }) => {
 		}
 	};
 
-
 	const deleteTableConfig = async (_req) => {
 		delete _req['key'];
 		let payload = {
 			data: _req,
-			type: "emails"
+			type: "timezone"
 		}
 		try {
 			dispatch(showLoader())
@@ -200,15 +193,8 @@ const DataTable = ({ tableData }) => {
 		setEditingKey(record.key);
 
 		form.setFieldsValue({
-			email_id: "",
-			imap_port: "",
-			imap_server: "",
-			pop_port: "",
-			pop_server: "",
-			smtp_enable: "",
-			smtp_port: "",
-			smtp_server: "",
-			use_type: "",
+			site_code: "",
+			timezone: "",
 			...record,
 		});
 	};
@@ -282,6 +268,8 @@ const DataTable = ({ tableData }) => {
 						cell: EditableCell,
 					},
 				}}
+				bordered={false}
+				className="config-table"
 				dataSource={data}
 				columns={mergedColumns}
 				rowClassName="editable-row"
@@ -289,9 +277,8 @@ const DataTable = ({ tableData }) => {
 					onChange: cancel,
 				}}
 				rowKey={(record) => record.email_id}
-				bordered={false} className="config-table"
 			/>
 		</Form>
 	);
 };
-export default DataTable;
+export default TimeZoneTable;

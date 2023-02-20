@@ -1,5 +1,5 @@
-import './block.scss';
 import React from 'react';
+import './block.scss';
 
 const statusColor = status => {
 	if (status == 'APRD' || status == 'approved') {
@@ -22,8 +22,10 @@ const StatusBlock = props => {
 			<div className={`tile-status ${statusColor(props.status)}`}>
 				{props.status}
 			</div>
-			{props.id}<br />
-			{props.name}
+			<div className='tile-name'>
+				<span className='id'>{props.id}</span>
+				<span className='name'>{props.name}</span>
+			</div>
 		</div>
 	);
 };

@@ -1,3 +1,33 @@
 .config-wrap {
 	padding: 10px 0;
+
+	.table-wrap {
+		.table-head {
+			button {
+				float: right
+			}
+		}
+	}
+}
+
+.config-table {
+	.ant-table {
+		.ant-table-container {
+			.ant-table-content {
+				.ant-table-thead {
+					width: 100px;
+
+					.ant-table-cell {
+						background: #E7E5FF !important;
+					}
+				}
+			}
+		}
+	}
+}
+
+.editable-row .ant-form-item-explain {
+	position: absolute;
+	top: 100%;
+	font-size: 12px;
 }

@@ -1,10 +1,9 @@
 .workspace-illustration {
-	height: 137px;
-	// float: right;
-	// position: relative;
-	// /* top: 0px; */
-	// bottom: 112px;
-	// right: 300px;
+	text-align: center;
+
+	img {
+		height: 165px;
+	}
 }
 
 
@@ -88,15 +87,6 @@
 	background: #ffffff;
 	box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1);
 	border-radius: 4px;
-}
-
-.workspace-subheader {
-	padding: 10px 29px;
-	background: #ffffff;
-	display: flex;
-	align-items: center;
-	justify-content: right;
-	height: 50px;
 }
 
 .deviation-text {
@@ -255,38 +245,7 @@
 	color: rgba(0, 0, 0, 0.85);
 }
 
-.workspace-processCharts-name {
-	display: flex;
-	justify-content: center;
-	font-family: var(--primary-font-family);
-	font-style: normal;
-	font-weight: 300;
-	font-size: 16px;
-	line-height: 22px;
-	color: #000000;
-}
 
-.workspace-processCharts-id {
-	display: flex;
-	justify-content: center;
-	font-family: var(--primary-font-family);
-	font-style: normal;
-	font-weight: 400;
-	font-size: 14px;
-	line-height: 22px;
-	color: #000000;
-	margin-top: 0px;
-}
-
-.workspace-processChart-card {
-	width: 162px;
-	height: 84px;
-	background: #e2e8f2;
-	border-radius: 4px;
-	padding: 10px;
-	cursor: pointer;
-	position: relative;
-}
 
 .workspace-processChart-main {
 	margin: 25px;
@@ -302,41 +261,8 @@
 	color: rgba(0, 0, 0, 0.85);
 }
 
-.workspace-processView-name {
-	display: flex;
-	justify-content: center;
-	font-family: var(--primary-font-family);
-	font-style: normal;
-	font-weight: 300;
-	font-size: 16px;
-	line-height: 22px;
-	color: #000000;
-}
-
-.workspace-processView-id {
-	display: flex;
-	justify-content: center;
-	font-family: var(--primary-font-family);
-	font-style: normal;
-	font-weight: 400;
-	font-size: 14px;
-	line-height: 22px;
-	color: #000000;
-	margin-top: 0px;
-}
-
-.workspace-processView-card {
-	width: 162px;
-	height: 84px;
-	background: #e2e8f2;
-	border-radius: 4px;
-	padding: 10px;
-	cursor: pointer;
-	position: relative;
-}
-
 .recentcard {
-	padding: 25px;
+	padding: 18px 10px;
 	margin: 12px 13px;
 }
 
@@ -350,32 +276,12 @@
 	justify-content: center;
 }
 
-.tile-status {
-	// background: #F7BB61;
-	border-radius: 0px 4px;
-	margin-right: right;
-	position: absolute;
-	top: 0%;
-	right: 0%;
-	width: 52px;
-	align-content: center;
-	font-size: small;
-	padding: 0px 10px;
+.tile {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(173px, 1fr));
+	grid-gap: 16px;
 }
 
-.awap {
-	background: #f7bb61;
-	align-content: center;
-}
-
-.aprd {
-	background: #a4f588;
-}
-
-.drft {
-	background: #363636;
-	color: white;
-}
 
 .workspace-legend {
 	display: flex;
