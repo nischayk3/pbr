@@ -304,7 +304,8 @@ const Sidebar = () => {
 				{permissions &&
 					permissions['PBR_FILE_UPLOAD'] ||
 					permissions['PBR_TEMPLATE'] ||
-					permissions['PBR_DASHBOARD'] ? (
+					permissions['PBR_DASHBOARD'] ||
+					permissions['PBR_PDF_SEARCH'] ? (
 					<SubMenu
 						key="sub6"
 						mode="inline"
@@ -321,14 +322,14 @@ const Sidebar = () => {
 								<Link to="/dashboard/pbr_file_upload">File Upload</Link>
 							</Menu.Item>
 						)}
-						<Menu.Item
+						{permissions['PBR_PDF_SEARCH']&&<Menu.Item
 							key="pbr-pdf-viewer"
 							icon={<FilePdfOutlined className="menu-icons" />}
 							id="pbr-pdf-viewer"
 							className={path === "/dashboard/pbr-pdf-viewer" ? 'ant-menu-item-selected' : 'remove-selected'}
 						>
 							<Link to="/dashboard/pbr-pdf-viewer">Pdf Search</Link>
-						</Menu.Item>
+						</Menu.Item>}
 
 						{permissions['PBR_TEMPLATE'] && (
 							<Menu.Item
