@@ -2,20 +2,19 @@ import {
 	ArrowRightOutlined, LayoutOutlined
 } from "@ant-design/icons";
 import {
-	Avatar, Card, Col, Divider,
+	Avatar, Col, Divider,
 	Empty, Row, Tabs
 } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { lazy, useEffect, useState } from "react";
 import { FaCircle } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import emptyImage from "../../../../assets/images/empty-image.png";
 import illustrations from "../../../../assets/images/Group 33808.svg";
 import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
+import ScreenHeader from "../../../../components/ScreenHeader/screenHeader";
 import { MDH_AIRFLOW } from "../../../../constants/apiBaseUrl";
 import {
-	hideLoader,
-	showLoader,
 	showNotification
 } from "../../../../duck/actions/commonActions";
 import { getJob } from "../../../../services/jobScheduleService";
@@ -24,15 +23,18 @@ import {
 	getChartExceptionData,
 	getUpdatedChartsViewsData
 } from "../../../../services/workSpaceServices";
-import Chart from "./chartComponent/chartComponent";
-import DataQuality from "./dataQuality/dataQuality";
-import DeviationTable from "./deviationTable/deviationTable";
+
+const Chart = lazy(() => import("./chartComponent/chartComponent"));
+const DataQuality = lazy(() => import("./dataQuality/dataQuality"));
+const DeviationTable = lazy(() => import("./deviationTable/deviationTable"));
+// import Chart from "./chartComponent/chartComponent";
+// import DataQuality from "./dataQuality/dataQuality";
+// import DeviationTable from "./deviationTable/deviationTable";
 import "./styles.scss";
 
 const { TabPane } = Tabs;
 
 const Workspace = () => {
-	const [resultDate, setResultDate] = useState("");
 	const [tilesData, setTilesData] = useState([]);
 	const [userApproval, setUserApproval] = useState([]);
 	const [chartIdException, setChartIdException] = useState([]);
@@ -46,7 +48,6 @@ const Workspace = () => {
 	const history = useHistory();
 
 	useEffect(() => {
-		updateDate();
 		getTilesData();
 		getChartId();
 		lastUpdatedChartsViews();
@@ -54,21 +55,10 @@ const Workspace = () => {
 		getScheduleReportAlertsData();
 	}, []);
 
-	//get todays date
-	const updateDate = () => {
-		const date = new Date();
-		const month = date.toLocaleString("default", { month: "long" });
-		const latestDate = date.getDate();
-		const year = date.getFullYear();
-		const resultDate = month + " " + latestDate + "," + " " + year;
-		setResultDate(resultDate);
-	};
-
 	//workflow approval card function
 	const getTilesData = async () => {
 		let req = {};
 		try {
-			dispatch(showLoader());
 			const tilesResponse = await getCountData(req);
 			if (tilesResponse["status-code"] == 200) {
 				let filterPbrCount = tilesResponse["Data"].filter(
@@ -77,10 +67,8 @@ const Workspace = () => {
 				setTilesData(tilesResponse["Data"]);
 				setUserApproval(tilesResponse["counts"]);
 				setPbrCount(filterPbrCount[0] && filterPbrCount[0].item_count);
-				dispatch(hideLoader());
 			}
 		} catch (error) {
-			dispatch(hideLoader());
 			dispatch(showNotification("error", error.message));
 		}
 	};
@@ -97,12 +85,9 @@ const Workspace = () => {
 			"resource-name": "WORKITEMS",
 		};
 		try {
-			dispatch(showLoader());
 			const alertResponse = await getJob(req, headers);
 			setScheduleChartAlerts(alertResponse.Data);
-			dispatch(hideLoader());
 		} catch (error) {
-			dispatch(hideLoader());
 			dispatch(showNotification("error", error.message));
 		}
 	};
@@ -119,12 +104,9 @@ const Workspace = () => {
 			"resource-name": "WORKITEMS",
 		};
 		try {
-			dispatch(showLoader());
 			const alertResponse = await getJob(req, headers);
 			setScheduleReportAlerts(alertResponse.Data);
-			dispatch(hideLoader());
 		} catch (error) {
-			dispatch(hideLoader());
 			dispatch(showNotification("error", error.message));
 		}
 	};
@@ -133,7 +115,6 @@ const Workspace = () => {
 	const getChartId = async () => {
 		let req = { limit: 5 };
 		try {
-			// dispatch(showLoader());
 			const chartIdResponse = await getChartExceptionData(req);
 			setChartIdException(chartIdResponse.Data);
 			setActiveTab(
@@ -141,11 +122,8 @@ const Workspace = () => {
 				"_" +
 				chartIdResponse?.Data[0]?.chart_version
 			);
-			// dispatch(hideLoader());
 		} catch (error) {
 			console.log("inside2", error);
-			// dispatch(hideLoader());
-			// dispatch(showNotification("error", error.Message));
 		}
 	};
 
@@ -153,13 +131,10 @@ const Workspace = () => {
 	const lastUpdatedChartsViews = async () => {
 		let req = { limit: 5 };
 		try {
-			dispatch(showLoader());
 			const chartResponse = await getUpdatedChartsViewsData(req);
 			setLastUpdatedCharts(chartResponse.last_created_or_changed_charts);
 			setLastUpdatedViews(chartResponse.last_created_or_changed_views);
-			dispatch(hideLoader());
 		} catch (error) {
-			dispatch(hideLoader());
 			dispatch(showNotification("error", error.Message));
 		}
 	};
@@ -181,26 +156,27 @@ const Workspace = () => {
 			return "awap";
 		}
 	};
+
+	const greet = [
+		'Good Morning',
+		'Good Morning',
+		'Good Afternoon',
+		'Good Evening'
+	][parseInt(new Date().getHours() / 24 * 4)];
+
 	return (
 		<div className="custom-wrapper">
 			<BreadCrumbWrapper />
 			<div className="custom-content-layout">
-				<Card className="workspace_head">
-					<div>
-						<p className="workspace-username">
-							Howdy {localStorage.getItem("username")}! Good Morning
-						</p>
-						<p className="workspace-text">
-							Let's see what you have on your plate today!
-						</p>
-					</div>
-					<div style={{ display: "flex", flexDirection: "row", flex: 1 }}>
-						<img src={illustrations} className="workspace-illustration" />
-					</div>
-					<div>
-						<span className="workspace-resultdate">{resultDate}</span>
-					</div>
-				</Card>
+				<ScreenHeader
+					bannerbg={{
+						background: "linear-gradient(180deg, #e7e6ff 0%, #fff4f4 100%)",
+					}}
+					title={`Howdy ${localStorage.getItem("username")}! ${greet}`}
+					description="Let's see what you have on your plate today!"
+					source={illustrations}
+					sourceClass="workspace-illustration"
+				/>
 				<div className="workspace-wrapper">
 					<div className="workspace-main-block">
 						<div className="workspace-innerColumn">
