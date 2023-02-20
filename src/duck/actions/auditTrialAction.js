@@ -50,3 +50,14 @@ export const reportDownload = _queryParam => {
 		}
 	);
 }
+
+export const eSignDetails = (request, headers) => {
+	return Service.get(BMS_APP_PYTHON_SERVICE + '/esign-details', request, headers).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+}
