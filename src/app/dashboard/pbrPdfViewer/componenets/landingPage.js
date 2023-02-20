@@ -5,6 +5,12 @@ import pdfIcon from '../../../../assets/pdfIcon.png'
 import greenCircle from '../../../../assets/greenCircle.png'
 import red_circle from '../../../../assets/red_circle.png'
 import { useHistory, useRouteMatch } from 'react-router-dom';
+import {
+	hideLoader,
+	showLoader,
+	showNotification
+} from '../../../../duck/actions/commonActions';
+import { useDispatch } from 'react-redux';
 import './style.scss'
 import { async } from 'q';
 const { Search } = Input;
@@ -12,6 +18,7 @@ const { Search } = Input;
 
 
 function LandingPage() {
+    const dispatch = useDispatch();
     let history = useHistory();
     const match = useRouteMatch();
     const [cardData, setCardData] = useState([])
@@ -22,6 +29,7 @@ function LandingPage() {
     }, [])
 
     const getPdfMetaData = async (value) => {
+        dispatch(showLoader());
         try {
             let req = {
                 search_text: value ? value : null,
@@ -30,20 +38,19 @@ function LandingPage() {
             }
             let res = await getPdfData(req)
             if (res['status-code'] === 200) {
+                dispatch(hideLoader());
                 setCardData(res.Data)
             } else {
                 setCardData([])
+                dispatch(hideLoader());
             }
         } catch (err) {
+            dispatch(hideLoader());
             console.log(err)
         }
 
     }
 
-    const getRandomColor = index => {
-        let colors = ['#56483F', '#728C69', '#c04000', '#c19578'];
-        return colors[index % 4];
-    };
 
     const handleSizeChanger = (current, size) => {
         setPostsPerPage(size)
@@ -70,7 +77,7 @@ function LandingPage() {
             <div className='search-bar'>
                 <Search
                     className='search'
-                    placeholder="input search text"
+                    placeholder="Search by PDF name,ID,material,batch or associated templates"
                     allowClear
                     onSearch={onSearch}
                     onPressEnter={onSearch}
@@ -94,7 +101,7 @@ function LandingPage() {
                             <Card className='cardStyle' bordered={false} key={index}>
                                 <Row>
                                     <Col span={8}>
-                                        <img src={pdfIcon} style={{ height: 202, width: 156 }} />
+                                        <img src={pdfIcon} style={{ height: 202, width: 169 }} />
                                     </Col>
                                     <Col span={16}>
 
@@ -143,11 +150,6 @@ function LandingPage() {
                         </Col>
                     ))}
 
-                    {/* <Col span={12} />
-                    <Col span={12} />
-
-                    <Col span={12} />
-                    <Col span={12} /> */}
                 </Row>
             </div>
         </div>

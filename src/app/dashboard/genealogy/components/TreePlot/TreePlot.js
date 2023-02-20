@@ -19,6 +19,7 @@ import {
 import { Button, Select } from "antd";
 import batchIcon from "../../../../../assets/images/material.png";
 import processOrderIcon from "../../../../../assets/images/processorder.png";
+import { MDH_APP_PYTHON_SERVICE } from "../../../../../constants/apiBaseUrl";
 import "./style.scss";
 
 function TreePlot(props) {
@@ -689,17 +690,14 @@ function TreePlot(props) {
 						}
 					})
 					.attr("xlink:href", function (d) {
-
 						if (d.OpenNC === true) {
-							return "img/genealogy/non-material.png";
+							return `${MDH_APP_PYTHON_SERVICE}/img/genealogy/non-material.png`;
 						} else if (d.type === "Material") {
-							return "img/genealogy/material.png";
+							return `${MDH_APP_PYTHON_SERVICE}/img/genealogy/material.png`;
 						} else if (d.type === "Process Order") {
-							return "img/genealogy/processorder.png";
+							return `${MDH_APP_PYTHON_SERVICE}/img/genealogy/processorder.png`;
 						} else if (d.type === "Purchase Order") {
-							return "img/genealogy/purchaseorder.png";
-						} else if (d.matNo === "1101738") {
-							return "img/genealogy/purchaseorder.png";
+							return `${MDH_APP_PYTHON_SERVICE}/img/genealogy/purchaseorder.png`;
 						}
 					})
 					.attr("id", function (d) {

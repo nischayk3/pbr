@@ -1,5 +1,5 @@
 import { BellOutlined, CaretUpOutlined, DownOutlined, LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Button, Input, Layout, Modal } from 'antd';
+import { Avatar, Button, Layout, Modal } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -13,7 +13,7 @@ import Auth from '../../utils/auth';
 import './style.scss';
 
 const { Header } = Layout;
-const { Search } = Input;
+// const { Search } = Input;
 
 const HeaderBar = () => {
 	const dispatch = useDispatch();
@@ -108,12 +108,12 @@ const HeaderBar = () => {
 				</div>
 			</div>
 			<div className="subheader">
-				<Search
+				{/* <Search
 					placeholder="Search"
 					allowClear
 					//onSearch={ }
 					style={{ width: 304 }}
-				/>
+				/> */}
 				<BellOutlined style={{ margin: "6px 25px", fontSize: "20px" }} />
 				<div className="custom-menu">
 					<div className="user-name" onClick={dropDownOpen}>

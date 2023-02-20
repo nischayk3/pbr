@@ -1,4 +1,5 @@
 import React, { lazy } from "react";
+
 import { useSelector } from "react-redux";
 import { Redirect, Route, Switch, useRouteMatch } from "react-router-dom";
 import Loading from "../components/Loading";
@@ -15,6 +16,7 @@ const Account = lazy(() => import("./user"));
 
 const App = () => {
 	const match = useRouteMatch();
+
 	const showLoading = useSelector((state) => state.commonReducer.showLoading);
 	const authenticated = useSelector(
 		(state) => state.commonReducer.isAuthenticated
@@ -22,6 +24,9 @@ const App = () => {
 	const error = useSelector(
 		(state) => state.commonReducer.isError
 	);
+
+
+
 	return (
 		<>
 			<Loading show={showLoading} />
@@ -45,13 +50,24 @@ const App = () => {
 						<Route path={`${match.url}user`} key="user">
 							<Account />
 						</Route>
-						<Route exact path="/" key="login">
-							{PRODUCT_FOR == 'BMS' ? (
-								<Redirect to={'/auth/saml-login?redirect_url=' + MDH_APP_PYTHON_SERVICE + '/%23/dashboard/redirect&from_=UI'} />
-							) : (
+
+						{/* login as BMS user directly redirect to SSO page */}
+						{PRODUCT_FOR == 'BMS' ? (
+							<Route exact path="/" component={() => { window.location = `${window.location.origin}/auth/saml-login?redirect_url=${MDH_APP_PYTHON_SERVICE}/%23/dashboard/redirect&from_=UI`; return null; }} />
+						) : (
+							<Route exact path="/" key="login">
 								<Redirect to={"/user/login"} />
-							)}
-						</Route>
+							</Route>
+						)}
+
+						{/* <Route exact path="/" key="login" render={() => {
+							return (
+								PRODUCT_FOR == 'BMS' ?
+									<Redirect to={'/auth/saml-login?redirect_url=' + MDH_APP_PYTHON_SERVICE + '/%23/dashboard/redirect&from_=UI'} /> :
+									<Redirect to={"/user/login"} />
+							)
+						}} /> */}
+
 					</Switch>
 				</SuspenseWrapper>
 			</div>
