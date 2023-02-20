@@ -1,31 +1,21 @@
-export const dataSourceView = [
-    {
-        key: "1",
-        query: "view_disp_id",
-        type: "text",
-        desc: (
-            <>
-                <p>The ID of the view to retrieve the data for </p>
-            </>
-        ),
-    },
-    {
-        key: "1",
-        query: "view_version",
-        type: "text",
-        desc: (
-            <>
-                <p>The version of the view to retrieve the data .</p>
-            </>
-        ),
-    },
+export const dataSourceRoles = [
     {
         key: "1",
         query: "type",
-        type: "integer",
+        type: "text",
         desc: (
             <>
-                <p>The format of the data to return, either csv or pdf</p>
+                <p>Users, Role detail </p>
+            </>
+        ),
+    },
+    {
+        key: "1",
+        query: "role",
+        type: "text",
+        desc: (
+            <>
+                <p>Name of the role  for which data is required.</p>
             </>
         ),
     },
@@ -43,7 +33,7 @@ export const dataSourceView = [
     }
 ];
 
-export const columnsView = [
+export const columnsRoles = [
     {
         title: "Query Parameter",
         dataIndex: "query",
@@ -61,7 +51,7 @@ export const columnsView = [
     },
 ];
 
-export const versioningView = (
+export const versioningRoles = (
     <>
         {" "}
         <p className="overview">Versioning and Endpoint Lifecycle</p>
@@ -77,37 +67,53 @@ export const versioningView = (
     </>
 );
 
-export const parametersView_url = (
+export const parametersRoles_url = (
     <>
         <div className="black-div2" id="projects">
             <p className="black_text">
                 <br />
                 <span className="slash">/</span>services
                 <span className="slash">/</span>v1
-                <span className="slash">/</span>view-download
+                <span className="slash">/</span>download-roles-users-details
             </p>
         </div>
     </>
 );
 
-export const view_request = {
-    download_type: "csv",
-    view_disp_id: "V475",
-    view_version: 2
-}
-export const render_side_tab_view = [
+export const roles_request = [{
+    filter_type: "USERS",
+    role_name: "CPV_USER",
+}]
+export const render_side_tab_roles = [
     "Overview",
     "Resources",
     "Parameters",
     "Versioning and Endpoint Lifecycle",
     "Conventions",
     "Output",
-    "Implementation",
     "Try Code",
 ];
 
+export const parameterContent_roles = (<>
+    <div className="parent_div" id="Conventions">
+        <p className="content">
+            API has following filters :
+        </p>
+        Type = users ,
+        role → role name
+        <br />
+        Gives list of all users, created on,locked/unlocked for a given role
+        <br />
+        To get the details of the role
+        <ol type="a">
+            <li>Type= role details</li>
+            <li>Role= role name </li>
+        </ol>
+        Gives all the details of given role ,resource, action,datacess auth
 
-export const content_view = (<>
+    </div>
+</>)
+export const content_roles = (<>
     <div className="parent_div" id="Conventions">
         <p className="overview">Conventions</p>
         <ul>
@@ -136,7 +142,7 @@ export const content_view = (<>
         </ul>
     </div>
 
-    <div className="parent_div" id="Implementation">
+    {/* <div className="parent_div" id="Implementation">
         <p className="overview">Implementation</p>
         <ol>
             <li className="content">	The function retrieves the view_disp_id, view_version, and type parameters from the request and stores them in a dictionary params. </li>
@@ -149,7 +155,7 @@ export const content_view = (<>
             <li className="content">If any exceptions are raised during the execution of the function, a JSON object with an error message and a status code of BAD_REQUEST is returned.</li>
         </ol>
 
-    </div>
+    </div> */}
 </>
 )
 

@@ -4,7 +4,8 @@ import {
 	Dropdown,
 	Input,
 	Menu,
-	Select, Table
+	Select, Table,
+	Modal
 } from "antd";
 import axios from "axios";
 import moment from "moment";
@@ -14,7 +15,7 @@ import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
 import { BMS_APP_PYTHON_SERVICE } from "../../../../constants/apiBaseUrl";
 import {
 	auditDataChange,
-	auditFilter, reportDownload
+	auditFilter, reportDownload, eSignDetails
 } from "../../../../duck/actions/auditTrialAction";
 import { showNotification } from "../../../../duck/actions/commonActions";
 import "./styles.scss";
@@ -28,6 +29,7 @@ class AuditTrials extends React.Component {
 			resData: {},
 			dates: [],
 			hackValue: [],
+			esignDetailsData: [],
 			setValue: [],
 			brandList: [],
 			eventType: "",
@@ -39,12 +41,14 @@ class AuditTrials extends React.Component {
 			productListPkg: [],
 			questionListPkg: [],
 			selectedLimit: "500",
+			esignOpen: false,
 			orderSort: {
 				old_value: 0,
 				activity: 0,
 				user_id: 0,
 				entry_date: 0,
-				table_name: 0
+				table_name: 0,
+				esign_id: 0
 			},
 			sortState: "DESC",
 			tableData: [],
@@ -90,6 +94,43 @@ class AuditTrials extends React.Component {
 			user: "",
 			daterange: [],
 			downloadData: [],
+			esignColumns: [
+				{
+					title: "Application Screen",
+					dataIndex: "application_screen",
+					key: "1",
+					sorter: (a, b) => a.application_screen.localeCompare(b.application_screen)
+				},
+				{
+					title: "Created By",
+					dataIndex: "created_by",
+					key: "1",
+					sorter: (a, b) => a.created_by.localeCompare(b.created_by)
+				}, {
+					title: "First Name",
+					dataIndex: "first_name",
+					key: "1",
+					sorter: (a, b) => a.first_name.localeCompare(b.first_name)
+				},
+				{
+					title: "Last Name",
+					dataIndex: "last_name",
+					key: "1",
+					sorter: (a, b) => a.last_name.localeCompare(b.last_name)
+				}, {
+					title: "User",
+					dataIndex: "user_id",
+					key: "1",
+					sorter: (a, b) => a.user_id.localeCompare(b.user_id)
+				}, {
+					title: "Sign Date",
+					dataIndex: "sign_date",
+					key: "1",
+					sorter: (a, b) => a.user_id.localeCompare(b.user_id),
+					render: (text) => moment(text).format("DD-MM-YYYY HH:mm:ss")
+
+				},
+			],
 			columns: [
 				{
 					title: "User",
@@ -158,6 +199,21 @@ class AuditTrials extends React.Component {
 					key: "8",
 					sorter: (a, b) => a.table_disp_key.localeCompare(b.table_disp_key)
 				},
+				{
+					title: "Esign ID",
+					dataIndex: "esign_id",
+					key: "8",
+					sorter: (a, b) => a.esign_id.localeCompare(b.esign_id),
+					render: (text) => text == "None" ? "text" : <Button style={{
+						backgroundColor: "#093185",
+						color: "#ffffff",
+						borderRadius: '4px',
+						border: '1px solid #093185'
+					}}
+						type="primary"
+						onClick={() => this.getEsignDetail(text)}
+					>Esign details</Button>
+				}
 			],
 			initialColumns: []
 		};
@@ -255,6 +311,25 @@ class AuditTrials extends React.Component {
 		return !!tooEarly || !!tooLate;
 	};
 
+	getEsignDetail = async (esign_id_req) => {
+		this.setState({ esignOpen: true })
+		let login_response = JSON.parse(localStorage.getItem("login_details"));
+		let headers = {
+			"content-type": "application/json",
+			"x-access-token": login_response.token ? login_response.token : "",
+			"resource-name": "AUDIT_REPORT"
+		};
+		let req = {
+			esign_id: esign_id_req
+		}
+		let esign_details_data = await eSignDetails(req, headers)
+		if (esign_details_data.statuscode == 200) {
+			this.setState({ esignDetailsData: [esign_details_data.message] })
+		}
+		else {
+			this.setState({ esignDetailsData: [] })
+		}
+	}
 	onOpenChange = (open) => {
 		if (open) {
 			this.setState({
@@ -311,6 +386,7 @@ class AuditTrials extends React.Component {
 				antdObj["table_name"] = item.table_name;
 				antdObj["reason"] = item.reason;
 				antdObj["table_disp_key"] = item.table_disp_key;
+				antdObj["esign_id"] = item.esign_id;
 				antdObj["changed_fields"] = item.changed_fields;
 				if (val11 === item.new_value) {
 					antdObj["new_value"] = (
@@ -432,6 +508,8 @@ class AuditTrials extends React.Component {
 	render() {
 		const { RangePicker } = DatePicker;
 		const { filterTable, tableData, columns } = this.state;
+		const { esignColumns, esignDetailsData } = this.state;
+
 
 		const userMenu = (
 			<Menu>
@@ -474,7 +552,7 @@ class AuditTrials extends React.Component {
 								<div>
 									<p>User</p>
 									<Select
-									    showSearch
+										showSearch
 										style={{
 											width: "100%",
 
@@ -629,6 +707,22 @@ class AuditTrials extends React.Component {
 								pagination={{ defaultPageSize: 10, showSizeChanger: true, pageSizeOptions: ['10', '50', '100', '200'] }}
 								bordered
 							/>
+							<Modal
+								open={this.state.esignOpen}
+								title="Esign Details"
+								onCancel={() => this.setState({ esignOpen: false })}
+								footer={false}
+							>{esignDetailsData && esignDetailsData.length > 0 ?
+								<Table
+									columns={esignColumns}
+									size="small"
+									dataSource={esignDetailsData}
+									scroll={{ x: 400 }}
+									pagination={false}
+									bordered
+								/> : (<></>)}
+
+							</Modal>
 						</div>
 					</div>
 				</div>
