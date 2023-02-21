@@ -363,9 +363,8 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 	}
 
 	const handleAdd = () => {
-		// count.current = count.current + 1;
 		const newData = {
-			key: paramData?.length + 1,
+			key: limitsData?.length + 1,
 			"cust_key": paramData[0]?.cust_key,
 			"from_": Number,
 			"limit_type": "",
@@ -382,6 +381,7 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 		};
 		setLimitsData([...limitsData, newData]);
 	};
+
 
 	useEffect(() => {
 		const obj = {
