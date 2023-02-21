@@ -24,20 +24,23 @@ const LimitTable = () => {
   const totalViewList = useRef([]);
 
   const handleInternalChange = async (info) => {
-    setFileList(info.fileList)
     var formData = new FormData();
     formData.append('file_name', info?.fileList[0]?.originFileObj);
     let res = await uploadLimitConfig(formData)
     if (res.status === 200) {
       getLimitConfigApi();
+	  setFileList(info.fileList)
       setOpenRow('')
-    }
+    } else {
+		dispatch(showNotification("error", res?.Message));
+	}
   }
 
   const items = [
     {
       label: <div><DownloadOutlined />  &nbsp;
         <a
+		  onClick={(e) => e.stopPropagation()}
           style={{ color: 'black' }}
           href={require('../../../../assets/xlsx/chartLimit.xlsx')}
           download='chartLimit.xlsx'>
@@ -113,7 +116,7 @@ const LimitTable = () => {
             {(record.key !== openRow) && <a onClick={(e) => onEdit(e, record.key)}>Edit</a>}
             {(record.key === openRow) && <a onClick={(e) => saveParammeterData(e)}>Save</a>}
             <Popconfirm
-              title="Delete the task"
+              title="Are you sure to delete?"
               description="Are you sure to delete?"
               onConfirm={(e) => {
                 e.stopPropagation();
@@ -121,6 +124,7 @@ const LimitTable = () => {
               }}
               okText="Yes"
               cancelText="No"
+			        onCancel={(e) => e.stopPropagation()}
             >
               <a href="#" onClick={(e) => e.stopPropagation()}>Delete</a>
             </Popconfirm>
@@ -169,13 +173,14 @@ const LimitTable = () => {
 
 
   const handleVersionList = (viewId) => {
-    const tempVersionList = [];
+    let tempVersionList = [];
     totalViewList.current.forEach((view) => {
       if (view?.split('-')[0] === viewId) {
         const viewVersion = view?.split('-')[1]
         tempVersionList.push(viewVersion);
       }
     });
+    tempVersionList = [...new Set(tempScalerList)]
     return tempVersionList
   }
 
@@ -311,6 +316,7 @@ const LimitTable = () => {
             tempParam.push(siteData?.parameter)
           } else {
             tempViewList.push(siteData?.view_id?.split('-')[0])
+            tempViewList = [...new Set(tempViewList)]
             totalViewList.current.push(siteData?.view_id)
           }
         })
