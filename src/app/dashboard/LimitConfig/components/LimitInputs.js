@@ -1,17 +1,19 @@
-import { CalendarOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Col, DatePicker, Input, Popconfirm, Row, Select, Table, Tooltip } from 'antd';
-import moment from 'moment';
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from 'react'
+import './Limitconfig.scss'
 import SelectField from "../../../../components/SelectField/SelectField";
-import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
-import { deleteLimitsApi } from '../../../../services/limitConfig';
-import './Limitconfig.scss';
+import { Col, Row, Table, Input, DatePicker, Button, Popconfirm, Tooltip, Select } from 'antd';
+import { DeleteOutlined, CalendarOutlined, PlusOutlined } from '@ant-design/icons'
+import moment from 'moment';
+import { useDispatch } from "react-redux";
+import { deleteLimitsApi, getMoleculeData } from '../../../../services/limitConfig';
+import { hideLoader, showNotification, showLoader } from '../../../../duck/actions/commonActions';
+import { v1 as uuid } from "uuid";
 
-const LimitInputs = ({ setLimitsData, limitsData, openRow, selectedRowKey, paramData }) => {
+const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLimitsData, limitsData, openRow, selectedRowKey, paramData, siteList, parameterList }) => {
 
 	const dispatch = useDispatch();
 	const [tableColumns, setTableCOlumns] = useState();
+
 	let limitList = [
 		'control',
 		'specification',
@@ -23,21 +25,46 @@ const LimitInputs = ({ setLimitsData, limitsData, openRow, selectedRowKey, param
 	]
 	let columns = [
 		{
-			title: 'Site',
-			dataIndex: 'site',
-			key: 'Site',
-			width: 150,
+			title: 'View ID',
+			dataIndex: 'view_disp_id',
+			key: 'view_disp_id',
+			width: 120,
+			fixed: 'left',
 			render: (text, record) =>
 				limitsData.map((data, index) => {
 					if (record.key === data.key) {
 						if (selectedRowKey !== openRow) {
-							return <p style={{ margin: "0" }}>{data.site}</p>;
+							return <p style={{ margin: "0" }}>{data.view_disp_id}</p>;
 						}
 						return (
-							<Input
-								name="site"
-								value={data.site}
-								onChange={(e) => handleChange(index, e, "", "limits")}
+							<SelectField
+								name="view_disp_id"
+								selectList={viewList}
+								selectedValue={data.view_disp_id}
+								onChangeSelect={(e) => handleChange(index, e, "", "view_disp_id")}
+							/>
+						);
+					}
+				}),
+		},
+		{
+			title: 'View Version',
+			dataIndex: 'view_version',
+			key: 'view_version',
+			width: 100,
+			fixed: 'left',
+			render: (text, record) =>
+				limitsData.map((data, index) => {
+					if (record.key === data.key) {
+						if (selectedRowKey !== openRow) {
+							return <p style={{ margin: "0" }}>{data.view_version}</p>;
+						}
+						return (
+							<SelectField
+								name="view_version"
+								selectList={data?.versionList}
+								selectedValue={data.view_version}
+								onChangeSelect={(e) => handleChange(index, e, "", "view_version")}
 							/>
 						);
 					}
@@ -54,10 +81,32 @@ const LimitInputs = ({ setLimitsData, limitsData, openRow, selectedRowKey, param
 							return <p style={{ margin: "0" }}>{data.parameters}</p>;
 						}
 						return (
-							<Input
+							<SelectField
 								name="parameters"
-								value={data.parameters}
-								onChange={(e) => handleChange(index, e, "", "limits")}
+								selectList={data?.param_list}
+								selectedValue={data.parameters}
+								onChangeSelect={(e) => handleChange(index, e, "", "parameters")}
+							/>
+						);
+					}
+				}),
+		},
+		{
+			title: 'Site',
+			dataIndex: 'site',
+			key: 'Site',
+			render: (text, record) =>
+				limitsData.map((data, index) => {
+					if (record.key === data.key) {
+						if (selectedRowKey !== openRow) {
+							return <p style={{ margin: "0" }}>{data.site}</p>;
+						}
+						return (
+							<SelectField
+								name="site"
+								selectList={siteList}
+								selectedValue={data.site}
+								onChangeSelect={(e) => handleChange(index, e, "", "site")}
 							/>
 						);
 					}
@@ -71,15 +120,12 @@ const LimitInputs = ({ setLimitsData, limitsData, openRow, selectedRowKey, param
 			),
 			dataIndex: 'parameter_class',
 			key: 'parameter_class',
-			width: '200',
 			render: (text, record) =>
 				limitsData.map((data, index) => {
-					console.log(data.parameter_class, 'data.parameter_class')
 					if (record.key === data.key) {
 						if (selectedRowKey !== openRow) {
 							return (
 								data?.parameter_class?.map((paramClass) => {
-									console.log(paramClass, 'apara')
 									return (
 										<p style={{ margin: "0" }}>{paramClass}</p>
 									)
@@ -177,6 +223,7 @@ const LimitInputs = ({ setLimitsData, limitsData, openRow, selectedRowKey, param
 			title: 'Validity Date',
 			dataIndex: 'validity_date',
 			key: 'vod',
+			width: 150,
 			render: (text, record) =>
 				limitsData.map((data, index) => {
 					if (record.key === data.key) {
@@ -255,9 +302,6 @@ const LimitInputs = ({ setLimitsData, limitsData, openRow, selectedRowKey, param
 	const text = "Are you sure to delete this?";
 	const handleChange = (index, event, dateString, type) => {
 		const rowsInput = [...limitsData];
-		if (!dateString) {
-			rowsInput[index]["validity_date"] = null;
-		}
 		if (dateString && type === "date") {
 			rowsInput[index]["validity_date"] = dateString._d.toLocaleDateString();
 		} else if (type === "limits") {
@@ -267,9 +311,29 @@ const LimitInputs = ({ setLimitsData, limitsData, openRow, selectedRowKey, param
 			rowsInput[index]['limit_type'] = event;
 		} else if (type === 'parameter_class') {
 			rowsInput[index]['parameter_class'] = event;
+		} else if (type === 'site') {
+			rowsInput[index]['site'] = event;
+		} else if (type === "parameters") {
+			rowsInput[index]['parameters'] = event;
+		} else if (type === 'view_disp_id') {
+			rowsInput[index]['view_disp_id'] = event;
+			rowsInput[index]['view_version'] = ''
+			rowsInput[index]['parameters'] = '';
+			const tempVersionList = [];
+			totalViewList.current.forEach((view) => {
+				if (view?.split('-')[0] === event) {
+					const viewVersion = view?.split('-')[1]
+					tempVersionList.push(viewVersion);
+				}
+			});
+			rowsInput[index]['versionList'] = tempVersionList
+		} else if (type === 'view_version') {
+			getMoleData('parameter', selectedMol.current, `${rowsInput[index]['view_disp_id']}-${event}`)
+			rowsInput[index]['view_version'] = event;
 		}
 		setLimitsData(rowsInput);
 	};
+
 
 	const deleteParam = async (record) => {
 		let tempParamData;
@@ -305,13 +369,16 @@ const LimitInputs = ({ setLimitsData, limitsData, openRow, selectedRowKey, param
 			"cust_key": paramData[0]?.cust_key,
 			"from_": Number,
 			"limit_type": "",
-			"molecule": paramData[0]?.molecule,
-			"parameters": "",
+			"molecule": selectedMol.current,
+			"parameters": '',
 			"site": "",
 			"to_": Number,
 			"validity_date": "",
-			"view_disp_id": paramData[0]?.view_disp_id,
-			"view_version": paramData[0]?.view_version
+			"view_disp_id": "",
+			"view_version": '',
+			"parameter_class": [],
+			"document_name": '',
+			"document_url": '',
 		};
 		setLimitsData([...limitsData, newData]);
 	};
@@ -319,8 +386,9 @@ const LimitInputs = ({ setLimitsData, limitsData, openRow, selectedRowKey, param
 	useEffect(() => {
 		const obj = {
 			title: '',
-			width: 10,
+			width: 50,
 			key: 'delete',
+			fixed: 'left',
 			render: (record) => {
 				return (
 					<Popconfirm
@@ -349,12 +417,11 @@ const LimitInputs = ({ setLimitsData, limitsData, openRow, selectedRowKey, param
 			columns = columns.filter((ele) => ele?.key !== 'delete')
 		}
 		setTableCOlumns(columns)
-	}, [selectedRowKey, openRow, limitsData])
+	}, [selectedRowKey, openRow, limitsData, siteList, viewList, parameterList])
 
 	useEffect(() => {
 		setLimitsData(paramData)
 	}, [paramData])
-
 
 	return (
 		<div className='expand-table'>
@@ -365,6 +432,7 @@ const LimitInputs = ({ setLimitsData, limitsData, openRow, selectedRowKey, param
 						columns={tableColumns}
 						pagination={false}
 						dataSource={limitsData}
+						scroll={{ x: 1360 }}
 					/>
 					{(selectedRowKey === openRow) && <div className="add-button-limit">
 						<Button
