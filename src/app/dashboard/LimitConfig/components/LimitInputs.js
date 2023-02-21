@@ -369,7 +369,7 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 			"cust_key": paramData[0]?.cust_key,
 			"from_": Number,
 			"limit_type": "",
-			"molecule": paramData[0]?.molecule ? paramData[0]?.molecule : selectedMol.current,
+			"molecule": selectedMol.current,
 			"parameters": '',
 			"site": "",
 			"to_": Number,

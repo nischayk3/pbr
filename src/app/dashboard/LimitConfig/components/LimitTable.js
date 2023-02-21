@@ -38,6 +38,7 @@ const LimitTable = () => {
     {
       label: <div><DownloadOutlined />  &nbsp;
         <a
+          style={{ color:'black' }}
           href={require('../../../../assets/xlsx/chartLimit.xlsx')}
           download='chartLimit.xlsx'>
           Download template
@@ -200,6 +201,12 @@ const LimitTable = () => {
     record?.paramData?.forEach((param) => {
       obj.data.push(param?.int_id)
     })
+    if(record?.added) {
+      const deleteExisting = moleculeData.filter((mol) => mol.key !== record.key)
+      setMoleculeData(deleteExisting)
+
+      return;
+    }
     try {
       dispatch(showLoader());
       const apiResponse = await deleteLimitsApi(obj);
@@ -241,6 +248,7 @@ const LimitTable = () => {
       }
       limits.from_ = Number(limits?.from_);
       limits.to_ = Number(limits?.to_);
+      limits.molecule = selectedMol.current
       limits.view_version = Number(limits?.view_version)
       limits.validity_date = limits.validity_date ? new Date(limits.validity_date).toISOString() : null
     })
@@ -329,7 +337,8 @@ const LimitTable = () => {
     const newData = {
       key: moleculeData?.length + 1,
       molecule: '',
-      paramData: []
+      paramData: [],
+      added: true
     }
     setMoleculeData([...moleculeData, newData]);
   }
