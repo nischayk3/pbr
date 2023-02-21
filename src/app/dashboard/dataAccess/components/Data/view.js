@@ -90,11 +90,11 @@ export const parametersView_url = (
     </>
 );
 
-export const view_request = {
+export const view_request = [{
     download_type: "csv",
     view_disp_id: "V475",
     view_version: 2
-}
+}]
 export const render_side_tab_view = [
     "Overview",
     "Resources",

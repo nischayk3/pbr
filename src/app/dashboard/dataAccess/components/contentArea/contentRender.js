@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 export default function ContentRenderComponent(props) {
 
   let request_props = props.request[0]
-  console.log(props)
+
 
   const [request, setRequest] = useState(JSON.stringify(request_props));
   const dispatch = useDispatch()
@@ -17,9 +17,7 @@ export default function ContentRenderComponent(props) {
   const [result, setResult] = useState("");
   const [selectedDiv, setSelectedDiv] = useState("Overview");
 
-  useState(() => {
-    setRequest(request_props)
-  }, [props])
+
 
   const content = (
     <div className="parent_div" id="Error Codes">
@@ -98,7 +96,7 @@ export default function ContentRenderComponent(props) {
   };
 
   useEffect(() => {
-    setRequest(JSON.stringify(props.request))
+    setRequest(JSON.stringify(props.request[0]))
   }, [props.selectedTab])
 
   return (

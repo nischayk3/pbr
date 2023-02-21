@@ -204,7 +204,7 @@ class AuditTrials extends React.Component {
 					dataIndex: "esign_id",
 					key: "8",
 					sorter: (a, b) => a.esign_id.localeCompare(b.esign_id),
-					render: (text) => text == "None" ? "text" : <Button style={{
+					render: (text) => text == "None" ? text : <Button style={{
 						backgroundColor: "#093185",
 						color: "#ffffff",
 						borderRadius: '4px',
