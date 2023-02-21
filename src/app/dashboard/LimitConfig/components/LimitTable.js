@@ -180,7 +180,7 @@ const LimitTable = () => {
         tempVersionList.push(viewVersion);
       }
     });
-    tempVersionList = [...new Set(tempScalerList)]
+    tempVersionList = [...new Set(tempVersionList)]
     return tempVersionList
   }
 
