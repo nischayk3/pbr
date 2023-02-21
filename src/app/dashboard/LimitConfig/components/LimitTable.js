@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import './Limitconfig.scss'
-import { Table, Button, Dropdown, Space, Select, Upload } from 'antd'
+import { Table, Button, Dropdown, Space, Select, Upload, Popconfirm } from 'antd'
 import { DownOutlined, UploadOutlined, DownloadOutlined } from '@ant-design/icons';
 import { getLimitConfig, saveLimitConfigApi, deleteLimitsApi, getMoleculeData, uploadLimitConfig } from '../../../../services/limitConfig';
 import LimitInputs from './LimitInputs';
@@ -38,7 +38,7 @@ const LimitTable = () => {
     {
       label: <div><DownloadOutlined />  &nbsp;
         <a
-          style={{ color:'black' }}
+          style={{ color: 'black' }}
           href={require('../../../../assets/xlsx/chartLimit.xlsx')}
           download='chartLimit.xlsx'>
           Download template
@@ -112,7 +112,18 @@ const LimitTable = () => {
           <div className='action-table'>
             {(record.key !== openRow) && <a onClick={(e) => onEdit(e, record.key)}>Edit</a>}
             {(record.key === openRow) && <a onClick={(e) => saveParammeterData(e)}>Save</a>}
-            <a onClick={(e) => onDelete(e, record)}>Delete</a>
+            <Popconfirm
+              title="Delete the task"
+              description="Are you sure to delete?"
+              onConfirm={(e) => {
+                e.stopPropagation();
+                onDelete(e, record)
+              }}
+              okText="Yes"
+              cancelText="No"
+            >
+              <a href="#" onClick={(e) => e.stopPropagation()}>Delete</a>
+            </Popconfirm>
             {(record.key === openRow) && <Dropdown menu={{ items }} trigger={['click']}>
               <a onClick={(e) => e.stopPropagation()}>
                 <Space>
@@ -160,13 +171,13 @@ const LimitTable = () => {
   const handleVersionList = (viewId) => {
     const tempVersionList = [];
     totalViewList.current.forEach((view) => {
-    if (view?.split('-')[0] === viewId) {
-     const viewVersion = view?.split('-')[1]
-         tempVersionList.push(viewVersion);
-    }
+      if (view?.split('-')[0] === viewId) {
+        const viewVersion = view?.split('-')[1]
+        tempVersionList.push(viewVersion);
+      }
     });
     return tempVersionList
- }
+  }
 
   const getMoleculeLists = async () => {
     let req = {
@@ -201,7 +212,7 @@ const LimitTable = () => {
     record?.paramData?.forEach((param) => {
       obj.data.push(param?.int_id)
     })
-    if(record?.added) {
+    if (record?.added) {
       const deleteExisting = moleculeData.filter((mol) => mol.key !== record.key)
       setMoleculeData(deleteExisting)
 
@@ -318,7 +329,7 @@ const LimitTable = () => {
         })
       })
       setMoleculeData(tempMol)
-      if(param === 'parameter') {
+      if (param === 'parameter') {
         const tempLimit = [...limitsData]
         tempLimit.forEach((ele) => {
           ele.param_list = tempParam
