@@ -1,84 +1,77 @@
-import React from "react";
 import classNames from "classnames";
+import React from "react";
 import { useDrop } from "react-dnd";
-import { COMPONENT, SIDEBAR_ITEM, ROW, COLUMN } from "./data";
+import { COLUMN, COMPONENT, ROW, SIDEBAR_ITEM } from "./data";
 
 const ACCEPTS = [SIDEBAR_ITEM, COMPONENT, ROW, COLUMN];
 
 const DropZone = ({ data, onDrop, isLast, className, layout }) => {
-  const [{ isOver, canDrop }, drop] = useDrop({
-    accept: ACCEPTS,
-    drop: (item, monitor) => {
-      onDrop(data, item);
-    },
-    canDrop: (item, monitor) => {
-      const dropZonePath = data.path;
-      const splitDropZonePath = dropZonePath.split("-");
-      const itemPath = item.path;
+	const [{ isOver, canDrop }, drop] = useDrop({
+		accept: ACCEPTS,
+		drop: (item, monitor) => {
+			onDrop(data, item);
+		},
+		canDrop: (item, monitor) => {
+			const dropZonePath = data.path;
+			const splitDropZonePath = dropZonePath.split("-");
+			const itemPath = item.path;
+			// sidebar items can always be dropped anywhere
+			if (!itemPath) {
+				return true;
+			}
+			const splitItemPath = itemPath.split("-");
+			// limit columns when dragging from one row to another row
+			const dropZonePathRowIndex = splitDropZonePath[0];
+			const itemPathRowIndex = splitItemPath[0];
+			const diffRow = dropZonePathRowIndex !== itemPathRowIndex;
+			if (
+				diffRow &&
+				splitDropZonePath.length === 2 &&
+				data.childrenCount >= 3
+			) {
+				return false;
+			}
 
-      // sidebar items can always be dropped anywhere
-      if (!itemPath) {
-        // if (data.childrenCount >= 3) {
-        //  return false;
-        // }
-        return true;
-      }
+			// Invalid (Can't drop a parent element (row) into a child (column))
+			const parentDropInChild = splitItemPath.length < splitDropZonePath.length;
+			if (parentDropInChild) return false;
 
-      const splitItemPath = itemPath.split("-");
+			// Current item can't possible move to it's own location
+			if (itemPath === dropZonePath) return false;
 
-      // limit columns when dragging from one row to another row
-      const dropZonePathRowIndex = splitDropZonePath[0];
-      const itemPathRowIndex = splitItemPath[0];
-      const diffRow = dropZonePathRowIndex !== itemPathRowIndex;
-      if (
-        diffRow &&
-        splitDropZonePath.length === 2 &&
-        data.childrenCount >= 3
-      ) {
-        return false;
-      }
+			// Current area
+			if (splitItemPath.length === splitDropZonePath.length) {
+				const pathToItem = splitItemPath.slice(0, -1).join("-");
+				const currentItemIndex = Number(splitItemPath.slice(-1)[0]);
 
-      // Invalid (Can't drop a parent element (row) into a child (column))
-      const parentDropInChild = splitItemPath.length < splitDropZonePath.length;
-      if (parentDropInChild) return false;
+				const pathToDropZone = splitDropZonePath.slice(0, -1).join("-");
+				const currentDropZoneIndex = Number(splitDropZonePath.slice(-1)[0]);
 
-      // Current item can't possible move to it's own location
-      if (itemPath === dropZonePath) return false;
+				if (pathToItem === pathToDropZone) {
+					const nextDropZoneIndex = currentItemIndex + 1;
+					if (nextDropZoneIndex === currentDropZoneIndex) return false;
+				}
+			}
 
-      // Current area
-      if (splitItemPath.length === splitDropZonePath.length) {
-        const pathToItem = splitItemPath.slice(0, -1).join("-");
-        const currentItemIndex = Number(splitItemPath.slice(-1)[0]);
+			return true;
+		},
+		collect: (monitor) => ({
+			isOver: monitor.isOver(),
+			canDrop: monitor.canDrop()
+		})
+	});
 
-        const pathToDropZone = splitDropZonePath.slice(0, -1).join("-");
-        const currentDropZoneIndex = Number(splitDropZonePath.slice(-1)[0]);
+	const isActive = isOver && canDrop;
 
-        if (pathToItem === pathToDropZone) {
-          const nextDropZoneIndex = currentItemIndex + 1;
-          if (nextDropZoneIndex === currentDropZoneIndex) return false;
-        }
-      }
-
-      return true;
-    },
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-      canDrop: monitor.canDrop()
-    })
-  });
-
-  const isActive = isOver && canDrop;
-
-  return (
-    <div
-      className={classNames(
-        "dropZone",
-        { active: isActive, isLast },
-        className
-      )}
-    //   style={{height: layout.length > 0 ? "24px" : "140px"}}
-      ref={drop}
-    />
-  );
+	return (
+		<div
+			className={classNames(
+				"dropZone",
+				{ active: isActive, isLast },
+				className
+			)}
+			ref={drop}
+		/>
+	);
 };
 export default DropZone;

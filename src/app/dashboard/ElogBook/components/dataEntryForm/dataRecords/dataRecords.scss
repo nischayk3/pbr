@@ -1,240 +1,240 @@
 .button--delete {
-    background-color: orange;
+	background-color: orange;
 }
 
 .ant-card-body {
-    padding: 10px !important;
+	padding: 10px !important;
 }
 
 .ant-tabs-tab-btn {
-    font-family: var(--primary-font-family);
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 22px;
-    color: black;
+	font-family: var(--primary-font-family);
+	font-style: normal;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 22px;
+	color: black;
 }
 
 .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
-    font-family: var(--primary-font-family);
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 22px;
-    color: #093185;
+	font-family: var(--primary-font-family);
+	font-style: normal;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 22px;
+	color: #093185;
 }
 
 
 .ant-tabs-ink-bar {
-    background: #093185;
+	background: #093185;
 }
 
 
 .header-buttons {
-    gap: 8px;
-    width: 144px;
-    height: 32px;
-    background: #093185;
-    border-radius: 4px;
-    color: white;
+	gap: 8px;
+	width: 144px;
+	height: 32px;
+	background: #093185;
+	border-radius: 4px;
+	color: white;
 }
 
 .edit_input {
-    width: 200px;
-    font-family: 'Maven Pro';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 22px;
-    color: #4D4D4D;
+	width: 200px;
+	font-family: 'Maven Pro';
+	font-style: normal;
+	font-weight: 500;
+	font-size: 16px;
+	line-height: 22px;
+	color: #4D4D4D;
 }
 
 .form-head-ing {
-    font-family: 'Maven Pro';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 22px;
-    /* identical to box height, or 138% */
+	font-family: 'Maven Pro';
+	font-style: normal;
+	font-weight: 500;
+	font-size: 16px;
+	line-height: 22px;
+	/* identical to box height, or 138% */
 
 
-    color: #4D4D4D;
+	color: #4D4D4D;
 }
 
 .see-all {
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 22px;
-    /* identical to box height, or 157% */
-    margin-left: 31px;
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 22px;
+	/* identical to box height, or 157% */
+	margin-left: 31px;
 
-    color: #093185;
+	color: #093185;
 }
 
 .divider {
-    width: 100%;
-    background-color: #ACACAC;
+	width: 100%;
+	background-color: #ACACAC;
 }
 
 .delete-btn {
-    display: inline-block;
-    width: 100px;
-    height: 30px;
-    background: #FFFFFF;
-    border: 1px solid black;
-    align-items: center;
-    border-radius: 2px;
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 22px;
-    color: #262626;
-    padding: 1px 8px;
-    border-radius: 4px;
-    gap: 8px;
-    margin-right: 12px;
+	display: inline-block;
+	width: 100px;
+	height: 30px;
+	background: #FFFFFF;
+	border: 1px solid black;
+	align-items: center;
+	border-radius: 2px;
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 22px;
+	color: #262626;
+	padding: 1px 8px;
+	border-radius: 4px;
+	gap: 8px;
+	margin-right: 12px;
 
 }
 
 .save-btn {
-    vertical-align: top;
-    align-items: center;
-    padding: 1px 8px;
-    gap: 8px;
-    width: 86px;
-    height: 48px;
-    background: #093185;
-    border: 1px solid black;
-    border-radius: 2px;
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 13px;
+	vertical-align: top;
+	align-items: center;
+	padding: 1px 8px;
+	gap: 8px;
+	width: 86px;
+	height: 48px;
+	background: #093185;
+	border: 1px solid black;
+	border-radius: 2px;
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 13px;
 
-    line-height: 22px;
-    color: #262626;
-    margin-right: 12px;
-    border-radius: 4px;
+	line-height: 22px;
+	color: #262626;
+	margin-right: 12px;
+	border-radius: 4px;
 
 }
 
 .status_box {
-    display: inline-block;
-    vertical-align: middle;
-    height: 14px;
-    width: 14px;
-    border-radius: 50%;
-    background: #A4F588;
-    margin-left: 26px;
-    // margin-top: 29px;
+	display: inline-block;
+	vertical-align: middle;
+	height: 14px;
+	width: 14px;
+	border-radius: 50%;
+	background: #A4F588;
+	margin-left: 26px;
+	// margin-top: 29px;
 
 }
 
 .status_line_box {
-    text-align: center;
-    display: inline-block;
+	text-align: center;
+	display: inline-block;
 
 }
 
 .status_line {
-    vertical-align: middle;
+	vertical-align: middle;
 
-    display: inline-block;
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 12px;
-    margin-left: 10px;
-    color: #232323;
+	display: inline-block;
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 12px;
+	margin-left: 10px;
+	color: #232323;
 }
 
 .buttons-head {
-    float: right;
-    text-align: center;
+	float: right;
+	text-align: center;
 }
 
 .content_area_scroll {
-    width: 100%;
-    max-height: 555px;
-    overflow-y: auto;
+	width: 100%;
+	max-height: 555px;
+	overflow-y: auto;
 }
 
 .publish-btn {
-    display: inline-block;
-    padding: 1px 8px;
-    gap: 8px;
-    width: 100px;
-    height: 30px;
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    background: #093185;
-    border-radius: 4px;
-    color: white;
+	display: inline-block;
+	padding: 1px 8px;
+	gap: 8px;
+	width: 100px;
+	height: 30px;
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 16px;
+	background: #093185;
+	border-radius: 4px;
+	color: white;
 }
 
 .add_new_row {
-    padding: 1px 18px;
-    gap: 8px;
-    width: 140px;
-    // left: 10%;
-    height: 28px;
-    color: white;
-    background: #093185;
-    border-radius: 4px;
+	padding: 1px 18px;
+	gap: 8px;
+	width: 140px;
+	// left: 10%;
+	height: 28px;
+	color: white;
+	background: #093185;
+	border-radius: 4px;
 }
 
 .ant-table-cell {
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 16px;
-    line-height: 22px;
-    letter-spacing: 0.01em;
-    color: #6D6D6D;
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 16px;
+	line-height: 22px;
+	letter-spacing: 0.01em;
+	color: #6D6D6D;
 
 }
 
 .first-Table {
-    margin-top: 10px;
+	margin-top: 10px;
 
-    .ant-table-cell {
-        font-family: 'Roboto';
-        font-style: normal;
-        font-weight: 700;
-        font-size: 16px;
-        line-height: 22px;
-        letter-spacing: 0.01em;
-        color: #6D6D6D;
+	.ant-table-cell {
+		font-family: 'Roboto';
+		font-style: normal;
+		font-weight: 700;
+		font-size: 16px;
+		line-height: 22px;
+		letter-spacing: 0.01em;
+		color: #6D6D6D;
 
 
-    }
+	}
 }
 
 .template-card-subheading-data-inside {
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 22px;
-    margin-left: 22px;
-    color: #262626;
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 12px;
+	line-height: 22px;
+	margin-left: 22px;
+	color: #262626;
 }
 
 .approved-bar {
-    height: 22px;
-    width: 67px;
-    left: 164px;
-    top: 237px;
-    border-radius: 2px;
-    padding: 1px 8px 1px 8px;
-    background: #FFEED2;
-    /* Polar Green / 3 */
+	height: 22px;
+	width: 67px;
+	left: 164px;
+	top: 237px;
+	border-radius: 2px;
+	padding: 1px 8px 1px 8px;
+	background: #FFEED2;
+	/* Polar Green / 3 */
 
-    border: 1px solid orange;
-    border-radius: 2px;
+	border: 1px solid orange;
+	border-radius: 2px;
 }

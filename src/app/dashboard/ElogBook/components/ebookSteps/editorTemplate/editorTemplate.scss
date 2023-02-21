@@ -1,8 +1,8 @@
-.main-editortemp{
+.main-editortemp {
 	background-color: #EDECFF;
-    height: 501px;
-    position: relative;
-    border-radius: 7px;
+	height: 501px;
+	position: relative;
+	border-radius: 7px;
 }
 
 .template-header {
@@ -292,132 +292,138 @@
 }
 
 .page {
-  flex: 1 1 auto;
-  padding: 0 20px;
-  margin: 20px;
-  /* border: 1px solid green; */
-//   height: 400px;
-//   overflow-y: scroll;
+	flex: 1 1 auto;
+	padding: 0 20px;
+	margin: 20px;
+	/* border: 1px solid green; */
+	//   height: 400px;
+	//   overflow-y: scroll;
 }
 
 .dropZone {
-  flex: 0 0 auto;
-  height: 24px;
-  transition: 200ms all;
+	flex: 0 0 auto;
+	height: 24px;
+	transition: 200ms all;
 }
 
 .dropZone:nth-of-type(2n) {
-  display: none;
+	display: none;
 }
 
 .dropZone.horizontalDrag {
-  width: 40px;
-  height: auto;
-  margin-top: 15px;
-  padding-top: 12px;
+	width: 40px;
+	height: auto;
+	margin-top: 15px;
+	padding-top: 12px;
 }
 
 .dropZone:not(.horizontalDrag).isLast {
-  flex: 1 1 auto;
+	flex: 1 1 auto;
 }
 
 .dropZone.active,
 .trashDropZone.active {
-  background: #00a2ff;
-  transition: 100ms all;
+	background: #00a2ff;
+	transition: 100ms all;
 }
 
 
 .component {
-  /* height: 60px; */
-  padding: 10px;
-  background: #aaa;
+	/* height: 60px; */
+	padding: 10px;
+	background: #aaa;
 }
 
 .column {
-  /* border: 1px solid blue; */
-  flex: 1 1 100%;
-  padding: 10px;
-  width: 300px
+	/* border: 1px solid blue; */
+	flex: 1 1 100%;
+	padding: 10px;
+	width: 300px
 }
 
 .columns {
-  display: flex;
-  /* padding: 20px 0; */
+	display: flex;
+	/* padding: 20px 0; */
 }
 
 .columnContainer {
-  display: flex;
+	display: flex;
 }
 
 .base {
-  padding: 0.5rem 1rem;
-//   background-color: #f5f5f5;
-  cursor: move;
-  
+	padding: 0.5rem 1rem;
+	//   background-color: #f5f5f5;
+	cursor: move;
+
 }
 
 .row {
-  /* border: 1px solid red; */
-  padding: 0;
-  
-  
+	/* border: 1px solid red; */
+	padding: 0;
+
+
 }
 
 .trashDropZone {
-  position: relative;
-  text-align: center;
-  padding: 20px 0;
-  margin: 0 auto;
-  width: 100px;
-  height: 45px;
-  border: 1px solid #000000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-//   background: #87c5ff;
-  color: #000000;
+	position: relative;
+	text-align: center;
+	padding: 20px 0;
+	margin: 0 auto;
+	width: 100px;
+	height: 45px;
+	border: 1px solid #000000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	//   background: #87c5ff;
+	color: #000000;
 }
 
 .pageContainer {
-  display: flex;
-//   flex: 1;
-height: 300px;
-    overflow: scroll;
-  flex-direction: column;
-  margin-bottom: 100px;
+	display: flex;
+	//   flex: 1;
+	height: 300px;
+	overflow: scroll;
+	flex-direction: column;
+	margin-bottom: 100px;
 }
 
 App {
-  font-family: sans-serif;
-  text-align: center;
+	font-family: sans-serif;
+	text-align: center;
 }
 
 .float-right {
-  float: right;
+	float: right;
 }
+
 .float-left {
-  float: left;
+	float: left;
 }
+
 button {
-  border: none;
-  padding: 8px;
-  margin-right: 2px;
+	border: none;
+	padding: 8px;
+	margin-right: 2px;
 }
+
 .blue {
-  background-color: blue;
-  color: white;
-  border: none;
-  padding: 8px;
+	background-color: blue;
+	color: white;
+	border: none;
+	padding: 8px;
 }
+
 .green {
-  background-color: darkolivegreen;
-  color: white;
+	background-color: darkolivegreen;
+	color: white;
 }
+
 .btn-toolbar {
-  padding-bottom: 10px;
-  /* margin: auto; */
+	padding-bottom: 10px;
+	/* margin: auto; */
 }
+
 .slider-layout {
 	height: 480px;
 	background: transparent;
@@ -479,7 +485,7 @@ button {
 }
 
 .tab-main {
-    width: 100%;
+	width: 100%;
 	padding-top: 30px;
 }
 
@@ -490,14 +496,16 @@ button {
 
 /* // .control-panel-title{ */
 /* // 	align-items: center; */
-	.ant-tabs>.ant-tabs-nav .ant-tabs-nav-list, .ant-tabs>div>.ant-tabs-nav .ant-tabs-nav-list {
-		width: 100%;
-		padding-top: 10px;
-		padding-inline: 17px;
+.ant-tabs>.ant-tabs-nav .ant-tabs-nav-list,
+.ant-tabs>div>.ant-tabs-nav .ant-tabs-nav-list {
+	width: 100%;
+	padding-top: 10px;
+	padding-inline: 17px;
 }
+
 .ant-tabs-ink-bar {
 	background-color: transparent;
-  }
+}
 
 //   .ant-tabs-top>.ant-tabs-nav .ant-tabs-ink-bar, .ant-tabs-top>.ant-tabs-nav:before, .ant-tabs-top>div>.ant-tabs-nav .ant-tabs-ink-bar, .ant-tabs-top>div>.ant-tabs-nav:before {
 //     bottom: 0;
@@ -506,27 +514,30 @@ button {
 
 .tab-titles {
 	padding-top: 7px;
-    padding-left: 5px;
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 12px;
-    line-height: 22px;
+	padding-left: 5px;
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 12px;
+	line-height: 22px;
 }
+
 .ant-layout {
-    display: flex;
-    flex: auto;
-    flex-direction: column;
-    min-height: 0;
-    // background: #f0f2f5;
-    background: #EDECFF;
+	display: flex;
+	flex: auto;
+	flex-direction: column;
+	min-height: 0;
+	// background: #f0f2f5;
+	background: #EDECFF;
 }
+
 .step-subheader {
-    display: flex;
-    justify-content: space-between;
-    padding-top: 20px;
-    background: #EDECFF;
+	display: flex;
+	justify-content: space-between;
+	padding-top: 20px;
+	background: #EDECFF;
 }
+
 .ant-table-thead .ant-table-cell {
 	background-color: #EDECFF;
-  }
+}
