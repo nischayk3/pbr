@@ -1,51 +1,57 @@
-import { Button, Result } from 'antd';
+import { Button, Card, Result } from 'antd';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import {
-	hideLoader, showLoader, showNotification
-} from '../../../duck/actions/commonActions';
+import { showNotification } from '../../../duck/actions/commonActions';
 import { sendLoginDetails } from '../../../duck/actions/loginAction';
 import { getSession } from '../../../services/loginService';
+
 
 export default function Redirect() {
 	const dispatch = useDispatch();
 	const history = useHistory();
 
-	const GetSession = async () => {
-		dispatch(showLoader());
-		let res = await getSession();
-		let data = res['Data'];
-		if (data) {
-			dispatch(hideLoader());
-			dispatch(sendLoginDetails(data));
-			localStorage.setItem('login_details', JSON.stringify(data));
-			localStorage.setItem('user', data.user_id);
-			localStorage.setItem('username', data.firstname ? data.firstname.replaceAll('^"|"$', '') : data.email_id.replaceAll('^"|"$', ''));
-			dispatch(showNotification('success', `Logged in as ${data.email_id}`));
-			history.push('/dashboard/workspace');
-			//temporary fix
-			// window.location.reload()
-		} else {
-			dispatch(showNotification('error', 'Error in Login'));
-			dispatch(hideLoader());
+	const getSessionDetail = async () => {
+		try {
+			const sessionres = await getSession()
+			if (sessionres.Status === 200) {
+				const data = sessionres['Data'];
+				localStorage.setItem('login_details', JSON.stringify(data));
+				localStorage.setItem('user', data?.user_id);
+				localStorage.setItem('username', data?.firstname ? data?.firstname.replaceAll('^"|"$', '') : data?.email_id.replaceAll('^"|"$', ''));
+				dispatch(showNotification('success', `Logged in as ${data?.email_id}`));
+				if (data?.token != '') {
+					dispatch(sendLoginDetails(data));
+					history.push('/dashboard/workspace');
+				}
+			} else {
+				dispatch(showNotification("error", 'Login Failed', 'Sorry, an unexpectede error occurred. Please try logging in again.'));
+				history.push('/user/login');
+			}
+		} catch (error) {
+			dispatch(showNotification("error", 'Login Failed', 'Sorry, an unexpectede error occurred. Please try logging in again.'));
 			history.push('/user/login');
 		}
-	};
+	}
 
 	useEffect(() => {
-		GetSession();
+		getSessionDetail();
 	}, []);
 	return (
-		<div>
-			<Result
-				title='Please wait while you are redirected to the MI'
-				extra={
-					<Button type='primary' key='console'>
-						MI
-					</Button>
-				}
-			/>
-		</div>
+		<div className="custom-wrapper">
+			<div className="custom-content-layout">
+				<Card>
+					<Result
+						title='You are being redirected, please, wait.... '
+						subTitle="If you haven't been redirected in 30 sececons, please click this button."
+						extra={
+							<Button type='primary' onClick={getSessionDetail} >
+								Continue
+							</Button>
+						}
+					/>
+				</Card>
+			</div>
+		</div >
 	);
 }
