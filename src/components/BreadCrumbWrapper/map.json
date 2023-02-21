@@ -31,6 +31,8 @@
 	"/dashboard/analysis": "Analysis",
 	"/dashboard/analysis/:id": "Model",
 	"/dashboard/pbr_reviewer": "PBR Reviewer",
+	"/dashboard/pbr_file_upload": "File Upload",
+	"/dashboard/pbr-pdf-viewer": "PDF Search",
 	"/dashboard/pbr_update": "PBR Update",
 	"/dashboard/paper_batch_records": "PBR Template",
 	"/dashboard/cross_batch_comparison": "Cross Batch Comparison",
@@ -41,5 +43,6 @@
 	"/dashboard/elog_book_template": "E-Log Book Template",
 	"/dashboard/elog_book_template/new-template": "New template",
 	"/dashboard/data-access-service": "Data Access Service",
-	"/dashboard/limit-config": "Molecule Limit Configurator"
+	"/dashboard/limit-config": "Molecule Limit Configurator",
+	"/dashboard/system-config": "System Configurator"
 }

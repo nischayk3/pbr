@@ -77,7 +77,7 @@ export const versioningView = (
     </>
 );
 
-export const parametersGenealogy_url = (
+export const parametersView_url = (
     <>
         <div className="black-div2" id="projects">
             <p className="black_text">
@@ -90,11 +90,11 @@ export const parametersGenealogy_url = (
     </>
 );
 
-export const view_request = {
+export const view_request = [{
     download_type: "csv",
     view_disp_id: "V475",
     view_version: 2
-}
+}]
 export const render_side_tab_view = [
     "Overview",
     "Resources",
@@ -103,7 +103,6 @@ export const render_side_tab_view = [
     "Conventions",
     "Output",
     "Implementation",
-    "Error Codes",
     "Try Code",
 ];
 

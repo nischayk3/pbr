@@ -49,8 +49,8 @@ function PbrReviewer() {
 	});
 	const [batchFilters, setBatchFilters] = useState({
 		site: null,
-		startDate: null,
-		endDate: null,
+		startDate: moment().subtract(3,'d'),
+		endDate: moment(),
 		time: "",
 		duration: null,
 		unApproved: 0,
@@ -337,7 +337,7 @@ function PbrReviewer() {
 						? 1
 						: a.template_id.toString().localeCompare(b.template_id);
 			},
-			sortDirections: ['descend', 'ascend'],
+			// sortDirections: ['descend', 'ascend'],
 		},
 		{
 			title: 'Template Version',
@@ -355,7 +355,7 @@ function PbrReviewer() {
 						? 1
 						: a.template_version.toString().localeCompare(b.template_version);
 			},
-			sortDirections: ['descend', 'ascend'],
+			// sortDirections: ['descend', 'ascend'],
 		},
 		{
 			title: 'Template Name',
@@ -373,7 +373,7 @@ function PbrReviewer() {
 						? 1
 						: a.template_name.toString().localeCompare(b.template_name);
 			},
-			sortDirections: ['descend', 'ascend'],
+			// sortDirections: ['descend', 'ascend'],
 		},
 		{
 			title: 'Parameter Name',
@@ -391,15 +391,25 @@ function PbrReviewer() {
 						? 1
 						: a.param_name.toString().localeCompare(b.param_name);
 			},
-			sortDirections: ['descend', 'ascend'],
+			// sortDirections: ['descend', 'ascend'],
 		},
 		{
 			title: 'Attribute Name',
 			key: 'anchor_key',
 			dataIndex: 'anchor_key',
 			...getColumnSearchProps('anchor_key'),
-			sorter: (a, b) => a.anchor_key?.length - b.anchor_key?.length,
-			sortDirections: ['descend', 'ascend'],
+			sorter: (a, b) => {
+				return a.anchor_key === null ||
+					a.anchor_key === undefined ||
+					a.anchor_key === ""
+					? -1
+					: b.anchor_key == null ||
+						b.anchor_key == undefined ||
+						b.anchor_key == ""
+						? 1
+						: a.anchor_key.toString().localeCompare(b.anchor_key);
+			},
+			// sortDirections: ['descend', 'ascend'],
 		},
 
 		{
@@ -407,8 +417,18 @@ function PbrReviewer() {
 			key: 'snippet_value',
 			dataIndex: 'snippet_value',
 			...getColumnSearchProps('snippet_value'),
-			sorter: (a, b) => a.snippet_value?.length - b.snippet_value?.length,
-			sortDirections: ['descend', 'ascend'],
+			sorter: (a, b) => {
+				return a.snippet_value === null ||
+					a.snippet_value === undefined ||
+					a.snippet_value === ""
+					? -1
+					: b.snippet_value == null ||
+						b.snippet_value == undefined ||
+						b.snippet_value == ""
+						? 1
+						: a.snippet_value.toString().localeCompare(b.snippet_value);
+			},
+			// sortDirections: ['descend', 'ascend'],
 		},
 		{
 			title: 'Snippet Value',
@@ -425,8 +445,18 @@ function PbrReviewer() {
 			key: 'confidence',
 			dataIndex: 'confidence',
 			...getColumnSearchProps('confidence'),
-			sorter: (a, b) => a.confidence?.length - b.confidence?.length,
-			sortDirections: ['descend', 'ascend'],
+			sorter: (a, b) => {
+				return a.confidence === null ||
+					a.confidence === undefined ||
+					a.confidence === ""
+					? -1
+					: b.confidence == null ||
+						b.confidence == undefined ||
+						b.confidence == ""
+						? 1
+						: a.confidence.toString().localeCompare(b.confidence);
+			},
+			// sortDirections: ['descend', 'ascend'],
 		},
 		{
 			title: 'File Path',
@@ -434,8 +464,18 @@ function PbrReviewer() {
 			dataIndex: 'file_path',
 			// width:"17%",
 			...getColumnSearchProps('file_path'),
-			sorter: (a, b) => a.file_path?.length - b.file_path?.length,
-			sortDirections: ['descend', 'ascend'],
+			sorter: (a, b) => {
+				return a.file_path === null ||
+					a.file_path === undefined ||
+					a.file_path === ""
+					? -1
+					: b.file_path == null ||
+						b.file_path == undefined ||
+						b.file_path == ""
+						? 1
+						: a.file_path.toString().localeCompare(b.file_path);
+			},
+			// sortDirections: ['descend', 'ascend'],
 		},
 		{
 			title: 'Page Name',
@@ -443,8 +483,18 @@ function PbrReviewer() {
 			dataIndex: 'page_name',
 			// width:"17%",
 			...getColumnSearchProps('page_name'),
-			sorter: (a, b) => a?.file_path?.length - b?.file_path?.length,
-			sortDirections: ['descend', 'ascend'],
+			sorter: (a, b) => {
+				return a.page_name === null ||
+					a.page_name === undefined ||
+					a.page_name === ""
+					? -1
+					: b.page_name == null ||
+						b.page_name == undefined ||
+						b.page_name == ""
+						? 1
+						: a.page_name.toString().localeCompare(b.page_name);
+			},
+			// sortDirections: ['descend', 'ascend'],
 		},
 		{
 			title: 'Page Number',
@@ -452,40 +502,90 @@ function PbrReviewer() {
 			dataIndex: 'page_num',
 			// width:"17%",
 			...getColumnSearchProps('page_num'),
-			sorter: (a, b) => a?.page_num?.length - b?.page_num?.length,
-			sortDirections: ['descend', 'ascend'],
+			sorter: (a, b) => {
+				return a.page_num === null ||
+					a.page_num === undefined ||
+					a.page_num === ""
+					? -1
+					: b.page_num == null ||
+						b.page_num == undefined ||
+						b.page_num == ""
+						? 1
+						: a.page_num.toString().localeCompare(b.page_num);
+			},
+			// sortDirections: ['descend', 'ascend'],
 		},
 		{
 			title: 'Status',
 			key: 'status',
 			dataIndex: 'status',
 			...getColumnSearchProps('status'),
-			sorter: (a, b) => a.status?.length - b.status?.length,
-			sortDirections: ['descend', 'ascend'],
+			sorter: (a, b) => {
+				return a.status === null ||
+					a.status === undefined ||
+					a.status === ""
+					? -1
+					: b.status == null ||
+						b.status == undefined ||
+						b.status == ""
+						? 1
+						: a.status.toString().localeCompare(b.status);
+			},
+			// sortDirections: ['descend', 'ascend'],
 		},
 		{
 			title: 'Site',
 			key: 'site_code',
 			dataIndex: 'site_code',
 			...getColumnSearchProps('site_code'),
-			sorter: (a, b) => a.site_code - b.site_code,
-			sortDirections: ['descend', 'ascend'],
+			sorter: (a, b) => {
+				return a.site_code === null ||
+					a.site_code === undefined ||
+					a.site_code === ""
+					? -1
+					: b.site_code == null ||
+						b.site_code == undefined ||
+						b.site_code == ""
+						? 1
+						: a.site_code.toString().localeCompare(b.site_code);
+			},
+			// sortDirections: ['descend', 'ascend'],
 		},
 		{
 			title: 'Product',
 			key: 'product_num',
 			dataIndex: 'product_num',
 			...getColumnSearchProps('product_num'),
-			sorter: (a, b) => a.product_num - b.product_num,
-			sortDirections: ['descend', 'ascend'],
+			sorter: (a, b) => {
+				return a.product_num === null ||
+					a.product_num === undefined ||
+					a.product_num === ""
+					? -1
+					: b.product_num == null ||
+						b.product_num == undefined ||
+						b.product_num == ""
+						? 1
+						: a.product_num.toString().localeCompare(b.product_num);
+			},
+			// sortDirections: ['descend', 'ascend'],
 		},
 		{
 			title: 'Batch',
 			key: 'batch_num',
 			dataIndex: 'batch_num',
 			...getColumnSearchProps('batch_num'),
-			sorter: (a, b) => a.batch_num - b.batch_num,
-			sortDirections: ['descend', 'ascend'],
+			sorter: (a, b) => {
+				return a.batch_num === null ||
+					a.batch_num === undefined ||
+					a.batch_num === ""
+					? -1
+					: b.batch_num == null ||
+						b.batch_num == undefined ||
+						b.batch_num == ""
+						? 1
+						: a.batch_num.toString().localeCompare(b.batch_num);
+			},
+			// sortDirections: ['descend', 'ascend'],
 		},
 		{
 			title: 'created By',
@@ -493,8 +593,18 @@ function PbrReviewer() {
 			dataIndex: 'created_by',
 			// width:"10%",
 			...getColumnSearchProps('created_by'),
-			sorter: (a, b) => a.created_by?.length - b.created_by?.length,
-			sortDirections: ['descend', 'ascend'],
+			sorter: (a, b) => {
+				return a.created_by === null ||
+					a.created_by === undefined ||
+					a.created_by === ""
+					? -1
+					: b.created_by == null ||
+						b.created_by == undefined ||
+						b.created_by == ""
+						? 1
+						: a.created_by.toString().localeCompare(b.created_by);
+			},
+			// sortDirections: ['descend', 'ascend'],
 		},
 		{
 			title: 'Action',
@@ -700,9 +810,9 @@ function PbrReviewer() {
 					: null, id: []
 			}
 			setSelectedTemplateArray([])
-			cardTableData(req)
-			chart(req1)
-			chart1(req2)
+			// cardTableData(req)
+			// chart(req1)
+			// chart1(req2)
 		}
 		setSelectedTemplateArray(val)
 	}
@@ -735,20 +845,21 @@ function PbrReviewer() {
 				startDate: e[0].format("YYYY-MM-DD"),
 				endDate: e[1].format("YYYY-MM-DD"),
 			});
-		} else {
+		} 
+		else {
 			setBatchFilters({
 				...batchFilters,
 				startDate: null,
 				endDate: null,
 			});
-			let req = {
-				...reviewerReq, date_range: null
-			}
-			let req1 = {
-				date_range: null, id: selectedTemplateArray
-			}
-			cardTableData(req)
-			chart(req1)
+			// let req = {
+			// 	...reviewerReq, date_range: null
+			// }
+			// let req1 = {
+			// 	date_range: null, id: selectedTemplateArray
+			// }
+			// cardTableData(req)
+			// chart(req1)
 		}
 	};
 
@@ -836,7 +947,7 @@ function PbrReviewer() {
 												disabled={arr?.length == 0 ? true : false}
 											>Approve</Button>
 											<Search
-												placeholder="Search"
+												placeholder="Find"
 												allowClear
 												onSearch={landingSearch}
 												style={{ width: 300, marginTop: 7 }}
@@ -853,7 +964,7 @@ function PbrReviewer() {
 																moment(batchFilters.startDate, dateFormat),
 																moment(batchFilters.endDate, dateFormat),
 															]
-															: ""
+															: ''
 													}
 													format={dateFormat}
 													onChange={(dateString) => handledatechange(dateString)}

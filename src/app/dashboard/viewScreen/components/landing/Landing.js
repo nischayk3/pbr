@@ -255,7 +255,8 @@ export default function Landing() {
 										>
 											<StatusBlock
 												key={index}
-												id={i.view}
+												id={i.view_disp_id}
+												name={i.view_name}
 												status={i.view_status}
 											/>
 										</Link>

@@ -483,6 +483,46 @@ const ReportDesignerNew = () => {
       dispatch(hideLoader());
     }, 3000);
   };
+  const reloadUrl = async (reload_id) => {
+    try {
+      dispatch(showLoader())
+      setParams(true);
+      let req = { report_displ_id: reload_id }
+      let data = await loadReport(req)
+      data = data.report_designer
+      data = data.data
+
+      setReportId(params.id)
+      if (data) {
+        LoadData(data)
+        setTimeout(() => {
+          setIsLoad(true);
+          dispatch(hideLoader())
+        }, 2000)
+      }
+      else {
+        dispatch(hideLoader())
+        dispatch(showNotification('error', "Error in loading data"))
+      }
+    }
+    catch (err) {
+      dispatch(showNotification('error', err))
+    }
+  }
+
+  useEffect(() => {
+    const report_param_id = location.pathname.split("/").filter((i) => i);
+    console.log(report_param_id.length)
+    if (report_param_id.length > 2) {
+      console.log('yes')
+      dispatch(showLoader())
+      console.log(report_param_id[2])
+      reloadUrl(report_param_id[2])
+
+    }
+    getViewsList();
+  }, []
+  );
 
   return (
     <div className="custom-wrapper">

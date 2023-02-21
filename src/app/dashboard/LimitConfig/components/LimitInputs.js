@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import './Limitconfig.scss'
-import SelectField from "../../../../components/SelectField/SelectField";
-import { Col, Row, Table, Input, DatePicker, Button, Popconfirm, Tooltip, Select } from 'antd';
-import { DeleteOutlined, CalendarOutlined, PlusOutlined } from '@ant-design/icons'
+import { CalendarOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { Button, Col, DatePicker, Input, Popconfirm, Row, Select, Table, Tooltip } from 'antd';
 import moment from 'moment';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
-import { deleteLimitsApi, saveLimitConfigApi } from '../../../../services/limitConfig';
-import { hideLoader, showNotification, showLoader } from '../../../../duck/actions/commonActions';
-import { v1 as uuid } from "uuid";
+import SelectField from "../../../../components/SelectField/SelectField";
+import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
+import { deleteLimitsApi } from '../../../../services/limitConfig';
+import './Limitconfig.scss';
 
 const LimitInputs = ({ setLimitsData, limitsData, openRow, selectedRowKey, paramData }) => {
 
@@ -81,7 +80,7 @@ const LimitInputs = ({ setLimitsData, limitsData, openRow, selectedRowKey, param
 							return (
 								data?.parameter_class?.map((paramClass) => {
 									console.log(paramClass, 'apara')
-									return(
+									return (
 										<p style={{ margin: "0" }}>{paramClass}</p>
 									)
 								})

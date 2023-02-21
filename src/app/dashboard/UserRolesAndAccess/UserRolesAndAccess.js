@@ -26,7 +26,7 @@ const UserRolesAndAccess = () => {
 
 	const validResource = JSON.parse(localStorage.getItem('login_details'));
 
-	let resourceKey = validResource.resource_action
+	let resourceKey = validResource?.resource_action
 	let resKey = resourceKey && Object.keys(resourceKey)
 
 	useEffect(() => {

@@ -2,7 +2,7 @@ import {
 	AppstoreAddOutlined, AppstoreOutlined, AreaChartOutlined, BarChartOutlined, BlockOutlined,
 	CheckCircleOutlined, CloudUploadOutlined, ClusterOutlined, CodeOutlined, DeploymentUnitOutlined, DiffOutlined, FileDoneOutlined,
 	FileProtectOutlined, FileSearchOutlined, FileSyncOutlined, FundOutlined, FundProjectionScreenOutlined,
-	NodeIndexOutlined, PartitionOutlined, SisternodeOutlined, TeamOutlined, UploadOutlined, UserOutlined
+	NodeIndexOutlined, PartitionOutlined, SisternodeOutlined, TeamOutlined, UploadOutlined, UserOutlined, FilePdfOutlined
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import React, { useEffect, useState } from "react";
@@ -23,7 +23,7 @@ const Sidebar = () => {
 
 	const validResource = JSON.parse(localStorage.getItem('login_details'));
 
-	let resourceKey = validResource.resource_action
+	let resourceKey = validResource?.resource_action
 	let resKey = resourceKey && Object.keys(resourceKey)
 
 	useEffect(() => {
@@ -49,7 +49,7 @@ const Sidebar = () => {
 		}
 	};
 
-	console.log("permissionssss", permissions);
+
 
 	return (
 		<Sider
@@ -172,6 +172,17 @@ const Sidebar = () => {
 								</Link>
 							</Menu.Item>
 						)}
+
+						<Menu.Item
+							key="system-config"
+							icon={<DeploymentUnitOutlined className="menu-icons" />}
+							id="limit-config"
+							className={path === "/dashboard/system-config" ? 'ant-menu-item-selected' : 'remove-selected'}
+						>
+							<Link to="/dashboard/system-config">
+								System Config
+							</Link>
+						</Menu.Item>
 					</SubMenu>
 				) : null}
 
@@ -293,7 +304,8 @@ const Sidebar = () => {
 				{permissions &&
 					permissions['PBR_FILE_UPLOAD'] ||
 					permissions['PBR_TEMPLATE'] ||
-					permissions['PBR_DASHBOARD'] ? (
+					permissions['PBR_DASHBOARD'] ||
+					permissions['PBR_FILE_SEARCH'] ? (
 					<SubMenu
 						key="sub6"
 						mode="inline"
@@ -310,6 +322,14 @@ const Sidebar = () => {
 								<Link to="/dashboard/pbr_file_upload">File Upload</Link>
 							</Menu.Item>
 						)}
+						{permissions['PBR_FILE_SEARCH'] && <Menu.Item
+							key="pbr-pdf-viewer"
+							icon={<FilePdfOutlined className="menu-icons" />}
+							id="pbr-pdf-viewer"
+							className={path === "/dashboard/pbr-pdf-viewer" ? 'ant-menu-item-selected' : 'remove-selected'}
+						>
+							<Link to="/dashboard/pbr-pdf-viewer">Pdf Search</Link>
+						</Menu.Item>}
 
 						{permissions['PBR_TEMPLATE'] && (
 							<Menu.Item
@@ -332,6 +352,7 @@ const Sidebar = () => {
 								<Link to="/dashboard/pbr_reviewer">Dashboard</Link>
 							</Menu.Item>
 						)}
+
 
 					</SubMenu>
 				) : null}

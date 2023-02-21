@@ -17,7 +17,7 @@ export default function DataAccessMainPage() {
             <DataAccessTabs setSelectedTab={setSelectedTab} />
           </Col>
           <Col span={18}>
-            <DataAccessContentArea selectedTab={selectedTab} />
+            <DataAccessContentArea selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
           </Col>
         </Row>
       </div>

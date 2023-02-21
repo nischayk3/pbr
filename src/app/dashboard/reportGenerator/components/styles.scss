@@ -194,6 +194,28 @@
 
 	color: #262626;
 }
+.chart-tag-process {
+	.ant-tag-close-icon {
+		font-size: 14px;
+	}
+
+	border: 0px !important;
+
+	align-items: center;
+	padding: 1px 8px;
+	background: #e2f5ff;
+	box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1);
+	border-radius: 4px;
+	width: 140px;
+	height: 22px;
+	font-family: var(--primary-font-family);
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+	margin-left: 1px;
+
+	color: #262626;
+}
 
 .chart-names {
 	font-family: var(--primary-font-family);

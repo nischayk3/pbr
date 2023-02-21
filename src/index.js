@@ -5,9 +5,9 @@ import axios from "axios";
 import { ConnectedRouter } from "connected-react-router";
 import React from "react";
 import { CookiesProvider } from "react-cookie";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import App from "./app";
 import { history, Store } from "./duck/store";
 import "./index.scss";
@@ -38,8 +38,11 @@ axios.interceptors.response.use(
 	}
 );
 
-ReactDOM.render(
-	<BrowserRouter>
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+root.render(
+	<Router >
 		<CookiesProvider>
 			<MsalProvider instance={msalInstance}>
 				<Provider store={Store}>
@@ -51,8 +54,7 @@ ReactDOM.render(
 				</Provider>
 			</MsalProvider>
 		</CookiesProvider>
-	</BrowserRouter>,
-	document.getElementById("root")
+	</Router>
 );
 
 // If you want your app to work offline and load faster, you can change

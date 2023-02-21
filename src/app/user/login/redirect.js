@@ -25,7 +25,7 @@ export default function Redirect() {
 			dispatch(showNotification('success', `Logged in as ${data.email_id}`));
 			history.push('/dashboard/workspace');
 			//temporary fix
-			window.location.reload()
+			// window.location.reload()
 		} else {
 			dispatch(showNotification('error', 'Error in Login'));
 			dispatch(hideLoader());
