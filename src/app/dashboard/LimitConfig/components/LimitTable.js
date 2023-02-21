@@ -277,9 +277,15 @@ const LimitTable = () => {
     try {
       dispatch(showLoader());
       const apiResponse = await saveLimitConfigApi(data);
-      getLimitConfigApi();
-      setOpenRow('')
-      dispatch(hideLoader());
+      if(apiResponse?.status === 200) {
+        getLimitConfigApi();
+        setOpenRow('')
+        dispatch(hideLoader());
+      } else {
+        dispatch(showNotification("error", apiResponse?.detail));
+        dispatch(hideLoader());
+      }
+      
     } catch (error) {
       /* istanbul ignore next */
       dispatch(hideLoader());
@@ -369,8 +375,8 @@ const LimitTable = () => {
 
   return (
     <div className='limit-container'>
-      <div className="landing-search-wrapper">
-        <div className="landing-card">
+      <div className="landing-search-wrapper-limit" style={{ width: '100%'}}>
+        <div className="landing-card-limit">
           <Button className='add-molec-button custom-primary-btn' onClick={addMolecule}>Add Molecule</Button>
           <Table
             columns={columns}
