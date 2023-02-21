@@ -1,11 +1,8 @@
 import { Alert } from 'antd';
-import 'antd/dist/antd.css';
 import React, { useEffect, useState } from 'react';
 import Plot from 'react-plotly.js';
 import { useDispatch } from 'react-redux';
 import {
-	hideLoader,
-	showLoader,
 	showNotification
 } from '../../../../../duck/actions/commonActions';
 import { getChartPlotData } from '../../../../../services/workSpaceServices';
@@ -13,7 +10,6 @@ import './styles.scss';
 
 const chartComponent = (props) => {
 	const [workspaceChartData, setWorkSpaceChartData] = useState([]);
-	// const [workspaceChartLayout, setWorkSpaceChartLayout] = useState([]);
 	const [workspaceChartLayoutXAxis, setWorkSpaceChartLayoutXAxis] = useState([]);
 	const [workspaceChartLayoutYAxis, setWorkSpaceChartLayoutYAxis] = useState([]);
 	const dispatch = useDispatch();
@@ -32,21 +28,11 @@ const chartComponent = (props) => {
 			'resource-name': 'WORKITEMS',
 		}
 		try {
-			dispatch(showLoader());
 			const chartResponse = await getChartPlotData(req, headers);
-			//if(chartResponse.statuscode==200){
 			setWorkSpaceChartData(chartResponse.data[0].data);
-			//setWorkSpaceChartLayout(chartResponse.data[0].layout)
 			setWorkSpaceChartLayoutXAxis(chartResponse.data[0].layout.xaxis)
 			setWorkSpaceChartLayoutYAxis(chartResponse.data[0].layout.yaxis)
-			dispatch(hideLoader());
-			// }else{
-			//     dispatch(hideLoader());
-			//     dispatch(showNotification('error', 'There is no data'));
-			// }
-
 		} catch (error) {
-			dispatch(hideLoader());
 			dispatch(showNotification('error', error.Message));
 		}
 	}
@@ -56,13 +42,6 @@ const chartComponent = (props) => {
 		autosize: false,
 		width: 800,
 		height: 300,
-		// margin: {
-		//     l: 50,
-		//     r: 50,
-		//     b: 75,
-		//     t: 30,
-		//     pad: 4
-		// },
 		title: {
 			text: ""
 		}

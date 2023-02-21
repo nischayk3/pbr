@@ -38,6 +38,7 @@ const DataEntryForm = () => {
   const history = useHistory();
   const pageSize = 1;
 
+
   const selectedMolecule = useSelector(
     (state) => state.elogReducer.selectedMolecule
   );
@@ -50,6 +51,9 @@ const DataEntryForm = () => {
   const [drawervisible, setDrawerVisible] = useState(true);
   const [templateData, setTemplateData] = useState([]);
   const [disableScreen, setDisableScreen] = useState(false);
+  const [publishScreen, setPublishScreen] = useState(false);
+  const [templateId, setTemplateId] = useState('');
+
 
   let template_Data = useSelector((state) => state.elogReducer.templateData);
 
@@ -67,6 +71,7 @@ const DataEntryForm = () => {
       temp_disp_id: params.template_disp_id,
       molecule: params.molecule,
     };
+    setTemplateId(params.template_disp_id.replace(/[^0-9]/g, ''))
     if (params.recording_id) {
       template_req["recording_id"] = params.recording_id;
     }
@@ -101,11 +106,13 @@ const DataEntryForm = () => {
       unloadUrl(params);
       if (params.recording_id) {
         setDisableScreen(true);
-      } else {
-        setDisableScreen(false);
+      }
+      if (params.publish) {
+        setPublishScreen(true);
       }
     }
   }, []);
+
 
   const handleChange = (page, inx) => {
     dispatch(showLoader());
@@ -142,19 +149,21 @@ const DataEntryForm = () => {
         ) {
           template_Data[index_].form_data.unshift({
             status: "DRFT",
-            template_id: 1,
+            template_id: parseInt(templateId),
             version: 1,
             readings: dummyresult.Data[0].layout,
           });
           setTemplateData(template_Data);
         }
       }
+      else {
+        dispatch(showNotification("error", "Error in adding form"));
+      }
     } catch (err) {
       dispatch(showNotification("error", "Error in adding form"));
     } finally {
-      handleChange(2, index_);
-      handleChange(1, index_);
-      dispatch(hideLoader());
+      handleChange(2, index_)
+      setTimeout(() => { handleChange(1, index_) }, 100)
     }
   };
 
@@ -178,6 +187,7 @@ const DataEntryForm = () => {
       dispatch(hideLoader());
     }
   };
+
 
   return (
     <div className="custom-wrapper bread-wrap">
@@ -295,7 +305,7 @@ const DataEntryForm = () => {
                               : "data_form_first_collapsed"
                         }
                       >
-                        {i.form_data &&
+                        {templateData && i.form_data &&
                           i.form_data.length > 0 &&
                           i.form_data.map(
                             (idx, index) =>
@@ -308,7 +318,7 @@ const DataEntryForm = () => {
                                   form_id={i.form_id ? i.form_id : "1"}
                                   form_version={i.version ? i.version : 1}
                                   template_disp_id={
-                                    idx.template_id ? idx.template_id : 1
+                                    idx.template_id ? idx.template_id : parseInt(templateId)
                                   }
                                   selectedMolecule={
                                     selectedMolecule ? selectedMolecule : "_"
@@ -324,6 +334,7 @@ const DataEntryForm = () => {
                                   reloadData={reloadData}
                                   disableScreen={disableScreen}
                                   site={selectedSite}
+                                  publishScreen={publishScreen}
                                 />
                               )
                           )}

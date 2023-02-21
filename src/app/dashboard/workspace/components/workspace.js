@@ -2,20 +2,20 @@ import {
 	ArrowRightOutlined, LayoutOutlined
 } from "@ant-design/icons";
 import {
-	Avatar, Card, Col, Divider,
+	Avatar, Col, Divider,
 	Empty, Row, Tabs
 } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { lazy, useEffect, useState } from "react";
 import { FaCircle } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router";
+import { Link, useHistory } from "react-router-dom";
 import emptyImage from "../../../../assets/images/empty-image.png";
-import illustrations from "../../../../assets/images/Group 33808.svg";
+import illustrations from "../../../../assets/images/workspace_banner.png";
 import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
+import ScreenHeader from "../../../../components/ScreenHeader/screenHeader";
+import StatusBlock from "../../../../components/StatusBlock/statusBlock";
 import { MDH_AIRFLOW } from "../../../../constants/apiBaseUrl";
 import {
-	hideLoader,
-	showLoader,
 	showNotification
 } from "../../../../duck/actions/commonActions";
 import { getJob } from "../../../../services/jobScheduleService";
@@ -24,15 +24,16 @@ import {
 	getChartExceptionData,
 	getUpdatedChartsViewsData
 } from "../../../../services/workSpaceServices";
-import Chart from "./chartComponent/chartComponent";
-import DataQuality from "./dataQuality/dataQuality";
-import DeviationTable from "./deviationTable/deviationTable";
+
+const Chart = lazy(() => import("./chartComponent/chartComponent"));
+const DataQuality = lazy(() => import("./dataQuality/dataQuality"));
+const DeviationTable = lazy(() => import("./deviationTable/deviationTable"));
+
 import "./styles.scss";
 
 const { TabPane } = Tabs;
 
 const Workspace = () => {
-	const [resultDate, setResultDate] = useState("");
 	const [tilesData, setTilesData] = useState([]);
 	const [userApproval, setUserApproval] = useState([]);
 	const [chartIdException, setChartIdException] = useState([]);
@@ -46,7 +47,6 @@ const Workspace = () => {
 	const history = useHistory();
 
 	useEffect(() => {
-		updateDate();
 		getTilesData();
 		getChartId();
 		lastUpdatedChartsViews();
@@ -54,21 +54,10 @@ const Workspace = () => {
 		getScheduleReportAlertsData();
 	}, []);
 
-	//get todays date
-	const updateDate = () => {
-		const date = new Date();
-		const month = date.toLocaleString("default", { month: "long" });
-		const latestDate = date.getDate();
-		const year = date.getFullYear();
-		const resultDate = month + " " + latestDate + "," + " " + year;
-		setResultDate(resultDate);
-	};
-
 	//workflow approval card function
 	const getTilesData = async () => {
 		let req = {};
 		try {
-			dispatch(showLoader());
 			const tilesResponse = await getCountData(req);
 			if (tilesResponse["status-code"] == 200) {
 				let filterPbrCount = tilesResponse["Data"].filter(
@@ -77,10 +66,8 @@ const Workspace = () => {
 				setTilesData(tilesResponse["Data"]);
 				setUserApproval(tilesResponse["counts"]);
 				setPbrCount(filterPbrCount[0] && filterPbrCount[0].item_count);
-				dispatch(hideLoader());
 			}
 		} catch (error) {
-			dispatch(hideLoader());
 			dispatch(showNotification("error", error.message));
 		}
 	};
@@ -97,12 +84,9 @@ const Workspace = () => {
 			"resource-name": "WORKITEMS",
 		};
 		try {
-			dispatch(showLoader());
 			const alertResponse = await getJob(req, headers);
 			setScheduleChartAlerts(alertResponse.Data);
-			dispatch(hideLoader());
 		} catch (error) {
-			dispatch(hideLoader());
 			dispatch(showNotification("error", error.message));
 		}
 	};
@@ -119,12 +103,9 @@ const Workspace = () => {
 			"resource-name": "WORKITEMS",
 		};
 		try {
-			dispatch(showLoader());
 			const alertResponse = await getJob(req, headers);
 			setScheduleReportAlerts(alertResponse.Data);
-			dispatch(hideLoader());
 		} catch (error) {
-			dispatch(hideLoader());
 			dispatch(showNotification("error", error.message));
 		}
 	};
@@ -133,7 +114,6 @@ const Workspace = () => {
 	const getChartId = async () => {
 		let req = { limit: 5 };
 		try {
-			// dispatch(showLoader());
 			const chartIdResponse = await getChartExceptionData(req);
 			setChartIdException(chartIdResponse.Data);
 			setActiveTab(
@@ -141,11 +121,8 @@ const Workspace = () => {
 				"_" +
 				chartIdResponse?.Data[0]?.chart_version
 			);
-			// dispatch(hideLoader());
 		} catch (error) {
 			console.log("inside2", error);
-			// dispatch(hideLoader());
-			// dispatch(showNotification("error", error.Message));
 		}
 	};
 
@@ -153,13 +130,10 @@ const Workspace = () => {
 	const lastUpdatedChartsViews = async () => {
 		let req = { limit: 5 };
 		try {
-			dispatch(showLoader());
 			const chartResponse = await getUpdatedChartsViewsData(req);
 			setLastUpdatedCharts(chartResponse.last_created_or_changed_charts);
 			setLastUpdatedViews(chartResponse.last_created_or_changed_views);
-			dispatch(hideLoader());
 		} catch (error) {
-			dispatch(hideLoader());
 			dispatch(showNotification("error", error.Message));
 		}
 	};
@@ -169,38 +143,26 @@ const Workspace = () => {
 		setActiveTab(activeKey);
 	};
 
-	//changing tiles color
-	const statusColor = (status) => {
-		if (status == "APRD") {
-			return "aprd";
-		}
-		if (status == "DRFT") {
-			return "drft";
-		}
-		if (status == "AWAP") {
-			return "awap";
-		}
-	};
+	const greet = [
+		'',
+		'Good Morning',
+		'Good Afternoon',
+		'Good Evening'
+	][parseInt(new Date().getHours() / 24 * 4)];
+
 	return (
 		<div className="custom-wrapper">
 			<BreadCrumbWrapper />
 			<div className="custom-content-layout">
-				<Card className="workspace_head">
-					<div>
-						<p className="workspace-username">
-							Howdy {localStorage.getItem("username")}! Good Morning
-						</p>
-						<p className="workspace-text">
-							Let's see what you have on your plate today!
-						</p>
-					</div>
-					<div style={{ display: "flex", flexDirection: "row", flex: 1 }}>
-						<img src={illustrations} className="workspace-illustration" />
-					</div>
-					<div>
-						<span className="workspace-resultdate">{resultDate}</span>
-					</div>
-				</Card>
+				<ScreenHeader
+					bannerbg={{
+						background: "linear-gradient(180deg, #e7e6ff 0%, #fff4f4 100%)",
+					}}
+					title={`Howdy ${localStorage.getItem("username")}! ${greet}`}
+					description="Let's see what you have on your plate today!"
+					source={illustrations}
+					sourceClass="workspace-illustration"
+				/>
 				<div className="workspace-wrapper">
 					<div className="workspace-main-block">
 						<div className="workspace-innerColumn">
@@ -461,43 +423,34 @@ const Workspace = () => {
 									<p className="workspace-processCharts">
 										Process Control Charts
 									</p>
-									<Row gutter={[6, 12]}>
-										{lastupdatedCharts && lastupdatedCharts.length > 0 ? (
-											lastupdatedCharts.map((j, k) => {
+
+									{lastupdatedCharts && lastupdatedCharts.length > 0 ? (
+										<div className="tile">
+											{lastupdatedCharts.map((i, index) => {
 												return (
-													<Col className="gutter-row" span={8}>
-														<div
-															className="workspace-processChart-card"
-															onClick={() =>
-																history.push(
-																	`/dashboard/chart_personalization/${j.chart_disp_id}?id=${j.chart_disp_id}&version=${j.chart_version}&fromScreen=Workspace`
-																)
-															}
-														>
-															<div
-																className={`tile-status ${statusColor(
-																	j.chart_status
-																)}`}
-															>
-																{j.chart_status}
-															</div>
-															<p className="workspace-processCharts-id">
-																{j.chart_disp_id}
-															</p>
-															<p className="workspace-processCharts-name">
-																{j.chart_name}
-															</p>
-														</div>
-													</Col>
-												);
-											})
-										) : (
-											<Empty
-												className="empty-workspace"
-												description={<span>Nothing to see here</span>}
-											/>
-										)}
-									</Row>
+													<Link
+														key={i.chart_disp_id}
+														to={{
+															pathname: `/dashboard/chart_personalization/${i.chart_disp_id}?id=${i.chart_disp_id}&version=${i.chart_version}&fromScreen=Workspace`,
+														}}
+
+													>
+														<StatusBlock
+															key={index}
+															id={i.chart_disp_id}
+															name={i.chart_name}
+															status={i.chart_status}
+														/>
+													</Link>
+												)
+											})}
+										</div>
+									) : (
+										<Empty
+											className="empty-workspace"
+											description={<span>Nothing to see here</span>}
+										/>
+									)}
 								</div>
 							</Col>
 							<Col span={1}>
@@ -509,43 +462,34 @@ const Workspace = () => {
 							<Col span={11}>
 								<div className="workspace-processView-main">
 									<p className="workspace-processView">Views</p>
-									<Row gutter={[6, 12]}>
-										{lastupdatedViews && lastupdatedViews.length > 0 ? (
-											lastupdatedViews.map((m, n) => {
+
+									{lastupdatedViews && lastupdatedViews.length > 0 ? (
+										<div className="tile">
+											{lastupdatedViews.map((i, index) => {
 												return (
-													<Col className="gutter-row" span={8}>
-														<div
-															className="workspace-processView-card"
-															onClick={() =>
-																history.push(
-																	`/dashboard/view_creation/${m.view_disp_id}&${m.view_version}?id=${m.view_disp_id}&version=${m.view_version}&fromScreen=Workspace`
-																)
-															}
-														>
-															<div
-																className={`tile-status ${statusColor(
-																	m.view_status
-																)}`}
-															>
-																{m.view_status}
-															</div>
-															<p className="workspace-processView-id">
-																{m.view_disp_id}
-															</p>
-															<p className="workspace-processView-name">
-																{m.view_name}
-															</p>
-														</div>
-													</Col>
-												);
-											})
-										) : (
-											<Empty
-												className="empty-workspace"
-												description={<span>Nothing to see here</span>}
-											/>
-										)}
-									</Row>
+													<Link
+														key={i.view_disp_id}
+														to={{
+															pathname: `/dashboard/view_creation/${i.view_disp_id}&${i.view_version}?id=${i.view_disp_id}&version=${i.view_version}&fromScreen=Workspace`,
+														}}
+													>
+														<StatusBlock
+															key={index}
+															id={i.view_disp_id}
+															name={i.view_name}
+															status={i.view_status}
+														/>
+													</Link>
+												)
+											})}
+										</div>
+									) : (
+										<Empty
+											className="empty-workspace"
+											description={<span>Nothing to see here</span>}
+										/>
+									)}
+
 								</div>
 							</Col>
 						</Row>

@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import './Limitconfig.scss'
-import SelectField from "../../../../components/SelectField/SelectField";
-import { Col, Row, Table, Input, DatePicker, Button, Popconfirm, Tooltip, Select } from 'antd';
-import { DeleteOutlined, CalendarOutlined, PlusOutlined } from '@ant-design/icons'
+import { CalendarOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { Button, Col, DatePicker, Input, Popconfirm, Row, Select, Table, Tooltip } from 'antd';
 import moment from 'moment';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
 import { deleteLimitsApi, getMoleculeData } from '../../../../services/limitConfig';
 import { hideLoader, showNotification, showLoader } from '../../../../duck/actions/commonActions';

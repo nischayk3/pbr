@@ -1,4 +1,5 @@
-import { Button, Row, Table, Col } from "antd";
+import { Button, Row, Table, Col, Popover } from "antd";
+import { ExclamationCircleOutlined } from "@ant-design/icons"
 import React, { useState } from "react";
 import "./tabContent.scss";
 import CodeEditor from "@uiw/react-textarea-code-editor";
@@ -22,9 +23,38 @@ export default function TabContent() {
   );
   const [level, setLevel] = useState("");
   const [statusCode, setStatusCode] = useState(0);
-  const [result, setResult] = useState("");
-  const [selectedDiv, setSelectedDiv] = useState("Overview");
+  const [statusCodeLevel, setStatusCodeLevel] = useState(0);
 
+  const [resultLevel, setResultLevel] = useState("");
+  const [resultLevelWithLevel, setResultWithLevel] = useState("");
+  const [selectedDiv, setSelectedDiv] = useState("Overview");
+  const content = (
+    <div className="parent_div" id="Error Codes">
+      <ul>
+        <li className="content">
+          Success : 200 when a successful .csv or pdf is generated with
+          correct data
+        </li>
+        <li className="content">
+          Unauthorised: 401 User does not have access to views or API
+          execution
+        </li>
+        <li className="content">
+          Permission denied: 403.User is not authorised to execute for
+          certain molecule or plant{" "}
+        </li>
+        <li className="content">
+          Bad request: 400 Input parameters are incorrect
+        </li>
+        <li className="content">
+          Not found: 404: No data found for required filter
+        </li>
+        <li className="content">
+          Internal Server Error: 500. Database is not reachable.
+        </li>
+      </ul>
+    </div>
+  );
   const dataSource = [
     {
       key: "1",
@@ -94,9 +124,9 @@ export default function TabContent() {
     setLevel("without");
   };
 
-  const getData = async () => {
+  const getData = async (Level) => {
     let req = {};
-    if (level == "with") {
+    if (level == "with" || Level == "with") {
       let js = JSON.parse(withLevel);
       req = js;
     } else {
@@ -105,11 +135,24 @@ export default function TabContent() {
     }
     let result = await getGeanealogy(req);
     if (result.Status > 200) {
-      setStatusCode(result.Status);
-      setResult(JSON.stringify(result));
+      if (level == "with" || Level == "with")
+        setStatusCode(result.Status);
+      else
+        setStatusCodeLevel(result.Status)
+      if (level == "with" || Level == "with")
+        setResultLevel(JSON.stringify(result));
+      else
+        setResultWithLevel(JSON.stringify(result));
     } else {
-      setStatusCode(200);
-      setResult(result);
+      if (level == "with" || Level == "with")
+        setStatusCode(200);
+      else
+        setStatusCodeLevel(200);
+      if (level == "with" || Level == "with")
+        setResultLevel(result);
+      else
+        setResultWithLevel(result);
+
       const url = window.URL.createObjectURL(new Blob([result]));
       const a = document.createElement("a");
       a.href = url;
@@ -140,7 +183,7 @@ export default function TabContent() {
             <div className="parent_div" id="Overview">
               <p className="overview">Overview</p>
               <p className="content">
-                To facilitate management, Apache Airflow supports a range of
+                To facilitate management,  MI  supports a range of
                 REST API endpoints across its objects. This section provides an
                 overview of the API design, methods, and supported use cases.
               </p>
@@ -221,97 +264,106 @@ export default function TabContent() {
                 </li>
               </ul>
             </div>
-            <div className="parent_div" id="section">
-              <p className="content">Request With level</p>
-              <CodeEditor
-                value={withLevel}
-                onChange={(e) => handleLevel(e)}
-                language="json"
-                padding={15}
-                style={{
-                  fontSize: 12,
-                  backgroundColor: "#00000",
-                  fontFamily: "Courier,monospace",
-                  color: "white",
-                  border: ".5px solid black",
-                }}
-              />
-            </div>
-            <div className="parent_div" id="section">
-              <p className="content">Request without level</p>
-              <CodeEditor
-                value={withoutLevel}
-                language="json"
-                onChange={(e) => handleWithoutleLevel(e)}
-                padding={15}
-                style={{
-                  fontSize: 12,
-                  backgroundColor: "#00000",
-                  fontFamily: "Courier,monospace",
-                  color: "white",
-                  border: ".5px solid black",
-                }}
-              />
+            <span className="overview">Try it yourself</span>
+            <span className="status_codes">See error codes <Popover content={content}> <ExclamationCircleOutlined style={{ color: '#162154' }} /> </Popover></span>
+            <br />
+            <br />
+
+            <div className="try_area" id="section">
+              <span>
+                <p className="content">Request With level</p>
+                <CodeEditor
+                  value={withLevel}
+                  onChange={(e) => handleLevel(e)}
+                  language="json"
+                  padding={15}
+                  style={{
+                    fontSize: 12,
+                    height: '146px',
+                    width: '404px',
+                    backgroundColor: "#11171A",
+                    fontFamily: "Courier,monospace",
+                    color: "white",
+                    border: ".5px solid black",
+                    marginTop: '14px'
+                  }}
+                />
+              </span>
+              <span>
+                <p style={{ marginLeft: '13px' }} className="content">Request without level</p>
+                <CodeEditor
+                  value={withoutLevel}
+                  language="json"
+                  onChange={(e) => handleWithoutleLevel(e)}
+                  padding={15}
+                  style={{
+                    fontSize: 12,
+                    height: '146px',
+                    width: '404px',
+                    backgroundColor: "#11171A",
+                    fontFamily: "Courier,monospace",
+                    color: "white",
+                    border: ".5px solid black",
+                    marginTop: '14px',
+                    marginLeft: '14px'
+                  }}
+                /></span>
             </div>
             <div className="parent_div" id="Error Codes">
-              <p className="overview">Error Codes</p>
-              <ol>
-                <li className="content">Success : 200 ok </li>
-                <li className="content">Unauthorised: 401</li>
-                <li className="content">Permission denied</li>
-                <li className="content">Bad request</li>
-                <li className="content">Not found</li>
-              </ol>
-              {result ? (
-                <p>
-                  {statusCode ? (
-                    <p className="overview">
-                      {" "}
-                      Statuscode :{" "}
-                      <Button
-                        className={
-                          statusCode == 200
-                            ? "success-code-button"
-                            : "error-code-button"
-                        }
-                      >
-                        {statusCode}
-                      </Button>{" "}
-                    </p>
-                  ) : (
-                    <></>
-                  )}
-
-                  <p className="overview">
-                    Result :
-                    <CodeEditor
-                      value={result}
-                      language="json"
-                      padding={15}
-                      style={{
-                        fontSize: 12,
-                        backgroundColor: "#00000",
-                        fontFamily: "Courier,monospace",
-                        color: "white",
-                        border: ".5px solid black",
-                        minHeight: "100px",
-                        width: "600px",
-                        height: "200px",
-                        marginTop: "20px",
-                        overflow: "scroll",
-                      }}
-                    />
-                  </p>
-                </p>
-              ) : (
-                <></>
-              )}
             </div>
-            <div className="parent_div" id="Try Code">
-              <Button className="button" onClick={() => getData()}>
-                Try code
-              </Button>
-            </div>
+            <Row>
+              <Col span={14}>
+                <Button className="button_genealogy" onClick={() => getData("with")}>
+                  Try code
+                </Button>
+                <div className="result_status_genealogy">
+                  <span className="result_key">Result</span> <span className="status_box_genealogy" >Status Code: {statusCode}</span>
+                </div>
+                <CodeEditor
+                  value={resultLevel}
+                  language="json"
+                  padding={15}
+                  style={{
+                    fontSize: 12,
+                    backgroundColor: "#B2E6FF",
+                    fontFamily: "Courier,monospace",
+                    color: "black",
+                    border: ".5px solid black",
+                    minHeight: "100px",
+                    width: "404px",
+                    height: "146px",
+                    marginTop: "14px",
+                    overflow: "auto",
+                  }}
+                />
+              </Col>
+              <Col span={8}>
+                <Button className="button_genealogy_right" onClick={() => getData()}>
+                  Try code
+                </Button>
+                <div className="result_status_genealogy" style={{ marginLeft: '20px' }}>
+                  <span className="result_key">Result</span> <span className="status_box_genealogy">Status Code: {statusCodeLevel}</span>
+                </div>
+                <CodeEditor
+                  value={resultLevelWithLevel}
+                  language="json"
+                  padding={15}
+                  style={{
+                    fontSize: 12,
+                    backgroundColor: "#B2E6FF",
+                    fontFamily: "Courier,monospace",
+                    color: "black",
+                    border: ".5px solid black",
+                    minHeight: "100px",
+                    width: "404px",
+                    height: "146px",
+                    marginTop: "14px",
+                    overflow: "auto",
+                    marginLeft: '20px'
+                  }}
+                />
+              </Col>
+            </Row>
           </div>
         </Col>
         <Col span={1}>
@@ -352,16 +404,6 @@ export default function TabContent() {
               onClick={(e) => scrollToSection(e)}
             >
               Versioning and Endpoint Lifecycle
-            </li>
-            <li
-              className={
-                selectedDiv == "Error Codes"
-                  ? "side_list_selected"
-                  : "side_list"
-              }
-              onClick={(e) => scrollToSection(e)}
-            >
-              Error Codes
             </li>
             <li
               className={

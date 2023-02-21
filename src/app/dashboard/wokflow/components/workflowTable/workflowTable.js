@@ -174,15 +174,15 @@ const WorkflowTable = (props) => {
 							setSearchedColumn
 						),
 						sorter: (a, b) => {
-							return a.field_name === null ||
-								a.field_name === undefined ||
-								a.field_name === ""
+							return a[field_name] === null ||
+								a[field_name] === undefined ||
+								a[field_name] === ""
 								? -1
-								: b.field_name == null ||
-									b.field_name == undefined ||
-									b.field_name == ""
+								: b[field_name] == null ||
+									b[field_name] == undefined ||
+									b[field_name] == ""
 									? 1
-									: a.field_name.toString().localeCompare(b.field_name);
+									: a[field_name].toString().localeCompare(b[field_name]);
 						},
 						title: display_name,
 					};
@@ -217,11 +217,26 @@ const WorkflowTable = (props) => {
 									</a>
 								);
 							} else if (text == "/dashboard/paper_batch_records") {
+
 								return (
 									<a
 										onClick={() =>
 											history.push(
 												`${text}/${row.Id}?id=${row.Id}&temp_disp_id=${row.Id}&file=${row.filename}&fromScreen=Workflow&version=${row.version}&tempalteName=${row.pbr_template_name}`
+											)
+										}
+										className="review-submission"
+									>
+										Review Submission
+									</a>
+								);
+							}
+							else if (text == "/dashboard/elog_book_template") {
+								return (
+									<a
+										onClick={() =>
+											history.push(
+												`/dashboard/elog_book_data_entry/data_entry_forms?id=${row.recording_id}&molecule=${row.molecule}&version=${row.version}&template_disp_id=${row.template_disp_id}&site=${row.site}&recording_id=${row.recording_id}&publish=true&fromScreen=Workflow`
 											)
 										}
 										className="review-submission"
@@ -319,15 +334,15 @@ const WorkflowTable = (props) => {
 							setSearchedColumn
 						),
 						sorter: (a, b) => {
-							return a.field_name === null ||
-								a.field_name === undefined ||
-								a.field_name === ""
+							return a[field_name] === null ||
+								a[field_name] === undefined ||
+								a[field_name] === ""
 								? -1
-								: b.field_name == null ||
-									b.field_name == undefined ||
-									b.field_name == ""
+								: b[field_name] == null ||
+									b[field_name] == undefined ||
+									b[field_name] == ""
 									? 1
-									: a.field_name.toString().localeCompare(b.field_name);
+									: a[field_name].toString().localeCompare(b[field_name]);
 						},
 						title: display_name,
 					};
