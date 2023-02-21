@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 export default function ContentRenderComponent(props) {
 
   let request_props = props.request[0]
-  console.log(props)
+
 
   const [request, setRequest] = useState(JSON.stringify(request_props));
   const dispatch = useDispatch()
@@ -98,7 +98,7 @@ export default function ContentRenderComponent(props) {
   };
 
   useEffect(() => {
-    setRequest(JSON.stringify(props.request))
+    setRequest(JSON.stringify(props.request[0]))
   }, [props.selectedTab])
 
   return (
