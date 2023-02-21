@@ -124,7 +124,7 @@ const LimitTable = () => {
               }}
               okText="Yes"
               cancelText="No"
-			  onCancel={(e) => e.stopPropagation()}
+			        onCancel={(e) => e.stopPropagation()}
             >
               <a href="#" onClick={(e) => e.stopPropagation()}>Delete</a>
             </Popconfirm>
@@ -173,13 +173,14 @@ const LimitTable = () => {
 
 
   const handleVersionList = (viewId) => {
-    const tempVersionList = [];
+    let tempVersionList = [];
     totalViewList.current.forEach((view) => {
       if (view?.split('-')[0] === viewId) {
         const viewVersion = view?.split('-')[1]
         tempVersionList.push(viewVersion);
       }
     });
+    tempVersionList = [...new Set(tempScalerList)]
     return tempVersionList
   }
 
@@ -315,6 +316,7 @@ const LimitTable = () => {
             tempParam.push(siteData?.parameter)
           } else {
             tempViewList.push(siteData?.view_id?.split('-')[0])
+            tempViewList = [...new Set(tempViewList)]
             totalViewList.current.push(siteData?.view_id)
           }
         })
