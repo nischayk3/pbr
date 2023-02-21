@@ -1,13 +1,15 @@
-import { CalendarOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Col, DatePicker, Input, Popconfirm, Row, Select, Table, Tooltip } from 'antd';
+import React, { useEffect, useState } from 'react'
+import './Limitconfig.scss'
+import SelectField from "../../../../components/SelectField/SelectField";
+import { Col, Row, Table, Input, DatePicker, Button, Popconfirm, Tooltip, Select } from 'antd';
+import { DeleteOutlined, CalendarOutlined, PlusOutlined } from '@ant-design/icons'
 import moment from 'moment';
-import React, { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
 import { deleteLimitsApi, getMoleculeData } from '../../../../services/limitConfig';
 import { hideLoader, showNotification, showLoader } from '../../../../duck/actions/commonActions';
 import { v1 as uuid } from "uuid";
 
-const LimitInputs = ({ selectedMol,getMoleData, totalViewList, viewList, setLimitsData, limitsData, openRow, selectedRowKey, paramData, siteList, parameterList }) => {
+const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLimitsData, limitsData, openRow, selectedRowKey, paramData, siteList, parameterList }) => {
 
 	const dispatch = useDispatch();
 	const [tableColumns, setTableCOlumns] = useState();
@@ -124,7 +126,7 @@ const LimitInputs = ({ selectedMol,getMoleData, totalViewList, viewList, setLimi
 						if (selectedRowKey !== openRow) {
 							return (
 								data?.parameter_class?.map((paramClass) => {
-									return(
+									return (
 										<p style={{ margin: "0" }}>{paramClass}</p>
 									)
 								})
@@ -320,13 +322,13 @@ const LimitInputs = ({ selectedMol,getMoleData, totalViewList, viewList, setLimi
 			const tempVersionList = [];
 			totalViewList.current.forEach((view) => {
 				if (view?.split('-')[0] === event) {
-				 const viewVersion = view?.split('-')[1]
-					 tempVersionList.push(viewVersion);
+					const viewVersion = view?.split('-')[1]
+					tempVersionList.push(viewVersion);
 				}
-				});
-			rowsInput[index]['versionList']	= tempVersionList
+			});
+			rowsInput[index]['versionList'] = tempVersionList
 		} else if (type === 'view_version') {
-			getMoleData('parameter', selectedMol.current ,`${rowsInput[index]['view_disp_id']}-${event}`)
+			getMoleData('parameter', selectedMol.current, `${rowsInput[index]['view_disp_id']}-${event}`)
 			rowsInput[index]['view_version'] = event;
 		}
 		setLimitsData(rowsInput);
@@ -374,9 +376,9 @@ const LimitInputs = ({ selectedMol,getMoleData, totalViewList, viewList, setLimi
 			"validity_date": "",
 			"view_disp_id": "",
 			"view_version": '',
-			"parameter_class" : [],
-			"document_name" : '',
-			"document_url" : '',
+			"parameter_class": [],
+			"document_name": '',
+			"document_url": '',
 		};
 		setLimitsData([...limitsData, newData]);
 	};
@@ -386,7 +388,7 @@ const LimitInputs = ({ selectedMol,getMoleData, totalViewList, viewList, setLimi
 			title: '',
 			width: 50,
 			key: 'delete',
-			fixed:'left',
+			fixed: 'left',
 			render: (record) => {
 				return (
 					<Popconfirm
