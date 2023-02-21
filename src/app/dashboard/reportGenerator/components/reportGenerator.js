@@ -24,10 +24,11 @@ import {
 	showNotification
 } from '../../../../duck/actions/commonActions';
 import {
-	latexBuilder, saveReportGenerator
+	latexBuilder, saveReportGenerator, loadReportGen
 } from '../../../../services/reportGeneratorServices';
 import Chart from '../../reportDesigner/components/reportChart/chartComponent/chartComponent';
 import ReportGeneratorForm from '../components/reportGeneratorForm';
+import { useLocation } from 'react-router';
 
 const { Panel } = Collapse;
 
@@ -36,6 +37,7 @@ function ReportGenerator(props) {
 	const repotData = useSelector(
 		state => state.reportDesignerReducer.reportData
 	);
+	const location = useLocation()
 	const screenChange = useSelector(
 		state => state.reportDesignerReducer.screen
 	);
@@ -278,6 +280,36 @@ function ReportGenerator(props) {
 		}
 	};
 
+
+
+	const reloadUrl = async (reload_id) => {
+		try {
+			dispatch(showLoader())
+			let req = { report_displ_id: reload_id }
+			let data = await loadReportGen(req)
+			data = data.report_generator
+			data = data.data
+			if (data) {
+				unloadTest(data)
+			}
+			else {
+				dispatch(hideLoader())
+				dispatch(showNotification('error', "Error in loading data"))
+			}
+		}
+		catch (err) {
+			dispatch(showNotification('error', err))
+		}
+	}
+	useEffect(() => {
+		const report_param_id = location.pathname.split("/").filter((i) => i);
+		if (report_param_id.length > 2) {
+			dispatch(showLoader())
+			reloadUrl(report_param_id[2])
+		}
+	}
+		, []
+	);
 
 	return (
 		<div className='custom-wrapper'>
