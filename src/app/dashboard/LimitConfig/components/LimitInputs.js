@@ -38,6 +38,7 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 						}
 						return (
 							<SelectField
+							    showSearch={true}
 								name="view_disp_id"
 								selectList={viewList}
 								selectedValue={data.view_disp_id}
@@ -61,6 +62,7 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 						}
 						return (
 							<SelectField
+							    showSearch={true}
 								name="view_version"
 								selectList={data?.versionList}
 								selectedValue={data.view_version}
@@ -82,6 +84,7 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 						}
 						return (
 							<SelectField
+							    showSearch={true}
 								name="parameters"
 								selectList={data?.param_list}
 								selectedValue={data.parameters}
@@ -103,6 +106,7 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 						}
 						return (
 							<SelectField
+							    showSearch={true}
 								name="site"
 								selectList={siteList}
 								selectedValue={data.site}
@@ -135,6 +139,7 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 						return (
 							<Select
 								mode="multiple"
+								showSearch={true}
 								allowClear
 								style={{
 									width: "100%",
@@ -164,6 +169,7 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 						}
 						return (
 							<SelectField
+							    showSearch={true}
 								name="limit_type"
 								selectList={limitList}
 								selectedValue={data.limit_type}

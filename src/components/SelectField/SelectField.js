@@ -28,11 +28,12 @@ const SelectField = (props) => {
 				allowClear={props.allowClear}
 				disabled={props.disabled}
 				defaultValue={props.defaultValue}
+				showSearch={props.showSearch}
 			>
 				{props.selectList &&
 					props.selectList.map((item) => (
 						<Select.Option key={item} value={item}  {...(props.menu && { onContextMenu: props.handleClick })}>
-							{capitalizeFirstLetter(item)}
+							{item}
 						</Select.Option>
 					))}
 			</Select>
