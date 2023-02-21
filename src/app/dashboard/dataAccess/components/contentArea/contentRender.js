@@ -17,9 +17,7 @@ export default function ContentRenderComponent(props) {
   const [result, setResult] = useState("");
   const [selectedDiv, setSelectedDiv] = useState("Overview");
 
-  useState(() => {
-    setRequest(request_props)
-  }, [props])
+
 
   const content = (
     <div className="parent_div" id="Error Codes">
