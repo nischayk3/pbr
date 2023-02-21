@@ -254,6 +254,7 @@ const Signature = (props) => {
 	useEffect(() => {
 		if (!isPublish) {
 			setReason("")
+			setCheckRejectReason(false)
 		}
 	}, [isPublish])
 
@@ -284,7 +285,7 @@ const Signature = (props) => {
 							</Button>,
 							<Button
 								className="custom-secondary-btn"
-								disabled={checkRejectReason && !reason}
+								disabled={!reason?.length}
 								key="1"
 								onClick={() => {
 									handleConfirm();
@@ -384,7 +385,7 @@ const Signature = (props) => {
 
 							{(isauth === "R" && props.status === "R") || checkRejectReason ? (
 								<div>
-									<p>Comment</p>
+									<p>Comment*</p>
 									<Input.TextArea
 										rows={3}
 										value={reason}
