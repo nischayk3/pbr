@@ -97,6 +97,8 @@ export default function ContentRenderComponent(props) {
 
   useEffect(() => {
     setRequest(JSON.stringify(props.request[0]))
+    setStatusCode(0)
+    setResult('')
   }, [props.selectedTab])
 
   return (

@@ -512,13 +512,10 @@ const ReportDesignerNew = () => {
 
   useEffect(() => {
     const report_param_id = location.pathname.split("/").filter((i) => i);
-    console.log(report_param_id.length)
     if (report_param_id.length > 2) {
-      console.log('yes')
       dispatch(showLoader())
-      console.log(report_param_id[2])
-      reloadUrl(report_param_id[2])
-
+      if (report_param_id[2] != 'untitled')
+        reloadUrl(report_param_id[2])
     }
     getViewsList();
   }, []
