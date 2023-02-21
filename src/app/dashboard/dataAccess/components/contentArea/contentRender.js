@@ -18,7 +18,7 @@ export default function ContentRenderComponent(props) {
   const [selectedDiv, setSelectedDiv] = useState("Overview");
 
   useState(() => {
-    setRequest(props.request[0])
+    setRequest(request_props)
   }, [props])
 
   const content = (
