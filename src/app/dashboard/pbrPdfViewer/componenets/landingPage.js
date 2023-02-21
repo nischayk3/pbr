@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { Input, Col, Row, Card, Avatar, Button, Pagination } from 'antd';
+import { Input, Col, Row, Card, Avatar, Button, Pagination, Empty } from 'antd';
 import { getPdfData } from '../../../../services/pbrService'
 import pdfIcon from '../../../../assets/pdfIcon.png'
 import greenCircle from '../../../../assets/greenCircle.png'
 import red_circle from '../../../../assets/red_circle.png'
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import {
-	hideLoader,
-	showLoader,
-	showNotification
+    hideLoader,
+    showLoader,
+    showNotification
 } from '../../../../duck/actions/commonActions';
 import { useDispatch } from 'react-redux';
 import './style.scss'
@@ -25,19 +25,20 @@ function LandingPage() {
     const [number, setNumber] = useState(1);
     const [postsPerPage, setPostsPerPage] = useState(8);
     const [countFile, setCountFile] = useState(0);
+    const [searchedText, setSearchedText] = useState('');
     useEffect(() => {
         getPdfMetaData()
     }, [])
 
-    const getPdfMetaData = async (value,index) => {
+    const getPdfMetaData = async (value, index) => {
         dispatch(showLoader());
         try {
             let req = {
                 search_text: value ? value : null,
                 file_id: null,
                 duration: null,
-                limit:8,
-                page_index:index ? index : number
+                limit: 8,
+                page_index: index ? index : number
             }
             let res = await getPdfData(req)
             if (res['status-code'] === 200) {
@@ -64,8 +65,11 @@ function LandingPage() {
 
     const onSearch = (value) => {
         if (value) {
+            setSearchedText(value)
             getPdfMetaData(value)
         } else {
+            setSearchedText('')
+            setNumber(1)
             getPdfMetaData()
         }
 
@@ -75,10 +79,10 @@ function LandingPage() {
         history.push(`${match.url}/${val}`);
     }
 
-    const handlePage = (pageNumber,size) => {
-        console.log("pageNumber,size",pageNumber,size)
+    const handlePage = (pageNumber, size) => {
+        console.log("pageNumber,size", pageNumber, size)
         setNumber(pageNumber)
-        getPdfMetaData(null,pageNumber)
+        getPdfMetaData(searchedText, pageNumber)
 
     }
     return (
@@ -99,6 +103,8 @@ function LandingPage() {
                         total={countFile}
                         showTotal={(total) => `Total ${total} items`}
                         // defaultCurrent={number}
+                        current={number}
+                        showSizeChanger={false}
                         pageSize={postsPerPage}
                         onChange={handlePage}
                         onShowSizeChange={handleSizeChanger}
@@ -126,7 +132,7 @@ function LandingPage() {
                                             </div>
                                             <div>
                                                 <p className='pStyle'>Product</p>
-                                                <div style={{marginRight:70}}>
+                                                <div style={{ marginRight: 70 }}>
                                                     <p className='pValue'> {item.product_num}</p>
                                                     {/* <Avatar
                                                         className='avatar-icon'
@@ -146,7 +152,7 @@ function LandingPage() {
                                             {/* <Button style={{ width: 150 }} className='custom-primary-btn'>
                                                 Download
                                             </Button> */}
-                                            <Button onClick={() => handleViewDetails(item.file_id)} style={{ width: 150,marginTop:27 }} className='custom-secondary-btn'>
+                                            <Button onClick={() => handleViewDetails(item.file_id)} style={{ width: 150, marginTop: 27 }} className='custom-secondary-btn'>
                                                 View Details
                                             </Button>
                                         </div>
@@ -159,8 +165,12 @@ function LandingPage() {
                         </Col>
                     ))}
 
+
                 </Row>
             </div>
+            {cardData.length === 0 &&
+                <div><Empty /></div>
+            }
         </div>
     )
 }

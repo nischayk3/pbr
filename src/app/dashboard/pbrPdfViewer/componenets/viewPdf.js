@@ -13,10 +13,11 @@ import "@react-pdf-viewer/core/lib/styles/index.css";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 import BatchRecordPdf from '../../../../assets/images/BatchRecordPdf.pdf'
 import {
-	hideLoader,
-	showLoader,
-	showNotification
+    hideLoader,
+    showLoader,
+    showNotification
 } from '../../../../duck/actions/commonActions';
+import SearchSidebarWithDefaultLayoutExample from './deepSearch'
 import './style.scss'
 
 function ViewPdf() {
@@ -34,29 +35,29 @@ function ViewPdf() {
     }, [])
 
     const getPdf = async (val) => {
-		dispatch(showLoader());
-		let login_response = JSON.parse(localStorage.getItem('login_details'));
-		var requestOptions = {
-			method: "GET",
-			response: "application/pdf",
-			psId: "",
-			redirect: "follow",
-			headers: new Headers({
-				"x-access-token": login_response?.token ? login_response?.token : '',
-				"resource-name": 'PBR'
-			})
-		};
-		let response = await fetch(
-			MDH_APP_PYTHON_SERVICE + `/pbr/udh/get_embedded_pdf?filename=${val}`,
-			requestOptions
-		)
-			.then((resp) => resp)
-			.then((result) => result)
-			.catch((error) => console.log("error", error));
-		let res = await response.blob();
-		setPdfFile(URL.createObjectURL(res));
+        dispatch(showLoader());
+        let login_response = JSON.parse(localStorage.getItem('login_details'));
+        var requestOptions = {
+            method: "GET",
+            response: "application/pdf",
+            psId: "",
+            redirect: "follow",
+            headers: new Headers({
+                "x-access-token": login_response?.token ? login_response?.token : '',
+                "resource-name": 'PBR'
+            })
+        };
+        let response = await fetch(
+            MDH_APP_PYTHON_SERVICE + `/pbr/udh/get_embedded_pdf?filename=${val}`,
+            requestOptions
+        )
+            .then((resp) => resp)
+            .then((result) => result)
+            .catch((error) => console.log("error", error));
+        let res = await response.blob();
+        setPdfFile(URL.createObjectURL(res));
         dispatch(hideLoader());
-	}
+    }
 
     const getPdfMetaData = async (value) => {
         dispatch(showLoader());
@@ -106,36 +107,53 @@ function ViewPdf() {
                                         <span style={{ fontWeight: 600, marginLeft: 15 }}>{cardData[0]?.status === "P" ? "Success" : "Fail"}</span>
                                     </div>
                                 </div>
-                                <div style={{ marginTop: 30 }}>
-                                    <div className='metaData'>
+                                <Row style={{ marginTop: 25 }}>
+                                    <Col span={10}>
                                         <div>
                                             <p className='pStyle' >Batch</p>
                                             <p className='pValue'> {cardData[0]?.batch_num}</p>
                                         </div>
+                                    </Col>
+                                    <Col span={6}>
                                         <div>
                                             <p className='pStyle' >Material Number</p>
                                             <p className='pValue'> {cardData[0]?.product_num}</p>
                                         </div>
-                                    </div>
-                                </div>
-                                <div style={{ marginTop: 30 }}>
-                                    <div className='metaData'>
+                                    </Col>
+                                </Row>
+                                <Row style={{ marginTop: 25 }}>
+                                    <Col span={10}>
                                         <div>
                                             <p className='pStyle' >Site</p>
                                             <p className='pValue'> {cardData[0]?.site_code}</p>
                                         </div>
+
+                                    </Col>
+                                    <Col span={6}>
                                         <div style={{ marginRight: 66 }}>
                                             <p className='pStyle' >File ID</p>
                                             <p className='pValue'> {cardData[0]?.file_id}</p>
                                         </div>
-                                    </div>
-                                </div>
-                                <div style={{ marginTop: 30 }}>
-                                    <div className='metaData1' >
+                                    </Col>
+                                </Row>
+                                <Row style={{ marginTop: 25 }}>
+                                    <Col span={10}>
                                         <div>
                                             <p className='pStyle' >Time Zone</p>
-                                            <p className='pValue'> {cardData[0]?.timezon}</p>
+                                            <p className='pValue'> {cardData[0]?.timezone}</p>
                                         </div>
+
+                                    </Col>
+                                    <Col span={6}>
+                                        <div>
+                                            <p className='pStyle' >Created On</p>
+                                            <p className='pValue'> {cardData[0]?.created_on?.split("T")[0]}</p>
+                                        </div>
+
+                                    </Col>
+                                </Row>
+                                <Row style={{ marginTop: 25 }}>
+                                    <Col span={10}>
                                         <div style={{ width: 195 }}>
                                             <p className='pStyle' >Uploaded By</p>
                                             <Avatar
@@ -145,13 +163,14 @@ function ViewPdf() {
                                             </Avatar>
                                             <span className='avatar-text' style={{ marginLeft: 10 }}>{cardData[0]?.created_by.split('@')[0]}</span>
                                         </div>
-                                    </div>
-                                </div>
+                                    </Col>
+                                </Row>
                             </Col>
                             <Col span={14}>
                                 <Worker workerUrl={pdfWorkerUrl}>
                                     <div style={{ height: "720px" }}>
-                                        <Viewer fileUrl={pdfFile} plugins={[defaultLayoutPluginInstance]} />
+                                        {/* <Viewer fileUrl={pdfFile} plugins={[defaultLayoutPluginInstance]} /> */}
+                                        <SearchSidebarWithDefaultLayoutExample fileUrl={pdfFile} />
                                     </div>
                                 </Worker>
                             </Col>
