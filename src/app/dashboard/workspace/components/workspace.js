@@ -8,11 +8,12 @@ import {
 import React, { lazy, useEffect, useState } from "react";
 import { FaCircle } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router";
+import { Link, useHistory } from "react-router-dom";
 import emptyImage from "../../../../assets/images/empty-image.png";
-import illustrations from "../../../../assets/images/Group 33808.svg";
+import illustrations from "../../../../assets/images/workspace_banner.png";
 import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
 import ScreenHeader from "../../../../components/ScreenHeader/screenHeader";
+import StatusBlock from "../../../../components/StatusBlock/statusBlock";
 import { MDH_AIRFLOW } from "../../../../constants/apiBaseUrl";
 import {
 	showNotification
@@ -27,9 +28,7 @@ import {
 const Chart = lazy(() => import("./chartComponent/chartComponent"));
 const DataQuality = lazy(() => import("./dataQuality/dataQuality"));
 const DeviationTable = lazy(() => import("./deviationTable/deviationTable"));
-// import Chart from "./chartComponent/chartComponent";
-// import DataQuality from "./dataQuality/dataQuality";
-// import DeviationTable from "./deviationTable/deviationTable";
+
 import "./styles.scss";
 
 const { TabPane } = Tabs;
@@ -144,21 +143,8 @@ const Workspace = () => {
 		setActiveTab(activeKey);
 	};
 
-	//changing tiles color
-	const statusColor = (status) => {
-		if (status == "APRD") {
-			return "aprd";
-		}
-		if (status == "DRFT") {
-			return "drft";
-		}
-		if (status == "AWAP") {
-			return "awap";
-		}
-	};
-
 	const greet = [
-		'Good Morning',
+		'',
 		'Good Morning',
 		'Good Afternoon',
 		'Good Evening'
@@ -437,43 +423,34 @@ const Workspace = () => {
 									<p className="workspace-processCharts">
 										Process Control Charts
 									</p>
-									<Row gutter={[6, 12]}>
-										{lastupdatedCharts && lastupdatedCharts.length > 0 ? (
-											lastupdatedCharts.map((j, k) => {
+
+									{lastupdatedCharts && lastupdatedCharts.length > 0 ? (
+										<div className="tile">
+											{lastupdatedCharts.map((i, index) => {
 												return (
-													<Col className="gutter-row" span={8}>
-														<div
-															className="workspace-processChart-card"
-															onClick={() =>
-																history.push(
-																	`/dashboard/chart_personalization/${j.chart_disp_id}?id=${j.chart_disp_id}&version=${j.chart_version}&fromScreen=Workspace`
-																)
-															}
-														>
-															<div
-																className={`tile-status ${statusColor(
-																	j.chart_status
-																)}`}
-															>
-																{j.chart_status}
-															</div>
-															<p className="workspace-processCharts-id">
-																{j.chart_disp_id}
-															</p>
-															<p className="workspace-processCharts-name">
-																{j.chart_name}
-															</p>
-														</div>
-													</Col>
-												);
-											})
-										) : (
-											<Empty
-												className="empty-workspace"
-												description={<span>Nothing to see here</span>}
-											/>
-										)}
-									</Row>
+													<Link
+														key={i.chart_disp_id}
+														to={{
+															pathname: `/dashboard/chart_personalization/${i.chart_disp_id}?id=${i.chart_disp_id}&version=${i.chart_version}&fromScreen=Workspace`,
+														}}
+
+													>
+														<StatusBlock
+															key={index}
+															id={i.chart_disp_id}
+															name={i.chart_name}
+															status={i.chart_status}
+														/>
+													</Link>
+												)
+											})}
+										</div>
+									) : (
+										<Empty
+											className="empty-workspace"
+											description={<span>Nothing to see here</span>}
+										/>
+									)}
 								</div>
 							</Col>
 							<Col span={1}>
@@ -485,43 +462,34 @@ const Workspace = () => {
 							<Col span={11}>
 								<div className="workspace-processView-main">
 									<p className="workspace-processView">Views</p>
-									<Row gutter={[6, 12]}>
-										{lastupdatedViews && lastupdatedViews.length > 0 ? (
-											lastupdatedViews.map((m, n) => {
+
+									{lastupdatedViews && lastupdatedViews.length > 0 ? (
+										<div className="tile">
+											{lastupdatedViews.map((i, index) => {
 												return (
-													<Col className="gutter-row" span={8}>
-														<div
-															className="workspace-processView-card"
-															onClick={() =>
-																history.push(
-																	`/dashboard/view_creation/${m.view_disp_id}&${m.view_version}?id=${m.view_disp_id}&version=${m.view_version}&fromScreen=Workspace`
-																)
-															}
-														>
-															<div
-																className={`tile-status ${statusColor(
-																	m.view_status
-																)}`}
-															>
-																{m.view_status}
-															</div>
-															<p className="workspace-processView-id">
-																{m.view_disp_id}
-															</p>
-															<p className="workspace-processView-name">
-																{m.view_name}
-															</p>
-														</div>
-													</Col>
-												);
-											})
-										) : (
-											<Empty
-												className="empty-workspace"
-												description={<span>Nothing to see here</span>}
-											/>
-										)}
-									</Row>
+													<Link
+														key={i.view_disp_id}
+														to={{
+															pathname: `/dashboard/view_creation/${i.view_disp_id}&${i.view_version}?id=${i.view_disp_id}&version=${i.view_version}&fromScreen=Workspace`,
+														}}
+													>
+														<StatusBlock
+															key={index}
+															id={i.view_disp_id}
+															name={i.view_name}
+															status={i.view_status}
+														/>
+													</Link>
+												)
+											})}
+										</div>
+									) : (
+										<Empty
+											className="empty-workspace"
+											description={<span>Nothing to see here</span>}
+										/>
+									)}
+
 								</div>
 							</Col>
 						</Row>

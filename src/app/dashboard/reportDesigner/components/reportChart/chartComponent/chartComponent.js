@@ -19,6 +19,9 @@ const chartComponent = (props) => {
 	const [violationColumns, setViolationColumns] = useState([])
 	const [exclusion, setExclusion] = useState([]);
 	const [exclusionColumns, setExclusionColumns] = useState([])
+	const [processCap, setProcessCap] = useState([]);
+	const [processColumns, setProcessColumns] = useState([])
+	const [isProcess, setIsProcess] = useState(false);
 	const [activeTab, setActiveTab] = useState('Data Table')
 
 	const dispatch = useDispatch();
@@ -73,6 +76,14 @@ const chartComponent = (props) => {
 					setViolation(chartResponse.data[0].violations)
 					setViolationColumns(getColumns(chartResponse.data[0].violations))
 				}
+				if (chartResponse.data[0].hasOwnProperty('ppk_cpk_data')) {
+					setIsProcess(true)
+					if (chartResponse.data[0].ppk_cpk_data && chartResponse.data[0].ppk_cpk_data.data) {
+						console.log('here', chartResponse.data[0].ppk_cpk_data.data)
+						setProcessCap(chartResponse.data[0].ppk_cpk_data.data)
+						setProcessColumns(getColumns(chartResponse.data[0].ppk_cpk_data.data))
+					}
+				}
 				if (chartResponse.data[0].exclusions) {
 					setExclusion(chartResponse.data[0].exclusions)
 					setExclusionColumns(getColumns(chartResponse.data[0].exclusions))
@@ -98,6 +109,7 @@ const chartComponent = (props) => {
 				setDataTable(chartResponse.data[0].extras.data_table)
 				setDataTableColumns(getColumns(chartResponse.data[0].extras.data_table))
 			}
+
 			dispatch(hideLoader());
 		} catch (error) {
 			dispatch(hideLoader());
@@ -106,6 +118,7 @@ const chartComponent = (props) => {
 	const changeTab = activeKey => {
 		setActiveTab(activeKey);
 	};
+	console.log(processCap)
 
 	return (
 
@@ -122,6 +135,7 @@ const chartComponent = (props) => {
 					<TabPane tab="Exclusion" key="Exclusion"><Table style={{ height: '400px', width: '600px' }} scroll={{ x: 400 }} columns={exclusionColumns} dataSource={exclusion} size="small" pagination={{ pageSize: 5 }} bordered={false} /></TabPane>
 					<TabPane tab="Violation" key="Violation"><Table style={{ height: '400px', width: '600px' }} scroll={{ x: 400 }} columns={violationColumns} dataSource={violation} size="small" pagination={{ pageSize: 5 }} bordered={false} /></TabPane>
 					<TabPane tab="Data Table" key="Data Table"><Table style={{ height: '400px', width: '600px' }} scroll={{ x: 400 }} columns={dataTableColumns} dataSource={dataTable} size="small" pagination={{ pageSize: 5 }} bordered={false} /></TabPane>
+					{isProcess && <TabPane tab="ProcessCapability" key="ProcessCapability"><Table style={{ height: '400px', width: '600px' }} scroll={{ x: 400 }} columns={processColumns} dataSource={processCap} size="small" pagination={{ pageSize: 5 }} bordered={false} /></TabPane>}
 				</Tabs>
 			</div>
 		</div>

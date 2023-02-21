@@ -41,7 +41,7 @@ const EditableCell = ({
 	);
 };
 
-const DataTable = ({ tableData }) => {
+const CustomerTable = ({ tableData }) => {
 	const [form] = Form.useForm();
 	const dispatch = useDispatch();
 	const [data, setData] = useState([]);
@@ -57,22 +57,13 @@ const DataTable = ({ tableData }) => {
 		}
 	}, [])
 
-	// const defaultColumns = tableColumns(tableData)
 	const tableColumns = (item) => {
 		let objkeys =
 			item !== undefined && item.length > 0 ? Object.keys(item[0]) : [];
 		let column = [];
 		objkeys &&
 			objkeys.map((val, i) => {
-				if (val == 'smtp_enable') {
-					return (
-						column.push({
-							title: val.toUpperCase().replace(/_/g, " "),
-							dataIndex: val,
-							key: i,
-						})
-					)
-				} else if (val == 'key') {
+				if (val == 'key') {
 					return val
 				} else {
 					return (
@@ -131,17 +122,12 @@ const DataTable = ({ tableData }) => {
 		setData(newData);
 	};
 
+
 	const handleAdd = () => {
 		const newData = {
-			email_id: "",
-			imap_port: "",
-			imap_server: "",
-			pop_port: "",
-			pop_server: "",
-			smtp_enable: false,
-			smtp_port: "",
-			smtp_server: "",
-			use_type: "",
+			customer_description: "",
+			domain: "",
+			expiry_time_min: "",
 			key: uuid(),
 		};
 		setEditingKey(newData.key);
@@ -152,7 +138,7 @@ const DataTable = ({ tableData }) => {
 		delete _req['key'];
 		let payload = {
 			data: _req,
-			type: "emails"
+			type: "customer"
 		}
 		try {
 			dispatch(showLoader())
@@ -171,12 +157,11 @@ const DataTable = ({ tableData }) => {
 		}
 	};
 
-
 	const deleteTableConfig = async (_req) => {
 		delete _req['key'];
 		let payload = {
 			data: _req,
-			type: "emails"
+			type: "customer"
 		}
 		try {
 			dispatch(showLoader())
@@ -195,20 +180,13 @@ const DataTable = ({ tableData }) => {
 		}
 	};
 
-
 	const handleEdit = (record) => {
 		setEditingKey(record.key);
 
 		form.setFieldsValue({
-			email_id: "",
-			imap_port: "",
-			imap_server: "",
-			pop_port: "",
-			pop_server: "",
-			smtp_enable: "",
-			smtp_port: "",
-			smtp_server: "",
-			use_type: "",
+			customer_description: "",
+			domain: "",
+			expiry_time_min: "",
 			...record,
 		});
 	};
@@ -282,6 +260,8 @@ const DataTable = ({ tableData }) => {
 						cell: EditableCell,
 					},
 				}}
+				bordered={false}
+				className="config-table"
 				dataSource={data}
 				columns={mergedColumns}
 				rowClassName="editable-row"
@@ -289,9 +269,8 @@ const DataTable = ({ tableData }) => {
 					onChange: cancel,
 				}}
 				rowKey={(record) => record.email_id}
-				bordered={false} className="config-table"
 			/>
 		</Form>
 	);
 };
-export default DataTable;
+export default CustomerTable;
