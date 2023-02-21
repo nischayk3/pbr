@@ -41,7 +41,7 @@ function ElogForm({ isTemplateModal }) {
 			parameters: {}
 		}
 		let molecule_list = await getMoleculeList(req)
-		
+
 		if (molecule_list.Data && molecule_list.Data.hierarchy) {
 			let tabs_list_data = molecule_list.Data.hierarchy
 			let tabs_list_array = []
@@ -61,8 +61,6 @@ function ElogForm({ isTemplateModal }) {
 			pathname: `${match.url}/new-template`, formData: formData
 		});
 	}
-
-
 
 	const handleBack = () => {
 		setIsModalVisible(false);

@@ -2,9 +2,10 @@ import { Button, Form, Input, InputNumber, Popconfirm, Table, Tooltip, Typograph
 import { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
 import { v1 as uuid } from "uuid";
-import ROW_ICON from '../../../../assets/icons/add-row.png';
-import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
-import { deleteConfig, updateConfig } from '../../../../services/systemConfigService';
+import ROW_ICON from '../../../../../assets/icons/add-row.png';
+import { hideLoader, showLoader, showNotification } from '../../../../../duck/actions/commonActions';
+import { deleteConfig, updateConfig } from '../../../../../services/systemConfigService';
+
 const EditableCell = ({
 	editing,
 	dataIndex,
@@ -40,7 +41,7 @@ const EditableCell = ({
 	);
 };
 
-const EsignTable = ({ tableData }) => {
+const CustomerTable = ({ tableData }) => {
 	const [form] = Form.useForm();
 	const dispatch = useDispatch();
 	const [data, setData] = useState([]);
@@ -56,22 +57,13 @@ const EsignTable = ({ tableData }) => {
 		}
 	}, [])
 
-	// const defaultColumns = tableColumns(tableData)
 	const tableColumns = (item) => {
 		let objkeys =
 			item !== undefined && item.length > 0 ? Object.keys(item[0]) : [];
 		let column = [];
 		objkeys &&
 			objkeys.map((val, i) => {
-				if (val == 'smtp_enable') {
-					return (
-						column.push({
-							title: val.toUpperCase().replace(/_/g, " "),
-							dataIndex: val,
-							key: i,
-						})
-					)
-				} else if (val == 'key') {
+				if (val == 'key') {
 					return val
 				} else {
 					return (
@@ -88,6 +80,7 @@ const EsignTable = ({ tableData }) => {
 			title: 'ACTION',
 			dataIndex: 'operation',
 			key: 9,
+			width: '120',
 			render: (_, record) => {
 				const editable = isEditing(record);
 				return editable ? (
@@ -133,9 +126,9 @@ const EsignTable = ({ tableData }) => {
 
 	const handleAdd = () => {
 		const newData = {
-			language: "",
-			reason_code: "",
-			reason_text: "",
+			customer_description: "",
+			domain: "",
+			expiry_time_min: "",
 			key: uuid(),
 		};
 		setEditingKey(newData.key);
@@ -146,7 +139,7 @@ const EsignTable = ({ tableData }) => {
 		delete _req['key'];
 		let payload = {
 			data: _req,
-			type: "esign_reasons"
+			type: "customer"
 		}
 		try {
 			dispatch(showLoader())
@@ -165,12 +158,11 @@ const EsignTable = ({ tableData }) => {
 		}
 	};
 
-
 	const deleteTableConfig = async (_req) => {
 		delete _req['key'];
 		let payload = {
 			data: _req,
-			type: "esign_reasons"
+			type: "customer"
 		}
 		try {
 			dispatch(showLoader())
@@ -189,15 +181,13 @@ const EsignTable = ({ tableData }) => {
 		}
 	};
 
-
-
 	const handleEdit = (record) => {
 		setEditingKey(record.key);
 
 		form.setFieldsValue({
-			language: "",
-			reason_code: "",
-			reason_text: "",
+			customer_description: "",
+			domain: "",
+			expiry_time_min: "",
 			...record,
 		});
 	};
@@ -242,7 +232,7 @@ const EsignTable = ({ tableData }) => {
 			...col,
 			onCell: (record) => ({
 				record,
-				inputType: 'text',
+				inputType: col.dataIndex === 'imap_port' || col.dataIndex === 'pop_port' || col.dataIndex === 'smtp_port' ? 'number' : 'text',
 				dataIndex: col.dataIndex,
 				title: col.title,
 				editing: isEditing(record),
@@ -265,7 +255,6 @@ const EsignTable = ({ tableData }) => {
 					</Button>
 				</Tooltip>
 			</div>
-
 			< Table
 				components={{
 					body: {
@@ -285,4 +274,4 @@ const EsignTable = ({ tableData }) => {
 		</Form>
 	);
 };
-export default EsignTable;
+export default CustomerTable;

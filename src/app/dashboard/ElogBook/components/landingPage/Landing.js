@@ -42,11 +42,7 @@ export default function Landing() {
 				isProgress.push(i) : i.status === "APPROVED" ? isApproved.push(i) : isRejected.push(i)
 		)
 		console.log(template_list.Data);
-
-
 	}
-
-	console.log(templateList, isApproved, isProgress, isRejected);
 
 	const onCancel = () => {
 		setIsViewsetVisible(false)
@@ -54,7 +50,6 @@ export default function Landing() {
 	}
 
 	const login_response = JSON.parse(localStorage.getItem("login_details"));
-	console.log("login_response", login_response?.firstname?.toLowerCase(), login_response?.lastname?.toLowerCase());
 
 	const text = (
 		<p

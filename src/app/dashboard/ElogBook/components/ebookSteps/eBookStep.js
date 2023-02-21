@@ -1,5 +1,7 @@
-import { Button, Divider, Form, Steps, Tabs } from "antd";
-import { useState, useEffect } from "react";
+import { Divider, Form, Steps, Tabs } from "antd";
+import { useEffect, useState } from "react";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import { useLocation } from 'react-router-dom';
 import BreadCrumbWrapper from "../../../../../components/BreadCrumbWrapper";
 import StatusInd from "../statusIndicator/statusInd";
@@ -8,8 +10,6 @@ import "./eBookStep.scss";
 import EditorNew from "./editornew/editorNew";
 import EditorTemplate from "./editorTemplate/editorTemplate";
 import MetaData from "./metaData/metaData";
-import { useDrag, useDrop, DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
 const { TabPane } = Tabs;
 const { Step } = Steps;
 const { Item } = Form;
@@ -124,14 +124,10 @@ const EbookStep = () => {
 								}
 								key={i.key} >
 								{i.data}
-								{/* == "Meta data" ? : i.sticky == "Form" ? <EditorNew selecteddata={selecteddata} CreateNew={CreateNew} /> : i.sticky == "New form" ? <EditorTemplate /> : (<div>forms</div>)} */}
 							</TabPane>
 						)}
-
 					</Tabs>
-
 				</div>
-
 			</div>
 		</div>
 	);

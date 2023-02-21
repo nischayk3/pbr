@@ -1,8 +1,7 @@
 import {
 	AppstoreAddOutlined, AppstoreOutlined, AreaChartOutlined, BarChartOutlined, BlockOutlined,
-	CheckCircleOutlined, CloudUploadOutlined, ClusterOutlined, CodeOutlined, DeploymentUnitOutlined, DiffOutlined, FileDoneOutlined,
-	FileProtectOutlined, FileSearchOutlined, FileSyncOutlined, FundOutlined, FundProjectionScreenOutlined,
-	NodeIndexOutlined, PartitionOutlined, SisternodeOutlined, TeamOutlined, UploadOutlined, UserOutlined, FilePdfOutlined
+	CheckCircleOutlined, CloudUploadOutlined, ClusterOutlined, CodeOutlined, DeploymentUnitOutlined, DiffOutlined, FileDoneOutlined, FilePdfOutlined, FileProtectOutlined, FileSearchOutlined, FileSyncOutlined, FundOutlined, FundProjectionScreenOutlined,
+	NodeIndexOutlined, PartitionOutlined, SisternodeOutlined, TeamOutlined, UploadOutlined, UserOutlined
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import React, { useEffect, useState } from "react";
@@ -49,10 +48,9 @@ const Sidebar = () => {
 		}
 	};
 
-
-
 	return (
 		<Sider
+			collapsedWidth={53}
 			collapsed={collapsed}
 			onMouseOver={mouseHover}
 			onMouseLeave={() => setCollapsed(true)}
@@ -84,7 +82,7 @@ const Sidebar = () => {
 				{permissions && permissions['WORKITEMS'] && (
 					<Menu.Item
 						key='workflow'
-						icon={<FileDoneOutlined style={{ fontSize: "26px" }} />}
+						icon={<FileDoneOutlined style={{ fontSize: "20px" }} />}
 						id='workflow'
 						className={path == '/dashboard/workflow' ? 'ant-menu-item-selected' : 'remove-selected'}
 					>
@@ -173,16 +171,18 @@ const Sidebar = () => {
 							</Menu.Item>
 						)}
 
-						<Menu.Item
-							key="system-config"
-							icon={<DeploymentUnitOutlined className="menu-icons" />}
-							id="limit-config"
-							className={path === "/dashboard/system-config" ? 'ant-menu-item-selected' : 'remove-selected'}
-						>
-							<Link to="/dashboard/system-config">
-								System Config
-							</Link>
-						</Menu.Item>
+						{permissions['SYSTEM_CONFIG'] && (
+							<Menu.Item
+								key="system-config"
+								icon={<DeploymentUnitOutlined className="menu-icons" />}
+								id="limit-config"
+								className={path === "/dashboard/system-config" ? 'ant-menu-item-selected' : 'remove-selected'}
+							>
+								<Link to="/dashboard/system-config">
+									System Config
+								</Link>
+							</Menu.Item>
+						)}
 					</SubMenu>
 				) : null}
 

@@ -3,7 +3,7 @@ import { Avatar, Button, Layout, Modal } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import mareanaLogo from '../../assets/mareana_logo.png';
+import mareanaLogo from '../../assets/mareana_logo_svg.svg';
 import { adenabled } from '../../config/config';
 import { MDH_APP_PYTHON_SERVICE } from '../../constants/apiBaseUrl';
 import { showNotification } from '../../duck/actions/commonActions';
@@ -104,7 +104,7 @@ const HeaderBar = () => {
 		<Header id='header' ref={wrapperRef}>
 			<div id='hamburger' className='inline'>
 				<div className='header-logo'>
-					<img src={mareanaLogo} height='40' alt='menu' />
+					<img src={mareanaLogo} height='39' alt='menu' />
 				</div>
 			</div>
 			<div className="subheader">
@@ -114,15 +114,14 @@ const HeaderBar = () => {
 					//onSearch={ }
 					style={{ width: 304 }}
 				/> */}
-				<BellOutlined style={{ margin: "6px 25px", fontSize: "20px" }} />
+				{/* <BellOutlined style={{ margin: "6px 25px", fontSize: "20px" }} /> */}
 				<div className="custom-menu">
 					<div className="user-name" onClick={dropDownOpen}>
-
-						<Avatar size={22} style={{ backgroundColor: "orange", fontSize: "16px", padding: "1px 0" }}>
+						<Avatar className='user-avatar'>
 							{localStorage.getItem("username") &&
 								localStorage.getItem("username").split("")[0].toUpperCase()}{" "}
 						</Avatar>
-
+						<p className='login-name'>{loginDetails && loginDetails.firstname} {loginDetails && loginDetails.lastname}</p>
 						<DownOutlined className='down-icon' />
 					</div>
 					{dropdownVisible && (

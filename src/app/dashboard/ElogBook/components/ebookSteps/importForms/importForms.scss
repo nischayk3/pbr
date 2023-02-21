@@ -1,46 +1,52 @@
-.main-form{
-    margin-bottom: 35px;
-    display: flex;
+.main-form {
+	margin-bottom: 35px;
+	display: flex;
 
-    .import-modal-left{
-        width: 100%;
-    }
-    .import-modal-right{
-        width: 100%;
-        text-align: end;
-    }
+	.import-modal-left {
+		width: 100%;
+	}
 
-}
+	.import-modal-right {
+		width: 100%;
+		text-align: end;
+	}
 
-.temp-button{
-    margin-left: 20px;
 }
 
-.back-button{
-    padding-left: 50px;
-    padding-right: 50px;
+.temp-button {
+	margin-left: 20px;
 }
-.table-header{
-    padding-bottom: 30px;
+
+.back-button {
+	padding-left: 50px;
+	padding-right: 50px;
 }
-.filter-select{
-    margin-left: 10px;
-    margin-right: 10px;
+
+.table-header {
+	padding-bottom: 30px;
 }
-.filter-label{
-    font-family: 'Roboto';
-font-style: normal;
-font-weight: 500;
-font-size: 14px;
-line-height: 22px;
+
+.filter-select {
+	margin-left: 10px;
+	margin-right: 10px;
 }
+
+.filter-label {
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 500;
+	font-size: 14px;
+	line-height: 22px;
+}
+
 .ant-table-pagination.ant-pagination {
-    margin-top: -37px;
+	margin-top: -37px;
 }
-.paragraph-text{
-    font-family: 'Roboto';
-font-style: normal;
-font-weight: 500;
-font-size: 14px;
-line-height: 22px;
+
+.paragraph-text {
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 500;
+	font-size: 14px;
+	line-height: 22px;
 }

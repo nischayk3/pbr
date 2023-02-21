@@ -1,13 +1,13 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, Col, Input, Popconfirm, Row, Select, Table, Typography } from "antd";
 import React, { useEffect, useState } from "react";
-import "./metaData.scss";
+import { useDispatch } from 'react-redux';
+import { v1 as uuid } from "uuid";
+import { getMetadata, updatealldata } from "../../../../../../../src/services/eLogBookService";
 import {
 	hideLoader, showLoader, showNotification
 } from "../../../../../../duck/actions/commonActions";
-import { getMetadata, updatealldata } from "../../../../../../../src/services/eLogBookService";
-import { useDispatch } from 'react-redux';
-import { v1 as uuid } from "uuid";
+import "./metaData.scss";
 
 
 const Opt = [
