@@ -29,7 +29,9 @@ const HeaderBar = () => {
 	const profile = useSelector((state) => state.loginReducer.profile)
 
 	useEffect(() => {
-		getProfile();
+		if (loginDetails && loginDetails.token != '') {
+			getProfile();
+		}
 		document.addEventListener('tokenExpired', () => {
 			if (localStorage.getItem('login_details')) {
 				adLogout('tokenExpired')
