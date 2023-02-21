@@ -48,10 +48,9 @@ const Sidebar = () => {
 		}
 	};
 
-
-
 	return (
 		<Sider
+			collapsedWidth={53}
 			collapsed={collapsed}
 			onMouseOver={mouseHover}
 			onMouseLeave={() => setCollapsed(true)}
@@ -83,7 +82,7 @@ const Sidebar = () => {
 				{permissions && permissions['WORKITEMS'] && (
 					<Menu.Item
 						key='workflow'
-						icon={<FileDoneOutlined style={{ fontSize: "26px" }} />}
+						icon={<FileDoneOutlined style={{ fontSize: "20px" }} />}
 						id='workflow'
 						className={path == '/dashboard/workflow' ? 'ant-menu-item-selected' : 'remove-selected'}
 					>

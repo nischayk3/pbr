@@ -1,9 +1,9 @@
 import React from 'react';
-import Banner from "../../../../assets/images/MoleculeBanner.svg";
-import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
-import ScreenHeader from '../../../../components/ScreenHeader/screenHeader';
-import ConfigTable from './configTable';
-
+import Banner from "../../../assets/images/MoleculeBanner.svg";
+import BreadCrumbWrapper from '../../../components/BreadCrumbWrapper';
+import ScreenHeader from '../../../components/ScreenHeader/screenHeader';
+import ConfigTable from './components/configTable';
+import "./style.scss";
 
 const SystemConfig = () => {
 	return (

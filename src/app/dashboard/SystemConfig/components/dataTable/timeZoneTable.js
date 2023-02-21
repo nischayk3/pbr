@@ -2,9 +2,9 @@ import { Button, Form, Input, InputNumber, Popconfirm, Table, Tooltip, Typograph
 import { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
 import { v1 as uuid } from "uuid";
-import ROW_ICON from '../../../../assets/icons/add-row.png';
-import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
-import { deleteConfig, updateConfig } from '../../../../services/systemConfigService';
+import ROW_ICON from '../../../../../assets/icons/add-row.png';
+import { hideLoader, showLoader, showNotification } from '../../../../../duck/actions/commonActions';
+import { deleteConfig, updateConfig } from '../../../../../services/systemConfigService';
 
 const EditableCell = ({
 	editing,
@@ -41,7 +41,7 @@ const EditableCell = ({
 	);
 };
 
-const CustomerTable = ({ tableData }) => {
+const TimeZoneTable = ({ tableData }) => {
 	const [form] = Form.useForm();
 	const dispatch = useDispatch();
 	const [data, setData] = useState([]);
@@ -57,13 +57,22 @@ const CustomerTable = ({ tableData }) => {
 		}
 	}, [])
 
+	// const defaultColumns = tableColumns(tableData)
 	const tableColumns = (item) => {
 		let objkeys =
 			item !== undefined && item.length > 0 ? Object.keys(item[0]) : [];
 		let column = [];
 		objkeys &&
 			objkeys.map((val, i) => {
-				if (val == 'key') {
+				if (val == 'smtp_enable') {
+					return (
+						column.push({
+							title: val.toUpperCase().replace(/_/g, " "),
+							dataIndex: val,
+							key: i,
+						})
+					)
+				} else if (val == 'key') {
 					return val
 				} else {
 					return (
@@ -125,9 +134,8 @@ const CustomerTable = ({ tableData }) => {
 
 	const handleAdd = () => {
 		const newData = {
-			customer_description: "",
-			domain: "",
-			expiry_time_min: "",
+			site_code: "",
+			timezone: "",
 			key: uuid(),
 		};
 		setEditingKey(newData.key);
@@ -138,7 +146,7 @@ const CustomerTable = ({ tableData }) => {
 		delete _req['key'];
 		let payload = {
 			data: _req,
-			type: "customer"
+			type: "timezone"
 		}
 		try {
 			dispatch(showLoader())
@@ -161,7 +169,7 @@ const CustomerTable = ({ tableData }) => {
 		delete _req['key'];
 		let payload = {
 			data: _req,
-			type: "customer"
+			type: "timezone"
 		}
 		try {
 			dispatch(showLoader())
@@ -180,13 +188,13 @@ const CustomerTable = ({ tableData }) => {
 		}
 	};
 
+
 	const handleEdit = (record) => {
 		setEditingKey(record.key);
 
 		form.setFieldsValue({
-			customer_description: "",
-			domain: "",
-			expiry_time_min: "",
+			site_code: "",
+			timezone: "",
 			...record,
 		});
 	};
@@ -273,4 +281,4 @@ const CustomerTable = ({ tableData }) => {
 		</Form>
 	);
 };
-export default CustomerTable;
+export default TimeZoneTable;

@@ -1,6 +1,6 @@
 #sidebar {
 	.menu-icons {
-		font-size: 23px !important;
+		font-size: 18px !important;
 	}
 
 	.ant-tooltip {
@@ -28,4 +28,8 @@
 			color: rgba(255, 255, 255, 0.65);
 		}
 	}
+}
+
+.ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected {
+	background-color: #121a3f;
 }
