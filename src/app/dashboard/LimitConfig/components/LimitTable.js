@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import './Limitconfig.scss'
-import { Table, Button, Dropdown, Space, Select } from 'antd'
+import { Table, Button, Dropdown, Space, Select, Upload } from 'antd'
 import { DownOutlined, UploadOutlined, DownloadOutlined } from '@ant-design/icons';
-import { getLimitConfig, saveLimitConfigApi, deleteLimitsApi } from '../../../../services/limitConfig';
+import { getLimitConfig, saveLimitConfigApi, deleteLimitsApi, getMoleculeData, uploadLimitConfig } from '../../../../services/limitConfig';
 import LimitInputs from './LimitInputs';
 import { useDispatch } from "react-redux";
+import { getMoleculeList, } from '../../../../services/viewCreationPublishing';
 import { hideLoader, showNotification, showLoader } from '../../../../duck/actions/commonActions';
 
 const LimitTable = () => {
@@ -14,24 +15,66 @@ const LimitTable = () => {
   const [openRow, setOpenRow] = useState();
   const [moleculeData, setMoleculeData] = useState([]);
   const [limitsData, setLimitsData] = useState([]);
+  const [moleculeList, setMoleculeList] = useState([])
+  const [siteList, setSiteList] = useState([]);
+  const [parameterList, setParameterList] = useState([]);
+  const [viewList, setViewList] = useState([]);
+  const [fileList, setFileList] = useState([]);
+  const selectedMol = useRef('');
+  const totalViewList = useRef([]);
+
+  const handleInternalChange = async (info) => {
+    setFileList(info.fileList)
+    var formData = new FormData();
+    formData.append('file_name', info?.fileList[0]?.originFileObj);
+    let res = await uploadLimitConfig(formData)
+    if (res.status === 200) {
+      getLimitConfigApi();
+      setOpenRow('')
+    }
+  }
 
   const items = [
     {
-      label: <div><DownloadOutlined />  &nbsp; Download template</div>,
+      label: <div><DownloadOutlined />  &nbsp;
+        <a
+          href={require('../../../../assets/xlsx/chartLimit.xlsx')}
+          download='chartLimit.xlsx'>
+          Download template
+        </a>
+      </div>,
       key: '0',
     },
     {
-      label: <div><UploadOutlined /> &nbsp; Upload filled template</div>,
+      label:
+        <div onClick={(e) => e.stopPropagation()}>
+          <Upload
+            name="file"
+            fileList={fileList}
+            accept=".xls, .xlsx"
+            beforeUpload={() => false}
+            onChange={handleInternalChange}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <UploadOutlined /> &nbsp; Upload filled template
+          </Upload>
+        </div>,
       key: '1',
     },
   ];
 
-  const molList = [
-    {
-      value: '',
-      label: '',
-    },
-  ]
+
+  const handleChange = (index, event) => {
+    const rowsInput = [...moleculeData];
+    rowsInput[index]['molecule'] = event;
+    rowsInput[index]['paramData']?.forEach((param) => {
+      param.molecule = event
+    })
+    getMoleData('site', event, '')
+    getMoleData('view', event, '')
+    selectedMol.current = event
+    setMoleculeData(rowsInput);
+  };
 
   const columns = [
     {
@@ -47,10 +90,10 @@ const LimitTable = () => {
                 <Select
                   name="molecule"
                   style={{ width: '70%' }}
-                  options={molList}
+                  options={moleculeList}
                   value={data.molecule}
                   onClick={(e) => e.stopPropagation()}
-                // onChangeSelect={(e) => handleChange(index, e, "", "limitType")}
+                  onChange={(e) => handleChange(index, e)}
                 />
               );
             } else {
@@ -67,7 +110,7 @@ const LimitTable = () => {
         return (
           <div className='action-table'>
             {(record.key !== openRow) && <a onClick={(e) => onEdit(e, record.key)}>Edit</a>}
-            {(record.key === openRow) && <a onClick={() => saveParammeterData()}>Save</a>}
+            {(record.key === openRow) && <a onClick={(e) => saveParammeterData(e)}>Save</a>}
             <a onClick={(e) => onDelete(e, record)}>Delete</a>
             {(record.key === openRow) && <Dropdown menu={{ items }} trigger={['click']}>
               <a onClick={(e) => e.stopPropagation()}>
@@ -83,7 +126,6 @@ const LimitTable = () => {
     },
   ];
 
-
   const getLimitConfigApi = async () => {
     try {
       dispatch(showLoader());
@@ -97,10 +139,10 @@ const LimitTable = () => {
         }
         tempMoleculeArray.push(obj);
       })
-      tempMoleculeArray?.forEach((ele) => { 
+      tempMoleculeArray?.forEach((ele) => {
         ele?.paramData.forEach((param, index) => {
-           param.key = index + 1
-           param.parameter_class = param.parameter_class ? param.parameter_class : [];
+          param.key = index + 1
+          param.parameter_class = param.parameter_class ? param.parameter_class : [];
         })
       });
       setMoleculeData(tempMoleculeArray)
@@ -113,56 +155,114 @@ const LimitTable = () => {
     }
   }
 
+
+  const handleVersionList = (viewId) => {
+    const tempVersionList = [];
+    totalViewList.current.forEach((view) => {
+    if (view?.split('-')[0] === viewId) {
+     const viewVersion = view?.split('-')[1]
+         tempVersionList.push(viewVersion);
+    }
+    });
+    return tempVersionList
+ }
+
+  const getMoleculeLists = async () => {
+    let req = {
+      data: {},
+      parameters: {},
+    };
+    let molecule_list = await getMoleculeList(req);
+    if ((molecule_list?.Status === 200) && molecule_list?.Data && molecule_list?.Data?.hierarchy) {
+      let tabs_list_data = molecule_list.Data.hierarchy
+      let tabs_list_array = []
+      tabs_list_data.forEach(v => {
+        tabs_list_array.push({
+          value: v.ds_name,
+          label: v.ds_name,
+        })
+      });
+      setMoleculeList(tabs_list_array)
+    } else {
+      dispatch(showNotification("error", molecule_list));
+    }
+  };
+
   const onDelete = (e, record) => {
-      e.stopPropagation()
-      deleteMolecule(record)
+    e.stopPropagation()
+    deleteMolecule(record)
   }
 
   const deleteMolecule = async (record) => {
     const obj = {
-      data : []
+      data: []
     }
     record?.paramData?.forEach((param) => {
       obj.data.push(param?.int_id)
     })
-		try {
-			dispatch(showLoader());
+    try {
+      dispatch(showLoader());
       const apiResponse = await deleteLimitsApi(obj);
-      if(apiResponse.Status === 200) {
+      if (apiResponse.Status === 200) {
         getLimitConfigApi();
       }
-			dispatch(hideLoader());
-		} catch (error) {
+      dispatch(hideLoader());
+    } catch (error) {
       /* istanbul ignore next */
-			dispatch(hideLoader());
+      dispatch(hideLoader());
       /* istanbul ignore next */
-			dispatch(showNotification("error", error));
-		}
-	}
+      dispatch(showNotification("error", error));
+    }
+  }
 
-  const saveParammeterData = async () => {
+  const saveParammeterData = async (e) => {
+    e.stopPropagation()
     const tempLimitData = JSON.parse(JSON.stringify(limitsData))
+    let flag = false;
     tempLimitData.forEach((limits) => {
+      if (Number(limits.from_) && Number(limits.to_)) {
+        if (Number(limits.from_) >= Number(limits.to_)) {
+          flag = true;
+          dispatch(
+            showNotification(
+              "error",
+              "Lower limits should be less than upper limit"
+            )
+          );
+        }
+      } else {
+        flag = true;
+        dispatch(
+          showNotification(
+            "error",
+            "Both upper and lower limits should present"
+          )
+        );
+      }
       limits.from_ = Number(limits?.from_);
       limits.to_ = Number(limits?.to_);
-      limits.validity_date = (limits.validity_date !== "NaTZ") ?  new Date(limits.validity_date).toISOString() : null
+      limits.view_version = Number(limits?.view_version)
+      limits.validity_date = limits.validity_date ? new Date(limits.validity_date).toISOString() : null
     })
-		const data = {
-			data: tempLimitData
-		}
-		try {
-			dispatch(showLoader());
-			const apiResponse = await saveLimitConfigApi(data);
+    if (flag) {
+      return;
+    }
+    const data = {
+      data: tempLimitData
+    }
+    try {
+      dispatch(showLoader());
+      const apiResponse = await saveLimitConfigApi(data);
       getLimitConfigApi();
       setOpenRow('')
-			dispatch(hideLoader());
-		} catch (error) {
+      dispatch(hideLoader());
+    } catch (error) {
       /* istanbul ignore next */
-			dispatch(hideLoader());
+      dispatch(hideLoader());
       /* istanbul ignore next */
-			dispatch(showNotification("error", error));
-		}
-	}
+      dispatch(showNotification("error", error));
+    }
+  }
 
   const onEdit = (e, rowKey) => {
     if (editTable) {
@@ -171,8 +271,72 @@ const LimitTable = () => {
     setOpenRow(rowKey)
   }
 
+  const getMoleData = async (param, paramData, view) => {
+    const obj = {
+      populate: param,
+      ds_name: paramData,
+      site: '',
+      "view-id": view ? view : undefined
+    }
+    try {
+      dispatch(showLoader());
+      const apiResponse = await getMoleculeData(obj);
+      let tempArr = []
+      let tempParam = []
+      let tempViewList = []
+      if (apiResponse?.status === 200) {
+        apiResponse?.data.forEach((siteData) => {
+          if (param === 'site') {
+            tempArr.push(siteData.site_code)
+          } else if (param === 'parameter') {
+            tempParam.push(siteData?.parameter)
+          } else {
+            tempViewList.push(siteData?.view_id?.split('-')[0])
+            totalViewList.current.push(siteData?.view_id)
+          }
+        })
+        if (param === 'site') {
+          setSiteList(tempArr)
+        } else if (param === 'parameter') {
+          setParameterList(tempParam)
+        } else {
+          setViewList(tempViewList)
+        }
+      }
+      const tempMol = [...moleculeData]
+      tempMol.forEach((ele) => {
+        ele.paramData.forEach((item) => {
+          item.versionList = handleVersionList(item?.view_disp_id)
+        })
+      })
+      setMoleculeData(tempMol)
+      if(param === 'parameter') {
+        const tempLimit = [...limitsData]
+        tempLimit.forEach((ele) => {
+          ele.param_list = tempParam
+        })
+        setLimitsData(tempLimit)
+      }
+      dispatch(hideLoader());
+    } catch (error) {
+      dispatch(hideLoader());
+      console.log(error, 'error')
+      // dispatch(showNotification("error", error));
+    }
+  }
+
+  const addMolecule = () => {
+    const newData = {
+      key: moleculeData?.length + 1,
+      molecule: '',
+      paramData: []
+    }
+    setMoleculeData([...moleculeData, newData]);
+  }
+
   useEffect(() => {
     getLimitConfigApi();
+    getMoleculeLists();
   }, [])
 
 
@@ -181,18 +345,22 @@ const LimitTable = () => {
     <div className='limit-container'>
       <div className="landing-search-wrapper">
         <div className="landing-card">
+          <Button className='add-molec-button custom-primary-btn' onClick={addMolecule}>Add Molecule</Button>
           <Table
             columns={columns}
             pagination={false}
             expandable={{
-              expandedRowRender: (record) => <LimitInputs limitsData={limitsData} setLimitsData={setLimitsData} paramData={record.paramData} editTable={editTable} selectedRowKey={record.key} openRow={openRow} />,
-              // rowExpandable: (record) => record.name !== 'Not Expandable',
+              expandedRowRender: (record) => <LimitInputs getMoleData={getMoleData} siteList={siteList} totalViewList={totalViewList} viewList={viewList} selectedMol={selectedMol} parameterList={parameterList} limitsData={limitsData} setLimitsData={setLimitsData} paramData={record.paramData} editTable={editTable} selectedRowKey={record.key} openRow={openRow} />,
+              // rowExpandable: (record) => record.key === openRow,
               expandRowByClick: true,
               onExpand: (expanded, record) => {
                 if (!expanded) {
                   setEditTable(false)
                   setOpenRow('');
                 } else {
+                  getMoleData('site', record?.molecule, '')
+                  getMoleData('view', record?.molecule)
+                  selectedMol.current = record?.molecule
                   setEditTable(true)
                 }
               }
