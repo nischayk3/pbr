@@ -61,12 +61,11 @@ const Roles = () => {
 		setSearchedColumn(dataIndex);
 	}
 
-	function handleClearSearch(confirm, dataIndex) {
+	function handleClearSearch(selectedKeys, confirm, dataIndex) {
 		confirm({ closeDropdown: true });
-		setSearchText(undefined);
+		setSearchText(selectedKeys[0]);
 		setSearchedColumn(dataIndex);
 	}
-
 
 	/* istanbul ignore next */
 	function getColumnSearchProps(dataIndex) {
@@ -111,7 +110,8 @@ const Roles = () => {
 							type='link'
 							size='small'
 							onClick={() => {
-								handleClearSearch(confirm, dataIndex)
+								setSelectedKeys([]);
+								handleClearSearch([], confirm, dataIndex)
 							}}
 						>
 							Clear
@@ -152,6 +152,7 @@ const Roles = () => {
 				),
 		};
 	};
+	console.log("searchText", searchText)
 
 	const editRole = (resName) => {
 
