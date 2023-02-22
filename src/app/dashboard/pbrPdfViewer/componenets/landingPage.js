@@ -26,6 +26,7 @@ function LandingPage() {
     const [postsPerPage, setPostsPerPage] = useState(8);
     const [countFile, setCountFile] = useState(0);
     const [searchedText, setSearchedText] = useState('');
+    const [inputValue, setInputValue] = useState('');
     useEffect(() => {
         getPdfMetaData()
     }, [])
@@ -46,6 +47,7 @@ function LandingPage() {
                 setCardData(res.Data)
                 setCountFile(res.Count)
             } else {
+                setCountFile(0)
                 setCardData([])
                 dispatch(hideLoader());
             }
@@ -64,15 +66,19 @@ function LandingPage() {
     // let newData = cardData.slice((number - 1) * postsPerPage, postsPerPage * number);
 
     const onSearch = (value) => {
-        if (value) {
-            setSearchedText(value)
-            getPdfMetaData(value)
+        if (value?.key == "Enter") {
+            setSearchedText(inputValue)
+            getPdfMetaData(inputValue)
         } else {
-            setSearchedText('')
-            setNumber(1)
-            getPdfMetaData()
+            if (value) {
+                setSearchedText(value)
+                getPdfMetaData(value)
+            } else {
+                setSearchedText('')
+                setNumber(1)
+                getPdfMetaData()
+            }
         }
-
     };
 
     const handleViewDetails = (val) => {
@@ -93,6 +99,7 @@ function LandingPage() {
                     placeholder="Search by PDF name,ID,material,batch or associated templates"
                     allowClear
                     onSearch={onSearch}
+                    onChange={e => setInputValue(e.target.value)}
                     onPressEnter={onSearch}
                 />
             </div>
@@ -125,37 +132,52 @@ function LandingPage() {
                                             <img src={item.status === "P" ? greenCircle : red_circle} style={{ width: item.status === "P" ? 10 : 30 }} />
                                             <span style={{ fontWeight: 600, marginLeft: item.status === "P" ? 15 : 7 }}>{item.status === "P" ? "Success" : "Fail"}</span>
                                         </div>
-                                        <div className='divContainer'>
-                                            <div>
-                                                <p className='pStyle' >Batch</p>
-                                                <p className='pValue'> {item.batch_num}</p>
-                                            </div>
-                                            <div>
-                                                <p className='pStyle'>Product</p>
-                                                <div style={{ marginRight: 70 }}>
-                                                    <p className='pValue'> {item.product_num}</p>
-                                                    {/* <Avatar
+                                        <Row style={{ marginLeft: 10,marginTop: 7  }}>
+                                            <Col span={12}>
+                                                <div>
+                                                    <p className='pStyle' >Batch</p>
+                                                    <p className='pValue'> {item.batch_num}</p>
+                                                </div>
+                                            </Col>
+                                            <Col span={12}>
+                                                <div>
+                                                    <p className='pStyle'>Product</p>
+                                                    <div style={{ marginRight: 70 }}>
+                                                        <p className='pValue'> {item.product_num}</p>
+                                                        {/* <Avatar
                                                         className='avatar-icon'
                                                         style={{ backgroundColor: getRandomColor(index + 1) }}>
                                                         {item.created_by?.split('')[0]?.toUpperCase()}{' '}
                                                     </Avatar> */}
-                                                    {/* <span className='avatar-text' style={{ marginLeft: 10 }}>{item.created_by.split('@')[0]}</span> */}
+                                                        {/* <span className='avatar-text' style={{ marginLeft: 10 }}>{item.created_by.split('@')[0]}</span> */}
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            </Col>
+                                        </Row>
+                                        <Row style={{ marginLeft: 10 ,marginTop: 5 }}>
+                                            <Col span={12}>
+                                                <div>
+                                                    <p className='pStyle' >Site</p>
+                                                    <p className='pValue'> {item.site_code}</p>
+                                                </div>
+                                            </Col>
+                                            <Col span={12}>
+                                                <Button onClick={() => handleViewDetails(item.file_id)} style={{ width: 150, marginTop: 27 }} className='custom-secondary-btn'>
+                                                    View Details
+                                                </Button>
+                                            </Col>
+                                        </Row>
+                                        {/* <div className='divContainer'>
 
-                                        </div>
-                                        <div className='buttonDiv'>
-                                            <div>
-                                                <p className='pStyle' >Site</p>
-                                                <p className='pValue'> {item.site_code}</p>
-                                            </div>
+
+
+                                        </div> */}
+                                        {/* <div className='buttonDiv'> */}
+
                                             {/* <Button style={{ width: 150 }} className='custom-primary-btn'>
                                                 Download
                                             </Button> */}
-                                            <Button onClick={() => handleViewDetails(item.file_id)} style={{ width: 150, marginTop: 27 }} className='custom-secondary-btn'>
-                                                View Details
-                                            </Button>
-                                        </div>
+
 
 
                                     </Col>
@@ -168,10 +190,11 @@ function LandingPage() {
 
                 </Row>
             </div>
-            {cardData.length === 0 &&
+            {
+                cardData.length === 0 &&
                 <div><Empty /></div>
             }
-        </div>
+        </div >
     )
 }
 
