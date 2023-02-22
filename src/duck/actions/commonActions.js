@@ -1,7 +1,7 @@
 import {
 	AUTHENTICATED,
 	HIDE_LOADING,
-	HIDE_NOTIFICATION, NETWORK_ERROR, PUBLISH_RESPONSE, SHOW_LOADING,
+	HIDE_NOTIFICATION, LOGOUT_APP, NETWORK_ERROR, PUBLISH_RESPONSE, SHOW_LOADING,
 	SHOW_NOTIFICATION
 } from "../types/types";
 
@@ -53,3 +53,8 @@ export const hideNotification = () => (dispatch) => {
 		},
 	});
 };
+
+export const logoutApp = (payload) => ({
+	type: LOGOUT_APP,
+	payload,
+});
