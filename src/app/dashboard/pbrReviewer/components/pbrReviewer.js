@@ -49,13 +49,53 @@ function PbrReviewer() {
 	});
 	const [batchFilters, setBatchFilters] = useState({
 		site: null,
-		startDate: moment().subtract(3,'d'),
+		startDate: moment().subtract(3, 'd'),
 		endDate: moment(),
 		time: "",
 		duration: null,
 		unApproved: 0,
 	});
 	const [isDatePopupVisible, setIsDatePopupVisible] = useState(false);
+	const [appchart1, setAppChart1] = useState([{
+		values: pieChartData1,
+		labels: ["High", "Medium", "Low"],
+		marker: {
+			colors: ['#2ca02c', '#ff7f0e', '#1f77b4'],
+			line: {
+				color: 'white',
+				width: 2
+			},
+			layout: {
+
+				x: 1,
+				xanchor: 'right',
+				y: 1
+
+			}
+
+		},
+		hole: .7,
+		type: 'pie',
+	}])
+	const [appchart, setAppChart] = useState([{
+		values: pieChartData,
+		labels: ["Approved", "Unapproved"],
+		marker: {
+			colors: ['#2ca02c', '#ff7f0e'],
+			line: {
+				color: 'white',
+				width: 2
+			},
+			layout: {
+				x: 1,
+				xanchor: 'right',
+				y: 1
+			}
+		},
+		hole: .7,
+		type: 'pie',
+
+	}])
 	const dateFormat = "YYYY-MM-DD";
 	let [filteredData] = useState();
 
@@ -64,6 +104,7 @@ function PbrReviewer() {
 		cardTableData()
 		getTemplateID()
 	}, []);
+
 	const cardTableData = async (val) => {
 		try {
 			dispatch(showLoader());
@@ -124,7 +165,11 @@ function PbrReviewer() {
 		dispatch(showLoader());
 		setShowReset(true)
 		let obj = {
-			...reviewerReq, status: value.toLowerCase(), template_id: selectedTemplateArray
+			...reviewerReq, status: value.toLowerCase(), template_id: selectedTemplateArray,date_range: batchFilters.startDate
+			? new Date(batchFilters.startDate).toISOString() +
+			"/" +
+			new Date(batchFilters.endDate).toISOString()
+			: null
 		}
 		setTableLoading(true)
 		let res = await getPbrReviewerData(obj)
@@ -139,7 +184,11 @@ function PbrReviewer() {
 		dispatch(showLoader());
 		setShowResetConfidence(true)
 		let obj = {
-			...reviewerReq, confidence: value, template_id: selectedTemplateArray
+			...reviewerReq, confidence: value, template_id: selectedTemplateArray,date_range: batchFilters.startDate
+			? new Date(batchFilters.startDate).toISOString() +
+			"/" +
+			new Date(batchFilters.endDate).toISOString()
+			: null
 		}
 		setTableLoading(true)
 		let res = await getPbrReviewerData(obj)
@@ -189,7 +238,7 @@ function PbrReviewer() {
 				cardTableData()
 				getTemplateID()
 				chart();
-				chart1();
+				// chart1();
 			} else {
 				dispatch(hideLoader());
 				dispatch(showNotification("error", res?.Message))
@@ -227,6 +276,7 @@ function PbrReviewer() {
 			}
 		})
 		setPieChartData([approved, unapproved]);
+		setAppChart([{...appchart[0],values:[approved, unapproved]}])
 		let jsondata1 = obj.confidence_data;
 		let High = 0
 		let Medium = 0
@@ -241,70 +291,51 @@ function PbrReviewer() {
 			}
 		})
 		setPieChartData1([High, Medium, Low]);
+		setAppChart1([{...appchart1[0],values:[High, Medium, Low]}])
 
 	};
 
+	// let appchart1 = [{
+	// 	values: pieChartData1,
+	// 	labels: ["High", "Medium", "Low"],
+	// 	marker: {
+	// 		colors: ['#2ca02c', '#ff7f0e', '#1f77b4'],
+	// 		line: {
+	// 			color: 'white',
+	// 			width: 2
+	// 		},
+	// 		layout: {
 
-	const chart1 = async (val) => {
-		let req = { key: "confidence", id: selectedTemplateArray }
-		let obj = await getPieChartData(val ? val : req);
-		let jsondata = obj.Data;
-		let High = 0
-		let Medium = 0
-		let Low = 0
-		jsondata.forEach(item => {
-			if (item.confidence == "High") {
-				High = item.count
-			} else if (item.confidence == "Low") {
-				Low = item.count
-			} else if (item.confidence == "Medium") {
-				Medium = item.count
-			}
-		})
-		setPieChartData1([High, Medium, Low]);
-	};
+	// 			x: 1,
+	// 			xanchor: 'right',
+	// 			y: 1
 
-	let appchart1 = [{
-		values: pieChartData1,
-		labels: ["High", "Medium", "Low"],
-		marker: {
-			colors: ['#2ca02c', '#ff7f0e', '#1f77b4'],
-			line: {
-				color: 'white',
-				width: 2
-			},
-			layout: {
+	// 		}
 
-				x: 1,
-				xanchor: 'right',
-				y: 1
+	// 	},
+	// 	hole: .7,
+	// 	type: 'pie',
+	// }]
 
-			}
+	// let appchart = [{
+	// 	values: pieChartData,
+	// 	labels: ["Approved", "Unapproved"],
+	// 	marker: {
+	// 		colors: ['#2ca02c', '#ff7f0e'],
+	// 		line: {
+	// 			color: 'white',
+	// 			width: 2
+	// 		},
+	// 		layout: {
+	// 			x: 1,
+	// 			xanchor: 'right',
+	// 			y: 1
+	// 		}
+	// 	},
+	// 	hole: .7,
+	// 	type: 'pie',
 
-		},
-		hole: .7,
-		type: 'pie',
-	}]
-
-	let appchart = [{
-		values: pieChartData,
-		labels: ["Approved", "Unapproved"],
-		marker: {
-			colors: ['#2ca02c', '#ff7f0e'],
-			line: {
-				color: 'white',
-				width: 2
-			},
-			layout: {
-				x: 1,
-				xanchor: 'right',
-				y: 1
-			}
-		},
-		hole: .7,
-		type: 'pie',
-
-	}]
+	// }]
 
 	useEffect(() => {
 		chart();
@@ -434,7 +465,7 @@ function PbrReviewer() {
 			title: 'Snippet Value',
 			key: 'snippet_image',
 			dataIndex: 'snippet_image',
-			width:"8%",
+			width: "8%",
 			render: (text, record, index) => {
 				return (
 					<img src={`data:image/png;base64,${text}`} width="130px" height="40px" />
@@ -759,7 +790,11 @@ function PbrReviewer() {
 	/* istanbul ignore next */
 	const resetConfidence = async () => {
 		dispatch(showLoader());
-		let obj = { ...reviewerReq, confidence: null }
+		let obj = { ...reviewerReq, confidence: null,date_range: batchFilters.startDate
+			? new Date(batchFilters.startDate).toISOString() +
+			"/" +
+			new Date(batchFilters.endDate).toISOString()
+			: null }
 		setTableLoading(true)
 		let res = await getPbrReviewerData(obj)
 		let arr = res.Data.map((item, index) => ({ ...item, key: index }))
@@ -773,7 +808,11 @@ function PbrReviewer() {
 	/* istanbul ignore next */
 	const resetStatus = async () => {
 		dispatch(showLoader());
-		let obj = { ...reviewerReq, status: null }
+		let obj = { ...reviewerReq, status: null,date_range: batchFilters.startDate
+			? new Date(batchFilters.startDate).toISOString() +
+			"/" +
+			new Date(batchFilters.endDate).toISOString()
+			: null }
 		setTableLoading(true)
 		let res = await getPbrReviewerData(obj)
 		let arr = res.Data.map((item, index) => ({ ...item, key: index }))
@@ -828,7 +867,6 @@ function PbrReviewer() {
 		selectedRowKeys,
 		onChange: (selectedRowKeys, selectedRows) => {
 			setSelectedRowKeys(selectedRowKeys);
-			console.log("selectedRowKeys", selectedRowKeys)
 			let arr = selectedRows.map(item => item.id)
 			setArr(arr)
 		},
@@ -846,7 +884,7 @@ function PbrReviewer() {
 				startDate: e[0].format("YYYY-MM-DD"),
 				endDate: e[1].format("YYYY-MM-DD"),
 			});
-		} 
+		}
 		else {
 			setBatchFilters({
 				...batchFilters,
