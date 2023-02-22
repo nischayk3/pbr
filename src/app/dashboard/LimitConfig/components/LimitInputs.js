@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import './Limitconfig.scss'
-import SelectField from "../../../../components/SelectField/SelectField";
-import { Col, Row, Table, Input, DatePicker, Button, Popconfirm, Tooltip, Select } from 'antd';
-import { DeleteOutlined, CalendarOutlined, PlusOutlined } from '@ant-design/icons'
+import { CalendarOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { Button, Col, DatePicker, Input, Popconfirm, Row, Select, Table, Tooltip } from 'antd';
 import moment from 'moment';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
-import { deleteLimitsApi, getMoleculeData } from '../../../../services/limitConfig';
-import { hideLoader, showNotification, showLoader } from '../../../../duck/actions/commonActions';
-import { v1 as uuid } from "uuid";
+import SelectField from "../../../../components/SelectField/SelectField";
+import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
+import { deleteLimitsApi } from '../../../../services/limitConfig';
+import './Limitconfig.scss';
 
 const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLimitsData, limitsData, openRow, selectedRowKey, paramData, siteList, parameterList }) => {
 
@@ -38,7 +37,7 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 						}
 						return (
 							<SelectField
-							    showSearch={true}
+								showSearch={true}
 								name="view_disp_id"
 								selectList={viewList}
 								selectedValue={data.view_disp_id}
@@ -52,7 +51,7 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 			title: 'View Version',
 			dataIndex: 'view_version',
 			key: 'view_version',
-			width: 100,
+			width: 120,
 			fixed: 'left',
 			render: (text, record) =>
 				limitsData.map((data, index) => {
@@ -62,7 +61,7 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 						}
 						return (
 							<SelectField
-							    showSearch={true}
+								showSearch={true}
 								name="view_version"
 								selectList={data?.versionList}
 								selectedValue={data.view_version}
@@ -84,7 +83,7 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 						}
 						return (
 							<SelectField
-							    showSearch={true}
+								showSearch={true}
 								name="parameters"
 								selectList={data?.param_list}
 								selectedValue={data.parameters}
@@ -106,7 +105,7 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 						}
 						return (
 							<SelectField
-							    showSearch={true}
+								showSearch={true}
 								name="site"
 								selectList={siteList}
 								selectedValue={data.site}
@@ -169,7 +168,7 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 						}
 						return (
 							<SelectField
-							    showSearch={true}
+								showSearch={true}
 								name="limit_type"
 								selectList={limitList}
 								selectedValue={data.limit_type}
@@ -183,7 +182,7 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 			title: 'From',
 			dataIndex: 'from_',
 			key: 'from',
-			width: 100,
+
 			render: (text, record) =>
 				limitsData.map((data, index) => {
 					if (record.key === data.key) {
@@ -207,7 +206,7 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 			title: 'To',
 			dataIndex: 'to_',
 			key: 'to',
-			width: 100,
+
 			render: (text, record) =>
 				limitsData.map((data, index) => {
 					if (record.key === data.key) {
@@ -229,7 +228,7 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 			title: 'Validity Date',
 			dataIndex: 'validity_date',
 			key: 'vod',
-			width: 150,
+
 			render: (text, record) =>
 				limitsData.map((data, index) => {
 					if (record.key === data.key) {
@@ -287,6 +286,8 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 			title: 'Document URL',
 			dataIndex: 'document_url',
 			key: 'document_url',
+			fixed: 'right',
+			width: 120,
 			render: (text, record) =>
 				limitsData.map((data, index) => {
 					if (record.key === data.key) {
@@ -435,11 +436,11 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 				<Col span={1} className="empty-space" />
 				<Col span={23}>
 					<Table
-					    style={{ width:'1000px'}}
+						// style={{ width:'1000px'}}
 						columns={tableColumns}
 						pagination={false}
 						dataSource={limitsData}
-						scroll={{ x: 1360 }}
+						scroll={{ x: 1300 }}
 					/>
 					{(selectedRowKey === openRow) && <div className="add-button-limit">
 						<Button
