@@ -3,14 +3,13 @@ import { Button, Modal } from "antd";
 import queryString from "query-string";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useLocation } from "react-router";
+import { useHistory, useLocation } from "react-router-dom";
 import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
 import InputField from "../../../../components/InputField/InputField";
 import Sharing from '../../../../components/Sharing/sharing';
 import {
 	hideLoader, showLoader, showNotification
 } from "../../../../duck/actions/commonActions";
-import { useHistory } from "react-router";
 import { getChartList } from "../../../../services/chartPersonalizationService";
 import { saveDashboardData } from "../../../../services/dashboardServices";
 import { getChartPlotData } from "../../../../services/workSpaceServices";

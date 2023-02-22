@@ -115,12 +115,17 @@ const Workspace = () => {
 		let req = { limit: 5 };
 		try {
 			const chartIdResponse = await getChartExceptionData(req);
-			setChartIdException(chartIdResponse.Data);
-			setActiveTab(
-				chartIdResponse?.Data[0]?.chart_disp_id +
-				"_" +
-				chartIdResponse?.Data[0]?.chart_version
-			);
+			if (chartIdResponse['status-code'] === 200) {
+				setChartIdException(chartIdResponse.Data);
+				setActiveTab(
+					chartIdResponse?.Data[0]?.chart_disp_id +
+					"_" +
+					chartIdResponse?.Data[0]?.chart_version
+				);
+			} else {
+				console.log("error",);
+			}
+
 		} catch (error) {
 			console.log("inside2", error);
 		}

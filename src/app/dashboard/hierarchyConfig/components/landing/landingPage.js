@@ -2,7 +2,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Avatar, Button, Col, Input, Modal, Row, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import Banner from "../../../../../assets/images/Popup-Side.svg";
 import illustrations from "../../../../../assets/images/ViewCreation_bannerillustration.png";
 import ScreenHeader from "../../../../../components/ScreenHeader/screenHeader";

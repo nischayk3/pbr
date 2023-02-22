@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useLocation } from "react-router";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import "./viewPageStyles.scss";
 //antd imports
 import {
