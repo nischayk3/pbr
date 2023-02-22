@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom';
 import mareanaLogo from '../../assets/mareana_logo_svg.svg';
 import { adenabled } from '../../config/config';
 import { MDH_APP_PYTHON_SERVICE } from '../../constants/apiBaseUrl';
-import { showNotification } from '../../duck/actions/commonActions';
+import { logoutApp, showNotification } from '../../duck/actions/commonActions';
 import { getUploadProfile } from '../../duck/actions/loginAction';
 import { getUserProfile, logoutUrl } from "../../services/loginService";
 import Auth from '../../utils/auth';
@@ -75,6 +75,7 @@ const HeaderBar = () => {
 		if (tokenExpired) {
 			dispatch(showNotification("error", 'Signature Expired! Please login again.'))
 		}
+		dispatch(logoutApp(true))
 		localStorage.removeItem('login_details');
 		localStorage.removeItem('username');
 		localStorage.removeItem('loginwith');
