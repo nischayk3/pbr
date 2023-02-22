@@ -314,6 +314,7 @@ const LimitTable = () => {
       let tempArr = []
       let tempParam = []
       let tempViewList = []
+      const sortAlphaNum = (a, b) => a.localeCompare(b, 'en', { numeric: true })
       if (apiResponse?.status === 200) {
         apiResponse?.data.forEach((siteData) => {
           if (param === 'site') {
@@ -323,6 +324,7 @@ const LimitTable = () => {
           } else {
             tempViewList.push(siteData?.view_id?.split('-')[0])
             tempViewList = [...new Set(tempViewList)]
+            tempViewList = tempViewList.sort(sortAlphaNum);
             totalViewList.current.push(siteData?.view_id)
           }
         })
