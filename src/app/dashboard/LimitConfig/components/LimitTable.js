@@ -335,6 +335,8 @@ const LimitTable = () => {
 				} else {
 					setViewList(tempViewList)
 				}
+			} else {
+				dispatch(showNotification("error", apiResponse?.Message))
 			}
 			const tempMol = [...moleculeData]
 			tempMol.forEach((ele) => {
