@@ -14,6 +14,7 @@ import './styles.scss';
 // import { getReports } from '../../../../services/reportDesignerServices';
 import axios from 'axios';
 import FileSaver from 'file-saver';
+import { useLocation } from 'react-router-dom';
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import Signature from '../../../../components/ElectronicSignature/signature';
 import JobSchedule from '../../../../components/JobSchedule';
@@ -24,11 +25,10 @@ import {
 	showNotification
 } from '../../../../duck/actions/commonActions';
 import {
-	latexBuilder, saveReportGenerator, loadReportGen
+	latexBuilder, loadReportGen, saveReportGenerator
 } from '../../../../services/reportGeneratorServices';
 import Chart from '../../reportDesigner/components/reportChart/chartComponent/chartComponent';
 import ReportGeneratorForm from '../components/reportGeneratorForm';
-import { useLocation } from 'react-router';
 
 const { Panel } = Collapse;
 
