@@ -85,7 +85,7 @@ const LimitTable = () => {
       title: 'Molecule',
       dataIndex: 'molecule',
       key: 'molecule',
-      width: 1000,
+      width: 800,
       render: (text, record) =>
         moleculeData.map((data, index) => {
           if (record.key === data.key) {
@@ -277,7 +277,7 @@ const LimitTable = () => {
     try {
       dispatch(showLoader());
       const apiResponse = await saveLimitConfigApi(data);
-      if(apiResponse?.status === 200) {
+      if(apiResponse?.Status === 200) {
         getLimitConfigApi();
         setOpenRow('')
         dispatch(hideLoader());
