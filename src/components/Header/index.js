@@ -73,6 +73,7 @@ const HeaderBar = () => {
 
 	const adLogout = (tokenExpired) => {
 		if (tokenExpired) {
+			dispatch(logoutApp(true))
 			dispatch(showNotification("error", 'Signature Expired! Please login again.'))
 		}
 		dispatch(logoutApp(true))
