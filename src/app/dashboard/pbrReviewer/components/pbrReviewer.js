@@ -434,6 +434,7 @@ function PbrReviewer() {
 			title: 'Snippet Value',
 			key: 'snippet_image',
 			dataIndex: 'snippet_image',
+			width:"8%",
 			render: (text, record, index) => {
 				return (
 					<img src={`data:image/png;base64,${text}`} width="130px" height="40px" />

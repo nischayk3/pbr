@@ -919,7 +919,7 @@ const PaperBatchRecordsTemplate = () => {
 			setFormValues(arr)
 			setActiveNumber(templateInfo?.length)
 			setParamaterAdded(true)
-			setTemplateInfo([])
+			// setTemplateInfo([])
 			dispatch(loadTemplateInfo([]))
 		}
 
