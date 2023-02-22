@@ -22,10 +22,18 @@ class Service {
 				return response;
 			},
 			function (error) {
+				console.log("service error", error);
 				if (error.response.status === 401) {
 					Store.dispatch(checkAuth(false));
 				} else if (error.response.status === 500) {
 					Store.dispatch(checkNetworkError(true));
+					Store.dispatch(dispatch(showNotification("error", '500 error', 'Internal Server Error')));
+				} else if (error.response.status === 501) {
+					Store.dispatch(dispatch(showNotification("error", '501 error', 'Not Implemented')));
+				} else if (error.response.status === 502) {
+					Store.dispatch(dispatch(showNotification("error", '502 error', 'Bad Gateway')));
+				} else if (error.response.status === 503) {
+					Store.dispatch(dispatch(showNotification("error", '502 error', 'Service Unavailable')));
 				}
 				return Promise.reject(error);
 			}

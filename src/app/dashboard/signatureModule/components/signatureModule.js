@@ -116,6 +116,8 @@ const SignatureModule = () => {
 	};
 
 	const handleConfirm = async () => {
+		let login_response = JSON.parse(localStorage.getItem("login_details"));
+
 		var today = new Date();
 		var h = today.getHours();
 		var m = today.getMinutes();
@@ -134,9 +136,9 @@ const SignatureModule = () => {
 		req["user_id"] = username;
 		// eslint-disable-next-line react/prop-types
 		req["screen"] = params?.screenName;
-		req["first_name"] = "first_name";
-		req["last_name"] = "last_name";
-		let login_response = JSON.parse(localStorage.getItem("login_details"));
+		req["first_name"] = login_response?.firstname ? login_response?.firstname : '';
+		req["last_name"] = login_response?.lastname ? login_response?.lastname : '';
+
 		let headers = {
 			"content-type": "application/json",
 			"resource-name":

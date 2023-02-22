@@ -3,9 +3,7 @@ import {
 	DatePicker,
 	Dropdown,
 	Input,
-	Menu,
-	Select, Table,
-	Modal
+	Menu, Modal, Select, Table
 } from "antd";
 import axios from "axios";
 import moment from "moment";
@@ -15,7 +13,7 @@ import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
 import { BMS_APP_PYTHON_SERVICE } from "../../../../constants/apiBaseUrl";
 import {
 	auditDataChange,
-	auditFilter, reportDownload, eSignDetails
+	auditFilter, eSignDetails, reportDownload
 } from "../../../../duck/actions/auditTrialAction";
 import { showNotification } from "../../../../duck/actions/commonActions";
 import "./styles.scss";
@@ -390,7 +388,7 @@ class AuditTrials extends React.Component {
 				antdObj["changed_fields"] = item.changed_fields;
 				if (val11 === item.new_value) {
 					antdObj["new_value"] = (
-						<p style={{ background: "yellow" }}>{item.new_value}</p>
+						<p className="highlight">{item.new_value}</p>
 					);
 				} else if (item.activity === "U" && item.delta.length > 0) {
 					let val = "";
@@ -506,6 +504,7 @@ class AuditTrials extends React.Component {
 	};
 
 	render() {
+		console.log("esignOpen", this.state.esignOpen);
 		const { RangePicker } = DatePicker;
 		const { filterTable, tableData, columns } = this.state;
 		const { esignColumns, esignDetailsData } = this.state;
@@ -685,10 +684,6 @@ class AuditTrials extends React.Component {
 								>
 									<Dropdown style={{ color: "#ffffff" }} overlay={userMenu} disabled={tableData.length > 0 ? false : true} >
 										<Button
-											style={{
-												backgroundColor: "#495fc3",
-												color: "#ffffff"
-											}}
 											type="primary"
 										>
 											Export
@@ -708,6 +703,7 @@ class AuditTrials extends React.Component {
 								bordered
 							/>
 							<Modal
+								className="dinesh"
 								open={this.state.esignOpen}
 								title="Esign Details"
 								onCancel={() => this.setState({ esignOpen: false })}
