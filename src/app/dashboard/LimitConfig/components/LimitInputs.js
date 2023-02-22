@@ -435,6 +435,7 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 				<Col span={1} className="empty-space" />
 				<Col span={23}>
 					<Table
+					    style={{ width:'1000px'}}
 						columns={tableColumns}
 						pagination={false}
 						dataSource={limitsData}
