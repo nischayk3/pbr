@@ -83,6 +83,7 @@ const HeaderBar = () => {
 		window.open(`${logoutUrl}`, '_self')
 		window.open(`${logoutUrl}?redirect_url=${MDH_APP_PYTHON_SERVICE}`, '_self')
 	}
+
 	const wrapperRef = useRef(null);
 	useOutsideAlerter(wrapperRef);
 
