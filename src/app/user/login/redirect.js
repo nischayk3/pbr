@@ -23,6 +23,7 @@ export default function Redirect() {
 				if (data?.token != '') {
 					dispatch(sendLoginDetails(data));
 					history.push('/dashboard/workspace');
+					dispatch(sendLoginDetails(data));
 				}
 			} else {
 				dispatch(showNotification("error", 'Login Failed', 'Sorry, an unexpectede error occurred. Please try logging in again.'));
