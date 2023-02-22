@@ -1,11 +1,11 @@
 import {
 	AppstoreAddOutlined, AppstoreOutlined, AreaChartOutlined, BarChartOutlined, BlockOutlined,
-	CheckCircleOutlined, CloudUploadOutlined, ClusterOutlined, CodeOutlined, DeploymentUnitOutlined, DiffOutlined, FileDoneOutlined,
-	FileProtectOutlined, FileSearchOutlined, FileSyncOutlined, FundOutlined, FundProjectionScreenOutlined,
-	NodeIndexOutlined, PartitionOutlined, SisternodeOutlined, TeamOutlined, UploadOutlined, UserOutlined, FilePdfOutlined
+	CheckCircleOutlined, CloudUploadOutlined, ClusterOutlined, CodeOutlined, DeploymentUnitOutlined, DiffOutlined, FileDoneOutlined, FilePdfOutlined, FileProtectOutlined, FileSearchOutlined, FileSyncOutlined, FundOutlined, FundProjectionScreenOutlined,
+	NodeIndexOutlined, PartitionOutlined, SisternodeOutlined, TeamOutlined, UploadOutlined, UserOutlined
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
 import "./style.scss";
@@ -21,9 +21,9 @@ const Sidebar = () => {
 	const locationSplit = location?.pathname?.split("/")
 	const path = `${'/' + locationSplit[1] + '/' + locationSplit[2]}`
 
-	const validResource = JSON.parse(localStorage.getItem('login_details'));
+	const profile = useSelector((state) => state.loginReducer.loginDetails)
 
-	let resourceKey = validResource?.resource_action
+	let resourceKey = profile?.resource_action
 	let resKey = resourceKey && Object.keys(resourceKey)
 
 	useEffect(() => {
@@ -32,7 +32,7 @@ const Sidebar = () => {
 			permission[item] = true;
 		})
 		setPermissions(permission)
-	}, [])
+	}, [profile])
 
 
 	const mouseHover = () => {
@@ -48,11 +48,10 @@ const Sidebar = () => {
 			setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
 		}
 	};
-
-
-
+	console.log("permissions", permissions);
 	return (
 		<Sider
+			collapsedWidth={53}
 			collapsed={collapsed}
 			onMouseOver={mouseHover}
 			onMouseLeave={() => setCollapsed(true)}
@@ -84,7 +83,7 @@ const Sidebar = () => {
 				{permissions && permissions['WORKITEMS'] && (
 					<Menu.Item
 						key='workflow'
-						icon={<FileDoneOutlined style={{ fontSize: "26px" }} />}
+						icon={<FileDoneOutlined style={{ fontSize: "20px" }} />}
 						id='workflow'
 						className={path == '/dashboard/workflow' ? 'ant-menu-item-selected' : 'remove-selected'}
 					>
@@ -173,16 +172,18 @@ const Sidebar = () => {
 							</Menu.Item>
 						)}
 
-						<Menu.Item
-							key="system-config"
-							icon={<DeploymentUnitOutlined className="menu-icons" />}
-							id="limit-config"
-							className={path === "/dashboard/system-config" ? 'ant-menu-item-selected' : 'remove-selected'}
-						>
-							<Link to="/dashboard/system-config">
-								System Config
-							</Link>
-						</Menu.Item>
+						{permissions['SYSTEM_CONFIG'] && (
+							<Menu.Item
+								key="system-config"
+								icon={<DeploymentUnitOutlined className="menu-icons" />}
+								id="limit-config"
+								className={path === "/dashboard/system-config" ? 'ant-menu-item-selected' : 'remove-selected'}
+							>
+								<Link to="/dashboard/system-config">
+									System Config
+								</Link>
+							</Menu.Item>
+						)}
 					</SubMenu>
 				) : null}
 

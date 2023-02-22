@@ -72,7 +72,7 @@ const ELogBookTemplate = lazy(() => import("./ElogBook/components/landingPage/La
 const TableauDashboard = lazy(() => import("./TableauDashboard/tableauDashboard"));
 const PbrPdfViewer = lazy(() => import("./pbrPdfViewer"));
 const PbrViewPdf = lazy(() => import("./pbrPdfViewer/componenets/viewPdf"));
-const SystemConfig = lazy(() => import("./SystemConfig/components/systemConfig"));
+const SystemConfig = lazy(() => import("./SystemConfig/systemConfig"));
 const LimitConfig = lazy(() => import("./LimitConfig/components/landing/LimitConfig"));
 
 

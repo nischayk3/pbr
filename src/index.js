@@ -8,13 +8,17 @@ import { CookiesProvider } from "react-cookie";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import { PersistGate } from 'redux-persist/integration/react';
 import App from "./app";
-import { history, Store } from "./duck/store";
+import { history, persistor, Store } from "./duck/store";
 import "./index.scss";
 import { msalConfig } from "./services/authProvider";
 import * as serviceWorker from "./serviceWorker";
 
 const msalInstance = new PublicClientApplication(msalConfig);
+
+//expose the persistor to the window so we can flush the local storage through the console...
+window.persistor = persistor;
 
 axios.interceptors.request.use(
 	function (config) {
@@ -47,9 +51,11 @@ root.render(
 			<MsalProvider instance={msalInstance}>
 				<Provider store={Store}>
 					<ConnectedRouter history={history}>
-						<Route>
-							<App />
-						</Route>
+						<PersistGate persistor={persistor}>
+							<Route>
+								<App />
+							</Route>
+						</PersistGate>
 					</ConnectedRouter>
 				</Provider>
 			</MsalProvider>

@@ -3,11 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
 import { hideLoader, showNotification } from "../../../../duck/actions/commonActions";
 import { getSystemConfig } from "../../../../services/systemConfigService";
-import CustomerTable from "./customerTable";
-import DataTable from "./dataTable";
-import EsignTable from "./esignTable";
-import "./style.scss";
-import TimeZoneTable from "./timeZoneTable";
+import CustomerTable from "./dataTable/customerTable";
+import DataTable from "./dataTable/dataTable";
+import EsignTable from "./dataTable/esignTable";
+import TimeZoneTable from "./dataTable/timeZoneTable";
+
 
 const ConfigTable = () => {
 	const { Panel } = Collapse;
@@ -90,7 +90,7 @@ const ConfigTable = () => {
 			<Collapse
 			// defaultActiveKey={['1']}
 			>
-				<Panel header="Data sources" key="1">
+				<Panel header="System email configuration" key="1">
 					<div className="table-wrap">
 						<DataTable
 							tableData={emailData}
@@ -103,7 +103,7 @@ const ConfigTable = () => {
 						<EsignTable tableData={esignData} />
 					</div>
 				</Panel>
-				<Panel header="Product types" key="3">
+				<Panel header="Paper Batch Records timezone" key="3">
 					<div className="table-wrap">
 						<TimeZoneTable tableData={timeZoneData} />
 

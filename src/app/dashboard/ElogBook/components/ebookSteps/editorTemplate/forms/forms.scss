@@ -1,31 +1,35 @@
+.textform {
+	padding-inline: 17px;
+	padding-top: 16px;
+}
 
-.textform{
-    padding-inline: 17px;
-    padding-top: 16px;
-  }
-  
-  .textfields{
-    padding-bottom: 14px;
-  
-  }
-  .textlabels{
-    font-size: 14px;
-    font-weight: 500;
-  }
-  .tabfield{
-    overflow: auto;
-      height: 390px;
-  }
-  .tablebutton {
-    font-size: 14px;
-    font-weight: 500;
-    border: 1px solid;
-    border-color: #dfdfdf;
-    margin-bottom: 10px;
-  }
-  .radiolabels{
-    padding-top: 10px;
-  }
-  .tablebuttons{
-    padding-top: 17px;
-  }
+.textfields {
+	padding-bottom: 14px;
+
+}
+
+.textlabels {
+	font-size: 14px;
+	font-weight: 500;
+}
+
+.tabfield {
+	overflow: auto;
+	height: 390px;
+}
+
+.tablebutton {
+	font-size: 14px;
+	font-weight: 500;
+	border: 1px solid;
+	border-color: #dfdfdf;
+	margin-bottom: 10px;
+}
+
+.radiolabels {
+	padding-top: 10px;
+}
+
+.tablebuttons {
+	padding-top: 17px;
+}

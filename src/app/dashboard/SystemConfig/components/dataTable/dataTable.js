@@ -2,9 +2,9 @@ import { Button, Form, Input, InputNumber, Popconfirm, Table, Tooltip, Typograph
 import { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
 import { v1 as uuid } from "uuid";
-import ROW_ICON from '../../../../assets/icons/add-row.png';
-import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
-import { deleteConfig, updateConfig } from '../../../../services/systemConfigService';
+import ROW_ICON from '../../../../../assets/icons/add-row.png';
+import { hideLoader, showLoader, showNotification } from '../../../../../duck/actions/commonActions';
+import { deleteConfig, updateConfig } from '../../../../../services/systemConfigService';
 
 const EditableCell = ({
 	editing,
@@ -41,7 +41,7 @@ const EditableCell = ({
 	);
 };
 
-const TimeZoneTable = ({ tableData }) => {
+const DataTable = ({ tableData }) => {
 	const [form] = Form.useForm();
 	const dispatch = useDispatch();
 	const [data, setData] = useState([]);
@@ -89,6 +89,7 @@ const TimeZoneTable = ({ tableData }) => {
 			title: 'ACTION',
 			dataIndex: 'operation',
 			key: 9,
+			width: '120',
 			render: (_, record) => {
 				const editable = isEditing(record);
 				return editable ? (
@@ -131,11 +132,17 @@ const TimeZoneTable = ({ tableData }) => {
 		setData(newData);
 	};
 
-
 	const handleAdd = () => {
 		const newData = {
-			site_code: "",
-			timezone: "",
+			email_id: "",
+			imap_port: "",
+			imap_server: "",
+			pop_port: "",
+			pop_server: "",
+			smtp_enable: false,
+			smtp_port: "",
+			smtp_server: "",
+			use_type: "",
 			key: uuid(),
 		};
 		setEditingKey(newData.key);
@@ -146,7 +153,7 @@ const TimeZoneTable = ({ tableData }) => {
 		delete _req['key'];
 		let payload = {
 			data: _req,
-			type: "timezone"
+			type: "emails"
 		}
 		try {
 			dispatch(showLoader())
@@ -165,11 +172,12 @@ const TimeZoneTable = ({ tableData }) => {
 		}
 	};
 
+
 	const deleteTableConfig = async (_req) => {
 		delete _req['key'];
 		let payload = {
 			data: _req,
-			type: "timezone"
+			type: "emails"
 		}
 		try {
 			dispatch(showLoader())
@@ -193,8 +201,15 @@ const TimeZoneTable = ({ tableData }) => {
 		setEditingKey(record.key);
 
 		form.setFieldsValue({
-			site_code: "",
-			timezone: "",
+			email_id: "",
+			imap_port: "",
+			imap_server: "",
+			pop_port: "",
+			pop_server: "",
+			smtp_enable: "",
+			smtp_port: "",
+			smtp_server: "",
+			use_type: "",
 			...record,
 		});
 	};
@@ -268,8 +283,6 @@ const TimeZoneTable = ({ tableData }) => {
 						cell: EditableCell,
 					},
 				}}
-				bordered={false}
-				className="config-table"
 				dataSource={data}
 				columns={mergedColumns}
 				rowClassName="editable-row"
@@ -277,8 +290,9 @@ const TimeZoneTable = ({ tableData }) => {
 					onChange: cancel,
 				}}
 				rowKey={(record) => record.email_id}
+				bordered={false} className="config-table"
 			/>
 		</Form>
 	);
 };
-export default TimeZoneTable;
+export default DataTable;

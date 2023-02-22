@@ -1,51 +1,29 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import TopBarItem from './TopBarItem';
-import initialData from './initialdata';
+import { Button, Layout, Steps } from 'antd';
+import React, { useCallback, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import {
-	handleMoveWithinParent,
-	handleMoveToDifferentParent,
-	handleMoveSidebarComponentIntoParent,
-	handleRemoveItemFromLayout
-} from "./helpers";
-
+import Signature from '../../../../../../components/ElectronicSignature/signature';
+import { COLUMN, SIDEBAR_ITEM, SIDEBAR_ITEMS } from "./data";
 import DropZone from "./DropZone";
-import TrashDropZone from "./TrashDropZone";
-import Row from "./Row";
-
-import { SIDEBAR_ITEMS, SIDEBAR_ITEM, COMPONENT, COLUMN } from "./data";
-import rightarrow from './rightarrow.png';
-import { Button, Dropdown, Layout, Menu, Select, Tabs, Steps, Checkbox, Modal } from 'antd';
+import './editorTemplate.scss';
 import CheckboxForm from './forms/CheckboxForm';
 import InputForm from './forms/InputForm';
-import TextForm from './forms/TextForm';
-import Tableform from './forms/Tableform';
-import RadioForm from './forms/RadioForm';
 import LineForm from './forms/LineForm';
-import './editorTemplate.scss'
+import RadioForm from './forms/RadioForm';
+import Tableform from './forms/Tableform';
+import TextForm from './forms/TextForm';
+import {
+	handleMoveSidebarComponentIntoParent, handleMoveToDifferentParent, handleMoveWithinParent, handleRemoveItemFromLayout
+} from "./helpers";
+import initialData from './initialdata';
 import PreviewModel from './preview/PreviewModel';
+import rightarrow from './rightarrow.png';
+import Row from "./Row";
 import SaveModel from './SaveModel/saveModel';
-import Signature from '../../../../../../components/ElectronicSignature/signature';
-const { Header, Sider, Content } = Layout;
-const { TabPane } = Tabs;
+import TopBarItem from './TopBarItem';
+import TrashDropZone from "./TrashDropZone";
+const { Sider, } = Layout;
+
 const { Step } = Steps;
-
-const TabsData1 = [
-	{
-		key: "1",
-		title: "Text",
-
-	},
-	{
-		key: "2",
-		title: "Rule",
-
-	},
-	{
-		key: "3",
-		title: "Validation"
-	}
-]
 
 function editorTemplate() {
 	const initialLayout = initialData.layout;
@@ -72,11 +50,6 @@ function editorTemplate() {
 	const [status, setStatus] = useState('');
 	const [approveReject, setApproveReject] = useState('')
 
-	// useEffect(() => {
-	// 	if (esignPublishRes?.status_code === 200) {
-	// 		setStatus(esignPublishRes?.rep_stauts);
-	// 	}
-	// }, [esignPublishRes]);
 
 	const handleDropToTrashBin = useCallback(
 		(dropZone, item) => {
@@ -88,7 +61,6 @@ function editorTemplate() {
 
 	const handleDrop = useCallback(
 		(dropZone, item) => {
-			// setCollapsed(false)
 			const splitDropZonePath = dropZone.path.split("-");
 			const pathToDropZone = splitDropZonePath.slice(0, -1).join("-");
 
@@ -161,39 +133,39 @@ function editorTemplate() {
 									] : tableData.tableType === "Nested table" ? [
 
 										{
-										  "subcolumn1": "Row1",
-										  "key": uuidv4(),
-										  "subcolumn11": "Row1",
-										  "subcolumn12": "Row1",
-										  "subcolumn21": "Row1",
-										  "subcolumn22": "Row1",
-										  "subcolumn31": "Row1",
-										  "subcolumn32": "Row1",
-										  "tableId": 25
+											"subcolumn1": "Row1",
+											"key": uuidv4(),
+											"subcolumn11": "Row1",
+											"subcolumn12": "Row1",
+											"subcolumn21": "Row1",
+											"subcolumn22": "Row1",
+											"subcolumn31": "Row1",
+											"subcolumn32": "Row1",
+											"tableId": 25
 										},
 										{
-										  "subcolumn1": "Row2",
-										  "key": uuidv4(),
-										  "subcolumn11": "Row2",
-										  "subcolumn12": "Row2",
-										  "subcolumn21": "Row2",
-										  "subcolumn22": "Row2",
-										  "subcolumn31": "Row2",
-										  "subcolumn32": "Row2",
-										  "tableId": 25
+											"subcolumn1": "Row2",
+											"key": uuidv4(),
+											"subcolumn11": "Row2",
+											"subcolumn12": "Row2",
+											"subcolumn21": "Row2",
+											"subcolumn22": "Row2",
+											"subcolumn31": "Row2",
+											"subcolumn32": "Row2",
+											"tableId": 25
 										},
 										{
-										  "subcolumn1": "Row3",
-										  "key": uuidv4(),
-										  "subcolumn11": "Row3",
-										  "subcolumn12": "Row3",
-										  "subcolumn21": "Row3",
-										  "subcolumn22": "Row3",
-										  "subcolumn31": "Row3",
-										  "subcolumn32": "Row3",
-										  "tableId": 25
+											"subcolumn1": "Row3",
+											"key": uuidv4(),
+											"subcolumn11": "Row3",
+											"subcolumn12": "Row3",
+											"subcolumn21": "Row3",
+											"subcolumn22": "Row3",
+											"subcolumn31": "Row3",
+											"subcolumn32": "Row3",
+											"tableId": 25
 										},
-									  ] : "",
+									] : "",
 									columns: tableData.tableType === "Normal table" ? [
 
 										{
@@ -230,126 +202,126 @@ function editorTemplate() {
 									] : tableData.tableType == "Nested table" ? [
 
 										{
-										  "align": "",
-										  "dataIndex": "column1",
-										  "editable": true,
-										  "key": uuidv4(),
-										  "label": "",
-										  "name": "",
-										  "title": "column1",
-										  "type": "",
-										  "children": [
-											{
-											  "align": "",
-											  "dataIndex": "subcolumn1",
-											  "editable": true,
-											  "key": "168255f7-fa56-4dcf-88da-293441125be4",
-											  "label": "",
-											  "name": "",
-											  "title": "subcolumn1",
-											  "type": ""
-											}
-										  ]
+											"align": "",
+											"dataIndex": "column1",
+											"editable": true,
+											"key": uuidv4(),
+											"label": "",
+											"name": "",
+											"title": "column1",
+											"type": "",
+											"children": [
+												{
+													"align": "",
+													"dataIndex": "subcolumn1",
+													"editable": true,
+													"key": "168255f7-fa56-4dcf-88da-293441125be4",
+													"label": "",
+													"name": "",
+													"title": "subcolumn1",
+													"type": ""
+												}
+											]
 										},
 										{
-										  "align": "",
-										  "dataIndex": "column2",
-										  "editable": true,
-										  "key": uuidv4(),
-										  "label": "",
-										  "name": "",
-										  "title": "column2",
-										  "type": "",
-										  "children": [
-											{
-											  "align": "",
-											  "dataIndex": "subcolumn11",
-											  "editable": true,
-											  "key": "11e92ebe-5d1e-43cb-8ebb-2bffdf4a4dc7",
-											  "label": "",
-											  "name": "",
-											  "title": "subcolumn11",
-											  "type": ""
-											},
-											{
-											  "align": "",
-											  "dataIndex": "subcolumn12",
-											  "editable": true,
-											  "key": "0f58d30a-22eb-4438-8311-d76af4ef161e",
-											  "label": "",
-											  "name": "",
-											  "title": "subcolumn12",
-											  "type": ""
-											}
-										  ]
+											"align": "",
+											"dataIndex": "column2",
+											"editable": true,
+											"key": uuidv4(),
+											"label": "",
+											"name": "",
+											"title": "column2",
+											"type": "",
+											"children": [
+												{
+													"align": "",
+													"dataIndex": "subcolumn11",
+													"editable": true,
+													"key": "11e92ebe-5d1e-43cb-8ebb-2bffdf4a4dc7",
+													"label": "",
+													"name": "",
+													"title": "subcolumn11",
+													"type": ""
+												},
+												{
+													"align": "",
+													"dataIndex": "subcolumn12",
+													"editable": true,
+													"key": "0f58d30a-22eb-4438-8311-d76af4ef161e",
+													"label": "",
+													"name": "",
+													"title": "subcolumn12",
+													"type": ""
+												}
+											]
 										},
 										{
-										  "align": "",
-										  "dataIndex": "column3",
-										  "editable": true,
-										  "key": uuidv4(),
-										  "label": "",
-										  "name": "",
-										  "title": "column3",
-										  "type": "",
-										  "children": [
-											{
-											  "align": "",
-											  "dataIndex": "subcolumn21",
-											  "editable": true,
-											  "key": "2bc42260-b687-4d65-ac47-f59a2f4a1acc",
-											  "label": "",
-											  "name": "",
-											  "title": "subcolumn21",
-											  "type": ""
-											},
-											{
-											  "align": "",
-											  "dataIndex": "subcolumn22",
-											  "editable": true,
-											  "key": "08c70fc1-f95f-4efc-9c0e-c261dd6d3a98",
-											  "label": "",
-											  "name": "",
-											  "title": "subcolumn22",
-											  "type": ""
-											}
-										  ]
+											"align": "",
+											"dataIndex": "column3",
+											"editable": true,
+											"key": uuidv4(),
+											"label": "",
+											"name": "",
+											"title": "column3",
+											"type": "",
+											"children": [
+												{
+													"align": "",
+													"dataIndex": "subcolumn21",
+													"editable": true,
+													"key": "2bc42260-b687-4d65-ac47-f59a2f4a1acc",
+													"label": "",
+													"name": "",
+													"title": "subcolumn21",
+													"type": ""
+												},
+												{
+													"align": "",
+													"dataIndex": "subcolumn22",
+													"editable": true,
+													"key": "08c70fc1-f95f-4efc-9c0e-c261dd6d3a98",
+													"label": "",
+													"name": "",
+													"title": "subcolumn22",
+													"type": ""
+												}
+											]
 										},
 										{
-										  "align": "",
-										  "dataIndex": "column4",
-										  "editable": true,
-										  "key": uuidv4(),
-										  "label": "",
-										  "name": "",
-										  "title": "column4",
-										  "type": "",
-										  "children": [
-											{
-											  "align": "",
-											  "dataIndex": "subcolumn31",
-											  "editable": true,
-											  "key": uuidv4(),
-											  "label": "",
-											  "name": "",
-											  "title": "subcolumn31",
-											  "type": ""
-											},
-											{
-											  "align": "",
-											  "dataIndex": "subcolumn32",
-											  "editable": true,
-											  "key": uuidv4(),
-											  "label": "",
-											  "name": "",
-											  "title": "subcolumn32",
-											  "type": ""
-											}
-										  ]
+											"align": "",
+											"dataIndex": "column4",
+											"editable": true,
+											"key": uuidv4(),
+											"label": "",
+											"name": "",
+											"title": "column4",
+											"type": "",
+											"children": [
+												{
+													"align": "",
+													"dataIndex": "subcolumn31",
+													"editable": true,
+													"key": uuidv4(),
+													"label": "",
+													"name": "",
+													"title": "subcolumn31",
+													"type": ""
+												},
+												{
+													"align": "",
+													"dataIndex": "subcolumn32",
+													"editable": true,
+													"key": uuidv4(),
+													"label": "",
+													"name": "",
+													"title": "subcolumn32",
+													"type": ""
+												}
+											]
 										}
-								  
-								  
-									  ]  : ""
+
+
+									] : ""
 								} : newComponent.type === "Multiple choice" ?
 									{
 										id: newComponent.id,
@@ -445,26 +417,14 @@ function editorTemplate() {
 		);
 	};
 
-	const changeTab = activeKey => {
-
-		setCurrent(activeKey)
-	};
-
 	const handleFormControl = (col, event, task) => {
-
 		let fields_data = [...layout]
 		var foundIndex =
-
 			fields_data
 				.map(element => element.children.map(i => i.children
 					.findIndex(subElement => subElement.id === task.id)
 				))
-
-
-
 		setCompletedTasks(fields_data)
-
-
 	}
 
 	const handleFormControlSelect = (col, event, task) => {
@@ -486,11 +446,9 @@ function editorTemplate() {
 
 	const filteredOrg = [];
 	const handleFilterPanel = (Id) => {
-
 		setCollapsed(false)
 		setRadioData({ ...radioData, id: Id?.id, textlabel: Id?.textlabel, fieldData: Id?.fieldData })
 		setFormData({ ...formData, rows: Id?.datasource?.length, columns: Id?.columns?.length })
-		// setSelectTable({datasource: Id?.datasource?.length, columns: Id?.columns?.length })
 		setInputData({ ...inputData, id: Id?.id, technicalname: Id?.technicalname, label: Id?.label, tooltip: Id?.tooltip, datatype: Id?.datatype, width: Id?.width })
 		setTextData({ ...textData, id: Id?.id, textlabel: Id?.textlabel, fontSize: Id?.fontSize, fontWeight: Id?.fontWeight })
 		setCheckboxData({ ...checkboxData, id: Id?.id, textlabel: Id?.textlabel, defaultvalue: Id?.defaultvalue })
@@ -511,40 +469,20 @@ function editorTemplate() {
 			});
 
 		});
-		var filteredArray = layout
-			.filter(element => element.children.filter(i => i.children
-				.filter(subElement => subElement.id === Id.id)
-			))
+
+		// var filteredArray = layout
+		// 	.filter(element => element.children.filter(i => i.children
+		// 		.filter(subElement => subElement.id === Id.id)
+		// 	))
 
 		const filteredControlPanel = layout.map(i => i.children.map(j => j.children.filter((k) => k.id === Id.id)));
 		filteredControlPanel.map((data => data.length > 0) ? setFilterPanel(filteredControlPanel) : '')
-
-
 	}
 
-	const handleSave = (e) => {
-		e.preventDefault();
-
-	}
 	const handleColumnTitle = (data, col) => {
-
 		const filterData = data.find((i) => i.title === col)
-
 		setColumnData({ ...columnData, id: filterData.key, title: col })
-
 	}
-
-
-	const handlePreview = (e) => {
-		e.preventDefault();
-
-		setPreviewData(!previewData)
-		setCollapsed(true)
-	}
-
-	const showModal = () => {
-		setPreviewData(true);
-	};
 
 	const onClickPreview = () => {
 		const tempLayoutData = JSON.parse(JSON.stringify(layout));
@@ -570,8 +508,6 @@ function editorTemplate() {
 	const PublishResponse = (res) => {
 		setStatus(res.rep_stauts)
 	}
-
-
 
 	return (
 		<div>
@@ -601,16 +537,15 @@ function editorTemplate() {
 					</div>
 				</div>
 				<div className="button-layout">
-				{/* <div style={{ textAlign: 'end', padding: '10px' }}> */}
-				<span className="data-button">
+					<span className="data-button">
 						<Button
-						className={"custom-primary-btn"}
-						type="primary"
-						onClick={
-						onClickPreview
-					}>Preview</Button>
+							className={"custom-primary-btn"}
+							type="primary"
+							onClick={
+								onClickPreview
+							}>Preview</Button>
 						<PreviewModel previewData={previewData} layout={layout} />
-						</span>
+					</span>
 					{/* </div> */}
 					<span className="data-button">
 						<Button
@@ -633,20 +568,13 @@ function editorTemplate() {
 							setApproveReject('P');
 						}}
 						disabled
-						// disabled={status == "AWAP" || status == 'APRD'}
 						style={{ marginRight: '16px' }}
-
-
 					>
 						Publish form
 					</Button>
 				</div>
-
-
-
 			</div>
 			<Layout>
-
 				<Layout >
 					<div className="flex-container">
 						<div className='left-screen flex-grow: 8' >
@@ -656,15 +584,7 @@ function editorTemplate() {
 							))}
 						</div>
 					</div>
-					{/* <div style={{ textAlign: 'end', padding: '10px' }}>
-						<Button
-						className={"custom-primary-btn"}
-						type="primary"
-						onClick={
-						onClickPreview
-					}>Preview</Button>
-						<PreviewModel previewData={previewData} layout={layout} />
-					</div> */}
+
 					<div className="pageContainer">
 						<div className="page">
 							{layout.map((row, index) => {
@@ -705,8 +625,6 @@ function editorTemplate() {
 
 						/>
 					</div>
-
-
 				</Layout>
 				<Sider
 					trigger={null}
@@ -724,18 +642,10 @@ function editorTemplate() {
 						<div className='slider-main flex-grow: 8'>
 							<div className='slider-header'> <p className='slider-text'> Control panel</p></div>
 							<div className='tab-main'>
-
-
-
 								{
-
 									filterPanel.map((task) =>
 										task.map(i => i.map(j =>
-
-
-
 											<div className='tabfield'>
-
 												{j.type === "Input field" ?
 													<InputForm
 														current="1"
@@ -798,26 +708,12 @@ function editorTemplate() {
 																			setLayout={setLayout}
 																		/> :
 																		""
-
-
-
-
-
 												}</div>
-
-
-
 										)))
-
-
 								}
-
-
-
 							</div>
 						</div>
 					</div>
-
 				</Sider>
 			</Layout>
 			<Signature

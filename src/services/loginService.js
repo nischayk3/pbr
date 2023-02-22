@@ -87,7 +87,7 @@ export const getUserProfile = (request) => {
 
 	const headers = {
 		"content-type": "application/json",
-		"x-access-token": login_response.token ? login_response.token : "",
+		"x-access-token": login_response?.token ? login_response?.token : "",
 		"resource-name": 'USER_REPORT',
 	};
 	return Service.get(BMS_APP_PYTHON_SERVICE + '/user-profile', request, headers).then(
@@ -127,7 +127,7 @@ export const userProfileUpload = (request) => {
 
 	const headers = {
 		"content-type": "application/json",
-		"x-access-token": login_response.token ? login_response.token : "",
+		"x-access-token": login_response?.token ? login_response.token : "",
 		"resource-name": 'USER_REPORT',
 		'Content-Type': 'multipart/form-data',
 	};
