@@ -1,11 +1,12 @@
-import React, { lazy } from "react";
+import React, { lazy, useEffect } from "react";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch, useRouteMatch } from "react-router-dom";
 import Loading from "../components/Loading";
 import Notification from "../components/Notification";
 import SuspenseWrapper from "../components/SuspenseWrapper";
 import { MDH_APP_PYTHON_SERVICE, PRODUCT_FOR } from "../constants/apiBaseUrl";
+import { logoutApp } from "../duck/actions/commonActions";
 import ErrorPage from "./errorPage";
 import ProctectedRoute from "./PrivateRoute";
 import TokenExpired from "./tokenexpired";
@@ -15,6 +16,7 @@ const Dashboard = lazy(() => import("./dashboard"));
 const Account = lazy(() => import("./user"));
 
 const App = () => {
+	const dispatch = useDispatch();
 	const match = useRouteMatch();
 
 	const showLoading = useSelector((state) => state.commonReducer.showLoading);
@@ -25,6 +27,9 @@ const App = () => {
 		(state) => state.commonReducer.isError
 	);
 
+	useEffect(() => {
+		dispatch(logoutApp(true))
+	}, [])
 
 
 	return (
@@ -59,15 +64,6 @@ const App = () => {
 								<Redirect to={"/user/login"} />
 							</Route>
 						)}
-
-						{/* <Route exact path="/" key="login" render={() => {
-							return (
-								PRODUCT_FOR == 'BMS' ?
-									<Redirect to={'/auth/saml-login?redirect_url=' + MDH_APP_PYTHON_SERVICE + '/%23/dashboard/redirect&from_=UI'} /> :
-									<Redirect to={"/user/login"} />
-							)
-						}} /> */}
-
 					</Switch>
 				</SuspenseWrapper>
 			</div>
