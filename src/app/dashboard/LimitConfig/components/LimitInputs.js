@@ -307,7 +307,7 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 		}
 	];
 	const text = "Are you sure to delete this?";
-	const handleChange = (index, event, dateString, type) => {
+	const handleChange = async (index, event, dateString, type) => {
 		const rowsInput = [...limitsData];
 		if (dateString && type === "date") {
 			rowsInput[index]["validity_date"] = dateString._d.toLocaleDateString();
@@ -335,7 +335,8 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 			});
 			rowsInput[index]['versionList'] = tempVersionList
 		} else if (type === 'view_version') {
-			getMoleData('parameter', selectedMol.current, `${rowsInput[index]['view_disp_id']}-${event}`)
+			const tempParam = await getMoleData('parameter', selectedMol.current, `${rowsInput[index]['view_disp_id']}-${event}`)
+			rowsInput[index]['param_list'] = tempParam;
 			rowsInput[index]['view_version'] = event;
 		}
 		setLimitsData(rowsInput);

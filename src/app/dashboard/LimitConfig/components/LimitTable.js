@@ -343,14 +343,10 @@ const LimitTable = () => {
 				})
 			})
 			setMoleculeData(tempMol)
-			if (param === 'parameter') {
-				const tempLimit = [...limitsData]
-				tempLimit.forEach((ele) => {
-					ele.param_list = tempParam
-				})
-				setLimitsData(tempLimit)
-			}
 			dispatch(hideLoader());
+			if (param === 'parameter') {
+				return tempParam
+			}
 		} catch (error) {
 			dispatch(hideLoader());
 			console.log(error, 'error')
