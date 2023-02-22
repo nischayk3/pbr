@@ -45,6 +45,9 @@ const Login = () => {
 			setEmail("")
 			setIsChecked(false)
 		}
+		localStorage.removeItem('login_details');
+		localStorage.removeItem('username');
+		localStorage.removeItem('loginwith');
 	}, []);
 
 	const consumerSamlLogin = async () => {
