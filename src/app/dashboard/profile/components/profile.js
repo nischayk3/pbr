@@ -168,12 +168,12 @@ const Profile = () => {
 		try {
 			dispatch(showLoader());
 			const saveRes = await userProfileUpload(formData);
-			if (saveRes.statuscode === 200) {
+			if (saveRes?.statuscode === 200) {
 				dispatch(hideLoader());
 				dispatch(showNotification('success', "Updated Successfully"));
 				dispatch(getUploadProfile(true));
 				getProfile();
-			} else if (saveRes.statuscode === 400) {
+			} else if (saveRes?.statuscode === 400) {
 				dispatch(hideLoader());
 				dispatch(showNotification('error', saveRes.message));
 			} else {

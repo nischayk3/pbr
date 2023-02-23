@@ -6,10 +6,13 @@ import { showNotification } from '../../../duck/actions/commonActions';
 import { sendLoginDetails } from '../../../duck/actions/loginAction';
 import { getSession } from '../../../services/loginService';
 
-
 export default function Redirect() {
 	const dispatch = useDispatch();
 	const history = useHistory();
+
+	useEffect(() => {
+		getSessionDetail();
+	}, []);
 
 	const getSessionDetail = async () => {
 		try {
@@ -30,14 +33,13 @@ export default function Redirect() {
 				history.push('/user/login');
 			}
 		} catch (error) {
+			console.log('error', error)
 			dispatch(showNotification("error", 'Login Failed', 'Sorry, an unexpectede error occurred. Please try logging in again.'));
 			history.push('/user/login');
 		}
 	}
 
-	useEffect(() => {
-		getSessionDetail();
-	}, []);
+
 	return (
 		<div className="custom-wrapper">
 			<div className="custom-content-layout">

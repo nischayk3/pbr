@@ -449,6 +449,7 @@ class AuditTrials extends React.Component {
 	}
 
 	onChangeIng = (e, value) => {
+		console.log("valueeeee", value);
 		if (value !== null) {
 			let userarr = [];
 			userarr.push({
@@ -464,6 +465,8 @@ class AuditTrials extends React.Component {
 
 		}
 	};
+
+
 
 	onChangePkg = (e, value) => {
 		if (value !== null) {
@@ -504,7 +507,7 @@ class AuditTrials extends React.Component {
 	};
 
 	render() {
-		console.log("esignOpen", this.state.esignOpen);
+		console.log("userrrr", this.state.user);
 		const { RangePicker } = DatePicker;
 		const { filterTable, tableData, columns } = this.state;
 		const { esignColumns, esignDetailsData } = this.state;
@@ -600,7 +603,7 @@ class AuditTrials extends React.Component {
 										this.handleFilter();
 									}}
 								>
-									Run
+									Filter
 								</Button>
 								<Button
 									className="custom-secondary-btn"

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { checkAuth, checkNetworkError, hideLoader } from "../duck/actions/commonActions";
+import { checkAuth, checkNetworkError, hideLoader, showNotification } from "../duck/actions/commonActions";
 import { Store } from "../duck/store";
 class Service {
 	constructor() {
@@ -27,13 +27,13 @@ class Service {
 					Store.dispatch(checkAuth(false));
 				} else if (error.response.status === 500) {
 					Store.dispatch(checkNetworkError(true));
-					Store.dispatch(dispatch(showNotification("error", '500 error', 'Internal Server Error')));
+					Store.dispatch(showNotification("error", '500 error, Internal Server Error'));
 				} else if (error.response.status === 501) {
-					Store.dispatch(dispatch(showNotification("error", '501 error', 'Not Implemented')));
+					Store.dispatch(showNotification("error", '501 error, Not Implemented'));
 				} else if (error.response.status === 502) {
-					Store.dispatch(dispatch(showNotification("error", '502 error', 'Bad Gateway')));
+					Store.dispatch(showNotification("error", '502 error, Bad Gateway'));
 				} else if (error.response.status === 503) {
-					Store.dispatch(dispatch(showNotification("error", '502 error', 'Service Unavailable')));
+					Store.dispatch(showNotification("error", '502 error, Service Unavailable'));
 				}
 				return Promise.reject(error);
 			}
