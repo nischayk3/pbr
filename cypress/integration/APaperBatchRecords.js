@@ -6,21 +6,7 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 describe('PBR', () => {
 	// it("should login successfully using Ad", () => {
 	afterEach(() => {
-		localStorage.setItem("test_enabled", true);
-		localStorage.setItem("user", "dinesh.jinjala@mareana.com");
-		localStorage.setItem("loginwith", "WITH_AD");
-		localStorage.setItem(
-			"login_details", JSON.stringify({
-				ad_role: false,
-				email_id: "dinesh.jinjala@mareana.com",
-				firstname: "Dinesh",
-				lastname: "Jinjala",
-				mdh_role: "USER",
-				screen_set: "1000_USER",
-				token:
-					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Ik1paGlyICBCYWdnYSIsInVuaXhfdGltZXN0YW1wIjoxNjUwNDIyMDcyLjgzNTg5MSwidGltZXN0YW1wIjoiMjAvMDQvMjAyMiAwODowNDozMiIsImV4cCI6NDgwNDA0MTg3MiwiYWRfcm9sZSI6ZmFsc2UsIm1kaF9yb2xlIjoiVVNFUiIsImVtYWlsX2lkIjoibWloaXIuYmFnZ2FAbWFyZWFuYS5jb20iLCJjdXN0X2tleSI6IjEwMDAifQ.NpmhWhMBWtRcDkSBDdw-94Kqy9vuZyY1PSHbOpTyzMM"
-			})
-		);
+		cy.loginWithAD()
 	});
 	beforeEach(() => {
 		cy.intercept('GET', '/pbr/udh/get_data_view?actionType=get_product&productNum=1091460', { fixture: 'paperBatchFileList' })
@@ -30,21 +16,7 @@ describe('PBR', () => {
 		cy.intercept('POST', '/pbr/udh/ocr-json-extraction', { fixture: 'pbrBoundingBox' })
 		cy.intercept('GET', '/pbr/udh/pbr_template?template_displ_id=P258&version=1', { fixture: 'pbrLoadData' })
 		cy.viewport(1366, 768);
-		localStorage.setItem("test_enabled", true);
-		localStorage.setItem("user", "dinesh.jinjala@mareana.com");
-		localStorage.setItem("username", "Dinesh");
-		localStorage.setItem(
-			"login_details", JSON.stringify({
-				ad_role: false,
-				email_id: "dinesh.jinjala@mareana.com",
-				firstname: "Dinesh",
-				lastname: "Jinjala",
-				mdh_role: "USER",
-				screen_set: "1000_USER",
-				token:
-					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Ik1paGlyICBCYWdnYSIsInVuaXhfdGltZXN0YW1wIjoxNjUwNDIyMDcyLjgzNTg5MSwidGltZXN0YW1wIjoiMjAvMDQvMjAyMiAwODowNDozMiIsImV4cCI6NDgwNDA0MTg3MiwiYWRfcm9sZSI6ZmFsc2UsIm1kaF9yb2xlIjoiVVNFUiIsImVtYWlsX2lkIjoibWloaXIuYmFnZ2FAbWFyZWFuYS5jb20iLCJjdXN0X2tleSI6IjEwMDAifQ.NpmhWhMBWtRcDkSBDdw-94Kqy9vuZyY1PSHbOpTyzMM"
-			})
-		);
+		cy.loginWithAD()
 	})
 
 	it("go back to landing page", () => {

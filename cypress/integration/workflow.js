@@ -13,22 +13,7 @@ Cypress.on('uncaught:exception', (err) => {
 describe("Workflow", () => {
 	afterEach(() => {
 		cy.viewport(1280, 720)
-		localStorage.setItem("loginwith", "WITH_AD");
-		localStorage.setItem("test_enabled", true);
-		localStorage.setItem("user", "dinesh.jinjala@mareana.com");
-		localStorage.setItem("username", "Dinesh");
-		localStorage.setItem(
-			"login_details", JSON.stringify({
-				ad_role: false,
-				email_id: "dinesh.jinjala@mareana.com",
-				firstname: "Dinesh",
-				lastname: "Jinjala",
-				mdh_role: "USER",
-				screen_set: "1000_USER",
-				token:
-					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Ik1paGlyICBCYWdnYSIsInVuaXhfdGltZXN0YW1wIjoxNjUwNDIyMDcyLjgzNTg5MSwidGltZXN0YW1wIjoiMjAvMDQvMjAyMiAwODowNDozMiIsImV4cCI6NDgwNDA0MTg3MiwiYWRfcm9sZSI6ZmFsc2UsIm1kaF9yb2xlIjoiVVNFUiIsImVtYWlsX2lkIjoibWloaXIuYmFnZ2FAbWFyZWFuYS5jb20iLCJjdXN0X2tleSI6IjEwMDAifQ.NpmhWhMBWtRcDkSBDdw-94Kqy9vuZyY1PSHbOpTyzMM"
-			})
-		);
+		cy.loginWithAD()
 		cy.intercept('GET', '**/workflow-count', { fixture: 'workflow-count.json' })
 		cy.intercept('GET', 'services/v1/approvals/CHART/recently_approval', { fixture: 'recently-approved.json' })
 		cy.intercept('GET', 'services/v1/approvals/CHART/awaiting_approval', { fixture: 'awaiting-approval.json' })
@@ -36,22 +21,7 @@ describe("Workflow", () => {
 
 	beforeEach(() => {
 		cy.viewport(1280, 720)
-		localStorage.setItem("loginwith", "WITH_AD");
-		localStorage.setItem("test_enabled", true);
-		localStorage.setItem("user", "dinesh.jinjala@mareana.com");
-		localStorage.setItem("username", "Dinesh");
-		localStorage.setItem(
-			"login_details", JSON.stringify({
-				ad_role: false,
-				email_id: "dinesh.jinjala@mareana.com",
-				firstname: "Dinesh",
-				lastname: "Jinjala",
-				mdh_role: "USER",
-				screen_set: "1000_USER",
-				token:
-					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Ik1paGlyICBCYWdnYSIsInVuaXhfdGltZXN0YW1wIjoxNjUwNDIyMDcyLjgzNTg5MSwidGltZXN0YW1wIjoiMjAvMDQvMjAyMiAwODowNDozMiIsImV4cCI6NDgwNDA0MTg3MiwiYWRfcm9sZSI6ZmFsc2UsIm1kaF9yb2xlIjoiVVNFUiIsImVtYWlsX2lkIjoibWloaXIuYmFnZ2FAbWFyZWFuYS5jb20iLCJjdXN0X2tleSI6IjEwMDAifQ.NpmhWhMBWtRcDkSBDdw-94Kqy9vuZyY1PSHbOpTyzMM"
-			})
-		);
+		cy.loginWithAD()
 		cy.intercept('GET', '**/workflow-count', { fixture: 'workflow-count.json' })
 		cy.intercept('GET', 'services/v1/approvals/CHART/recently_approval', { fixture: 'recently-approved.json' })
 		cy.intercept('GET', 'services/v1/approvals/CHART/awaiting_approval', { fixture: 'awaiting-approval.json' })

@@ -2,36 +2,28 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 	return false;
 });
 describe('Dashboard', () => {
-	// it("should login successfully using Ad", () => {
 	beforeEach(() => {
 		cy.intercept('GET', '**/dashboards', { fixture: 'dashboard.json' })
 		cy.viewport(1400, 720);
-		cy.visit("/");
-		cy.url().should("include", "/user/login");
-		localStorage.setItem("test_enabled", true);
-		localStorage.setItem("user", "dinesh.jinjala@mareana.com");
-		localStorage.setItem("username", "Dinesh");
-		localStorage.setItem(
-			"login_details", JSON.stringify({
-				ad_role: false,
-				email_id: "dinesh.jinjala@mareana.com",
-				firstname: "Dinesh",
-				lastname: "Jinjala",
-				mdh_role: "USER",
-				screen_set: "1000_USER",
-				token:
-					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Ik1paGlyICBCYWdnYSIsInVuaXhfdGltZXN0YW1wIjoxNjUwNDIyMDcyLjgzNTg5MSwidGltZXN0YW1wIjoiMjAvMDQvMjAyMiAwODowNDozMiIsImV4cCI6NDgwNDA0MTg3MiwiYWRfcm9sZSI6ZmFsc2UsIm1kaF9yb2xlIjoiVVNFUiIsImVtYWlsX2lkIjoibWloaXIuYmFnZ2FAbWFyZWFuYS5jb20iLCJjdXN0X2tleSI6IjEwMDAifQ.NpmhWhMBWtRcDkSBDdw-94Kqy9vuZyY1PSHbOpTyzMM"
-			})
-		);
+
+		cy.loginWithAD()
 	})
+
+	afterEach(() => {
+		cy.intercept('GET', '**/dashboards', { fixture: 'dashboard.json' })
+		cy.viewport(1400, 720);
+
+		cy.loginWithAD()
+	})
+
 	it('Load View Landing Page Correctly', () => {
 		const url = Cypress.config().baseUrl
 		cy.visit(url + '/#/dashboard/dashboard')
 		cy.log('Load Landing Page')
 		cy.url().should('eq', url + '/#/dashboard/dashboard')
 	})
+
 	it('Load Screen Header', () => {
-		cy.get("#login-btn", { timeout: 2000 }).click();
 		cy.get(':nth-child(2) > .ant-menu-submenu-title', { timeout: 20000 }).click({ force: true });
 		cy.get('#chart_configuration > .ant-menu-title-content > a', { timeout: 20000 }).click({ force: true });
 		cy.location('href', { timeout: 10000 }).should('include', '/dashboard');
