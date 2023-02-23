@@ -1,38 +1,28 @@
-import { Result } from 'antd';
+import { Button, Card, Result } from 'antd';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import {
-	hideLoader, pushPublishResponse, showLoader, showNotification
+	hideLoader, pushPublishResponse, showNotification
 } from '../../../duck/actions/commonActions';
 import { approveRecord, eSign, publishEvent } from '../../../services/electronicSignatureService';
 import { getSession } from '../../../services/loginService';
 import { createUsers } from '../../../services/userRolesAndAccessService';
+import { currentTimeStamp, latestDate } from '../../../utils/dateHelper';
 
 export default function RedirectSAMLSign() {
 	const dispatch = useDispatch();
 	const history = useHistory();
 
 	useEffect(() => {
-		GetSession()
+		getSessionDetail()
 	}, [])
 
 	const handleConfirm = async (reason, parameter, screenName, appType, dispId, version, status, resourceDispId, resourceVersion, fileID, userType) => {
-
-		var today = new Date();
-		var h = today.getHours();
-		var m = today.getMinutes();
-		var s = today.getSeconds();
-		let time_today = h + ":" + m + ":" + s;
-		var date = new Date();
-		var day = date.getDate();
-		var month = date.getMonth() + 1;
-		var year = date.getFullYear();
-		let date_today = year + "-" + month + "-" + day;
 		let req = {};
 		let login_response = JSON.parse(localStorage.getItem("login_details"));
-		req["date"] = date_today;
-		req["timestamp"] = time_today;
+		req["date"] = latestDate();;
+		req["timestamp"] = currentTimeStamp();
 		req["reason"] = reason;
 		req["user_id"] = login_response["email_id"] ? login_response["email_id"] : "";
 		req["screen"] = screenName;
@@ -129,33 +119,41 @@ export default function RedirectSAMLSign() {
 		}
 	};
 
-	const GetSession = async () => {
-		dispatch(showLoader())
-		let res = await getSession()
-		const url = localStorage.getItem('redirectUrl')
-		if (res.Status === 200) {
-			// let data = res['Data'];
-			let signedInfoData = res['SignedInfo'];
-			// dispatch(showNotification('success', `Logined As ${data.email_id}`))
-			dispatch(hideLoader())
-
-			handleConfirm(signedInfoData?.Reason, signedInfoData?.parameter, signedInfoData?.screenName, signedInfoData?.appType, signedInfoData?.dispId, signedInfoData?.version, signedInfoData?.status, signedInfoData?.resourceDispId, signedInfoData?.resourceVersion, signedInfoData?.fileID, signedInfoData?.userType)
-			// window.open(url + '&publish=True', '_self')
-			history.push(`${url}`)
-		}
-		else {
-			dispatch(showNotification('error', 'Error in Login'))
-			dispatch(hideLoader())
+	const getSessionDetail = async () => {
+		try {
+			const res = await getSession()
+			const url = localStorage.getItem('redirectUrl')
+			if (res.Status === 200) {
+				let signedInfoData = res['SignedInfo'];
+				handleConfirm(signedInfoData?.Reason, signedInfoData?.parameter, signedInfoData?.screenName, signedInfoData?.appType, signedInfoData?.dispId, signedInfoData?.version, signedInfoData?.status, signedInfoData?.resourceDispId, signedInfoData?.resourceVersion, signedInfoData?.fileID, signedInfoData?.userType)
+				history.push(`${url}`)
+			}
+			else {
+				dispatch(showNotification('error', 'Login Failed', 'Sorry, an unexpectede error occurred. Please try logging in again.'))
+				history.push(`${url}`)
+			}
+		} catch (error) {
+			dispatch(showNotification('error', 'Login Failed', 'Sorry, an unexpectede error occurred. Please try logging in again.'))
 			history.push(`${url}`)
 		}
 	}
 
 
 	return (
-		<div>
-			<Result
-				title="Please wait while you are redirected to the MI"
-			/>
-		</div>
+		<div className="custom-wrapper">
+			<div className="custom-content-layout">
+				<Card>
+					<Result
+						title='You are being redirected, please, wait.... '
+						subTitle="If you haven't been redirected in 30 sececons, please click this button."
+						extra={
+							<Button type='primary' onClick={getSessionDetail} >
+								Continue
+							</Button>
+						}
+					/>
+				</Card>
+			</div>
+		</div >
 	)
 }

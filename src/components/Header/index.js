@@ -94,7 +94,7 @@ const HeaderBar = () => {
 				image: true
 			}
 			const getRes = await getUserProfile(_getReq)
-			if (getRes.statuscode === 200) {
+			if (getRes?.statuscode === 200) {
 				setImagePrev(true)
 				setImgRes(getRes.message)
 			} else {

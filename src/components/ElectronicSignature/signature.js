@@ -21,6 +21,7 @@ import {
 	getAuthenticateWithLdap,
 	getAuthenticateWithoutAD
 } from "../../services/loginService";
+import { currentTimeStamp, latestDate } from "../../utils/dateHelper";
 import "./styles.scss";
 
 const { Option } = Select;
@@ -127,20 +128,10 @@ const Signature = (props) => {
 	const handleConfirm = async () => {
 		let login_response = JSON.parse(localStorage.getItem("login_details"));
 
-		var today = new Date();
-		var h = today.getHours();
-		var m = today.getMinutes();
-		var s = today.getSeconds();
-		let time_today = h + ":" + m + ":" + s;
-		var date = new Date();
-		var day = date.getDate();
-		var month = date.getMonth() + 1;
-		var year = date.getFullYear();
-		let date_today = year + "-" + month + "-" + day;
 		let req = {};
 
-		req["date"] = date_today;
-		req["timestamp"] = time_today;
+		req["date"] = latestDate();
+		req["timestamp"] = currentTimeStamp();
 		req["reason"] = reason;
 		req["user_id"] = username;
 		// eslint-disable-next-line react/prop-types

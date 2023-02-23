@@ -15,7 +15,7 @@ import { getAuthorisedPermission } from "../../../../../services/authProvider";
 import { getAllViews } from "../../../../../services/viewHierarchyServices";
 import "./landingStyle.scss";
 
-export default function LandingPage(props) {
+export default function LandingPage() {
 	const [searched, setSearched] = useState(false);
 	const [viewList, setViewList] = useState([]);
 	const [filterTable, setFilterTable] = useState(null);
@@ -25,9 +25,6 @@ export default function LandingPage(props) {
 	const dispatch = useDispatch();
 
 	const history = useHistory();
-	// const handleOk = () => {
-	// 	setIsModalVisible(false);
-	// };
 
 	const handleCancel = () => {
 		setIsModalVisible(false);
@@ -79,6 +76,9 @@ export default function LandingPage(props) {
 		if (response_two["status-code"] == 200) {
 			setViewList(response_two.Data);
 		}
+
+		console.log('response 1', response);
+		console.log('response 2', response_two);
 	};
 
 	const columns = [
@@ -203,9 +203,6 @@ export default function LandingPage(props) {
 						className="create-new"
 						onClick={() => {
 							setIsModalVisible(true);
-							// history.push({
-							//     pathname: '/dashboard/molecule_hierarchy_configurations/untilted_view',
-							// });
 						}}
 					>
 						<PlusOutlined />
@@ -214,17 +211,6 @@ export default function LandingPage(props) {
 
 					<div className="card-legends">
 						<h3 className="recent">Recently created views</h3>
-						{/* <div className="legends">
-              <p>
-                <span className="drft"></span>Draft
-              </p>
-              <p>
-                <span className="await"></span>Awaiting approval
-              </p>
-              <p>
-                <span className="aprv"></span>Approved
-              </p>
-            </div> */}
 					</div>
 
 					<div>
@@ -262,15 +248,6 @@ export default function LandingPage(props) {
 							disabled={!hierarchyName.length > 0}
 							className="custom-primary-button"
 							onClick={() => checkUnique(hierarchyName)}
-						// onClick={() => {
-
-
-						//   history.push({
-						//     pathname:
-						//       "/dashboard/molecule_hierarchy_configuration/untitled_view",
-						//   });
-
-						// }}
 						>
 							Let's Go!
 						</Button>,
