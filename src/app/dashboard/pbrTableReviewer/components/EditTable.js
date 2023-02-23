@@ -86,7 +86,7 @@ const EditableCell = ({
 /* istanbul ignore next */
 const App = (props) => {
   const tabledata = useSelector((state) => state?.pbrReducer?.initialTableData)
-  let { templateData, setTemplateData } = props
+  let { templateData, setTemplateData, buttonDisable } = props
   const [defaultColumns, setDefaultColumns] = useState([]);
   const [showMove, setShowMove] = useState(true);
   const [count, setCount] = useState(0);
@@ -267,6 +267,7 @@ const App = (props) => {
       </div>
       <div style={{ padding: 10 }}>
         <Button
+          disabled={buttonDisable}
           onClick={handleAdd}
           type="primary"
           style={{
@@ -276,6 +277,7 @@ const App = (props) => {
           Add a row
         </Button>
         <Button
+          disabled={buttonDisable}
           onClick={handleAddColumn}
           type="primary"
           style={{
@@ -286,6 +288,7 @@ const App = (props) => {
           Add Column
         </Button>
         <Button
+          disabled={buttonDisable}
           onClick={() => setEnableDelete(!enableDelete)}
           type="primary"
           // disabled ={enableDelete}
@@ -297,6 +300,7 @@ const App = (props) => {
           {enableDelete ? "Cancel" : "Delete Column"}
         </Button>
         {showMove && <Button
+          disabled={buttonDisable}
           onClick={handleMovementChange}
           type="primary"
           style={{

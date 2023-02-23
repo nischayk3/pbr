@@ -646,7 +646,6 @@ function PbrReviewer() {
 			render: (text, record, index) => {
 				return (
 					<a
-						disabled={record.status === "approved"}
 						style={{ color: "#1890ff" }}
 						onClick={() => {
 							if (record?.table_value === null) {
