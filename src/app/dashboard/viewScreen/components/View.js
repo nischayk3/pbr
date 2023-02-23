@@ -12,7 +12,7 @@ import axios from 'axios';
 import queryString from "query-string";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useLocation, useParams } from "react-router";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
 import Signature from "../../../../components/ElectronicSignature/signature";
 import InputField from "../../../../components/InputField/InputField";
@@ -47,6 +47,7 @@ const View = () => {
 	const location = useLocation();
 	const history = useHistory();
 	const dispatch = useDispatch();
+	const { id } = useParams();
 
 	const selectedTableData = useSelector(
 		(state) => state.viewCreationReducer.selectedParamData
@@ -77,7 +78,6 @@ const View = () => {
 	const [isEditView, setIsEditView] = useState(false);
 	const [fromWorkflowScreen, setFromWorkflowScreen] = useState(false);
 	const [loadBatches, setLoadBatches] = useState([]);
-	const { id } = useParams();
 	const parameters = queryString.parse(location.search);
 
 	useEffect(() => {

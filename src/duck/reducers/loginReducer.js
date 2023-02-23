@@ -2,7 +2,7 @@ import { GET_PROFILE, LOGIN_DETAILS, REDIRECT_URL } from '../../constants/action
 import { LOGOUT_APP } from '../types/types';
 
 const initialState = {
-	loginDetails: {},
+	loginDetails: JSON.parse(localStorage.getItem("login_details")) || {},
 	redirectUrl: '',
 	profile: false
 };

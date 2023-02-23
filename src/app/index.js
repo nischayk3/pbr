@@ -1,4 +1,4 @@
-import React, { lazy, useEffect } from "react";
+import React, { lazy } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch, useRouteMatch } from "react-router-dom";
@@ -6,7 +6,6 @@ import Loading from "../components/Loading";
 import Notification from "../components/Notification";
 import SuspenseWrapper from "../components/SuspenseWrapper";
 import { MDH_APP_PYTHON_SERVICE, PRODUCT_FOR } from "../constants/apiBaseUrl";
-import { logoutApp } from "../duck/actions/commonActions";
 import ErrorPage from "./errorPage";
 import ProctectedRoute from "./PrivateRoute";
 import TokenExpired from "./tokenexpired";
@@ -26,11 +25,6 @@ const App = () => {
 	const error = useSelector(
 		(state) => state.commonReducer.isError
 	);
-
-	useEffect(() => {
-		dispatch(logoutApp(true))
-	}, [])
-
 
 	return (
 		<>
