@@ -2,7 +2,7 @@ import { Button, Col, DatePicker, Input, Row, Select, Switch } from 'antd';
 import moment from 'moment';
 import queryString from "query-string";
 import React, { useEffect, useRef, useState } from 'react';
-import { useLocation } from "react-router";
+import { useLocation } from "react-router-dom";
 import SelectField from '../../../../../components/SelectField/SelectField';
 import ChartTable from '../landingPage/chartTableLoad';
 import './styles.scss';

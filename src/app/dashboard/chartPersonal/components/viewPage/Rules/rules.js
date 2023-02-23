@@ -1,312 +1,308 @@
-import React, { useEffect, useState, useRef } from "react";
-import { useParams } from "react-router-dom";
-import { useLocation } from "react-router";
-import "./styles.scss";
-import { Button, Checkbox, Collapse, Input, Skeleton, Row, Col } from "antd";
-import { PlusCircleOutlined, MinusCircleOutlined } from "@ant-design/icons";
-import reactStringReplace from "react-string-replace";
-import { getRuleList } from "../../../../../../services/chartPersonalizationService";
-import {
-  showLoader,
-  hideLoader,
-  showNotification,
-} from "../../../../../../duck/actions/commonActions";
-import { useDispatch } from "react-redux";
+import { MinusCircleOutlined, PlusCircleOutlined } from "@ant-design/icons";
+import { Button, Checkbox, Col, Collapse, Input, Row, Skeleton } from "antd";
 import queryString from "query-string";
-import { postChartPlotData } from "../../../../../../services/chartPersonalizationService";
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useLocation, useParams } from "react-router-dom";
+import reactStringReplace from "react-string-replace";
+import {
+	hideLoader, showLoader, showNotification
+} from "../../../../../../duck/actions/commonActions";
+import { getRuleList, postChartPlotData } from "../../../../../../services/chartPersonalizationService";
+import "./styles.scss";
 const { Panel } = Collapse;
 
 const rules = ({ postChartData, setPostChartData }) => {
-  const [ruleList, setRuleList] = useState([]);
-  const postChartClone = useRef({});
-  const [checked, setChecked] = useState([]);
-  const [selectedRules, setSelectedRules] = useState([]);
-  const [loadRuleList, setLoadRuleList] = useState({});
-  const dispatch = useDispatch();
-  const { id } = useParams();
-  const location = useLocation();
-  const params = queryString.parse(location.search);
+	const [ruleList, setRuleList] = useState([]);
+	const postChartClone = useRef({});
+	const [checked, setChecked] = useState([]);
+	const [selectedRules, setSelectedRules] = useState([]);
+	const [loadRuleList, setLoadRuleList] = useState({});
+	const dispatch = useDispatch();
+	const { id } = useParams();
+	const location = useLocation();
+	const params = queryString.parse(location.search);
 
-  const getRules = async () => {
-    try {
-      const rulesResponse = await getRuleList();
-      const newArr = JSON.parse(JSON.stringify(postChartData));
-      Object.entries(rulesResponse.rules_list).map(([key, value]) => {
-        value.map((ele) => {
-          newArr.data[0].rules &&
-            newArr.data[0].rules.map((el) => {
-              if (el.rule_id === ele.rule_id) {
-                ele.default_params = el.default_params;
-                ele.applied = true;
-              }
-            });
-        });
-      });
-      setRuleList(rulesResponse.rules_list);
-    } catch (error) {
-      dispatch(showNotification("error", "Unable to fetch rules"));
-    }
-  };
+	const getRules = async () => {
+		try {
+			const rulesResponse = await getRuleList();
+			const newArr = JSON.parse(JSON.stringify(postChartData));
+			Object.entries(rulesResponse.rules_list).map(([key, value]) => {
+				value.map((ele) => {
+					newArr.data[0].rules &&
+						newArr.data[0].rules.map((el) => {
+							if (el.rule_id === ele.rule_id) {
+								ele.default_params = el.default_params;
+								ele.applied = true;
+							}
+						});
+				});
+			});
+			setRuleList(rulesResponse.rules_list);
+		} catch (error) {
+			dispatch(showNotification("error", "Unable to fetch rules"));
+		}
+	};
 
-  const getChecked = (e, ruleId) => {
-    if (e.target.checked) {
-      if (!checked.includes(ruleId)) {
-        let newChecked = [...checked];
-        newChecked.push(ruleId);
-        setChecked(newChecked);
-      }
-    } else {
-      if (checked.includes(ruleId)) {
-        let newChecked = [...checked];
-        newChecked.splice(checked.indexOf(ruleId), 1);
-        setChecked(newChecked);
-      }
-    }
-  };
-  const handleChange = (event, selId, key) => {
-    let tempArr = [...selectedRules];
-    let objIndex = tempArr.findIndex((obj) => obj.rule_id === selId);
-    tempArr[objIndex].default_params[key] = event.target.value;
-    setSelectedRules(tempArr);
-  };
+	const getChecked = (e, ruleId) => {
+		if (e.target.checked) {
+			if (!checked.includes(ruleId)) {
+				let newChecked = [...checked];
+				newChecked.push(ruleId);
+				setChecked(newChecked);
+			}
+		} else {
+			if (checked.includes(ruleId)) {
+				let newChecked = [...checked];
+				newChecked.splice(checked.indexOf(ruleId), 1);
+				setChecked(newChecked);
+			}
+		}
+	};
+	const handleChange = (event, selId, key) => {
+		let tempArr = [...selectedRules];
+		let objIndex = tempArr.findIndex((obj) => obj.rule_id === selId);
+		tempArr[objIndex].default_params[key] = event.target.value;
+		setSelectedRules(tempArr);
+	};
 
-  const onApply = async () => {
-    const selected = JSON.parse(JSON.stringify(selectedRules));
-    selected.forEach((ele) => {
-      delete ele.rule_desc;
-      delete ele.rule_disp_id;
-    });
-    const select = selected.filter((person) =>
-      checked.includes(person.rule_id)
-    );
-    select.forEach((ele) => {
-      ele.applied = true;
-    });
-    const newArr = JSON.parse(JSON.stringify(postChartData));
-    newArr.data[0].rules = select;
-    let errorMsg = "";
-    try {
-      dispatch(showLoader());
-      const viewRes = await postChartPlotData(newArr);
-      errorMsg = viewRes?.message;
-      let newdataArr = [...postChartData.data];
-      newdataArr[0].violations = viewRes.data[0].violations;
-      newdataArr[0].data = viewRes.data[0].data;
-      newdataArr[0].rules = viewRes.data[0].rules;
-      newdataArr[0].extras.data_table = viewRes.data[0].extras.data_table;
-      setPostChartData({ ...postChartData, data: newdataArr });
-      getRules();
-      dispatch(hideLoader());
-    } catch (error) {
-      /* istanbul ignore next */
-      if (errorMsg) {
-        dispatch(showNotification("error", errorMsg));
-      }
-      dispatch(hideLoader());
-    }
-  };
+	const onApply = async () => {
+		const selected = JSON.parse(JSON.stringify(selectedRules));
+		selected.forEach((ele) => {
+			delete ele.rule_desc;
+			delete ele.rule_disp_id;
+		});
+		const select = selected.filter((person) =>
+			checked.includes(person.rule_id)
+		);
+		select.forEach((ele) => {
+			ele.applied = true;
+		});
+		const newArr = JSON.parse(JSON.stringify(postChartData));
+		newArr.data[0].rules = select;
+		let errorMsg = "";
+		try {
+			dispatch(showLoader());
+			const viewRes = await postChartPlotData(newArr);
+			errorMsg = viewRes?.message;
+			let newdataArr = [...postChartData.data];
+			newdataArr[0].violations = viewRes.data[0].violations;
+			newdataArr[0].data = viewRes.data[0].data;
+			newdataArr[0].rules = viewRes.data[0].rules;
+			newdataArr[0].extras.data_table = viewRes.data[0].extras.data_table;
+			setPostChartData({ ...postChartData, data: newdataArr });
+			getRules();
+			dispatch(hideLoader());
+		} catch (error) {
+			/* istanbul ignore next */
+			if (errorMsg) {
+				dispatch(showNotification("error", errorMsg));
+			}
+			dispatch(hideLoader());
+		}
+	};
 
-  const onReset = async () => {
-    setRuleList({});
-    setChecked([]);
-    const newArr = JSON.parse(JSON.stringify(postChartData));
-    newArr.data[0].rules = postChartClone.current.data[0].rules;
-    let errorMsg = "";
-    try {
-      dispatch(showLoader());
-      const viewRes = await postChartPlotData(newArr);
-      errorMsg = viewRes?.message;
-      let newdataArr = [...postChartData.data];
-      newdataArr[0].rules = viewRes.data[0].rules;
-      newdataArr[0].violations = viewRes.data[0].violations;
-      newdataArr[0].data = viewRes.data[0].data;
-      setPostChartData({ ...postChartData, data: newdataArr });
-      getRules();
-      dispatch(hideLoader());
-    } catch (error) {
-      /* istanbul ignore next */
-      if (errorMsg) {
-        dispatch(showNotification("error", errorMsg));
-      }
-      dispatch(hideLoader());
-    }
-  };
+	const onReset = async () => {
+		setRuleList({});
+		setChecked([]);
+		const newArr = JSON.parse(JSON.stringify(postChartData));
+		newArr.data[0].rules = postChartClone.current.data[0].rules;
+		let errorMsg = "";
+		try {
+			dispatch(showLoader());
+			const viewRes = await postChartPlotData(newArr);
+			errorMsg = viewRes?.message;
+			let newdataArr = [...postChartData.data];
+			newdataArr[0].rules = viewRes.data[0].rules;
+			newdataArr[0].violations = viewRes.data[0].violations;
+			newdataArr[0].data = viewRes.data[0].data;
+			setPostChartData({ ...postChartData, data: newdataArr });
+			getRules();
+			dispatch(hideLoader());
+		} catch (error) {
+			/* istanbul ignore next */
+			if (errorMsg) {
+				dispatch(showNotification("error", errorMsg));
+			}
+			dispatch(hideLoader());
+		}
+	};
 
-  useEffect(() => {
-    getRules();
-    postChartClone.current = JSON.parse(JSON.stringify(postChartData));
-  }, []);
+	useEffect(() => {
+		getRules();
+		postChartClone.current = JSON.parse(JSON.stringify(postChartData));
+	}, []);
 
-  useEffect(() => {
-    if (ruleList) {
-      let tempArr = [...Object.values(ruleList)];
-      tempArr = tempArr.flat();
-      setSelectedRules(tempArr);
-      if (Number(id) !== 0) {
-        const tempObj = {};
-        const checkedList = [];
-        Object.entries(ruleList).forEach(([key, value]) => {
-          value.map((ele) => {
-            if (ele.applied === true) {
-              checkedList.push(ele.rule_id);
-            }
-          });
-          tempObj[key] = value.filter((ele) => ele.applied === true);
-        });
-        setChecked(checkedList);
-        setLoadRuleList(tempObj);
-      }
-    }
-  }, [ruleList]);
+	useEffect(() => {
+		if (ruleList) {
+			let tempArr = [...Object.values(ruleList)];
+			tempArr = tempArr.flat();
+			setSelectedRules(tempArr);
+			if (Number(id) !== 0) {
+				const tempObj = {};
+				const checkedList = [];
+				Object.entries(ruleList).forEach(([key, value]) => {
+					value.map((ele) => {
+						if (ele.applied === true) {
+							checkedList.push(ele.rule_id);
+						}
+					});
+					tempObj[key] = value.filter((ele) => ele.applied === true);
+				});
+				setChecked(checkedList);
+				setLoadRuleList(tempObj);
+			}
+		}
+	}, [ruleList]);
 
-  return (
-    <div>
-      {Object.keys(params).length > 0 && params.fromScreen !== "Workspace" ? (
-        <div className="selected-rules" style={{ padding: "0px 24px" }}>
-          <h3>Selected Rules</h3>
-          {Object.keys(loadRuleList).map((ele, index) => {
-            if (loadRuleList[ele].length >= 1) {
-              return (
-                <div key={index}>
-                  <Row className="rules">
-                    <Col span={10}>
-                      <p>{loadRuleList[ele].length >= 1 && `${ele} Rule`}</p>
-                    </Col>
-                    <Col span={14} className="rules-selected">
-                      {loadRuleList[ele].map((tag, i) => (
-                        <span key={i}>
-                          {i > 0 && ", "}
-                          {tag.rule_disp_id}
-                        </span>
-                      ))}
-                    </Col>
-                  </Row>
-                </div>
-              );
-            }
-          })}
-        </div>
-      ) : (
-        <div className="rule-container">
-          {Object.keys(ruleList).length === 0 && <Skeleton />}
-          {Object.keys(ruleList).length !== 0 && (
-            <>
-              <Collapse
-                expandIconPosition="left"
-                style={{ textTransform: "capitalize" }}
-                ghost
-                className="collapse-rule"
-              >
-                {Object.entries(ruleList).map(([key, value]) => {
-                  return (
-                    <Panel
-                      header={`${key} RULE`}
-                      key={key}
-                      className="panel-rule"
-                    >
-                      <Collapse
-                        expandIconPosition="left"
-                        expandIcon={({ isActive }) =>
-                          isActive ? (
-                            <MinusCircleOutlined />
-                          ) : (
-                            <PlusCircleOutlined />
-                          )
-                        }
-                        ghost
-                        className="rule-content"
-                      >
-                        {value.map((item) => {
-                          let html = item.rule_desc;
-                          item &&
-                            item.default_params &&
-                            Object.keys(item.default_params).forEach((key1) => {
-                              html = reactStringReplace(
-                                html,
-                                `<${key1}>`,
-                                () => (
-                                  <span key={key1} style={{ color: "red" }}>
-                                    <Input
-                                      type="number"
-                                      value={item.default_params[key1]}
-                                      onChange={(e) =>
-                                        handleChange(e, item.rule_id, key1)
-                                      }
-                                    />
-                                  </span>
-                                )
-                              );
-                            });
+	return (
+		<div>
+			{Object.keys(params).length > 0 && params.fromScreen !== "Workspace" ? (
+				<div className="selected-rules" style={{ padding: "0px 24px" }}>
+					<h3>Selected Rules</h3>
+					{Object.keys(loadRuleList).map((ele, index) => {
+						if (loadRuleList[ele].length >= 1) {
+							return (
+								<div key={index}>
+									<Row className="rules">
+										<Col span={10}>
+											<p>{loadRuleList[ele].length >= 1 && `${ele} Rule`}</p>
+										</Col>
+										<Col span={14} className="rules-selected">
+											{loadRuleList[ele].map((tag, i) => (
+												<span key={i}>
+													{i > 0 && ", "}
+													{tag.rule_disp_id}
+												</span>
+											))}
+										</Col>
+									</Row>
+								</div>
+							);
+						}
+					})}
+				</div>
+			) : (
+				<div className="rule-container">
+					{Object.keys(ruleList).length === 0 && <Skeleton />}
+					{Object.keys(ruleList).length !== 0 && (
+						<>
+							<Collapse
+								expandIconPosition="left"
+								style={{ textTransform: "capitalize" }}
+								ghost
+								className="collapse-rule"
+							>
+								{Object.entries(ruleList).map(([key, value]) => {
+									return (
+										<Panel
+											header={`${key} RULE`}
+											key={key}
+											className="panel-rule"
+										>
+											<Collapse
+												expandIconPosition="left"
+												expandIcon={({ isActive }) =>
+													isActive ? (
+														<MinusCircleOutlined />
+													) : (
+														<PlusCircleOutlined />
+													)
+												}
+												ghost
+												className="rule-content"
+											>
+												{value.map((item) => {
+													let html = item.rule_desc;
+													item &&
+														item.default_params &&
+														Object.keys(item.default_params).forEach((key1) => {
+															html = reactStringReplace(
+																html,
+																`<${key1}>`,
+																() => (
+																	<span key={key1} style={{ color: "red" }}>
+																		<Input
+																			type="number"
+																			value={item.default_params[key1]}
+																			onChange={(e) =>
+																				handleChange(e, item.rule_id, key1)
+																			}
+																		/>
+																	</span>
+																)
+															);
+														});
 
-                          return (
-                            <Panel
-                              header={item.rule_disp_id}
-                              key={item.rule_id}
-                            >
-                              <div className="rules">
-                                <span>
-                                  <Checkbox
-                                    defaultChecked={
-                                      item.applied ? item.applied : false
-                                    }
-                                    onChange={(e) =>
-                                      getChecked(e, item.rule_id)
-                                    }
-                                  />
-                                  &nbsp;
-                                  <span id="my-inputs">{html}</span>
-                                </span>
-                              </div>
-                            </Panel>
-                          );
-                        })}
-                      </Collapse>
-                    </Panel>
-                  );
-                })}
-              </Collapse>
-              {Number(id) !== 0 && Object.keys(loadRuleList).length !== 0 && (
-                <div className="selected-rules">
-                  {loadRuleList && <h3>Selected Rules</h3>}
-                  {Object.keys(loadRuleList).map((ele, index) => {
-                    if (loadRuleList[ele].length >= 1) {
-                      return (
-                        <div key={index}>
-                          <Row className="rules">
-                            <Col span={10}>
-                              <p>
-                                {loadRuleList[ele].length >= 1 && `${ele} Rule`}
-                              </p>
-                            </Col>
-                            <Col span={14} className="rules-selected">
-                              {loadRuleList[ele].map((tag, i) => {
-                                return (
-                                  <span key={i}>
-                                    {i > 0 && ", "}
-                                    {tag.rule_disp_id}
-                                  </span>
-                                );
-                              })}
-                            </Col>
-                          </Row>
-                        </div>
-                      );
-                    }
-                  })}
-                </div>
-              )}
-              <div className="apply-cont">
-                <p onClick={onReset}>Reset</p>
-                <Button className="custom-primary-btn" onClick={onApply}>
-                  Apply
-                </Button>
-              </div>
-            </>
-          )}
-        </div>
-      )}
-    </div>
-  );
+													return (
+														<Panel
+															header={item.rule_disp_id}
+															key={item.rule_id}
+														>
+															<div className="rules">
+																<span>
+																	<Checkbox
+																		defaultChecked={
+																			item.applied ? item.applied : false
+																		}
+																		onChange={(e) =>
+																			getChecked(e, item.rule_id)
+																		}
+																	/>
+																	&nbsp;
+																	<span id="my-inputs">{html}</span>
+																</span>
+															</div>
+														</Panel>
+													);
+												})}
+											</Collapse>
+										</Panel>
+									);
+								})}
+							</Collapse>
+							{Number(id) !== 0 && Object.keys(loadRuleList).length !== 0 && (
+								<div className="selected-rules">
+									{loadRuleList && <h3>Selected Rules</h3>}
+									{Object.keys(loadRuleList).map((ele, index) => {
+										if (loadRuleList[ele].length >= 1) {
+											return (
+												<div key={index}>
+													<Row className="rules">
+														<Col span={10}>
+															<p>
+																{loadRuleList[ele].length >= 1 && `${ele} Rule`}
+															</p>
+														</Col>
+														<Col span={14} className="rules-selected">
+															{loadRuleList[ele].map((tag, i) => {
+																return (
+																	<span key={i}>
+																		{i > 0 && ", "}
+																		{tag.rule_disp_id}
+																	</span>
+																);
+															})}
+														</Col>
+													</Row>
+												</div>
+											);
+										}
+									})}
+								</div>
+							)}
+							<div className="apply-cont">
+								<p onClick={onReset}>Reset</p>
+								<Button className="custom-primary-btn" onClick={onApply}>
+									Apply
+								</Button>
+							</div>
+						</>
+					)}
+				</div>
+			)}
+		</div>
+	);
 };
 
 export default rules;

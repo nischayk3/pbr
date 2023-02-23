@@ -5,8 +5,7 @@ import {
 } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router";
-import { useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import checkIcon from "../../../../assets/images/checkbox.svg";
 import illustrations from "../../../../assets/images/landing_image.png";
 import Banner from "../../../../assets/images/Popup-Side.svg";

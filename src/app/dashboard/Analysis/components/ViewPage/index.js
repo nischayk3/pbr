@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useLocation, useParams } from "react-router";
+import { useLocation, useParams } from "react-router-dom";
 import "./viewPage.scss";
 //antd-imports
 import { CloudUploadOutlined, InfoCircleOutlined } from "@ant-design/icons";

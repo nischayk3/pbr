@@ -2,8 +2,7 @@ import { Button, Card, Input, Modal } from "antd";
 import queryString from "query-string";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useLocation } from "react-router";
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from "react-router-dom";
 import BMS_LOGO from '../../../../assets/BMS.jfif';
 import {
 	hideLoader,

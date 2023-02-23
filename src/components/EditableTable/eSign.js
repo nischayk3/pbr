@@ -1,7 +1,7 @@
 import { Button, Input, Modal, Select } from "antd";
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
-import { useLocation } from "react-router";
+import { useLocation } from "react-router-dom";
 import { BMS_APP_LOGIN_PASS, MDH_APP_PYTHON_SERVICE } from "../../constants/apiBaseUrl";
 import {
 	hideLoader, showLoader, showNotification
