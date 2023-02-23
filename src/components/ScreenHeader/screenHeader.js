@@ -1,21 +1,9 @@
-import React, { useEffect, useState } from 'react';
 import { Card } from 'antd';
+import React from 'react';
+import { currentDate } from '../../utils/dateHelper';
 import './styles.scss';
 
 const ScreenHeader = (props) => {
-	const [resultDate, setResultDate] = useState('');
-	useEffect(() => {
-		updateDate();
-	}, []);
-
-	const updateDate = () => {
-		const date = new Date();
-		const month = date.toLocaleString('default', { month: 'long' });
-		const latestDate = date.getDate();
-		const year = date.getFullYear();
-		const currentDate = month + ' ' + latestDate + ',' + ' ' + year;
-		setResultDate(currentDate);
-	};
 	return (
 		<Card className='screen_header_wrap' style={props.bannerbg}>
 			<div className='screen_header_head'>
@@ -27,7 +15,7 @@ const ScreenHeader = (props) => {
 					<img src={props.source} />
 				</div>
 				<div>
-					<span className='screen_header_resultdate'>{resultDate}</span>
+					<span className='screen_header_resultdate'>{currentDate()}</span>
 				</div>
 			</div>
 		</Card>

@@ -99,22 +99,30 @@ function ViewPdf() {
                 <Col className='viewPdfCard' span={24}>
                     <Card bordered={false}>
                         <Row>
-                            <Col span={10}>
+                            <Col span={8}>
+                                <Row>
+                                    <Col span={14}>
+                                        <p className='pdfHeader'>{cardData[0]?.filename}</p>
+                                    </Col>
+                                    <Col span={10}>
+                                        <div style={{ marginTop: 2, marginLeft: 14 }}>
+                                            <img src={cardData[0]?.status === "P" ? greenCircle : red_circle} style={{ width: cardData[0]?.status === "P" ? 10 : 30 }} />
+                                            <span style={{ fontWeight: 600, marginLeft: 15 }}>{cardData[0]?.status === "P" ? "Success" : "Fail"}</span>
+                                        </div>
+                                    </Col>
+                                </Row>
                                 <div style={{ display: "flex" }}>
-                                    <p className='pdfHeader'>{cardData[0]?.filename}</p>
-                                    <div style={{ marginTop: 2, marginLeft: 14 }}>
-                                        <img src={cardData[0]?.status === "P" ? greenCircle : red_circle} style={{ width: cardData[0]?.status === "P" ? 10 : 30 }} />
-                                        <span style={{ fontWeight: 600, marginLeft: 15 }}>{cardData[0]?.status === "P" ? "Success" : "Fail"}</span>
-                                    </div>
+
+
                                 </div>
                                 <Row style={{ marginTop: 25 }}>
-                                    <Col span={10}>
+                                    <Col span={12}>
                                         <div>
                                             <p className='pStyle' >Batch</p>
                                             <p className='pValue'> {cardData[0]?.batch_num}</p>
                                         </div>
                                     </Col>
-                                    <Col span={6}>
+                                    <Col span={10}>
                                         <div>
                                             <p className='pStyle' >Material Number</p>
                                             <p className='pValue'> {cardData[0]?.product_num}</p>
@@ -122,14 +130,14 @@ function ViewPdf() {
                                     </Col>
                                 </Row>
                                 <Row style={{ marginTop: 25 }}>
-                                    <Col span={10}>
+                                    <Col span={12}>
                                         <div>
                                             <p className='pStyle' >Site</p>
                                             <p className='pValue'> {cardData[0]?.site_code}</p>
                                         </div>
 
                                     </Col>
-                                    <Col span={6}>
+                                    <Col span={10}>
                                         <div style={{ marginRight: 66 }}>
                                             <p className='pStyle' >File ID</p>
                                             <p className='pValue'> {cardData[0]?.file_id}</p>
@@ -137,14 +145,14 @@ function ViewPdf() {
                                     </Col>
                                 </Row>
                                 <Row style={{ marginTop: 25 }}>
-                                    <Col span={10}>
+                                    <Col span={12}>
                                         <div>
                                             <p className='pStyle' >Time Zone</p>
                                             <p className='pValue'> {cardData[0]?.timezone}</p>
                                         </div>
 
                                     </Col>
-                                    <Col span={6}>
+                                    <Col span={10}>
                                         <div>
                                             <p className='pStyle' >Created On</p>
                                             <p className='pValue'> {cardData[0]?.created_on?.split("T")[0]}</p>
@@ -166,7 +174,7 @@ function ViewPdf() {
                                     </Col>
                                 </Row>
                             </Col>
-                            <Col span={14}>
+                            <Col span={16} className='pdfViewerClass'>
                                 <Worker workerUrl={pdfWorkerUrl}>
                                     <div style={{ height: "720px" }}>
                                         {/* <Viewer fileUrl={pdfFile} plugins={[defaultLayoutPluginInstance]} /> */}

@@ -2,7 +2,7 @@ import { getTheme } from "../../utils/commonUtils";
 import {
 	AUTHENTICATED,
 	HIDE_LOADING,
-	HIDE_NOTIFICATION, NETWORK_ERROR, PUBLISH_RESPONSE, SET_NAVIGATION_DATA,
+	HIDE_NOTIFICATION, LOGOUT_APP, NETWORK_ERROR, PUBLISH_RESPONSE, SET_NAVIGATION_DATA,
 	SET_THEME,
 	SHOW_LOADING,
 	SHOW_NOTIFICATION,
@@ -82,6 +82,8 @@ export default (state = initialState, action) => {
 				...state,
 				publishRes: action.payload,
 			}
+		case LOGOUT_APP:
+			return initialState;
 		default:
 			return state;
 	}

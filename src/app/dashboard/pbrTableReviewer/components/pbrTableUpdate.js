@@ -4,7 +4,7 @@ import queryString from "query-string";
 import React, { useEffect, useRef, useState } from 'react';
 import ImageMapper from 'react-image-mapper';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useLocation } from "react-router";
+import { useHistory, useLocation } from "react-router-dom";
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import { MDH_APP_PYTHON_SERVICE } from '../../../../constants/apiBaseUrl';
 import {
@@ -164,7 +164,7 @@ const pbrTableUpdate = () => {
 			limit: null,
 			status: null,
 			template_id: [],
-			date_range:null
+			date_range: null
 		}
 		let res = await getPbrReviewerData(req);
 		let arr = res?.Data[0]?.table_value.map((item, index) => ({ ...item, key: index }))
@@ -181,7 +181,7 @@ const pbrTableUpdate = () => {
 			limit: null,
 			status: null,
 			template_id: [],
-			date_range:null
+			date_range: null
 		}
 		let res = await getPbrReviewerData(req);
 		let arr = res?.Data[0]?.table_value.map((item, index) => ({ ...item, key: index }))
@@ -253,7 +253,7 @@ const pbrTableUpdate = () => {
 			status: "approved",
 			uom: null,
 			table_value: templateData,
-			esign_id:null
+			esign_id: null
 		};
 
 		let res = await updateApprove(req);
@@ -281,7 +281,7 @@ const pbrTableUpdate = () => {
 			limit: null,
 			status: null,
 			template_id: [],
-			date_range:null
+			date_range: null
 		}
 		let res = await getPbrReviewerData(req);
 		let arr = res?.Data[0]?.table_value.map((item, index) => ({ ...item, key: index }))

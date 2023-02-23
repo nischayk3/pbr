@@ -3,7 +3,7 @@ import { Button, Input, Modal, Select } from "antd";
 import queryString from "query-string";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useLocation } from "react-router";
+import { useLocation } from "react-router-dom";
 import { BMS_APP_LOGIN_PASS, MDH_APP_PYTHON_SERVICE } from "../../constants/apiBaseUrl";
 import {
 	hideLoader,
@@ -21,6 +21,7 @@ import {
 	getAuthenticateWithLdap,
 	getAuthenticateWithoutAD
 } from "../../services/loginService";
+import { currentTimeStamp, latestDate } from "../../utils/dateHelper";
 import "./styles.scss";
 
 const { Option } = Select;
@@ -125,27 +126,19 @@ const Signature = (props) => {
 	};
 
 	const handleConfirm = async () => {
-		var today = new Date();
-		var h = today.getHours();
-		var m = today.getMinutes();
-		var s = today.getSeconds();
-		let time_today = h + ":" + m + ":" + s;
-		var date = new Date();
-		var day = date.getDate();
-		var month = date.getMonth() + 1;
-		var year = date.getFullYear();
-		let date_today = year + "-" + month + "-" + day;
+		let login_response = JSON.parse(localStorage.getItem("login_details"));
+
 		let req = {};
 
-		req["date"] = date_today;
-		req["timestamp"] = time_today;
+		req["date"] = latestDate();
+		req["timestamp"] = currentTimeStamp();
 		req["reason"] = reason;
 		req["user_id"] = username;
 		// eslint-disable-next-line react/prop-types
 		req["screen"] = props.screenName;
-		req["first_name"] = "first_name";
-		req["last_name"] = "last_name";
-		let login_response = JSON.parse(localStorage.getItem("login_details"));
+		req["first_name"] = login_response?.firstname ? login_response?.firstname : '';
+		req["last_name"] = login_response?.lastname ? login_response?.lastname : '';
+
 		let headers = {
 			"content-type": "application/json",
 			"resource-name":

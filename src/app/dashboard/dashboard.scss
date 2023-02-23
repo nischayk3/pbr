@@ -334,3 +334,8 @@
 	background-color: var(--primary-color) !important;
 	border-color: 1px solid var(--primary-color) !important;
 }
+
+.ant-btn-primary {
+	border-color: var(--primary-color);
+	background: var(--primary-color);
+}

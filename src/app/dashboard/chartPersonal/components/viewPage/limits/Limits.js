@@ -1,6 +1,6 @@
 import queryString from "query-string";
 import React, { useEffect, useRef, useState } from "react";
-import { useLocation } from "react-router";
+import { useLocation } from "react-router-dom";
 import "./limitsStyles.scss";
 //antd imports
 import { DeleteTwoTone, PlusOutlined } from "@ant-design/icons";

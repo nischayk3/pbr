@@ -29,25 +29,6 @@
 	color: #0d4a7c;
 }
 
-// .ant-table .ant-table-thead > tr > th {
-// 	font-size: 14px;
-// 	font-weight: 600;
-// 	background-color: #fff;
-// 	// color: #495fc3;
-// }
-
-// .ant-table-title {
-//   border-radius: 2px 2px 0 0;
-//   border-top: 1px solid #505050;
-//   border-bottom: 1px solid #505050;
-//   font-size: 16px;
-//   font-weight: 500;
-// }
-
-// .ant-table-tbody > tr > td {
-//   border-bottom: 1px solid #b0b0b0;
-// }
-
 .table-search {
 	margin: 6px 12px;
 	width: 230px;
@@ -56,15 +37,7 @@
 	span {
 		input {
 			border-radius: 4px 0 0 4px;
-			padding: 6px 12px;
-		}
-
-		span {
-			.ant-btn-primary {
-				color: #fff;
-				background: #495fc3;
-				border-color: #495fc3;
-			}
+			padding: 4px 12px;
 		}
 	}
 }
@@ -73,14 +46,6 @@
 	float: right;
 	padding: 10px;
 }
-
-// .ant-table-row:nth-child(even) {
-//   background: rgba(222, 226, 230, 0.25);
-// }
-
-// .ant-table-thead > tr > th {
-//   border-bottom: 1px solid #505050;
-// }
 
 .custom-table-card {
 	border: 1px solid #eee;
@@ -173,18 +138,12 @@
 
 .old_value_class {
 	word-break: break-word;
-	inline-size: 20%;
+	inline-size: 15%;
 }
 
-// .divFilterDrop
-// {
-//   padding: auto;
-//   background-color: white;
-//   // height: 100;
-// }
 .divFilter {
 	display: grid;
-	grid-template-columns: 0.20fr 0.20fr 0.20fr 0.15fr 0.15fr;
+	grid-template-columns: 0.20fr 0.20fr 0.20fr 0.10fr 0.10fr;
 	background-color: white;
 	padding: 24px 16px;
 	border-radius: 4px;
@@ -207,10 +166,6 @@
 	}
 }
 
-
-
-
-
 .filter-header {
 	background-color: white !important;
 }
@@ -221,4 +176,12 @@
 
 .limitDropdown .ant-select-selector {
 	padding: 0px !important;
+}
+
+.highlight {
+	background: rgb(255, 192, 105);
+	margin: 0;
+	padding: 3px 6px;
+	border-radius: 4px;
+	width: fit-content;
 }
