@@ -286,13 +286,12 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 			title: 'Document URL',
 			dataIndex: 'document_url',
 			key: 'document_url',
-			fixed: 'right',
 			width: 120,
 			render: (text, record) =>
 				limitsData.map((data, index) => {
 					if (record.key === data.key) {
 						if (selectedRowKey !== openRow) {
-							return <p style={{ margin: "0" }}>{data.document_url}</p>;
+							return <a href={data.document_url} target="_blank" style={{ margin: "0" }}>{data.document_url}</a>;
 						}
 						return (
 							<Input
