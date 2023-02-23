@@ -48,12 +48,11 @@ function Hierarchy() {
 	}, []);
 
 	useEffect(() => {
-		if (load_drug) {
-			const url = window.location.href
-			let param = url.split('/')
+		const url = window.location.href
+		let param = url.split('/')
+		if (param.length > 0)
 			LoadView(param)
-		}
-	}, [load_drug]
+	}, []
 	);
 
 	useEffect(() => {
