@@ -192,6 +192,11 @@ const Signature = (props) => {
 					publish_response = Object.keys(params).length > 0 && params.fromScreen !== "Workflow"
 						? await publishEvent(reqs, headers) : await approveRecord(req1)
 
+				} else if (props.appType == "PBR_TEMPLATE") {
+					publish_response =
+						Object.keys(params).length > 0 && params.fromScreen !== "Workspace"
+							&& await approveRecord(req1)
+							// : await publishEvent(reqs, headers);
 				} else {
 					publish_response =
 						Object.keys(params).length > 0 && params.fromScreen !== "Workspace"
