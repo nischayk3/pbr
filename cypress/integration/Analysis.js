@@ -5,22 +5,9 @@ Cypress.on("uncaught:exception", (err, runnable) => {
 describe("Analysis", () => {
 	beforeEach(() => {
 		cy.viewport(1366, 768);
-		localStorage.setItem("test_enabled", true);
-		localStorage.setItem("user", "dinesh.jinjala@mareana.com");
-		localStorage.setItem("username", "Dinesh");
-		localStorage.setItem("loginwith", "WITH_AD");
-		localStorage.setItem(
-			"login_details", JSON.stringify({
-				ad_role: false,
-				email_id: "dinesh.jinjala@mareana.com",
-				firstname: "Dinesh",
-				lastname: "Jinjala",
-				mdh_role: "USER",
-				screen_set: "1000_USER",
-				token:
-					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Ik1paGlyICBCYWdnYSIsInVuaXhfdGltZXN0YW1wIjoxNjUwNDIyMDcyLjgzNTg5MSwidGltZXN0YW1wIjoiMjAvMDQvMjAyMiAwODowNDozMiIsImV4cCI6NDgwNDA0MTg3MiwiYWRfcm9sZSI6ZmFsc2UsIm1kaF9yb2xlIjoiVVNFUiIsImVtYWlsX2lkIjoibWloaXIuYmFnZ2FAbWFyZWFuYS5jb20iLCJjdXN0X2tleSI6IjEwMDAifQ.NpmhWhMBWtRcDkSBDdw-94Kqy9vuZyY1PSHbOpTyzMM"
-			})
-		);
+
+		cy.loginWithAD()
+
 		cy.intercept("GET", "**/pipeline-list", {
 			fixture: "analysisLanding.json",
 		});
@@ -50,25 +37,12 @@ describe("Analysis", () => {
 			fixture: "analysisExecute.json",
 		});
 	});
-	
+
 	afterEach(() => {
 		cy.viewport(1366, 768);
-		localStorage.setItem("test_enabled", true);
-		localStorage.setItem("user", "dinesh.jinjala@mareana.com");
-		localStorage.setItem("username", "Dinesh");
-		localStorage.setItem("loginwith", "WITH_AD");
-		localStorage.setItem(
-			"login_details", JSON.stringify({
-				ad_role: false,
-				email_id: "dinesh.jinjala@mareana.com",
-				firstname: "Dinesh",
-				lastname: "Jinjala",
-				mdh_role: "USER",
-				screen_set: "1000_USER",
-				token:
-					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Ik1paGlyICBCYWdnYSIsInVuaXhfdGltZXN0YW1wIjoxNjUwNDIyMDcyLjgzNTg5MSwidGltZXN0YW1wIjoiMjAvMDQvMjAyMiAwODowNDozMiIsImV4cCI6NDgwNDA0MTg3MiwiYWRfcm9sZSI6ZmFsc2UsIm1kaF9yb2xlIjoiVVNFUiIsImVtYWlsX2lkIjoibWloaXIuYmFnZ2FAbWFyZWFuYS5jb20iLCJjdXN0X2tleSI6IjEwMDAifQ.NpmhWhMBWtRcDkSBDdw-94Kqy9vuZyY1PSHbOpTyzMM"
-			})
-		);
+
+		cy.loginWithAD()
+
 		cy.intercept("GET", "**/pipeline-list", {
 			fixture: "analysisLanding.json",
 		});
@@ -150,7 +124,7 @@ describe("Analysis", () => {
 		cy.log("Landing");
 		cy.get(".button-gap > .custom-secondary-btn").click({ force: true });
 	});
-	
+
 	it("Preprocessing Tab", () => {
 		cy.log("Preprocessing Tab");
 		cy.wait(10000);
@@ -271,11 +245,11 @@ describe("Analysis", () => {
 		cy.get(':nth-child(2) > .ant-collapse-header').click();
 	})
 
-	it("Save Pipeline", ()=> {
+	it("Save Pipeline", () => {
 		cy.get('.btns > div > :nth-child(3)').click();
 		cy.wait(5000);
 	})
-	
+
 	// it("Transformations", () => {
 	// 	cy.wait(5000);
 	// 	cy.get(".ant-tabs-nav-list > :nth-child(4)").click();
@@ -288,11 +262,11 @@ describe("Analysis", () => {
 	// 	).click();
 	// });
 
-	it("Execute Pipeline", ()=> {
+	it("Execute Pipeline", () => {
 		cy.get('.btns > div > .ant-dropdown-trigger').click();
 		cy.get('li > :nth-child(1)').click({ force: true, multiple: true });
 		cy.wait(60000);
-	}) 
+	})
 
 	it("Search in Analysis Landing Page", () => {
 		const url = Cypress.config().baseUrl;
