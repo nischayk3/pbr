@@ -8,8 +8,10 @@
 // import { DownloadOutlined } from "@ant-design/icons";
 import { Avatar, Button, Card, Empty, Table, Tabs } from "antd";
 import moment from "moment";
+import queryString from "query-string";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useHistory, useLocation } from "react-router-dom";
 import illustrations from "../../../../assets/images/Banner illustration.svg";
 import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
 import DashCard from "../../../../components/CardComponent/customCard";
@@ -27,9 +29,12 @@ import {
 } from "../../../../services/workFlowServices";
 import "./styles.scss";
 import WorkflowTable from "./workflowTable/workflowTable";
-
 const { TabPane } = Tabs;
 const Workflow = () => {
+	const history = useHistory();
+	const location = useLocation();
+	const dispatch = useDispatch();
+
 	const [itemCount, setItemCount] = useState();
 	const [cardTitle, setCardTitle] = useState("");
 	const [isPublish, setIsPublish] = useState(false);
@@ -42,11 +47,19 @@ const Workflow = () => {
 	const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 	const [approveReject, setApproveReject] = useState("");
 	const [isApprove, setIsApprove] = useState(true);
+	const [showWorkflow, setShowWorkflow] = useState(false);
 
-	const dispatch = useDispatch();
-
+	const params = queryString.parse(location.search);
+	console.log("params", params);
 	useEffect(() => {
 		getTilesData();
+		if (Object.keys(params) &&
+			Object.keys(params).length > 0) {
+			setActiveDiv(params?.active);
+			setCardTitle(params?.active);
+			setApplicationType(params?.apptype);
+		}
+		console.log("location", location);
 	}, []);
 
 	useEffect(() => {
@@ -108,8 +121,17 @@ const Workflow = () => {
 		try {
 			dispatch(showLoader());
 			const tilesResponse = await getCountData(req);
-			setTilesData(tilesResponse["Data"]);
-			dispatch(hideLoader());
+			if (tilesResponse['status-code'] === 200) {
+				dispatch(hideLoader());
+				setShowWorkflow(true)
+				setTilesData(tilesResponse["Data"]);
+			} else {
+				dispatch(hideLoader());
+				setShowWorkflow(false)
+				dispatch(showNotification("error", `${tilesResponse['status-code']} error`));
+			}
+
+
 		} catch (error) {
 			/* istanbul ignore next */
 			dispatch(hideLoader());
@@ -229,9 +251,8 @@ const Workflow = () => {
 	};
 
 	const tilesClicked = (item, index) => {
-		console.log("textttttttt", item);
+		history.push(`/dashboard/workflow?apptype=${item.application_type}&active=${item.text}`)
 		setItemCount(item.item_count);
-		//setIndexCount(index);
 		setCardTitle(item.text);
 		setActiveDiv(item.text);
 		setApplicationType(item.application_type);
@@ -259,6 +280,8 @@ const Workflow = () => {
 		approveData(_approveReq);
 	};
 
+
+
 	return (
 		<div className="custom-wrapper">
 			<BreadCrumbWrapper />
@@ -273,8 +296,7 @@ const Workflow = () => {
 					source={illustrations}
 					sourceClass="geanealogy-image"
 				/>
-
-				<div className="workflow_items">
+				{showWorkflow ? (<div className="workflow_items">
 					{
 						<div className="approve-wrapper">
 							{tilesData &&
@@ -302,13 +324,6 @@ const Workflow = () => {
 								title={
 									<div className="table-head">
 										{cardTitle}
-										{/* <DownloadOutlined
-											style={{
-												color: "#093185",
-												marginLeft: "25px",
-												fontSize: "20px",
-											}}
-										/> */}
 									</div>
 								}
 							>
@@ -393,7 +408,11 @@ const Workflow = () => {
 							description={<span>Please select one to view its approvals</span>}
 						/>
 					)}
-				</div>
+				</div>) : (<Empty
+					className="empty-workflow workflow-right-block"
+					description={<span>No view for approvals</span>}
+				/>)}
+
 			</div>
 			<Signature
 				isPublish={isPublish}

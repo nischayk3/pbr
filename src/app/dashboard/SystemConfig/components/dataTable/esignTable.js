@@ -73,6 +73,8 @@ const EsignTable = ({ tableData }) => {
 					)
 				} else if (val == 'key') {
 					return val
+				} else if (val == 'reason_code') {
+					return val
 				} else {
 					return (
 						column.push({
@@ -88,6 +90,7 @@ const EsignTable = ({ tableData }) => {
 			title: 'ACTION',
 			dataIndex: 'operation',
 			key: 9,
+			width: '150',
 			render: (_, record) => {
 				const editable = isEditing(record);
 				return editable ? (

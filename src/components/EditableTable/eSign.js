@@ -27,7 +27,10 @@ function Esign(props) {
 	const [isAuth, setIsAuth] = useState(false);
 	const [loginStatus, setLoginStatus] = useState("");
 	const [checkRejectReason, setCheckRejectReason] = useState(false);
+	const [reasonList, setReasonList] = useState([]);
+	const [otherReason, setOtherReason] = useState('');
 
+	const login_response = JSON.parse(localStorage.getItem("login_details"));
 	useEffect(() => {
 		const loginDetails = JSON.parse(localStorage.getItem("login_details"));
 		const status = localStorage.getItem("loginwith")
@@ -38,6 +41,41 @@ function Esign(props) {
 			setUsername(loginDetails.email_id)
 		}
 	}, []);
+
+	useEffect(() => {
+		if (showEsign) {
+			getReasonList()
+		}
+	}, [showEsign])
+
+	const getReasonList = async () => {
+		const _headers = {
+			"content-type": "application/json",
+			"x-access-token": login_response.token ? login_response.token : "",
+			"resource-name": "WORKITEMS",
+		};
+		const _req = {}
+		try {
+			const reason = await eSignReason(_req, _headers)
+			if (reason.statuscode === 200) {
+				const reasonData = [];
+				const data = reason?.message
+
+				data.forEach((item) => {
+					let obj = {};
+					obj['value'] = item;
+					obj['label'] = item;
+					reasonData.push(obj)
+				})
+
+				setReasonList(reasonData)
+			} else {
+				dispatch(showNotification("error", reason.message));
+			}
+		} catch (error) {
+			dispatch(showNotification("error", error));
+		}
+	}
 
 	const authenticateUser = async () => {
 		let req = {};
@@ -113,7 +151,7 @@ function Esign(props) {
 			let req = {};
 			req["date"] = latestDate();
 			req["timestamp"] = currentTimeStamp();
-			req["reason"] = reason;
+			req["reason"] = reason === 'Reason for signature' ? otherReason : reason;
 			req["user_id"] = username;
 			// eslint-disable-next-line react/prop-types
 			req["screen"] = screenName ? screenName : "CONFIGURATION";
@@ -132,7 +170,7 @@ function Esign(props) {
 					esign_id: esign_response?.primary_id,
 					file_id: fileID,
 					flag: userType,
-					reason: reason
+					reason: reason === 'Reason for signature' ? otherReason : reason
 				}
 				let res = await createUsers(req);
 				if (res.Status == 200) {
@@ -163,7 +201,7 @@ function Esign(props) {
 
 		const _reqSaml = {
 			SignedInfoData: {
-				Reason: reason,
+				Reason: reason === 'Reason for signature' ? otherReason : reason,
 				screenName: screenName,
 				appType: appType,
 				fileID: fileID,
@@ -220,17 +258,22 @@ function Esign(props) {
 									<Select
 										onChange={(e, value) => {
 											let reason_value = value.value ? value.value : "";
+											if (reason_value === "Reason for signature") {
+												setCheckRejectReason(true);
+												setReason(reason_value);
+												setOtherReason('')
+											} else {
+												setReason(reason_value);
+												setCheckRejectReason(false);
+											}
 											setReason(reason_value);
 										}}
 										className="sign-select"
-									>
-										<Option key="Signing on behalf of team mate">
-											Signing on behalf of team mate
-										</Option>
-										<Option key="I am an approver">I am an approver</Option>
-										<Option key="I am the author">I am the author</Option>
-										{/* <Option key="Other Reason">Other Reason</Option> */}
-									</Select>
+										value={reason}
+										placeholder="Select reason"
+										options={reasonList}
+									/>
+
 								</div>
 							)}
 							{(isAuth === "R" && props.status === "R") || checkRejectReason ? (
@@ -238,10 +281,10 @@ function Esign(props) {
 									<p>Comment</p>
 									<Input.TextArea
 										rows={3}
-										value={reason}
+										value={otherReason}
 										style={{ width: "450px" }}
 										onChange={(e) => {
-											setReason(e.target.value);
+											setOtherReason(e.target.value)
 										}}
 									/>
 								</div>
@@ -256,21 +299,19 @@ function Esign(props) {
 									let reason_value = value.value ? value.value : "";
 									if (reason_value === "Other Reason") {
 										setCheckRejectReason(true);
-										setReason("");
+										setReason(reason_value);
+										setOtherReason('')
 									} else {
 										setReason(reason_value);
 										setCheckRejectReason(false);
 									}
 								}}
 								className="sign-select"
-							>
-								<Option key="Signing on behalf of team mate">
-									Signing on behalf of team mate
-								</Option>
-								<Option key="I am an approver">I am an approver</Option>
-								<Option key="I am the author">I am the author</Option>
-								<Option key="Other Reason">Other Reason</Option>
-							</Select>
+								value={reason}
+								placeholder="Select reason"
+								options={reasonList}
+
+							/>
 						</div>
 					)}
 

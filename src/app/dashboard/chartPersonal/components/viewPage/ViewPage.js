@@ -174,12 +174,13 @@ const ViewPage = () => {
 	};
 	//function for getting chart data
 	const getChart = async () => {
+		const _resourceName = params?.fromScreen !== "Workspace" ? 'WORKITEMS' : 'VIEW';
 		const req = {
 			chartId: chartDetails.current.chartId,
 			version: chartDetails.current.chartVersion,
 		};
 		try {
-			const viewRes = await getChartPlotData(req);
+			const viewRes = await getChartPlotData(req, _resourceName);
 			setPostChartData(viewRes);
 		} catch (err) {
 			/* istanbul ignore next */
