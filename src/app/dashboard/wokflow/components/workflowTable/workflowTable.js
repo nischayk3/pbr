@@ -3,7 +3,7 @@ import { Avatar, Button, Input, Space, Table } from "antd";
 import moment from "moment";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import "./styles.scss";
 
 const WorkflowTable = (props) => {
@@ -13,7 +13,7 @@ const WorkflowTable = (props) => {
 
 	const refSearchInput = useRef();
 	const history = useHistory();
-
+	const location = useLocation();
 	useEffect(() => {
 		updateTableColumns();
 	}, [props.columns]);
@@ -194,9 +194,11 @@ const WorkflowTable = (props) => {
 								return (
 									<a
 										onClick={() =>
-											history.push(
-												`${text}/${row.Id}&${row.version}?id=${row.Id}&version=${row.version}`
-											)
+											history.push({
+												pathname: `${text}/${row.Id}&${row.version}`,
+												search: `?id=${row.Id}&version=${row.version}&fromScreen=Workflow`,
+												state: { path: `${location.pathname}${location.search}` }
+											})
 										}
 										className="review-submission"
 									>
@@ -207,9 +209,11 @@ const WorkflowTable = (props) => {
 								return (
 									<a
 										onClick={() =>
-											history.push(
-												`${text}/${row.Id}&${row.version}?id=${row.Id}&version=${row.version}&fromScreen=Workflow`
-											)
+											history.push({
+												pathname: `${text}/${row.Id}&${row.version}`,
+												search: `?id=${row.Id}&version=${row.version}&fromScreen=Workflow`,
+												state: { path: `${location.pathname}${location.search}` }
+											})
 										}
 										className="review-submission"
 									>
@@ -217,7 +221,6 @@ const WorkflowTable = (props) => {
 									</a>
 								);
 							} else if (text == "/dashboard/paper_batch_records") {
-
 								return (
 									<a
 										onClick={() =>
@@ -249,9 +252,7 @@ const WorkflowTable = (props) => {
 									<a
 										onClick={() =>
 											history.push(
-												history.push(
-													`${text}/${row.Id}`
-												)
+												`${text}/${row.Id}`
 											)
 										}
 										className="review-submission"
@@ -264,9 +265,7 @@ const WorkflowTable = (props) => {
 									<a
 										onClick={() =>
 											history.push(
-												history.push(
-													`${text}/${row.template_disp_id}&${row.version}?id=${row.template_disp_id}&version=${row.version}`
-												)
+												`${text}/${row.template_disp_id}&${row.version}?id=${row.template_disp_id}&version=${row.version}`
 											)
 										}
 										className="review-submission"

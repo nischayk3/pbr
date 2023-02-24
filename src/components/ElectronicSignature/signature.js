@@ -3,7 +3,7 @@ import { Button, Input, Modal, Select } from "antd";
 import queryString from "query-string";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { BMS_APP_LOGIN_PASS, MDH_APP_PYTHON_SERVICE } from "../../constants/apiBaseUrl";
 import {
 	hideLoader,
@@ -27,8 +27,10 @@ import "./styles.scss";
 const { Option } = Select;
 
 const Signature = (props) => {
+	const history = useHistory();
 	const location = useLocation();
 	const params = queryString.parse(location.search);
+
 	// eslint-disable-next-line react/prop-types
 	const { isPublish, handleClose } = props;
 	const [password, setPassword] = useState("");
@@ -148,7 +150,9 @@ const Signature = (props) => {
 						? "AUTO_ML"
 						: props.appType == "ELOGBOOK-READING"
 							? "DASHBOARD"
-							: props.appType,
+							: params?.fromScreen == 'Workflow'
+								? 'WORKITEMS'
+								: props.appType,
 			"x-access-token": login_response.token ? login_response.token : "",
 		};
 
@@ -202,9 +206,16 @@ const Signature = (props) => {
 				if (publish_response.status_code == 200) {
 					dispatch(showNotification("success", publish_response.msg));
 					props.PublishResponse(publish_response);
+					if (location?.state?.path) {
+						history.push(`${location.state.path}`)
+					}
+
 				} else if (publish_response.Status == 200) {
 					dispatch(showNotification("success", publish_response.Message));
 					props.PublishResponse(publish_response);
+					if (location?.state?.path) {
+						history.push(`${location.state.path}`)
+					}
 				} else {
 					dispatch(showNotification("error", publish_response.msg));
 				}

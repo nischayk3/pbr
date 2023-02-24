@@ -1,6 +1,16 @@
 import { BMS_APP_PYTHON_SERVICE } from "../constants/apiBaseUrl";
 import Service from "./AjaxService";
 
+let login_response = JSON.parse(localStorage.getItem("login_details"));
+const _reqheader = (resource) => {
+	const _req = {
+		"content-type": "application/json",
+		"x-access-token": login_response.token ? login_response.token : "",
+		"resource-name": resource,
+	}
+	return _req
+};
+
 //get site id
 export const getSiteId = (_queryParam) => {
 	return Service.get(BMS_APP_PYTHON_SERVICE + "/site_ids", _queryParam).then(
@@ -15,17 +25,10 @@ export const getSiteId = (_queryParam) => {
 
 //get chart type
 export const getChartList = (request) => {
-	let login_response = JSON.parse(localStorage.getItem("login_details"));
-
-	const headers = {
-		"content-type": "application/json",
-		"x-access-token": login_response.token ? login_response.token : "",
-		"resource-name": "VIEW"
-	};
 	return Service.get(
 		BMS_APP_PYTHON_SERVICE + "/chart-list",
 		request,
-		headers
+		_reqheader('VIEW')
 	).then(
 		(response) => {
 			return response.data;
@@ -50,16 +53,10 @@ export const getRuleList = (request) => {
 
 //get chart plot data
 export const postChartPlotData = (_queryParam) => {
-	let login_response = JSON.parse(localStorage.getItem("login_details"));
-	const headers = {
-		"content-type": "application/json",
-		"x-access-token": login_response.token ? login_response.token : "",
-		"resource-name": "chart"
-	};
 	return Service.post(
 		BMS_APP_PYTHON_SERVICE + "/chart-object",
 		_queryParam,
-		headers
+		_reqheader('chart')
 	).then(
 		(response) => {
 			return response.data;
@@ -72,16 +69,10 @@ export const postChartPlotData = (_queryParam) => {
 
 //save chart data
 export const saveChartPlotData = (_queryParam) => {
-	let login_response = JSON.parse(localStorage.getItem("login_details"));
-	const headers = {
-		"content-type": "application/json",
-		"x-access-token": login_response.token ? login_response.token : "",
-		"resource-name": "chart"
-	};
 	return Service.put(
 		BMS_APP_PYTHON_SERVICE + "/chart-object",
 		_queryParam,
-		headers
+		_reqheader('chart')
 	).then(
 		(response) => {
 			return response.data;
@@ -93,17 +84,11 @@ export const saveChartPlotData = (_queryParam) => {
 };
 
 //get chart data
-export const getChartPlotData = (_queryParam) => {
-	let login_response = JSON.parse(localStorage.getItem("login_details"));
-	const headers = {
-		"content-type": "application/json",
-		"x-access-token": login_response.token ? login_response.token : "",
-		"resource-name": "VIEW"
-	};
+export const getChartPlotData = (_queryParam, resource) => {
 	return Service.get(
 		BMS_APP_PYTHON_SERVICE + "/chart-object",
 		_queryParam,
-		headers
+		_reqheader(resource)
 	).then(
 		(response) => {
 			return response.data;
