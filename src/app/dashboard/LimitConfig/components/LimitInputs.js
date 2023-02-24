@@ -1,4 +1,5 @@
 import { CalendarOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import * as _ from "lodash";
 import { Button, Col, DatePicker, Input, Popconfirm, Row, Select, Table, Tooltip } from 'antd';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
@@ -8,7 +9,7 @@ import { hideLoader, showLoader, showNotification } from '../../../../duck/actio
 import { deleteLimitsApi } from '../../../../services/limitConfig';
 import './Limitconfig.scss';
 
-const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLimitsData, limitsData, openRow, selectedRowKey, paramData, siteList, parameterList }) => {
+const LimitInputs = ({ expandedMol, selectedMol, getMoleData, editable, totalViewList, viewList, paramData, siteList, parameterList, moleculeData, setMoleculeData }) => {
 
 	const dispatch = useDispatch();
 	const [tableColumns, setTableCOlumns] = useState();
@@ -30,9 +31,9 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 			width: 120,
 			fixed: 'left',
 			render: (text, record) =>
-				limitsData.map((data, index) => {
+				paramData.map((data, index) => {
 					if (record.key === data.key) {
-						if (selectedRowKey !== openRow) {
+						if (!editable) {
 							return <p style={{ margin: "0" }}>{data.view_disp_id}</p>;
 						}
 						return (
@@ -54,9 +55,9 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 			width: 120,
 			fixed: 'left',
 			render: (text, record) =>
-				limitsData.map((data, index) => {
+				paramData.map((data, index) => {
 					if (record.key === data.key) {
-						if (selectedRowKey !== openRow) {
+						if (!editable) {
 							return <p style={{ margin: "0" }}>{data.view_version}</p>;
 						}
 						return (
@@ -76,9 +77,9 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 			dataIndex: 'parameters',
 			key: 'parameters',
 			render: (text, record) =>
-				limitsData.map((data, index) => {
+				paramData.map((data, index) => {
 					if (record.key === data.key) {
-						if (selectedRowKey !== openRow) {
+						if (!editable) {
 							return <p style={{ margin: "0" }}>{data.parameters}</p>;
 						}
 						return (
@@ -98,9 +99,9 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 			dataIndex: 'site',
 			key: 'Site',
 			render: (text, record) =>
-				limitsData.map((data, index) => {
+				paramData.map((data, index) => {
 					if (record.key === data.key) {
-						if (selectedRowKey !== openRow) {
+						if (!editable) {
 							return <p style={{ margin: "0" }}>{data.site}</p>;
 						}
 						return (
@@ -124,9 +125,9 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 			dataIndex: 'parameter_class',
 			key: 'parameter_class',
 			render: (text, record) =>
-				limitsData.map((data, index) => {
+				paramData.map((data, index) => {
 					if (record.key === data.key) {
-						if (selectedRowKey !== openRow) {
+						if (!editable) {
 							return (
 								data?.parameter_class?.map((paramClass) => {
 									return (
@@ -161,9 +162,9 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 			dataIndex: 'limit_type',
 			key: 'limitType',
 			render: (text, record) =>
-				limitsData.map((data, index) => {
+				paramData.map((data, index) => {
 					if (record.key === data.key) {
-						if (selectedRowKey !== openRow) {
+						if (!editable) {
 							return <p style={{ margin: "0" }}>{data.limit_type}</p>;
 						}
 						return (
@@ -184,9 +185,9 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 			key: 'from',
 
 			render: (text, record) =>
-				limitsData.map((data, index) => {
+				paramData.map((data, index) => {
 					if (record.key === data.key) {
-						if (selectedRowKey !== openRow) {
+						if (!editable) {
 							return (<>
 								<p style={{ margin: "0" }}>{data.from_}</p>
 							</>);
@@ -208,9 +209,9 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 			key: 'to',
 
 			render: (text, record) =>
-				limitsData.map((data, index) => {
+				paramData.map((data, index) => {
 					if (record.key === data.key) {
-						if (selectedRowKey !== openRow) {
+						if (!editable) {
 							return <p style={{ margin: "0" }}>{data.to_}</p>;
 						}
 						return (
@@ -230,9 +231,9 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 			key: 'vod',
 
 			render: (text, record) =>
-				limitsData.map((data, index) => {
+				paramData.map((data, index) => {
 					if (record.key === data.key) {
-						if (selectedRowKey !== openRow) {
+						if (!editable) {
 							/* istanbul ignore next */
 							if (!data.validity_date) {
 								return "";
@@ -266,9 +267,9 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 			dataIndex: 'document_name',
 			key: 'document_name',
 			render: (text, record) =>
-				limitsData.map((data, index) => {
+				paramData.map((data, index) => {
 					if (record.key === data.key) {
-						if (selectedRowKey !== openRow) {
+						if (!editable) {
 							return <p style={{ margin: "0" }}>{data.document_name}</p>;
 						}
 						return (
@@ -288,9 +289,9 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 			key: 'document_url',
 			width: 120,
 			render: (text, record) =>
-				limitsData.map((data, index) => {
+				paramData.map((data, index) => {
 					if (record.key === data.key) {
-						if (selectedRowKey !== openRow) {
+						if (!editable) {
 							return <a href={data.document_url} target="_blank" style={{ margin: "0" }}>{data.document_url}</a>;
 						}
 						return (
@@ -307,7 +308,7 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 	];
 	const text = "Are you sure to delete this?";
 	const handleChange = async (index, event, dateString, type) => {
-		const rowsInput = [...limitsData];
+		const rowsInput = [...paramData];
 		if (dateString && type === "date") {
 			rowsInput[index]["validity_date"] = dateString._d.toLocaleDateString();
 		} else if (type === "limits") {
@@ -338,7 +339,13 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 			rowsInput[index]['param_list'] = tempParam;
 			rowsInput[index]['view_version'] = event;
 		}
-		setLimitsData(rowsInput);
+		const tempMoleculeData = [...moleculeData];
+		tempMoleculeData?.forEach((molecule) => {
+			if (molecule?.key === expandedMol) {
+				molecule.paramData = rowsInput
+			}
+		})
+		setMoleculeData(tempMoleculeData)
 	};
 
 
@@ -353,13 +360,20 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 					]
 				}
 				const apiResponse = await deleteLimitsApi(obj);
-				if (apiResponse?.Status === 200) {
-					tempParamData = limitsData.filter((limit) => limit?.int_id !== record?.int_id)
+				if (apiResponse?.status === 200) {
+					tempParamData = paramData.filter((limit) => limit?.int_id !== record?.int_id)
 				}
 			} else {
-				tempParamData = limitsData.filter((limit) => limit?.key !== record?.key)
+				tempParamData = paramData.filter((limit) => limit?.key !== record?.key)
 			}
-			setLimitsData(tempParamData)
+			const tempMoleculeData = [...moleculeData];
+			tempMoleculeData?.forEach((molecule) => {
+				if (molecule?.key === expandedMol) {
+					molecule.paramData = JSON.parse(JSON.stringify(tempParamData))
+				}
+			})
+			setMoleculeData(tempMoleculeData)
+			// setLimitsData(tempParamData)
 			dispatch(hideLoader());
 		} catch (error) {
 			/* istanbul ignore next */
@@ -371,7 +385,7 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 
 	const handleAdd = () => {
 		const newData = {
-			key: limitsData?.length + 1,
+			key: paramData?.length + 1,
 			"cust_key": paramData[0]?.cust_key,
 			"from_": Number,
 			"limit_type": "",
@@ -385,8 +399,15 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 			"parameter_class": [],
 			"document_name": '',
 			"document_url": '',
+			"edit":true
 		};
-		setLimitsData([...limitsData, newData]);
+		const tempMoleculeData = [...moleculeData];
+		tempMoleculeData?.forEach((molecule) => {
+			if (molecule?.key === expandedMol) {
+				molecule.paramData.push(newData)
+			}
+		})
+		setMoleculeData(tempMoleculeData)
 	};
 
 
@@ -414,21 +435,16 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 							onClick={(e) => e.stopPropagation()}
 						/>
 					</Popconfirm>
-					// <DeleteOutlined style={{ fontSize: '18px' }} onClick={() => deleteParam(record.int_id)} />
 				)
 			}
 		}
-		if (selectedRowKey === openRow) {
+		if (editable) {
 			columns.unshift(obj)
 		} else {
 			columns = columns.filter((ele) => ele?.key !== 'delete')
 		}
 		setTableCOlumns(columns)
-	}, [selectedRowKey, openRow, limitsData, siteList, viewList, parameterList])
-
-	useEffect(() => {
-		setLimitsData(paramData)
-	}, [paramData])
+	}, [siteList, viewList, parameterList, paramData, editable])
 
 	return (
 		<div className='expand-table'>
@@ -436,19 +452,14 @@ const LimitInputs = ({ selectedMol, getMoleData, totalViewList, viewList, setLim
 				<Col span={1} className="empty-space" />
 				<Col span={23}>
 					<Table
-						// style={{ width:'1000px'}}
 						columns={tableColumns}
 						pagination={false}
-						dataSource={limitsData}
+						dataSource={_.cloneDeep(paramData)}
 						scroll={{ x: 1300 }}
 					/>
-					{(selectedRowKey === openRow) && <div className="add-button-limit">
+					{editable && <div className="add-button-limit">
 						<Button
 							onClick={() => handleAdd()}
-						// disabled={
-						// 	Object.keys(params).length > 0 &&
-						// 	params.fromScreen !== "Workspace"
-						// }
 						>
 							<PlusOutlined />
 							Add new parameter
