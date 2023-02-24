@@ -225,9 +225,10 @@ const Signature = (props) => {
 				} else if (publish_response.Status == 200) {
 					dispatch(showNotification("success", publish_response.Message));
 					props.PublishResponse(publish_response);
-				} else {
-					dispatch(showNotification("error", publish_response.msg));
-				}
+				} 
+				// else {
+				// 	dispatch(showNotification("error", publish_response.msg));
+				// }
 			} else if (esign_response.Status == 403) {
 				dispatch(showNotification("error", esign_response.Message));
 			} else {

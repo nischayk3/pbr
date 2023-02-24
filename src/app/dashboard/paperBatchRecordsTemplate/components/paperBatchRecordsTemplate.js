@@ -738,7 +738,7 @@ const PaperBatchRecordsTemplate = () => {
 	useEffect(() => {
 
 		getImage()
-		
+
 		// let loadData =  getIdTemplateData()
 		const params = QueryString.parse(location?.search)
 		const getIdTemplateData = async () => {
@@ -775,7 +775,7 @@ const PaperBatchRecordsTemplate = () => {
 				// 	}
 				// 	setPageIdentifierData(obj1)
 				// }
-			}else{
+			} else {
 				getTimeZone()
 			}
 
@@ -916,7 +916,9 @@ const PaperBatchRecordsTemplate = () => {
 
 
 			}))
-			setFormValues(arr)
+			if (formValues.length === 0) {
+				setFormValues(arr)
+			}
 			setActiveNumber(templateInfo?.length)
 			setParamaterAdded(true)
 			// setTemplateInfo([])
@@ -988,9 +990,9 @@ const PaperBatchRecordsTemplate = () => {
 		try {
 			let req = {
 				filename: params?.file,
-				batchNum: val?.batch? val.batch: matBatch?.batch,
-				siteCode: val?.site? val.site:matBatch?.site,
-				productNum: val?.material_num? val.material_num:matBatch?.material_num
+				batchNum: val?.batch ? val.batch : matBatch?.batch,
+				siteCode: val?.site ? val.site : matBatch?.site,
+				productNum: val?.material_num ? val.material_num : matBatch?.material_num
 			}
 			let res = await timeZone(req)
 			if (res["status-code"] === 200) {
