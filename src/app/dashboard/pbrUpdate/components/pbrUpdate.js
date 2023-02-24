@@ -274,7 +274,7 @@ const PbrUpdate = () => {
 								<h3 style={{ marginBottom: "20px" }}>You may edit the selected unstructured data here.</h3>
 								{templateData &&
 									<div style={{ height: "calc(100vh - 190px)", overflowY: "scroll" }}>
-										<EditableRow templateData={templateData} setTemplateData={setTemplateData} setTextInput={setTextInput} textInput={textInput} />
+										<EditableRow buttonDisable={buttonDisable} templateData={templateData} setTemplateData={setTemplateData} setTextInput={setTextInput} textInput={textInput} />
 									</div>
 								}
 								{/* <Table
