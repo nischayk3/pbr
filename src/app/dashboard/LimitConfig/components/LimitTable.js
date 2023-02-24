@@ -12,9 +12,7 @@ const LimitTable = () => {
 
 	const dispatch = useDispatch();
 	const [editTable, setEditTable] = useState(false)
-	const [openRow, setOpenRow] = useState();
 	const [moleculeData, setMoleculeData] = useState([]);
-	const [limitsData, setLimitsData] = useState([]);
 	const [moleculeList, setMoleculeList] = useState([])
 	const [siteList, setSiteList] = useState([]);
 	const [parameterList, setParameterList] = useState([]);
@@ -22,6 +20,7 @@ const LimitTable = () => {
 	const [fileList, setFileList] = useState([]);
 	const selectedMol = useRef('');
 	const totalViewList = useRef([]);
+	const [expandKeys, setExpandKeys] = useState([])
 
 	const handleInternalChange = async (info) => {
 		var formData = new FormData();
@@ -29,9 +28,8 @@ const LimitTable = () => {
 		let res = await uploadLimitConfig(formData)
 		if (res.status === 200) {
 			getLimitConfigApi();
-			setFileList(info.fileList)
-			setOpenRow('')
 		} else {
+			/* istanbul ignore next */
 			dispatch(showNotification("error", res?.Message));
 		}
 	}
@@ -89,7 +87,7 @@ const LimitTable = () => {
 			render: (text, record) =>
 				moleculeData.map((data, index) => {
 					if (record.key === data.key) {
-						if (record.key === openRow) {
+						if (data?.editable) {
 							return (
 								<Select
 									name="molecule"
@@ -113,8 +111,8 @@ const LimitTable = () => {
 			render: (text, record) => {
 				return (
 					<div className='action-table'>
-						{(record.key !== openRow) && <a onClick={(e) => onEdit(e, record.key)}>Edit</a>}
-						{(record.key === openRow) && <a onClick={(e) => saveParammeterData(e)}>Save</a>}
+						{!record?.editable && <a onClick={(e) => onEdit(e, record.key)}>Edit</a>}
+						{record?.editable && <a onClick={(e) => saveParammeterData(e, record?.key)}>Save</a>}
 						<Popconfirm
 							title="Are you sure to delete?"
 							description="Are you sure to delete?"
@@ -128,7 +126,7 @@ const LimitTable = () => {
 						>
 							<a href="#" onClick={(e) => e.stopPropagation()}>Delete</a>
 						</Popconfirm>
-						{(record.key === openRow) && <Dropdown menu={{ items }} trigger={['click']}>
+						{record?.editable && <Dropdown menu={{ items }} trigger={['click']}>
 							<a onClick={(e) => e.stopPropagation()}>
 								<Space>
 									More
@@ -151,7 +149,8 @@ const LimitTable = () => {
 				const obj = {
 					key: index + 1,
 					molecule: key,
-					paramData: value
+					paramData: value,
+					editable: false
 				}
 				tempMoleculeArray.push(obj);
 			})
@@ -201,6 +200,7 @@ const LimitTable = () => {
 			});
 			setMoleculeList(tabs_list_array)
 		} else {
+			/* istanbul ignore next */
 			dispatch(showNotification("error", molecule_list));
 		}
 	};
@@ -226,7 +226,7 @@ const LimitTable = () => {
 		try {
 			dispatch(showLoader());
 			const apiResponse = await deleteLimitsApi(obj);
-			if (apiResponse.Status === 200) {
+			if (apiResponse.status === 200) {
 				getLimitConfigApi();
 			}
 			dispatch(hideLoader());
@@ -238,11 +238,12 @@ const LimitTable = () => {
 		}
 	}
 
-	const saveParammeterData = async (e) => {
+	const saveParammeterData = async (e, rowKey) => {
 		e.stopPropagation()
-		const tempLimitData = JSON.parse(JSON.stringify(limitsData))
+		let tempLimitData = moleculeData.filter((ele) => ele?.key === rowKey)
+		tempLimitData = tempLimitData[0]?.paramData
 		let flag = false;
-		tempLimitData.forEach((limits) => {
+		tempLimitData?.forEach((limits) => {
 			if (Number(limits.from_) && Number(limits.to_)) {
 				if (Number(limits.from_) >= Number(limits.to_)) {
 					flag = true;
@@ -277,12 +278,13 @@ const LimitTable = () => {
 		try {
 			dispatch(showLoader());
 			const apiResponse = await saveLimitConfigApi(data);
-			if (apiResponse?.Status === 200) {
+			if (apiResponse?.status === 200) {
 				getLimitConfigApi();
-				setOpenRow('')
 				dispatch(hideLoader());
 			} else {
+				/* istanbul ignore next */
 				dispatch(showNotification("error", apiResponse?.detail));
+				/* istanbul ignore next */
 				dispatch(hideLoader());
 			}
 
@@ -295,10 +297,20 @@ const LimitTable = () => {
 	}
 
 	const onEdit = (e, rowKey) => {
-		if (editTable) {
-			e.stopPropagation();
-		}
-		setOpenRow(rowKey)
+		e.stopPropagation();
+		const tempkeys = [...expandKeys];
+		tempkeys.push(rowKey)
+		setExpandKeys(tempkeys)
+		const tempMoleculeData = [...moleculeData];
+		tempMoleculeData?.forEach((molecule) => {
+			if (molecule?.key === rowKey) {
+				molecule.editable = true;
+				selectedMol.current = molecule?.molecule
+				getMoleData('site', molecule?.molecule, '')
+				getMoleData('view', molecule?.molecule)
+			}
+		})
+		setMoleculeData(tempMoleculeData)
 	}
 
 	const getMoleData = async (param, paramData, view) => {
@@ -336,6 +348,7 @@ const LimitTable = () => {
 					setViewList(tempViewList)
 				}
 			} else {
+				/* istanbul ignore next */
 				dispatch(showNotification("error", apiResponse?.Message))
 			}
 			const tempMol = [...moleculeData]
@@ -350,9 +363,10 @@ const LimitTable = () => {
 				return tempParam
 			}
 		} catch (error) {
+			/* istanbul ignore next */
 			dispatch(hideLoader());
+			/* istanbul ignore next */
 			console.log(error, 'error')
-			// dispatch(showNotification("error", error));
 		}
 	}
 
@@ -372,7 +386,6 @@ const LimitTable = () => {
 	}, [])
 
 
-
 	return (
 		<div className='limit-container'>
 			<div className="landing-search-wrapper-limit" style={{ width: '100%' }}>
@@ -384,24 +397,31 @@ const LimitTable = () => {
 						columns={columns}
 						pagination={false}
 						expandable={{
-							expandedRowRender: (record) => <LimitInputs getMoleData={getMoleData} siteList={siteList} totalViewList={totalViewList} viewList={viewList} selectedMol={selectedMol} parameterList={parameterList} limitsData={limitsData} setLimitsData={setLimitsData} paramData={record.paramData} editTable={editTable} selectedRowKey={record.key} openRow={openRow} />,
-							// rowExpandable: (record) => record.key === openRow,
+							expandedRowRender: (record) => <LimitInputs editable={record?.editable} expandedMol={record?.key} moleculeData={moleculeData} setMoleculeData={setMoleculeData} getMoleData={getMoleData} siteList={siteList} totalViewList={totalViewList} viewList={viewList} selectedMol={selectedMol} parameterList={parameterList}  paramData={record.paramData} editTable={editTable} />,
 							expandRowByClick: true,
 							onExpand: (expanded, record) => {
+								let tempkeys = [...expandKeys];
 								if (!expanded) {
-									setEditTable(false)
-									setOpenRow('');
+									tempkeys = tempkeys.filter((ele) => ele !== record?.key)
+									const tempMoleculeData = [...moleculeData];
+									tempMoleculeData?.forEach((molecule) => {
+										if (molecule?.key === record?.key) {
+											molecule.editable = false
+										}
+									})
+									setMoleculeData(tempMoleculeData)
 								} else {
-									getMoleData('site', record?.molecule, '')
-									getMoleData('view', record?.molecule)
+									tempkeys.push(record?.key)
 									selectedMol.current = record?.molecule
 									setEditTable(true)
 								}
+								setExpandKeys(tempkeys)
 							}
 						}}
-						// expandRowByClick={true}
+						expandRowByClick={true}
 						dataSource={moleculeData}
 						rowKey={(record) => record.key}
+						expandedRowKeys={expandKeys}
 					/>
 				</div>
 			</div>

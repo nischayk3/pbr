@@ -165,11 +165,11 @@ function PbrReviewer() {
 		dispatch(showLoader());
 		setShowReset(true)
 		let obj = {
-			...reviewerReq, status: value.toLowerCase(), template_id: selectedTemplateArray,date_range: batchFilters.startDate
-			? new Date(batchFilters.startDate).toISOString() +
-			"/" +
-			new Date(batchFilters.endDate).toISOString()
-			: null
+			...reviewerReq, status: value.toLowerCase(), template_id: selectedTemplateArray, date_range: batchFilters.startDate
+				? new Date(batchFilters.startDate).toISOString() +
+				"/" +
+				new Date(batchFilters.endDate).toISOString()
+				: null
 		}
 		setTableLoading(true)
 		let res = await getPbrReviewerData(obj)
@@ -184,11 +184,11 @@ function PbrReviewer() {
 		dispatch(showLoader());
 		setShowResetConfidence(true)
 		let obj = {
-			...reviewerReq, confidence: value, template_id: selectedTemplateArray,date_range: batchFilters.startDate
-			? new Date(batchFilters.startDate).toISOString() +
-			"/" +
-			new Date(batchFilters.endDate).toISOString()
-			: null
+			...reviewerReq, confidence: value, template_id: selectedTemplateArray, date_range: batchFilters.startDate
+				? new Date(batchFilters.startDate).toISOString() +
+				"/" +
+				new Date(batchFilters.endDate).toISOString()
+				: null
 		}
 		setTableLoading(true)
 		let res = await getPbrReviewerData(obj)
@@ -276,7 +276,7 @@ function PbrReviewer() {
 			}
 		})
 		setPieChartData([approved, unapproved]);
-		setAppChart([{...appchart[0],values:[approved, unapproved]}])
+		setAppChart([{ ...appchart[0], values: [approved, unapproved] }])
 		let jsondata1 = obj.confidence_data;
 		let High = 0
 		let Medium = 0
@@ -291,7 +291,7 @@ function PbrReviewer() {
 			}
 		})
 		setPieChartData1([High, Medium, Low]);
-		setAppChart1([{...appchart1[0],values:[High, Medium, Low]}])
+		setAppChart1([{ ...appchart1[0], values: [High, Medium, Low] }])
 
 	};
 
@@ -790,11 +790,13 @@ function PbrReviewer() {
 	/* istanbul ignore next */
 	const resetConfidence = async () => {
 		dispatch(showLoader());
-		let obj = { ...reviewerReq, confidence: null,date_range: batchFilters.startDate
-			? new Date(batchFilters.startDate).toISOString() +
-			"/" +
-			new Date(batchFilters.endDate).toISOString()
-			: null }
+		let obj = {
+			...reviewerReq, confidence: null, date_range: batchFilters.startDate
+				? new Date(batchFilters.startDate).toISOString() +
+				"/" +
+				new Date(batchFilters.endDate).toISOString()
+				: null
+		}
 		setTableLoading(true)
 		let res = await getPbrReviewerData(obj)
 		let arr = res.Data.map((item, index) => ({ ...item, key: index }))
@@ -808,11 +810,13 @@ function PbrReviewer() {
 	/* istanbul ignore next */
 	const resetStatus = async () => {
 		dispatch(showLoader());
-		let obj = { ...reviewerReq, status: null,date_range: batchFilters.startDate
-			? new Date(batchFilters.startDate).toISOString() +
-			"/" +
-			new Date(batchFilters.endDate).toISOString()
-			: null }
+		let obj = {
+			...reviewerReq, status: null, date_range: batchFilters.startDate
+				? new Date(batchFilters.startDate).toISOString() +
+				"/" +
+				new Date(batchFilters.endDate).toISOString()
+				: null
+		}
 		setTableLoading(true)
 		let res = await getPbrReviewerData(obj)
 		let arr = res.Data.map((item, index) => ({ ...item, key: index }))

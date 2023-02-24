@@ -22,7 +22,6 @@ import {
 	getAuthenticateWithLdap,
 	getAuthenticateWithoutAD
 } from "../../services/loginService";
-import { currentTimeStamp, latestDate } from "../../utils/dateHelper";
 import "./styles.scss";
 
 
@@ -233,6 +232,17 @@ const Signature = (props) => {
 					console.log(req1)
 					publish_response = Object.keys(params).length > 0 && params.fromScreen !== "Workflow"
 						? await publishEvent(reqs, headers) : await approveRecord(req1)
+
+				} else if (props.appType == "PBR_TEMPLATE") {
+					if (params.fromScreen == "Workflow" || params.fromScreen == "Workspace") {
+						publish_response =
+							Object.keys(params).length > 0 && params.fromScreen !== "Workspace"
+								? await approveRecord(req1)
+								: await publishEvent(reqs, headers);
+					} else {
+						publish_response =
+							Object.keys(params).length > 0 && await approveRecord(req1)
+					}
 
 				} else {
 					publish_response =

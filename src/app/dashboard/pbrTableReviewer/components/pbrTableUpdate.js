@@ -40,6 +40,7 @@ const pbrTableUpdate = () => {
 	const [areasMap, setAreasMap] = useState(AREAS_MAP);
 	const [imageWidth, setImageWidth] = useState(0);
 	const [imageHeight, setimageHeight] = useState(0);
+	const [buttonDisable, setButtonDisable] = useState(false);
 	const history = useHistory();
 	const [textInput, setTextInput] = useState({
 		changed_by: "",
@@ -185,6 +186,7 @@ const pbrTableUpdate = () => {
 		}
 		let res = await getPbrReviewerData(req);
 		let arr = res?.Data[0]?.table_value.map((item, index) => ({ ...item, key: index }))
+		setButtonDisable(res?.Data[0].status === "approved" ? true : false)
 		setTemplateData(arr);
 		// setInitialTableData(arr)
 		dispatch(initialTableData(arr))
@@ -246,11 +248,11 @@ const pbrTableUpdate = () => {
 		event.preventDefault();
 		let req = {
 			id: [Number(params.id)],
-			changed_by: localStorage.getItem('username'),
+			changed_by: localStorage.getItem('user'),
 			recorded_date: null,
 			recorded_time: null,
 			snippet_value: null,
-			status: "approved",
+			status: null,
 			uom: null,
 			table_value: templateData,
 			esign_id: null
@@ -288,7 +290,7 @@ const pbrTableUpdate = () => {
 		setTemplateData(arr)
 		dispatch(hideLoader());
 	}
-
+	
 	return (
 		<div className='pbr-container'>
 			<BreadCrumbWrapper
@@ -305,7 +307,7 @@ const pbrTableUpdate = () => {
 								<h3 style={{ marginBottom: "20px" }}>You may edit the selected unstructured data here.</h3>
 								{templateData &&
 									<div style={{ height: "calc(100vh - 190px)", overflowY: "scroll", border: "0.5px solid blue", marginTop: 26 }}>
-										<EditableRow templateData={templateData} setTemplateData={setTemplateData} setTextInput={setTextInput} textInput={textInput} />
+										<EditableRow buttonDisable={buttonDisable} templateData={templateData} setTemplateData={setTemplateData} setTextInput={setTextInput} textInput={textInput} />
 									</div>
 								}
 								{/* <Table
@@ -355,6 +357,7 @@ const pbrTableUpdate = () => {
 										borderRadius: "5px",
 
 									}}
+										disabled={buttonDisable}
 										onClick={handleClick}
 
 										type='primary'>Save Changes</Button>
