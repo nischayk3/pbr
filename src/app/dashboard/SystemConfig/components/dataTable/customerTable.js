@@ -80,7 +80,7 @@ const CustomerTable = ({ tableData }) => {
 			title: 'ACTION',
 			dataIndex: 'operation',
 			key: 9,
-			width: '120',
+			width: '150',
 			render: (_, record) => {
 				const editable = isEditing(record);
 				return editable ? (

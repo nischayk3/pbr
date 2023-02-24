@@ -47,15 +47,18 @@ const Workflow = () => {
 	const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 	const [approveReject, setApproveReject] = useState("");
 	const [isApprove, setIsApprove] = useState(true);
+	const [showWorkflow, setShowWorkflow] = useState(false);
 
 	const params = queryString.parse(location.search);
 	console.log("params", params);
 	useEffect(() => {
 		getTilesData();
-		setActiveDiv(params?.active);
-		setCardTitle(params?.active);
-		setApplicationType(params?.apptype);
-
+		if (Object.keys(params) &&
+			Object.keys(params).length > 0) {
+			setActiveDiv(params?.active);
+			setCardTitle(params?.active);
+			setApplicationType(params?.apptype);
+		}
 		console.log("location", location);
 	}, []);
 
@@ -118,8 +121,17 @@ const Workflow = () => {
 		try {
 			dispatch(showLoader());
 			const tilesResponse = await getCountData(req);
-			setTilesData(tilesResponse["Data"]);
-			dispatch(hideLoader());
+			if (tilesResponse['status-code'] === 200) {
+				dispatch(hideLoader());
+				setShowWorkflow(true)
+				setTilesData(tilesResponse["Data"]);
+			} else {
+				dispatch(hideLoader());
+				setShowWorkflow(false)
+				dispatch(showNotification("error", `${tilesResponse['status-code']} error`));
+			}
+
+
 		} catch (error) {
 			/* istanbul ignore next */
 			dispatch(hideLoader());
@@ -284,8 +296,7 @@ const Workflow = () => {
 					source={illustrations}
 					sourceClass="geanealogy-image"
 				/>
-
-				<div className="workflow_items">
+				{showWorkflow ? (<div className="workflow_items">
 					{
 						<div className="approve-wrapper">
 							{tilesData &&
@@ -397,7 +408,11 @@ const Workflow = () => {
 							description={<span>Please select one to view its approvals</span>}
 						/>
 					)}
-				</div>
+				</div>) : (<Empty
+					className="empty-workflow workflow-right-block"
+					description={<span>No view for approvals</span>}
+				/>)}
+
 			</div>
 			<Signature
 				isPublish={isPublish}

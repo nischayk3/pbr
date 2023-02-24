@@ -15,7 +15,7 @@ import { resourceActionUpdated, resourceAuth } from '../../../../services/userRo
 
 const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackResource, callbackResourceCard, resourceDataTable, editResource, resourceType }) => {
 	const [resList, setResList] = useState([]);
-	const [selectedResource, setSelectedResource] = useState('');
+	const [selectedResource, setSelectedResource] = useState(editResource);
 	const [data, setData] = useState([]);
 	const [selectedAuth, setSelectedAuth] = useState([]);
 	const [rolePriv, setRolePriv] = useState('');
