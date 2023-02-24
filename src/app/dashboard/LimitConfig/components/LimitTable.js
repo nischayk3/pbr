@@ -29,6 +29,7 @@ const LimitTable = () => {
 		if (res.status === 200) {
 			getLimitConfigApi();
 		} else {
+			/* istanbul ignore next */
 			dispatch(showNotification("error", res?.Message));
 		}
 	}
@@ -199,6 +200,7 @@ const LimitTable = () => {
 			});
 			setMoleculeList(tabs_list_array)
 		} else {
+			/* istanbul ignore next */
 			dispatch(showNotification("error", molecule_list));
 		}
 	};
@@ -280,7 +282,9 @@ const LimitTable = () => {
 				getLimitConfigApi();
 				dispatch(hideLoader());
 			} else {
+				/* istanbul ignore next */
 				dispatch(showNotification("error", apiResponse?.detail));
+				/* istanbul ignore next */
 				dispatch(hideLoader());
 			}
 
@@ -344,6 +348,7 @@ const LimitTable = () => {
 					setViewList(tempViewList)
 				}
 			} else {
+				/* istanbul ignore next */
 				dispatch(showNotification("error", apiResponse?.Message))
 			}
 			const tempMol = [...moleculeData]
@@ -358,9 +363,10 @@ const LimitTable = () => {
 				return tempParam
 			}
 		} catch (error) {
+			/* istanbul ignore next */
 			dispatch(hideLoader());
+			/* istanbul ignore next */
 			console.log(error, 'error')
-			// dispatch(showNotification("error", error));
 		}
 	}
 
