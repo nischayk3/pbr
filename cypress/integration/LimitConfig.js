@@ -5,42 +5,12 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 describe("Renders the Limit config page", () => {
 	afterEach(() => {
 		cy.viewport(1360, 720)
-		localStorage.setItem("loginwith", "WITH_AD");
-		localStorage.setItem("test_enabled", true);
-		localStorage.setItem("user", "dinesh.jinjala@mareana.com");
-		localStorage.setItem("username", "Dinesh");
-		localStorage.setItem(
-			"login_details", JSON.stringify({
-				ad_role: false,
-				email_id: "dinesh.jinjala@mareana.com",
-				firstname: "Dinesh",
-				lastname: "Jinjala",
-				mdh_role: "USER",
-				screen_set: "1000_USER",
-				token:
-					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkRpbmVzaCAgSmluamFsYSIsInVuaXhfdGltZXN0YW1wIjoxNjc3MDU2NzE1LjY0MTg5MywidGltZXN0YW1wIjoiMjIvMDIvMjAyMyAwOTowNToxNSIsImV4cCI6MzMyMTMwNTY3MTUsImFkX3JvbGUiOmZhbHNlLCJtZGhfcm9sZSI6IlNZU1RFTV9BRE1JTiIsImVtYWlsX2lkIjoiZGluZXNoLmppbmphbGFAbWFyZWFuYS5jb20iLCJjdXN0X2tleSI6IjEwMDAifQ.j5ZwCYeiIBFHregUuKeA_MLfGZ7U0_qBCBkwsUWnKOk"
-			})
-		);
+		cy.loginWithAD()
 	});
 
 	beforeEach(() => {
 		cy.viewport(1366, 720)
-		localStorage.setItem("loginwith", "WITH_AD");
-		localStorage.setItem("test_enabled", true);
-		localStorage.setItem("user", "dinesh.jinjala@mareana.com");
-		localStorage.setItem("username", "Dinesh");
-		localStorage.setItem(
-			"login_details", JSON.stringify({
-				ad_role: false,
-				email_id: "dinesh.jinjala@mareana.com",
-				firstname: "Dinesh",
-				lastname: "Jinjala",
-				mdh_role: "USER",
-				screen_set: "1000_USER",
-				token:
-					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IlZpbmF5IFJlZGR5IiwidW5peF90aW1lc3RhbXAiOjE2NzU0OTE4ODMuNDkzMzMsInRpbWVzdGFtcCI6IjA0LzAyLzIwMjMgMDY6MjQ6NDMiLCJleHAiOjE2NzU1MDI2ODMsImFkX3JvbGUiOmZhbHNlLCJtZGhfcm9sZSI6WyJTWVNURU1fQURNSU4iXSwiZW1haWxfaWQiOiJ2aW5heS5yZWRkeUBtYXJlYW5hLmNvbSIsImN1c3Rfa2V5IjoiMTAwMCJ9.7C6qucMUeGIKxl-wDNCrKFa2t9XDuWQ0f2oRBnogPSc"
-			})
-		);
+		cy.loginWithAD()
 
 		cy.intercept("GET", "**/chart-limit", {
 			fixture: "chartLimits.json",
@@ -66,24 +36,41 @@ describe("Renders the Limit config page", () => {
 	it('Operating More button', () => {
 		cy.get('.action-table > :nth-child(1)').click();
 		cy.get('.ant-space').click();
-		cy.get('.ant-table-row > .ant-table-row-expand-icon-cell').click();
+		cy.get('.ant-dropdown-menu-title-content > div > a').click();
+		cy.get('.ant-upload-select > .ant-upload').click();
+		cy.get('input[type=file]').selectFile({ contents: 'cypress/filefortest/chartLimit.xlsx' }, { force: true })
 		cy.wait(1000)
+		cy.get('.ant-table-row > .ant-table-row-expand-icon-cell').click();
 	})
 
 	it('Editing Limits', () => {
-		cy.wait(1000)
 		cy.get('.action-table > :nth-child(1)').click();
-		cy.get('[data-row-key="1"] > :nth-child(2) > .ant-input').click().clear().type(1255)
-		cy.get('[data-row-key="1"] > :nth-child(3) > .ant-input').click().clear().type('normalities')
+		cy.wait(1000)
+		cy.get(':nth-child(2) > .ant-select > .ant-select-selector > .ant-select-selection-item').click();
+		cy.get('[title="7-7"]').click({multiple:'true', force: true});
+		cy.get(':nth-child(2) > .ant-select > .ant-select-selector > .ant-select-selection-item').click();
+		cy.get('[title="BELATACEPT"]').click({multiple:'true', force: true});
+		cy.wait(1000)
+		cy.get('[data-row-key="1"] > :nth-child(2) > .select_field > .ant-select > .ant-select-selector').click();
+		cy.get('[title="V494"]').click({multiple:'true', force: true});
+		cy.get('[data-row-key="1"] > :nth-child(3) > .select_field > .ant-select > .ant-select-selector').click();
+		cy.get('[title="1"]').click({multiple:'true', force: true});
+		cy.wait(1000);
 		cy.get('[data-row-key="1"] > :nth-child(4) > .select_field > .ant-select > .ant-select-selector').click();
-		cy.get(".ant-select-item-option").eq(0).click();
-		cy.get('[data-row-key="1"] > :nth-child(5) > .ant-input').click().clear().type(9.3);
-		cy.get('[data-row-key="1"] > :nth-child(6) > .ant-input').click().clear().type(15.6);
-		cy.get('[data-row-key="1"] > :nth-child(7) > .ant-picker').click();
+		cy.get('[title="init_a"]').click({multiple:'true', force: true});
+		cy.get('[data-row-key="1"] > :nth-child(5) > .select_field > .ant-select > .ant-select-selector').click();
+		cy.get('[title="1255"]').click({multiple:'true', force: true});
+		cy.get('[data-row-key="1"] > :nth-child(6) > .ant-select > .ant-select-selector').click();
+		cy.get('[title="CPP"]').click({multiple:'true', force: true});
+		cy.get('[data-row-key="1"] > :nth-child(5) > .select_field > .ant-select > .ant-select-selector').click();
+		cy.get('[title="control"]').click({multiple:'true', force: true});
+		cy.get('[data-row-key="1"] > :nth-child(8) > .ant-input').click().clear().type(9.3);
+		cy.get('[data-row-key="1"] > :nth-child(9) > .ant-input').click().clear().type(15.6);
+		cy.get('[data-row-key="1"] > :nth-child(10) > .ant-picker').click();
 		cy.get(".ant-picker-cell").eq(7).click();
+		cy.get('[data-row-key="1"] > :nth-child(11) > .ant-input').clear().type("test.csv")
+		cy.get('[data-row-key="1"] > :nth-child(12) > .ant-input').clear().type("test.url")
 		cy.get('.add-button-limit > .ant-btn').click();
-		cy.get('[data-row-key="6"] > :nth-child(1) > .anticon > svg').click();
-		cy.get('.ant-btn-primary').click();
 		cy.get('.action-table > :nth-child(1)').click();
 		cy.wait(1000)
 	})
@@ -97,6 +84,10 @@ describe("Renders the Limit config page", () => {
 
 	it('Deleting molecule', () => {
 		cy.get('.action-table > :nth-child(2)').click();
+		cy.get('.ant-btn-primary').click();
 		cy.wait(1000)
+	})
+	it('adding molecule', () => {
+		cy.get('.landing-card-limit > .ant-btn > span').click();
 	})
 });
