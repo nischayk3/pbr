@@ -190,7 +190,7 @@ const App = (props) => {
       ...col,
       onCell: (record) => ({
         record,
-        editable: col.editable,
+        editable: buttonDisable? null: col.editable,
         dataIndex: col.dataIndex,
         title: col.title,
         handleSave,

@@ -81,7 +81,7 @@ const EditableCell = ({
 };
  /* istanbul ignore next */
 const App = (props) => {
-  let { templateData, setTemplateData,setTextInput,textInput } = props
+  let { templateData, setTemplateData,setTextInput,textInput,buttonDisable } = props
   let editCells = ["recorded_date","recorded_time","snippet_value","table_value","uom"]
   const defaultColumns = [
     {
@@ -139,7 +139,7 @@ const App = (props) => {
       ...col,
       onCell: (record) => ({
         record,
-        editable: editCells.includes(record.column) ? col.editable : null,
+        editable: buttonDisable? null: editCells.includes(record.column) ? col.editable : null,
         dataIndex: col.dataIndex,
         title: col.title,
         handleSave,

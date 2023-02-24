@@ -41,6 +41,7 @@ const PbrUpdate = () => {
 	const [imageWidth, setImageWidth] = useState(0);
 	const [imageHeight, setimageHeight] = useState(0);
 	const [callBounding, setCallBounding] = useState(false);
+	const [buttonDisable, setButtonDisable] = useState(false);
 	const location = useLocation();
 	const params = queryString.parse(location.search);
 	let rowArray = ["id", "param_name", "anchor_key", "snippet_value", "snippet_image", "recorded_date", "recorded_time", "uom", "changed_by"]
@@ -146,6 +147,10 @@ const PbrUpdate = () => {
 			date_range: null
 		}
 		let res = await getPbrReviewerData(req);
+		let flag = res?.Data.filter(item=>item.column === 'status')
+		console.log("flag",flag)
+		setButtonDisable(flag[0]?.value === "approved" ? true : false)
+		setButtonDisable(res?.Data[0].status === "approved" ? true : false)
 		setTemplateData(res.Data);
 		dispatch(hideLoader());
 	}
@@ -163,6 +168,9 @@ const PbrUpdate = () => {
 			date_range: null
 		}
 		let res = await getPbrReviewerData(req);
+		let flag = res?.Data.filter(item=>item.column === 'status')
+		console.log("flag",flag)
+		setButtonDisable(flag[0]?.value === "approved" ? true : false)
 		// let arr = []
 		// Object.entries(res.Data[0]).forEach(item => {
 		//   arr.push({ column: item[0], value: item[1] })
@@ -225,7 +233,7 @@ const PbrUpdate = () => {
 		let numberArray = resp.map(Number)
 		let formvalues = {
 			id: numberArray,
-			changed_by: localStorage.getItem('username'),
+			changed_by: localStorage.getItem('user'),
 			recorded_date: textInput?.recorded_date ? textInput?.recorded_date : null,
 			recorded_time: textInput?.recorded_time ? textInput?.recorded_time : null,
 			snippet_value: textInput?.snippet_value ? textInput?.snippet_value : null,
@@ -266,7 +274,7 @@ const PbrUpdate = () => {
 								<h3 style={{ marginBottom: "20px" }}>You may edit the selected unstructured data here.</h3>
 								{templateData &&
 									<div style={{ height: "calc(100vh - 190px)", overflowY: "scroll" }}>
-										<EditableRow templateData={templateData} setTemplateData={setTemplateData} setTextInput={setTextInput} textInput={textInput} />
+										<EditableRow buttonDisable={buttonDisable} templateData={templateData} setTemplateData={setTemplateData} setTextInput={setTextInput} textInput={textInput} />
 									</div>
 								}
 								{/* <Table
@@ -308,6 +316,7 @@ const PbrUpdate = () => {
 										borderRadius: "5px",
 
 									}}
+									disabled={buttonDisable}
 										onClick={handleClick}
 
 										type='primary'>Save Changes</Button>
