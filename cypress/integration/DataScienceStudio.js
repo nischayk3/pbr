@@ -29,19 +29,6 @@ describe("Render Data Science Studio", () => {
 		const url = Cypress.config().baseUrl
 		cy.wait(2000)
 		cy.visit(url + '/#/dashboard/data_science_studio')
-		cy.wait(2000)
-		cy.get('#load-dataset > .anticon > svg').click()
-	})
-
-	it('Click back btn', () => {
-		cy.wait(2000)
-		cy.get('#back-btn > span').click()
-	})
-
-	it('Upload Load Data Set', () => {
-		const url = Cypress.config().baseUrl
-		cy.wait(2000)
-		cy.visit(url + '/#/dashboard/data_science_studio')
 
 		cy.wait(2000)
 		cy.get('#load-dataset > .anticon > svg').click()
@@ -53,7 +40,7 @@ describe("Render Data Science Studio", () => {
 		cy.get('input[type=file]').selectFile({ contents: 'cypress/filefortest/V348.csv' }, { force: true })
 	})
 
-	it('Select nect button', () => {
+	it('Select next button', () => {
 		cy.wait(2000)
 		cy.get('#next-btn > span').click()
 	})

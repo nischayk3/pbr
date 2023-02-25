@@ -50,7 +50,7 @@ const Workflow = () => {
 	const [showWorkflow, setShowWorkflow] = useState(false);
 
 	const params = queryString.parse(location.search);
-	console.log("params", params);
+
 	useEffect(() => {
 		getTilesData();
 		if (Object.keys(params) &&
@@ -58,8 +58,9 @@ const Workflow = () => {
 			setActiveDiv(params?.active);
 			setCardTitle(params?.active);
 			setApplicationType(params?.apptype);
+			cardTableData();
 		}
-		console.log("location", location);
+
 	}, []);
 
 	useEffect(() => {

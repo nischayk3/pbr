@@ -15,18 +15,20 @@ Cypress.on('uncaught:exception', (err) => {
 
 describe("Render View Creation Load Error Log", () => {
 	afterEach(() => {
-		cy.loginWithAD()
+		cy.viewport(1280, 720);
+		cy.loginWithAD();
 		cy.intercept('GET', '**/views-list', { fixture: 'viewList.json' }).as('viewList')
 	});
 
 	beforeEach(() => {
-		cy.loginWithAD()
+		cy.viewport(1280, 720);
+		cy.loginWithAD();
 		cy.intercept('GET', '**/views-list', { fixture: 'viewList.json' }).as('viewList')
 	});
 
 	it('Load View Landing Page Correctly', () => {
 		const url = Cypress.config().baseUrl
-		cy.wait(10000).then(() => {
+		cy.wait(2000).then(() => {
 			cy.visit(url + '/#/dashboard/view_creation')
 			cy.log('Load Landing Page')
 			cy.url().should('eq', url + '/#/dashboard/view_creation')
@@ -39,7 +41,7 @@ describe("Render View Creation Load Error Log", () => {
 
 	it('Create a New View', () => {
 		const url = Cypress.config().baseUrl
-		cy.wait(10000).then(() => {
+		cy.wait(2000).then(() => {
 			cy.log('Verify New View Creation URL ')
 			cy.visit(url + '/#/dashboard/view_creation/0')
 			cy.url().should('eq', url + '/#/dashboard/view_creation/0')
@@ -47,7 +49,7 @@ describe("Render View Creation Load Error Log", () => {
 	})
 
 	it('Molecule Error Check', () => {
-		cy.wait(10000).then(() => {
+		cy.wait(2000).then(() => {
 			cy.log("Verify 401 error")
 		})
 	})
@@ -55,144 +57,113 @@ describe("Render View Creation Load Error Log", () => {
 
 describe("Render View Creation Load", () => {
 	afterEach(() => {
-		localStorage.setItem("loginwith", "WITH_AD");
-		localStorage.setItem("test_enabled", true);
-		localStorage.setItem("user", "dinesh.jinjala@mareana.com");
-		localStorage.setItem("username", "Dinesh");
-		localStorage.setItem(
-			"login_details", JSON.stringify({
-				ad_role: false,
-				email_id: "dinesh.jinjala@mareana.com",
-				firstname: "Dinesh",
-				lastname: "Jinjala",
-				mdh_role: "USER",
-				screen_set: "1000_USER",
-				token:
-					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkRpbmVzaCAgSmluamFsYSIsInVuaXhfdGltZXN0YW1wIjoxNjc3MDU2NzE1LjY0MTg5MywidGltZXN0YW1wIjoiMjIvMDIvMjAyMyAwOTowNToxNSIsImV4cCI6MzMyMTMwNTY3MTUsImFkX3JvbGUiOmZhbHNlLCJtZGhfcm9sZSI6IlNZU1RFTV9BRE1JTiIsImVtYWlsX2lkIjoiZGluZXNoLmppbmphbGFAbWFyZWFuYS5jb20iLCJjdXN0X2tleSI6IjEwMDAifQ.j5ZwCYeiIBFHregUuKeA_MLfGZ7U0_qBCBkwsUWnKOk"
+		cy.viewport(1280, 920);
+		cy.loginWithAD();
+		cy.intercept('GET', '**/views-list', { fixture: 'viewList.json' }).as('viewList')
+		cy.intercept('GET', '**/view-config?view_disp_id=V348&view_version=1', (req) => {
+			req.reply({
+				statusCode: 200, // default
+				fixture: 'viewConfig.json'
 			})
-		);
+		})
 	});
+
 
 	beforeEach(() => {
-		localStorage.setItem("loginwith", "WITH_AD");
-		localStorage.setItem("test_enabled", true);
-		localStorage.setItem("user", "dinesh.jinjala@mareana.com");
-		localStorage.setItem("username", "Dinesh");
-		localStorage.setItem(
-			"login_details", JSON.stringify({
-				ad_role: false,
-				email_id: "dinesh.jinjala@mareana.com",
-				firstname: "Dinesh",
-				lastname: "Jinjala",
-				mdh_role: "USER",
-				screen_set: "1000_USER",
-				token:
-					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkRpbmVzaCAgSmluamFsYSIsInVuaXhfdGltZXN0YW1wIjoxNjc3MDU2NzE1LjY0MTg5MywidGltZXN0YW1wIjoiMjIvMDIvMjAyMyAwOTowNToxNSIsImV4cCI6MzMyMTMwNTY3MTUsImFkX3JvbGUiOmZhbHNlLCJtZGhfcm9sZSI6IlNZU1RFTV9BRE1JTiIsImVtYWlsX2lkIjoiZGluZXNoLmppbmphbGFAbWFyZWFuYS5jb20iLCJjdXN0X2tleSI6IjEwMDAifQ.j5ZwCYeiIBFHregUuKeA_MLfGZ7U0_qBCBkwsUWnKOk"
+		cy.viewport(1280, 920);
+		cy.loginWithAD();
+		cy.intercept('GET', '**/views-list', { fixture: 'viewList.json' }).as('viewList')
+		cy.intercept('GET', '**/view-config?view_disp_id=V348&view_version=1', (req) => {
+			req.reply({
+				statusCode: 200, // default
+				fixture: 'viewConfig.json'
 			})
-		);
-
-	});
-
+		})
+	})
 
 	it('Load View Landing Page Correctly', () => {
 		const url = Cypress.config().baseUrl
-		cy.intercept('GET', '**/views-list', { fixture: 'viewList.json' }).as('viewList')
+		cy.visit(url + '/#/dashboard/view_creation')
 
-		cy.wait(20000).then(() => {
-			cy.visit(url + '/#/dashboard/view_creation')
-
-			cy.log('Load Landing Page')
-			cy.url().should('eq', url + '/#/dashboard/view_creation')
-		})
-
+		cy.log('Load Landing Page')
+		cy.url().should('eq', url + '/#/dashboard/view_creation')
 	})
 
 	it('Select View ID', () => {
-		cy.log('Select View ID - V484')
-		cy.get('[href="#/dashboard/view_creation/V484&1"] > .chart-tiles').click()
+		cy.wait(2000)
+		cy.log('Select View ID - V348')
+		cy.get('[href="#/dashboard/view_creation/V348&1"] > .chart-tiles').click()
 	})
 
 
 	it('View Summary Load', () => {
-		cy.wait(2000)
-		cy.log('Verift View Id')
-		cy.get('.view-summary_lable > :nth-child(1) > :nth-child(1)').should("have.text", "View ID : ")
-		cy.get('.view-summary_lable > :nth-child(1) > :nth-child(2)').should("have.text", "V484")
+		cy.wait(1000).then(() => {
+			cy.wait(2000)
+			cy.log('Verift View Id')
+			cy.get('.view-summary_lable > :nth-child(1) > :nth-child(1)').should("have.text", "View ID : ")
+			cy.get('.view-summary_lable > :nth-child(1) > :nth-child(2)').should("have.text", "V348")
 
-		cy.log('Verift View Status')
-		cy.get('.view-summary_lable > :nth-child(2) > :nth-child(1)').should("have.text", "Status : ")
-		cy.get('.view-summary_lable > :nth-child(2) > :nth-child(2)').should("have.text", "APRD")
+			cy.log('Verift View Status')
+			cy.get('.view-summary_lable > :nth-child(2) > :nth-child(1)').should("have.text", "Status : ")
+			cy.get('.view-summary_lable > :nth-child(2) > :nth-child(2)').should("have.text", "APRD")
 
-		cy.log('Verift View Version')
-		cy.get('.view-summary_lable > :nth-child(3) > :nth-child(1)').should("have.text", "Version : ")
-		cy.get('.view-summary_lable > :nth-child(3) > :nth-child(2)').should("have.text", "1")
+			cy.log('Verift View Version')
+			cy.get('.view-summary_lable > :nth-child(3) > :nth-child(1)').should("have.text", "Version : ")
+			cy.get('.view-summary_lable > :nth-child(3) > :nth-child(2)').should("have.text", "1")
+		})
 	})
 
 	it('View Summary Delete Function', () => {
 		cy.log('Delete Function')
 		cy.get(':nth-child(2) > .summary-column > :nth-child(2) > .anticon > svg').click()
+		cy.wait(2000)
 	})
 
+	it('Check Export data', () => {
+		cy.wait(2000)
+		cy.log('Click on Export button')
+		cy.get('#export_data').click()
 
+		cy.wait(500)
+		cy.log('Click on Export Excel')
+		cy.get('#excel_data').click()
+
+		cy.wait(2000)
+		cy.log('Click on Export button')
+		cy.get('#export_data').click()
+
+		cy.wait(500)
+		cy.log('Click on CSV Excel')
+		cy.get('#csv_data').click()
+
+		cy.wait(5000)
+	})
 })
 
 describe("Render View Creation Page", () => {
-
 	afterEach(() => {
-		localStorage.setItem("loginwith", "WITH_AD");
-		localStorage.setItem("test_enabled", true);
-		localStorage.setItem("user", "dinesh.jinjala@mareana.com");
-		localStorage.setItem("username", "Dinesh");
-		localStorage.setItem(
-			"login_details", JSON.stringify({
-				ad_role: false,
-				email_id: "dinesh.jinjala@mareana.com",
-				firstname: "Dinesh",
-				lastname: "Jinjala",
-				mdh_role: "USER",
-				screen_set: "1000_USER",
-				token:
-					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkRpbmVzaCAgSmluamFsYSIsInVuaXhfdGltZXN0YW1wIjoxNjc3MDU2NzE1LjY0MTg5MywidGltZXN0YW1wIjoiMjIvMDIvMjAyMyAwOTowNToxNSIsImV4cCI6MzMyMTMwNTY3MTUsImFkX3JvbGUiOmZhbHNlLCJtZGhfcm9sZSI6IlNZU1RFTV9BRE1JTiIsImVtYWlsX2lkIjoiZGluZXNoLmppbmphbGFAbWFyZWFuYS5jb20iLCJjdXN0X2tleSI6IjEwMDAifQ.j5ZwCYeiIBFHregUuKeA_MLfGZ7U0_qBCBkwsUWnKOk"
-			})
-		);
-
-
+		cy.viewport(1280, 720);
+		cy.loginWithAD();
 		cy.intercept('POST', '**/molecules3', { fixture: 'secondNodeMol.json' }).as('secondNodeMol')
+		cy.intercept('GET', '**/views-list', { fixture: 'viewList.json' }).as('viewList')
 	});
 
 	beforeEach(() => {
-		localStorage.setItem("loginwith", "WITH_AD");
-		localStorage.setItem("test_enabled", true);
-		localStorage.setItem("user", "dinesh.jinjala@mareana.com");
-		localStorage.setItem("username", "Dinesh");
-		localStorage.setItem(
-			"login_details", JSON.stringify({
-				ad_role: false,
-				email_id: "dinesh.jinjala@mareana.com",
-				firstname: "Dinesh",
-				lastname: "Jinjala",
-				mdh_role: "USER",
-				screen_set: "1000_USER",
-				token:
-					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkRpbmVzaCAgSmluamFsYSIsInVuaXhfdGltZXN0YW1wIjoxNjc3MDU2NzE1LjY0MTg5MywidGltZXN0YW1wIjoiMjIvMDIvMjAyMyAwOTowNToxNSIsImV4cCI6MzMyMTMwNTY3MTUsImFkX3JvbGUiOmZhbHNlLCJtZGhfcm9sZSI6IlNZU1RFTV9BRE1JTiIsImVtYWlsX2lkIjoiZGluZXNoLmppbmphbGFAbWFyZWFuYS5jb20iLCJjdXN0X2tleSI6IjEwMDAifQ.j5ZwCYeiIBFHregUuKeA_MLfGZ7U0_qBCBkwsUWnKOk"
-			})
-		);
+		cy.viewport(1280, 720);
+		cy.loginWithAD();
 		cy.intercept('POST', '**/molecules3', { fixture: 'secondNodeMol.json' }).as('secondNodeMol')
+		cy.intercept('GET', '**/views-list', { fixture: 'viewList.json' }).as('viewList')
 	});
 
 	it('Load View Landing Page Correctly', () => {
 		const url = Cypress.config().baseUrl
-		cy.intercept('GET', '**/views-list', { fixture: 'viewList.json' }).as('viewList')
-
-		cy.wait(20000).then(() => {
+		cy.wait(2000).then(() => {
 			cy.visit(url + '/#/dashboard/view_creation')
-
 			cy.log('Load Landing Page')
 			cy.url().should('eq', url + '/#/dashboard/view_creation')
 		})
 
 	})
-
 
 	it('Load Screen Header', () => {
 		const date = new Date();
@@ -213,11 +184,11 @@ describe("Render View Creation Page", () => {
 		cy.log('Load Search Bar')
 		cy.log('Search View Id In Search Component')
 		cy.get("input[placeholder='Search by view ID or name']").clear()
-		cy.get("input[placeholder='Search by view ID or name']").type("V484")
+		cy.get("input[placeholder='Search by view ID or name']").type("V348")
 		cy.get(".ant-input-search-button").click({ multiple: true })
 
 		cy.log('Verify Search Result In Table')
-		cy.get('.ant-table-row > :nth-child(1) > div').should("have.text", "V484-1")
+		cy.get('.ant-table-row > :nth-child(1) > div').should("have.text", "V348-1")
 		cy.get('.ant-table-row > :nth-child(3) > div').should("have.text", "APRD")
 		cy.get('.ant-table-row > :nth-child(4) > div').should("have.text", "1")
 		cy.get('.ant-table-row > :nth-child(5) > div').should("have.text", "D dinesh.jinjala@mareana.com")
@@ -282,7 +253,7 @@ describe("Render View Creation Page", () => {
 		cy.wait(100)
 		cy.log('Click on Parameter')
 		cy.get(':nth-child(4) > .ant-tree-node-content-wrapper > .ant-tree-title > .treenode-block > :nth-child(2) > .anticon > svg').click({ multiple: true })
-
+		cy.wait(2000)
 	})
 
 	it('Filter Paramter lookup ', () => {
@@ -307,38 +278,52 @@ describe("Render View Creation Page", () => {
 	})
 
 	it('File Upload ', () => {
+		cy.intercept('GET', '**/adhoc-files', (req) => {
+			req.reply({
+				statusCode: 202, // default
+				fixture: 'viewAdhocFile.json'
+			})
+		})
 		cy.log('Click Upload Button')
-
 		cy.get('.materials-uploadFiles > .ant-btn').click()
 
+		cy.wait(500)
 		cy.log('File Upload Popup Open')
 		cy.get('.fileUploadModal').should('be.visible')
 
+		cy.wait(500)
 		cy.log('Select a file')
 		cy.get('input[type=file]').selectFile({ contents: 'cypress/filefortest/cypress_mol_batch_file.xlsx' }, { force: true })
 
+		cy.wait(2000)
 		cy.log('Verfiy Uploaded File')
 		cy.get('.ant-upload-list-item-name').should('have.text', 'cypress_mol_batch_file.xlsx')
 
+		cy.wait(5000)
 		cy.log('Upload file Id')
 		cy.get('#upload-file > span').click()
 
+		cy.wait(500)
 		cy.get('.panelHeader_span').should('have.text', 'cypress_mol_batch_file')
 
 		cy.log('Delete Uploaded File')
 		cy.get('.fileUpload-delete > .anticon > svg').click()
+
 		cy.get('.ant-popover-inner-content').should('be.visible')
 		cy.get('.ant-popover-buttons > .ant-btn-primary > span').click()
 
 		cy.log("upload file again")
 		cy.get('.materials-uploadFiles > .ant-btn').click()
 
+		cy.wait(500)
 		cy.log('Select a file')
 		cy.get('input[type=file]').selectFile({ contents: 'cypress/filefortest/cypress_mol_batch_file.xlsx' }, { force: true })
 
+		cy.wait(2000)
 		cy.log('Upload file Id')
 		cy.get('#upload-file > span').click()
 
+		cy.wait(500)
 		cy.get('.panelHeader_span').should('have.text', 'cypress_mol_batch_file')
 
 		cy.get('.materials-wrapper > .ant-collapse > .ant-collapse-item > .ant-collapse-header > :nth-child(1) > .anticon > svg').click()
@@ -416,15 +401,9 @@ describe("Render View Creation Page", () => {
 	it('Search Batch from table', () => {
 		cy.wait(500)
 		cy.log("Search Batch ABL2215")
-		cy.get('#rc_unique_1 > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input-affix-wrapper').clear();
-		cy.get('#rc_unique_1 > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input-affix-wrapper').type("ABL2215")
-		cy.get('#rc_unique_1 > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input-group-addon > .ant-btn > .anticon').click()
-	})
-
-	it('Change batch value', () => {
-		cy.wait(500)
-		cy.log("Change batch value")
-		cy.get('.batch-table-block > .ant-table-wrapper > .ant-spin-nested-loading > .ant-spin-container > .ant-table > .ant-table-container > .ant-table-body > table > .ant-table-tbody > .ant-table-row > :nth-child(2)').click()
+		cy.get('#molecule_table').clear();
+		cy.get('#molecule_table').type("ABL2215")
+		cy.get('#molecule_table').click()
 	})
 
 	it('Verify Done Card & Click On', () => {
@@ -434,7 +413,6 @@ describe("Render View Creation Page", () => {
 		cy.get('#done > span').should("have.text", "Done")
 		cy.get('#done > span').click()
 	})
-
 
 	it('Modal should open', () => {
 		cy.wait(1000)

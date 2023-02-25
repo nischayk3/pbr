@@ -94,15 +94,15 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 		setSelectedResource('')
 	}
 
-	const warning = () => {
-		messageApi.open({
-			type: 'error',
-			content: 'Please Select READ as a default Authorizations',
-			style: {
-				marginTop: '15vh',
-			},
-		});
-	};
+	// const warning = () => {
+	// 	messageApi.open({
+	// 		type: 'error',
+	// 		content: 'Please Select READ as a default Authorizations',
+	// 		style: {
+	// 			marginTop: '15vh',
+	// 		},
+	// 	});
+	// };
 
 	const authSave = () => {
 		let _reqAuth = {

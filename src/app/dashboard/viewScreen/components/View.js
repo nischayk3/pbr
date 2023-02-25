@@ -122,11 +122,11 @@ const View = () => {
 
 	const userMenu = (
 		<Menu>
-			<Menu.Item key="1" onClick={() => reportDownloadExcel("excel")}>
+			<Menu.Item key="1" id="excel_data" onClick={() => reportDownloadExcel("excel")}>
 				Excel
 			</Menu.Item>
 			<Menu.Divider />
-			<Menu.Item key="2" onClick={() => reportDownloadExcel("csv")}>
+			<Menu.Item key="2" id='csv_data' onClick={() => reportDownloadExcel("csv")}>
 				CSV
 			</Menu.Item>
 		</Menu>
@@ -506,6 +506,7 @@ const View = () => {
 						</Button>
 						<Dropdown style={{ color: "#ffffff" }} overlay={userMenu} disabled={isDownload} >
 							<Button
+								id="export_data"
 								className="view-publish-btn"
 							>
 								Export

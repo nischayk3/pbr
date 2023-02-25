@@ -58,7 +58,7 @@ const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
 			dispatch(showLoader());
 			const dssFileRes = await dssFileUpload(_reqFile);
 			dispatch(hideLoader());
-			if (dssFileRes.data.statuscode === 200) {
+			if (dssFileRes?.data?.statuscode === 200) {
 				const data = {
 					filename: dssFileRes.data.filename,
 					message: dssFileRes.data.message
@@ -68,7 +68,7 @@ const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
 				dispatch(sendViewsetRes({}))
 				setIsDisable(false);
 				dispatch(showNotification('success', "File Upload Successfully"));
-			} else if (dssFileRes.data.statuscode === 400) {
+			} else if (dssFileRes?.data?.statuscode === 400) {
 				/* istanbul ignore next */
 				dispatch(showNotification("error", dssFileRes.data.message));
 			} else {

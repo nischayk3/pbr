@@ -68,9 +68,6 @@ const ParameterTable = ({
 	//const [selectedPrimaryData, setSelectedPrimaryData] = useState([]);
 	const [reloadTable, setReloadTable] = useState(true);
 	const [parameters, setParameters] = useState({});
-	const [variableParam, setVariableParam] = useState(
-		parameter_obj ? parameter_obj : {}
-	);
 	const [isBatchTableVisible, setIsBatchTableVisible] = useState(false);
 	const [fun, setFun] = useState({});
 	const [filterTable, setFilterTable] = useState([]);
@@ -430,8 +427,6 @@ const ParameterTable = ({
 
 			varParam[variableName] = JSON.parse(JSON.stringify(varParameter));
 
-			setVariableParam(varParam);
-
 			const viewDataJson = [...viewJson];
 			viewDataJson.forEach((element) => {
 				return (element.parameters = varParam);
@@ -754,6 +749,7 @@ const ParameterTable = ({
 						placeholder='Search'
 						allowClear
 						onSearch={TableSearch}
+						id='molecule_table'
 					/>
 				)}
 				width={700}
