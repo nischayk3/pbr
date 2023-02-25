@@ -34,7 +34,6 @@ const PaperBatchRecordsTemplate = lazy(() => import("./paperBatchRecordsTemplate
 const FileUpload = lazy(() => import("./pbrFileUpload"));
 const PbrReviewer = lazy(() => import("./pbrReviewer"));
 const PbrTableUpdate = lazy(() => import("./pbrTableReviewer"));
-const SignatureModule = lazy(() => import("./signatureModule"));
 const UnAuthorisedScreen = lazy(() => import("./unAuthorised"));
 const ManualDataUpload = lazy(() => import("./manualDataUpload"));
 const ChartPersonal = lazy(() => import("./chartPersonal"));
@@ -283,12 +282,7 @@ const Dashboard = () => {
 									authorised={authorised}
 									path={`${match.url}/pbr_reviewer`}
 								/>
-								<PrivateRoute
-									key="signatureModule"
-									component={SignatureModule}
-									authorised={authorised}
-									path={`${match.url}/signature_module`}
-								/>
+
 								<PrivateRoute
 									key="pbr_table_reviewer"
 									component={PbrTableUpdate}

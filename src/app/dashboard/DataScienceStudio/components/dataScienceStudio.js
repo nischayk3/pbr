@@ -20,4 +20,4 @@ const DataScienceStudio = () => {
 	)
 }
 
-export default DataScienceStudio
+export default DataScienceStudio;
