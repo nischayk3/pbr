@@ -16,6 +16,7 @@ const EditableCell = ({
 	children,
 	...restProps
 }) => {
+
 	const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
 	return (
 		<td {...restProps}>
@@ -46,7 +47,7 @@ const DataTable = ({ tableData }) => {
 	const dispatch = useDispatch();
 	const [data, setData] = useState([]);
 	const [editingKey, setEditingKey] = useState('');
-
+	const [isEdit, setIsEdit] = useState(false);
 	const isEditing = (record) => record.key === editingKey;
 
 	useEffect(() => {
@@ -59,7 +60,6 @@ const DataTable = ({ tableData }) => {
 	}, [])
 
 	const onChange = (e, record, rowIndex) => {
-		console.log(`checked = ${e.target.checked}`, e, record, rowIndex);
 		const rowData = [...data];
 		rowData[rowIndex]['smtp_enable'] = e.target.checked == false ? "" : e.target.checked;
 		setData(rowData)
@@ -87,14 +87,6 @@ const DataTable = ({ tableData }) => {
 					)
 				} else if (val == 'key') {
 					return val
-				} else if (val == 'use_type') {
-					return (
-						column.push({
-							title: val.toUpperCase().replace(/_/g, " "),
-							dataIndex: val,
-							key: i,
-						})
-					)
 				} else {
 					return (
 						column.push({
@@ -155,7 +147,7 @@ const DataTable = ({ tableData }) => {
 
 	const handleAdd = () => {
 		const newData = {
-			email_id: "@mareana.com",
+			email_id: "",
 			imap_port: "",
 			imap_server: "",
 			pop_port: "",
@@ -166,19 +158,19 @@ const DataTable = ({ tableData }) => {
 			use_type: "",
 			key: uuid(),
 		};
-
-		const checkEmptyRow = data?.slice(-1)
-		console.log("checkEmptyRow", checkEmptyRow);
+		//const checkEmptyRow = data?.slice(-1)
 		// if (checkEmptyRow && checkEmptyRow[0]?.email_id !== '') {
 		setEditingKey(newData.key);
-		console.log("dataa", data);
+
 		setData([...data, newData]);
+
+		console.log("dataa", data, newData);
+		setIsEdit(false);
 		// } else {
 		// 	console.log("error");
 		// }
-
 	};
-
+	console.log("newData", data,);
 	const updateTableConfig = async (_req) => {
 		delete _req['key'];
 		let payload = {
@@ -229,7 +221,7 @@ const DataTable = ({ tableData }) => {
 
 	const handleEdit = (record) => {
 		setEditingKey(record.key);
-
+		setIsEdit(true);
 		form.setFieldsValue({
 			email_id: "",
 			imap_port: "",
@@ -253,7 +245,7 @@ const DataTable = ({ tableData }) => {
 			const row = await form.validateFields();
 			const newData = [...data];
 			const index = newData.findIndex((item) => key === item.key);
-
+			setIsEdit(false);
 			if (index > -1) {
 				const item = newData[index];
 				newData.splice(index, 1, {
@@ -277,6 +269,7 @@ const DataTable = ({ tableData }) => {
 	const defaultColumns = tableColumns(data)
 
 	const mergedColumns = defaultColumns.map((col) => {
+		console.log('collllll', col);
 		if (!col.editable) {
 			return col;
 		}
@@ -287,11 +280,12 @@ const DataTable = ({ tableData }) => {
 				inputType: col.dataIndex === 'imap_port' || col.dataIndex === 'pop_port' || col.dataIndex === 'smtp_port' ? 'number' : 'text',
 				dataIndex: col.dataIndex,
 				title: col.title,
-				editing: isEditing(record),
+				editing: col.dataIndex === 'use_type' && isEdit ? false : isEditing(record),
 			}),
 		};
 	});
 
+	console.log("data ", data);
 	return (
 		<Form form={form} component={false}>
 			<div className="table-head">
