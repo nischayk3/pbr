@@ -328,12 +328,14 @@ const Signature = (props) => {
 									handleClose();
 									setIsAuth("");
 								}}
+								id="cancel"
 							>
 								Cancel
 							</Button>,
 							<Button
 								className="custom-secondary-btn"
 								disabled={!reason?.length}
+								id="confirm"
 								key="1"
 								onClick={() => {
 									handleConfirm();
@@ -345,6 +347,7 @@ const Signature = (props) => {
 						: [
 							loginStatus == "WITH_AD" ? (
 								<Button
+									id='auth_with_ad'
 									className="custom-secondary-btn"
 									key="3"
 									onClick={() => authenticateUser()}
@@ -354,6 +357,7 @@ const Signature = (props) => {
 								</Button>
 							) : loginStatus == "WITHOUT_AD" ? (
 								<Button
+									id="auth_without_ad"
 									className="custom-secondary-btn"
 									key="3"
 									disabled={username == "" || password == ""}
@@ -363,6 +367,7 @@ const Signature = (props) => {
 								</Button>
 							) : loginStatus == "WITH_LDAP" ? (
 								<Button
+									id="auth_without_ldap"
 									className="custom-secondary-btn"
 									key="3"
 									disabled={username == "" || password == ""}
@@ -372,6 +377,7 @@ const Signature = (props) => {
 								</Button>
 							) : loginStatus == "WITH_SAML" ? (
 								<Button
+									id="auth_without_saml"
 									className="custom-secondary-btn"
 									key="3"
 									// disabled={username == "" || password == ""}
@@ -390,6 +396,7 @@ const Signature = (props) => {
 								<div>
 									<p style={{ margin: "8px 0px" }}>User ID</p>
 									<Input
+										id="username"
 										value={username}
 										disabled
 										onChange={(e) => setUsername(e.target.value)}
@@ -398,6 +405,7 @@ const Signature = (props) => {
 								<div>
 									<p style={{ margin: "8px 0px" }}>Password</p>
 									<Input
+										id="password"
 										type="password"
 										value={password}
 										onChange={(e) => setPassword(e.target.value)}
@@ -424,6 +432,7 @@ const Signature = (props) => {
 											placeholder="Select reason"
 											options={reasonList}
 											className="sign-select"
+											id="esign_reason"
 										/>
 
 									</div>
@@ -461,11 +470,11 @@ const Signature = (props) => {
 										setCheckRejectReason(false);
 									}
 								}}
-
 								value={reason}
 								placeholder="Select reason"
 								options={reasonList}
 								className="sign-select"
+								id="esign_reason"
 							/>
 
 						</div>

@@ -51,7 +51,7 @@ Cypress.Commands.add('loginWithAD', () => {
 			"login_details", JSON.stringify({
 				ad_role: false,
 				email_id: "dinesh.jinjala@mareana.com",
-				user_id: "dinesh.kumar@mareana.com",
+				user_id: "dinesh.jinjala@mareana.com",
 				firstname: "Dinesh",
 				lastname: "Jinjala",
 				mdh_role: ['SYSTEM_ADMIN'],
@@ -269,7 +269,7 @@ Cypress.Commands.add('loginWithoutAD', () => {
 			"login_details", JSON.stringify({
 				ad_role: false,
 				email_id: "dinesh.jinjala@mareana.com",
-				user_id: "dinesh.kumar@mareana.com",
+				user_id: "dinesh.jinjala@mareana.com",
 				firstname: "Dinesh",
 				lastname: "Jinjala",
 				mdh_role: ['SYSTEM_ADMIN'],

@@ -15,8 +15,8 @@ const customCard = (props) => {
 		<div id={'approval-cards-' + props.id} key={props.id} className={props.count === 0 ? 'approval-cards-disabled' : props.active === props.desc ? 'approval-card-active' : 'approval-card'} >
 			<div className={props.count === 0 ? 'circle_icon-disabled' : 'circle_icon'} >
 				{props.desc == 'View' && <LayoutOutlined />}
-				{props.desc == 'Param Data' && <ProjectOutlined />}
-				{props.desc == 'Chart personalization' && <BarChartOutlined />}
+				{props.desc == 'Param Data Approval' && <ProjectOutlined />}
+				{props.desc == 'Chart Personalization' && <BarChartOutlined />}
 				{props.desc == 'Report' && <FileDoneOutlined />}
 				{props.desc == 'Paper Batch Records' && <FolderOpenOutlined />}
 				{props.desc == 'Data Load Screen' && <FileSyncOutlined />}

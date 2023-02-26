@@ -1,63 +1,134 @@
 {
 	"Data": [
 		{
+			"application_type": "AUTO_ML",
+			"item_count": 2.0,
+			"text": "Auto ML Analysis"
+		},
+		{
 			"application_type": "CHART",
 			"item_count": 2.0,
-			"text": "Chart Approval"
+			"text": "Chart Personalization"
 		},
 		{
-			"application_type": "PARAM",
-			"item_count": 2,
-			"text": "Param Data Approval"
+			"application_type": "DTLOAD",
+			"item_count": 2.0,
+			"text": "Data Load Screen"
 		},
 		{
-			"application_type": "VIEW",
-			"item_count": 2,
-			"text": "View Approval"
+			"application_type": "ELOG_BOOK_DATA_ENTRY",
+			"item_count": 2.0,
+			"text": "e-Log Book"
+		},
+		{
+			"application_type": "PBR_TEMPLATE",
+			"item_count": 2.0,
+			"text": "Paper Batch Records"
 		},
 		{
 			"application_type": "REPORT_DESIGNER",
-			"item_count": 2,
-			"text": "Report Approval"
+			"item_count": 2.0,
+			"text": "Report"
 		},
 		{
-			"application_type": "PBR",
-			"item_count": 2,
-			"text": "PBR Approval"
+			"application_type": "VIEW",
+			"item_count": 2.0,
+			"text": "View"
+		},
+		{
+			"application_type": "PARAM",
+			"item_count": 2.0,
+			"text": "Param Data Approval"
 		}
 	],
 	"counts": [
 		{
-			"created_by": "fahad.siddiqui@mareana.com",
-			"total_count": 2
+			"created_by": "atul.mishra@mareana.com",
+			"total_count": 20
 		},
 		{
-			"created_by": "krishnapriyam@mareana.com",
-			"total_count": 3
+			"created_by": "bhanu.thareja@mareana.com",
+			"total_count": 2
 		},
 		{
 			"created_by": "binkita.tiwari@mareana.com",
-			"total_count": 3
+			"total_count": 9
 		},
 		{
-			"created_by": "dinesh.kumar@mareana.com",
-			"total_count": 2
-		},
-		{
-			"created_by": "vinay.reddy@mareana.com",
-			"total_count": 2
-		},
-		{
-			"created_by": "demo",
-			"total_count": 8
-		},
-		{
-			"created_by": "ramaa.rao@mareana.com",
+			"created_by": "clouddemo@mareana.com",
 			"total_count": 1
 		},
 		{
+			"created_by": "demo",
+			"total_count": 19
+		},
+		{
+			"created_by": "dinesh.jinjala@mareana.com",
+			"total_count": 21
+		},
+		{
+			"created_by": "dineshai",
+			"total_count": 1
+		},
+		{
+			"created_by": "fahad.siddiqui@mareana.com",
+			"total_count": 100
+		},
+		{
+			"created_by": "jinjalad",
+			"total_count": 14
+		},
+		{
+			"created_by": "krishnapriyam@mareana.com",
+			"total_count": 55
+		},
+		{
+			"created_by": "mahesh.ht@mareana.com",
+			"total_count": 3
+		},
+		{
 			"created_by": "mihir.bagga@mareana.com",
+			"total_count": 145
+		},
+		{
+			"created_by": "muskan.gupta@mareana.com",
+			"total_count": 1
+		},
+		{
+			"created_by": "nischay.kumar@mareana.com",
+			"total_count": 2
+		},
+		{
+			"created_by": "prince.vashishth@mareana.com",
+			"total_count": 1
+		},
+		{
+			"created_by": "ramaa.rao@mareana.com",
+			"total_count": 6
+		},
+		{
+			"created_by": "ramakant.sinha@mareana.com",
+			"total_count": 2
+		},
+		{
+			"created_by": "rohit.kumar@mareana.com",
+			"total_count": 1
+		},
+		{
+			"created_by": "sanjeev.budni@mareana.com",
+			"total_count": 7
+		},
+		{
+			"created_by": "sudeep.raj@mareana.com",
+			"total_count": 3
+		},
+		{
+			"created_by": "vimal@mareana.com",
 			"total_count": 5
+		},
+		{
+			"created_by": "vinay.reddy@mareana.com",
+			"total_count": 12
 		}
 	],
 	"status-code": 200

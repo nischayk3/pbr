@@ -193,6 +193,7 @@ const WorkflowTable = (props) => {
 							if (text == "/dashboard/chart_personalization") {
 								return (
 									<a
+										id={`review_submit_${index}`}
 										onClick={() =>
 											history.push({
 												pathname: `${text}/${row.Id}&${row.version}`,
@@ -208,6 +209,7 @@ const WorkflowTable = (props) => {
 							} else if (text == "/dashboard/view_creation") {
 								return (
 									<a
+										id={`review_submit_${index}`}
 										onClick={() =>
 											history.push({
 												pathname: `${text}/${row.Id}&${row.version}`,
@@ -222,7 +224,9 @@ const WorkflowTable = (props) => {
 								);
 							} else if (text == "/dashboard/paper_batch_records") {
 								return (
+
 									<a
+										id={`review_submit_${index}`}
 										onClick={() =>
 											history.push(
 												`${text}/${row.Id}?id=${row.Id}&temp_disp_id=${row.Id}&file=${row.filename}&fromScreen=Workflow&version=${row.version}&tempalteName=${row.pbr_template_name}`
@@ -237,6 +241,7 @@ const WorkflowTable = (props) => {
 							else if (text == "/dashboard/elog_book_template") {
 								return (
 									<a
+										id={`review_submit_${index}`}
 										onClick={() =>
 											history.push(
 												`/dashboard/elog_book_data_entry/data_entry_forms?id=${row.recording_id}&molecule=${row.molecule}&version=${row.version}&template_disp_id=${row.template_disp_id}&site=${row.site}&recording_id=${row.recording_id}&publish=true&fromScreen=Workflow`
@@ -250,6 +255,7 @@ const WorkflowTable = (props) => {
 							} else if (text == "/dashboard/analysis") {
 								return (
 									<a
+										id={`review_submit_${index}`}
 										onClick={() =>
 											history.push(
 												`${text}/${row.Id}`
@@ -263,6 +269,7 @@ const WorkflowTable = (props) => {
 							} else if (text == "/dashboard/elog_book_template") {
 								return (
 									<a
+										id={`review_submit_${index}`}
 										onClick={() =>
 											history.push(
 												`${text}/${row.template_disp_id}&${row.version}?id=${row.template_disp_id}&version=${row.version}`
@@ -276,6 +283,7 @@ const WorkflowTable = (props) => {
 							} else {
 								return (
 									<a
+										id={`review_submit_${index}`}
 										onClick={() =>
 											history.push(
 												`${text}/${row.Id}?id=${row.Id}&version=${row.version ? row.version : "0"

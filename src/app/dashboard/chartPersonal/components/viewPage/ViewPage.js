@@ -234,6 +234,7 @@ const ViewPage = () => {
 							params.fromScreen !== "Workspace" ? (
 							<>
 								<Button
+									id="reject_chart"
 									onClick={() => {
 										setIsPublish(true);
 										setApproveReject("R");
@@ -242,6 +243,7 @@ const ViewPage = () => {
 									Reject
 								</Button>
 								<Button
+									id="approve_chart"
 									onClick={() => {
 										setIsPublish(true);
 										setApproveReject("A");
