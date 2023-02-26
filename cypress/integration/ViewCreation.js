@@ -216,9 +216,10 @@ describe("Render View Creation Page", () => {
 	it('Render Parameter Lookup', () => {
 		cy.log('Select a Molecule')
 		cy.wait(2000)
-		cy.get('#rc_select_0').click({ force: true })
+		cy.get('#select-molecule').click({ force: true })
 		// cy.get('div[title="BELATACEPT"]').click({ force: true })
 		//cy.get('.ant-select-selection-item').first().click()
+		cy.wait(2000)
 		cy.get('.ant-select-item-option').first().click()
 
 		cy.log('Verify Selected Molecule')

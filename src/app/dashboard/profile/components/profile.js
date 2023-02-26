@@ -166,22 +166,17 @@ const Profile = () => {
 	/* istanbul ignore next */
 	const userProfile = async (formData) => {
 		try {
-			dispatch(showLoader());
 			const saveRes = await userProfileUpload(formData);
 			if (saveRes?.statuscode === 200) {
-				dispatch(hideLoader());
 				dispatch(showNotification('success', "Updated Successfully"));
 				dispatch(getUploadProfile(true));
 				getProfile();
 			} else if (saveRes?.statuscode === 400) {
-				dispatch(hideLoader());
 				dispatch(showNotification('error', saveRes.message));
 			} else {
-				dispatch(hideLoader());
 				dispatch(showNotification('error', "image upload error"));
 			}
 		} catch (error) {
-			dispatch(hideLoader());
 			/* istanbul ignore next */
 			dispatch(showNotification('error', error));
 		}
@@ -221,7 +216,6 @@ const Profile = () => {
 
 	const getProfile = async () => {
 		try {
-
 			const _getReq = {
 				email_address: loginDetails && loginDetails.email_id,
 				image: true
@@ -377,12 +371,13 @@ const Profile = () => {
 								activeKey={activeTab}
 								onChange={changeTab}
 							>
-								<TabPane tab="General" key="1">
+								<TabPane id='general' tab="General" key="1">
 									<p className="sub-heading">Changes to your language and time format will be reflected across all applications in BMS.</p>
 									<div className="split-form">
 										<div className="select-field">
 											<SelectSearchField
 												showSearch
+												id='date_format'
 												label='Date format'
 												placeholder='Select'
 												onChangeSelect={value => onChange(value, 'dateFormat')}
@@ -392,6 +387,7 @@ const Profile = () => {
 												selectedValue={dateFormatValue}
 											/>
 											<SelectSearchField
+												id='time_zone'
 												showSearch
 												label='Time zone'
 												placeholder='Select'
@@ -402,6 +398,7 @@ const Profile = () => {
 												selectedValue={timeZoneValue}
 											/>
 											<SelectSearchField
+												id='language'
 												showSearch
 												label='Language'
 												placeholder='Select'
@@ -423,7 +420,7 @@ const Profile = () => {
 										</Button>
 									</div>
 								</TabPane>
-								<TabPane tab="Notifications" key="2">
+								<TabPane id='notifications' tab="Notifications" key="2">
 									<div className='notify'>
 										<span>
 											<p className='notify-text'>Notify me of my jobs to review, awaiting my approval</p>

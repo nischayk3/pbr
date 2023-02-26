@@ -52,7 +52,6 @@ const ParamLookup = ({ callbackMoleculeId, callbackFilter, moleculeId, setMolecu
 
 	const clearSearch = (e) => {
 		setFilterValue('')
-
 	}
 
 	//Moleculelist api call
@@ -124,7 +123,6 @@ const ParamLookup = ({ callbackMoleculeId, callbackFilter, moleculeId, setMolecu
 					molecule_name: moleculeId,
 					search_text: type
 				}
-
 				searchMolequles(filterPayload)
 			}
 		}
@@ -141,6 +139,7 @@ const ParamLookup = ({ callbackMoleculeId, callbackFilter, moleculeId, setMolecu
 			<div className="param-select">
 				<p>Molecule</p>
 				<Select
+					id="select-molecule"
 					placeholder="Select"
 					style={{ width: "100%" }}
 					onChange={onChangeMolecule}

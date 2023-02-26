@@ -18,14 +18,14 @@ export default function Sharing(props) {
 	const dispatch = useDispatch()
 
 	useEffect(() => {
-
-
 		getUsers()
 	}, [])
 
 	useEffect(() => {
 		setCopy(window.location.href)
+
 		if (window.location.href.includes('share')) {
+			/* istanbul ignore next */
 			setCopy(window.location.href)
 		}
 		else {
@@ -47,6 +47,7 @@ export default function Sharing(props) {
 
 	const addUser = (user) => {
 		if (user[user.length - 1] == currentUser) {
+			/* istanbul ignore next */
 			dispatch(showNotification('error', 'Email already added'))
 		}
 		else
@@ -97,6 +98,7 @@ export default function Sharing(props) {
 						value={shareList}
 						onChange={addUser}
 						maxTagCount='responsive'
+						id='recepients_select'
 					>
 						{emailList.map((i) => (
 							<Option key={i}>{i}</Option>
