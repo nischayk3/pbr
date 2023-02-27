@@ -1,0 +1,18 @@
+{
+    "Data": [
+        {
+            "file_id": 400,
+            "filename": "POC_ABL2261_reduced_nocomments.pdf",
+            "site_code": "1513",
+            "product_num": "1322454",
+            "batch_num": "ABL2259-20",
+            "timezone": "GMT-05:00",
+            "created_by": "yash.madhogaria@mareana.com",
+            "created_on": "2023-02-27T07:14:08.862836+00:00",
+            "status": "N"
+        }
+    ],
+    "Count": 1,
+    "Message": "Success",
+    "status-code": 200
+}

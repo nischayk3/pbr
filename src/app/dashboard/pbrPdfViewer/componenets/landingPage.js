@@ -16,7 +16,7 @@ import { async } from 'q';
 const { Search } = Input;
 
 
-
+/* istanbul ignore next */
 function LandingPage() {
     const dispatch = useDispatch();
     let history = useHistory();

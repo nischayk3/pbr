@@ -1,25 +1,126 @@
 {
     "Data": [
         {
-            "anchor_key": "Effective",
-            "batch_num": "AAZ0638",
-            "changed_by": null,
-            "changed_on": null,
-            "confidence": "Low",
-            "created_by": "krishnapriyam@mareana.com",
-            "created_on": "2022-06-28T12:12:44.808277+00:00",
-            "cust_key": "1000",
-            "file_path": "Batch Record Example 2_page-0.jpeg",
-            "id": 31,
-            "product_num": "1361967",
-            "recorded_date": null,
-            "recorded_time": null,
-            "site_code": "1255",
-            "snippet_image": "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",
-            "snippet_value": "RR",
-            "status": "invalid",
-            "template_name": "new template",
-            "uom": null
+            "column": "id",
+            "value": 2122
+        },
+        {
+            "column": "param_name",
+            "value": "p1"
+        },
+        {
+            "column": "snippet_value",
+            "value": "density"
+        },
+        {
+            "column": "snippet_image",
+            "value": "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"
+        },
+        {
+            "column": "cust_key",
+            "value": "1000"
+        },
+        {
+            "column": "file_path",
+            "value": "multipage1_page-0.jpeg"
+        },
+        {
+            "column": "site_code",
+            "value": "1338"
+        },
+        {
+            "column": "product_num",
+            "value": "1089084"
+        },
+        {
+            "column": "batch_num",
+            "value": "394154"
+        },
+        {
+            "column": "anchor_key",
+            "value": "Pipette"
+        },
+        {
+            "column": "uom",
+            "value": null
+        },
+        {
+            "column": "recorded_date",
+            "value": null
+        },
+        {
+            "column": "recorded_time",
+            "value": null
+        },
+        {
+            "column": "status",
+            "value": "unapproved"
+        },
+        {
+            "column": "confidence",
+            "value": "High"
+        },
+        {
+            "column": "template_name",
+            "value": "demo"
+        },
+        {
+            "column": "created_on",
+            "value": "2023-02-09T05:19:13.095378+00:00"
+        },
+        {
+            "column": "changed_by",
+            "value": null
+        },
+        {
+            "column": "changed_on",
+            "value": null
+        },
+        {
+            "column": "created_by",
+            "value": "krishnapriyam@mareana.com"
+        },
+        {
+            "column": "template_id",
+            "value": "P700"
+        },
+        {
+            "column": "table_value",
+            "value": null
+        },
+        {
+            "column": "page_num",
+            "value": 1
+        },
+        {
+            "column": "page_name",
+            "value": "ALL"
+        },
+        {
+            "column": "template_version",
+            "value": 1
+        },
+        {
+            "column": "key_bbox",
+            "value": {
+                "Width": 0.04710257425904274,
+                "Height": 0.011591720394790173,
+                "Left": 0.11491861194372177,
+                "Top": 0.2875179648399353
+            }
+        },
+        {
+            "column": "value_bbox",
+            "value": {
+                "Width": 0.05645912513136864,
+                "Height": 0.014294832944869995,
+                "Left": 0.14070332050323486,
+                "Top": 0.23397067189216614
+            }
+        },
+        {
+            "column": "esign_id",
+            "value": null
         }
     ],
     "Message": "Success",
