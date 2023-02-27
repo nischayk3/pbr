@@ -8,7 +8,7 @@ const _request_headers = {
 	'resource-name': 'CONFIGURATION',
 	"content-type": "application/json",
 };
-
+console.log("login_response", login_response, _request_headers);
 export const getRoleConfiguartions = () => {
 	let login_response = JSON.parse(localStorage.getItem('login_details'));
 	return axios.get('/services/v1/role-config', {
@@ -133,8 +133,6 @@ export const resourceAuth = (_queryParam) => {
 		}
 	);
 };
-
-
 
 export const resourceActions = (_queryParam) => {
 	return Service.get(
