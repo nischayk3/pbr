@@ -25,20 +25,20 @@ describe("Renders chart personalization", () => {
 
 		cy.wait("@chartList").then(() => {
 			cy.log("Focusing on search input and waiting for data");
-			cy.get(".ant-input").eq(1).focus();
+			cy.get('.ant-input').focus()
 
 			cy.log("Searching chart");
-			cy.get(".ant-input").eq(1).type("C261");
+			cy.get(".ant-input").type("C261");
 
 			cy.wait(500);
-			cy.get(".ant-input").eq(1).clear();
+			cy.get(".ant-input").clear();
 
 			cy.wait(500);
 			cy.log("Searching chart");
-			cy.get(".ant-input").eq(1).type("C263");
+			cy.get(".ant-input").type("C263");
 
 			cy.log(500);
-			cy.get(".ant-input-search-button").eq(1).click();
+			cy.get(".ant-input-search-button").click();
 
 			cy.log(500);
 			cy.log("Selecting first row");
@@ -110,12 +110,12 @@ describe("Renders chart personalization", () => {
 
 		cy.wait(500);
 		cy.log("Inputing View Id");
-		cy.get('input[type="text"]').eq(1).click();
-		cy.get('input[type="text"]').eq(1).type("V238");
+		cy.get('input[type="text"]').click();
+		cy.get('input[type="text"]').type("V238");
 
 		cy.wait(3000);
 		cy.log("Searching for a View Id");
-		cy.get(".ant-input-search-button").eq(1).click();
+		cy.get(".ant-input-search-button").click();
 
 		cy.wait(500);
 		cy.intercept("GET", "/services/v1/site_ids?view_id=V238").as("viewId");
@@ -170,7 +170,7 @@ describe("Renders chart personalization", () => {
 				cy.log("Entering filter data");
 				cy.get("#show-last-number").type(2);
 				cy.get("#show-last-duration").click();
-				cy.get('[title="Days"]').click();
+				cy.get('[title="days"]').click();
 				//cy.get(".ant-select-item-option-content").contains("days").click();
 
 				cy.wait(500);
@@ -181,7 +181,7 @@ describe("Renders chart personalization", () => {
 				cy.log("Entering filter data");
 				cy.get("#show-last-number").type(2);
 				cy.get("#show-last-duration").click();
-				cy.get('[title="Days"]').click();
+				cy.get('[title="days"]').click();
 				//cy.get(".ant-select-item-option-content").contains("days").click();
 
 				cy.log("Applying filters");
@@ -206,8 +206,8 @@ describe("Renders chart personalization", () => {
 
 	it("Creating new chart working correctly", () => {
 		cy.wait(500);
-		cy.get(".ant-input").eq(2).type("NEW_CHART");
-		cy.get(".ant-input").eq(3).type("NEW_CHART_DESCRIPTION");
+		cy.get(".ant-input").eq(1).type("NEW_CHART");
+		cy.get(".ant-input").eq(2).type("NEW_CHART_DESCRIPTION");
 
 		cy.wait(500);
 		cy.log("Selecting Chart Type");
@@ -225,7 +225,7 @@ describe("Renders chart personalization", () => {
 		cy.wait(500);
 		cy.log("Selecting Y-axis");
 		cy.get(".ant-select-selector").eq(4).click();
-		cy.get('[title="NORMALMUL_HEAVY"]').click();
+		cy.get('[title="NORMAL_MUL_HEAVY"]').click();
 
 		cy.intercept("POST", "/services/v1/chart-object", {
 			fixture: "chartObjectCreate.json",
@@ -324,7 +324,7 @@ describe("Renders chart personalization", () => {
 		cy.wait(1000);
 		cy.log("Changing marker shape");
 		cy.get(".figure-container .select_field").eq(0).click();
-		cy.get('[title="Triangle-up"]').click();
+		cy.get('[title="triangle-up"]').click();
 
 		cy.log("Changing marker color");
 		cy.get('.figure-container .figure-inputs .container input[type="text"]')
@@ -340,7 +340,7 @@ describe("Renders chart personalization", () => {
 
 		cy.log("Changing violations shape");
 		cy.get(".figure-container .select_field").eq(1).click();
-		cy.get('[title="Triangle-down"] > .ant-select-item-option-content')
+		cy.get('[title="triangle-down"] > .ant-select-item-option-content')
 			.eq(1)
 			.click();
 
@@ -414,6 +414,7 @@ describe("Renders chart personalization", () => {
 		cy.log("Hiding X-axis grid lines");
 		cy.get(".figure-container .ant-switch").eq(1).click({ force: true });
 	});
+
 	it("Applying Threshold parameters working correctly", () => {
 		cy.wait(500);
 		cy.log("Opening threshold tab");
@@ -433,10 +434,10 @@ describe("Renders chart personalization", () => {
 			".ant-collapse-content-box > :nth-child(1) > .ant-col > .select_field > .ant-select > .ant-select-selector > .ant-select-selection-item"
 		).click();
 		cy.get(
-			'[title="NORMALMUL_HEAVY"] > .ant-select-item-option-content'
+			'[title="NORMAL_MUL_HEAVY"] > .ant-select-item-option-content'
 		).click({ multiple: true, force: true });
 		cy.get(".ant-select-item-option-active")
-			.contains("NORMALMUL_HEAVY")
+			.contains("NORMAL_MUL_HEAVY")
 			.click({ force: true });
 		cy.get(
 			":nth-child(2) > :nth-child(1) > .select_field > .ant-select > .ant-select-selector"
@@ -446,7 +447,7 @@ describe("Renders chart personalization", () => {
 		cy.get(
 			":nth-child(4) > :nth-child(1) > .select_field > .ant-select > .ant-select-selector"
 		).click();
-		cy.get(".ant-select-item-option-active").contains("Circle").click();
+		cy.get(".ant-select-item-option-active").contains("circle").click();
 		cy.get(
 			".ant-collapse-content-box > :nth-child(4) > :nth-child(2) > .input_field > .ant-input"
 		)
@@ -461,40 +462,8 @@ describe("Renders chart personalization", () => {
 		cy.get(".extra-coll > .ant-btn").click();
 		cy.get(".extra-coll").click();
 		cy.get(".ant-btn-primary").click();
-		cy.get(".tresh-container > .ant-row > .ant-col > .ant-btn").click();
-		cy.get(
-			":nth-child(2) > .ant-collapse > .ant-collapse-item > .ant-collapse-header"
-		).click();
-		cy.get(
-			".ant-collapse-content-box > :nth-child(1) > .ant-col > .select_field > .ant-select > .ant-select-selector > .ant-select-selection-item"
-		).click();
-		cy.get(
-			'[title="NORMALMUL_HEAVY"] > .ant-select-item-option-content'
-		).click({ multiple: true, force: true });
-		cy.get(".ant-select-item-option-active")
-			.contains("NORMALMUL_HEAVY")
-			.click({ force: true });
-		cy.get(
-			":nth-child(2) > :nth-child(1) > .select_field > .ant-select > .ant-select-selector"
-		).click();
-		cy.get(".ant-select-item-option-active").contains("Lesser than").click();
-		cy.get("#threshold_value").type("10.1");
-		cy.get(
-			":nth-child(4) > :nth-child(1) > .select_field > .ant-select > .ant-select-selector"
-		).click();
-		cy.get(".ant-select-item-option-active").contains("Circle").click();
-		cy.get(
-			".ant-collapse-content-box > :nth-child(4) > :nth-child(2) > .input_field > .ant-input"
-		)
-			.clear()
-			.type("14");
-		cy.get(
-			'.ant-collapse-content-box > :nth-child(5) > .ant-col > .container > [type="text"]'
-		)
-			.clear()
-			.type("#d21010");
-		cy.get(".extra-coll > .ant-btn").click();
 	});
+	
 	it("Applying rules is working correctly", () => {
 		cy.wait(500);
 		cy.log("Opening rules tab");
@@ -737,14 +706,15 @@ describe("Renders chart personalization", () => {
 
 	it("Publishes correctly", () => {
 		cy.log("Publishing chart");
-		cy.get(".ant-btn").eq(5).click();
+		cy.get('.btns > div > :nth-child(5)').click();
 
 		cy.wait(500);
 		cy.get(".ant-modal-content .ant-modal-close-x");
 		cy.get(".ant-modal-content .ant-modal-close-x").last().click();
 
 		cy.wait(500);
-		cy.get(".ant-btn").eq(5).click();
+		cy.get('.btns > div > :nth-child(5)').click();
+		// cy.get(".ant-btn").eq(5).click();
 
 		//cy.get('.sign-cols > :nth-child(1) > .ant-input').type('bhanu.thareja@mareana.com')
 		cy.get(".sign-cols > :nth-child(2) > .ant-input").type("1@Gam95367");
@@ -757,7 +727,7 @@ describe("Renders chart personalization", () => {
 			cy.get(
 				".electronic-sig > :nth-child(2) > .ant-select > .ant-select-selector"
 			).click();
-			cy.get('[title="I am an approver"]').click();
+			cy.get('[title="I am an Approver"]').click();
 			cy.intercept("PUT", "/services/v1/workflow-publish-event").as("publish");
 			cy.get(".ant-modal-footer > .custom-secondary-btn").click();
 		});

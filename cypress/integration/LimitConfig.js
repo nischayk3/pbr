@@ -47,8 +47,6 @@ describe("Renders the Limit config page", () => {
 		cy.get('.action-table > :nth-child(1)').click();
 		cy.wait(1000)
 		cy.get(':nth-child(2) > .ant-select > .ant-select-selector > .ant-select-selection-item').click();
-		cy.get('[title="7-7"]').click({multiple:'true', force: true});
-		cy.get(':nth-child(2) > .ant-select > .ant-select-selector > .ant-select-selection-item').click();
 		cy.get('[title="BELATACEPT"]').click({multiple:'true', force: true});
 		cy.wait(1000)
 		cy.get('[data-row-key="1"] > :nth-child(2) > .select_field > .ant-select > .ant-select-selector').click();

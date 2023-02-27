@@ -179,6 +179,7 @@ const LimitTable = () => {
 				tempVersionList.push(viewVersion);
 			}
 		});
+
 		tempVersionList = [...new Set(tempVersionList)]
 		return tempVersionList
 	}
@@ -244,6 +245,54 @@ const LimitTable = () => {
 		tempLimitData = tempLimitData[0]?.paramData
 		let flag = false;
 		tempLimitData?.forEach((limits) => {
+			if(!limits?.view_disp_id) {
+				dispatch(
+					showNotification(
+						"error",
+						"Please select viewID"
+					)
+				);
+
+				flag = true
+
+				return;
+			}
+			if(!limits?.view_version) {
+				dispatch(
+					showNotification(
+						"error",
+						"Please select view version"
+					)
+				);
+
+				flag = true
+
+				return;
+			}
+			if(!limits?.parameters) {
+				dispatch(
+					showNotification(
+						"error",
+						"Please choose parameter"
+					)
+				);
+
+				flag = true
+
+				return;
+			}
+			if(!limits?.limit_type) {
+				dispatch(
+					showNotification(
+						"error",
+						"Please choose limit type"
+					)
+				);
+
+				flag = true
+
+				return;
+			}
 			if (Number(limits.from_) && Number(limits.to_)) {
 				if (Number(limits.from_) >= Number(limits.to_)) {
 					flag = true;
