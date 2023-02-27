@@ -83,9 +83,11 @@ const View = () => {
 	useEffect(() => {
 		if (Object.keys(parameters) &&
 			Object.keys(parameters).length > 0 &&
-			parameters.fromScreen !== "Workspace") {
+			parameters.fromScreen == "Workflow") {
 			setFromWorkflowScreen(true)
 		}
+
+		console.log("parameters", parameters);
 
 	}, [parameters])
 
@@ -120,11 +122,11 @@ const View = () => {
 
 	const userMenu = (
 		<Menu>
-			<Menu.Item key="1" onClick={() => reportDownloadExcel("excel")}>
+			<Menu.Item key="1" id="excel_data" onClick={() => reportDownloadExcel("excel")}>
 				Excel
 			</Menu.Item>
 			<Menu.Divider />
-			<Menu.Item key="2" onClick={() => reportDownloadExcel("csv")}>
+			<Menu.Item key="2" id='csv_data' onClick={() => reportDownloadExcel("csv")}>
 				CSV
 			</Menu.Item>
 		</Menu>
@@ -132,9 +134,11 @@ const View = () => {
 
 	//Moleculelist api call
 	const loadMolecule = async (_reqMolecule) => {
+		const _resourceName = parameters?.fromScreen == "Workflow" ? 'WORKITEMS' : 'VIEW';
+
 		try {
 			dispatch(showLoader());
-			const moleculeRes = await getMoleculeList(_reqMolecule);
+			const moleculeRes = await getMoleculeList(_reqMolecule, _resourceName);
 			/* istanbul ignore else  */
 			if (moleculeRes.Status === 200) {
 				setMoleculeList(prevMol => ({ ...prevMol, ...moleculeRes.Data }));
@@ -162,10 +166,11 @@ const View = () => {
 
 	//Moleculelist api call
 	const filterLoadMolecule = async (_reqMolecule, filterSplitValue) => {
+		const _resourceName = parameters?.fromScreen == "Workflow" ? 'WORKITEMS' : 'VIEW';
 		try {
 			setMoleculeList([])
 			dispatch(showLoader());
-			const moleculeRes = await getMoleculeList(_reqMolecule);
+			const moleculeRes = await getMoleculeList(_reqMolecule, _resourceName);
 			if (moleculeRes.Status === 200) {
 				setMoleculeList(prevMol => ({ ...prevMol, ...moleculeRes.Data }));
 				const _filterReq2 = {
@@ -193,9 +198,10 @@ const View = () => {
 	};
 
 	const filterLoadMolecule1 = async (_reqMolecule) => {
+		const _resourceName = parameters?.fromScreen == "Workflow" ? 'WORKITEMS' : 'VIEW';
 		try {
 			dispatch(showLoader());
-			const moleculeRes1 = await getMoleculeList(_reqMolecule);
+			const moleculeRes1 = await getMoleculeList(_reqMolecule, _resourceName);
 			if (moleculeRes1.Status === 200) {
 				setMoleculeList(prevMol => ({ ...prevMol, ...moleculeRes1.Data }));
 				if (moleculeRes1.Data && moleculeRes1.Data.mol_batches && moleculeRes1.Data.mol_batches.length > 0) {
@@ -312,9 +318,10 @@ const View = () => {
 	};
 
 	const viewCreate = async (_reqView) => {
+		const _resourceName = parameters?.fromScreen == "Workflow" ? 'WORKITEMS' : 'VIEW';
 		/* istanbul ignore next */
 		try {
-			const response = await saveFunction(_reqView);
+			const response = await saveFunction(_reqView, _resourceName);
 			if (response.statuscode === 200) {
 				setIsSaveVisible(false);
 				setViewDisplayId(response.view_disp_id);
@@ -349,9 +356,11 @@ const View = () => {
 	};
 
 	const loadView = async (_reqLoad) => {
+		const _resourceName = parameters?.fromScreen == "Workflow" ? 'WORKITEMS' : 'VIEW';
+
 		try {
 			dispatch(showLoader());
-			const loadViewRes = await getViewConfig(_reqLoad);
+			const loadViewRes = await getViewConfig(_reqLoad, _resourceName);
 			setViewJson([loadViewRes]);
 			dispatch(setViewResposne(loadViewRes));
 
@@ -409,7 +418,7 @@ const View = () => {
 		const _headerReq = {
 			"content-type": "application/json",
 			"x-access-token": login_response.token ? login_response.token : "",
-			"resource-name": "VIEW",
+			"resource-name": parameters?.fromScreen == "Workflow" ? 'WORKITEMS' : 'VIEW',
 		}
 
 
@@ -453,7 +462,7 @@ const View = () => {
 			<div className="breadcrumbs-btn">
 				{Object.keys(parameters) &&
 					Object.keys(parameters).length > 0 &&
-					parameters.fromScreen !== "Workspace" ? (
+					parameters.fromScreen == "Workflow" ? (
 					<div className="viewCreation-btns">
 						<Button
 							className="viewCreation-rejectBtn"
@@ -497,6 +506,7 @@ const View = () => {
 						</Button>
 						<Dropdown style={{ color: "#ffffff" }} overlay={userMenu} disabled={isDownload} >
 							<Button
+								id="export_data"
 								className="view-publish-btn"
 							>
 								Export

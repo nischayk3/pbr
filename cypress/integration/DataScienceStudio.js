@@ -13,36 +13,25 @@ Cypress.on('uncaught:exception', (err) => {
 describe("Render Data Science Studio", () => {
 
 	beforeEach(() => {
+		cy.viewport(1280, 720);
+		cy.loginWithAD()
+	});
+
+	afterEach(() => {
+		cy.viewport(1280, 720);
 		cy.loginWithAD()
 	});
 
 	it('Load Data Science Studio', () => {
 		const url = Cypress.config().baseUrl
-		cy.wait(4000).then(() => {
-			cy.visit(url + '/#/dashboard/data_science_studio')
-			cy.log('Load Data Science Studio Page')
-			cy.url().should('eq', url + '/#/dashboard/data_science_studio')
-		})
+
+		cy.visit(url + '/#/dashboard/data_science_studio')
+		cy.log('Load Data Science Studio Page')
+		cy.url().should('eq', url + '/#/dashboard/data_science_studio')
+
 	})
 
 	it('Upload Load Data Set', () => {
-		const url = Cypress.config().baseUrl
-		cy.wait(2000)
-		cy.visit(url + '/#/dashboard/data_science_studio')
-		cy.wait(2000)
-		cy.get('#load-dataset > .anticon > svg').click()
-	})
-
-	it('Click back btn', () => {
-		cy.wait(2000)
-		cy.get('#back-btn > span').click()
-	})
-
-	it('Upload Load Data Set', () => {
-		const url = Cypress.config().baseUrl
-		cy.wait(2000)
-		cy.visit(url + '/#/dashboard/data_science_studio')
-
 		cy.wait(2000)
 		cy.get('#load-dataset > .anticon > svg').click()
 	})
@@ -53,7 +42,7 @@ describe("Render Data Science Studio", () => {
 		cy.get('input[type=file]').selectFile({ contents: 'cypress/filefortest/V348.csv' }, { force: true })
 	})
 
-	it('Select nect button', () => {
+	it('Select next button', () => {
 		cy.wait(2000)
 		cy.get('#next-btn > span').click()
 	})
@@ -61,13 +50,11 @@ describe("Render Data Science Studio", () => {
 	it('Load Target variables', () => {
 		cy.wait(2000)
 		cy.log('Load Target Variables')
-		const url = Cypress.config().baseUrl
-		cy.url().should('eq', url + '/#/dashboard/data_science_studio/target_variable')
 	})
 
 	it('Select traget variable', () => {
 		cy.get('[data-row-key="0"] > :nth-child(1) > .ant-radio-wrapper > .ant-radio > .ant-radio-input').click()
-		cy.get('.target-head > .ant-btn > span').click({ force: true })
+		// cy.get('.target-head > .ant-btn > span').click({ force: true })
 	})
 
 	it('back home page', () => {
@@ -96,7 +83,7 @@ describe("Render Data Science Studio", () => {
 		cy.get(".ant-input-wrapper > .ant-input").click({ force: true });
 
 		cy.get('[data-row-key="0"] > :nth-child(1)').click()
-		cy.wait(20000)
+		cy.wait(10000)
 
 		cy.get('#next-btn > span').click()
 	})
@@ -115,13 +102,18 @@ describe("Render Data Science Studio", () => {
 		cy.get('[data-row-key="0"] > :nth-child(1) > .ant-radio-wrapper > .ant-radio > .ant-radio-input').click()
 		cy.get('.target-head > .ant-btn > span').click({ force: true })
 		cy.wait(2000)
-		cy.get('.card-title > .anticon > svg').click()
 	})
 
 
 	it('Jupyter Hub Studio', () => {
 		cy.wait(4000)
-		cy.get('.jupyter-card').click({ force: true })
+		const url = Cypress.config().baseUrl
+		cy.visit(url + '/#/dashboard/data_science_studio')
+		cy.log('Load Data Science Studio Page')
+		cy.url().should('eq', url + '/#/dashboard/data_science_studio')
+		cy.wait(2000)
+		cy.get('#explore-jupyter > p').should("have.text", 'Explore on your own')
+		cy.get('#explore-jupyter > span').should("have.text", 'RECOMMENDED FOR POWER USERS')
 		cy.wait(2000)
 	})
 })

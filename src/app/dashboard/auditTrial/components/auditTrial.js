@@ -202,12 +202,14 @@ class AuditTrials extends React.Component {
 					dataIndex: "esign_id",
 					key: "8",
 					sorter: (a, b) => a.esign_id.localeCompare(b.esign_id),
-					render: (text) => text == "None" ? text : <Button style={{
-						backgroundColor: "#093185",
-						color: "#ffffff",
-						borderRadius: '4px',
-						border: '1px solid #093185'
-					}}
+					render: (text) => text == "None" ? text : <Button
+						id="esign_id"
+						style={{
+							backgroundColor: "#093185",
+							color: "#ffffff",
+							borderRadius: '4px',
+							border: '1px solid #093185'
+						}}
 						type="primary"
 						onClick={() => this.getEsignDetail(text)}
 					>Esign details</Button>
@@ -310,7 +312,9 @@ class AuditTrials extends React.Component {
 	};
 
 	getEsignDetail = async (esign_id_req) => {
-		this.setState({ esignOpen: true })
+		this.setState({ esignOpen: true }, () => {
+			console.log("state update", this.state.esignOpen);
+		})
 		let login_response = JSON.parse(localStorage.getItem("login_details"));
 		let headers = {
 			"content-type": "application/json",
@@ -328,6 +332,7 @@ class AuditTrials extends React.Component {
 			this.setState({ esignDetailsData: [] })
 		}
 	}
+
 	onOpenChange = (open) => {
 		if (open) {
 			this.setState({
@@ -340,7 +345,7 @@ class AuditTrials extends React.Component {
 	};
 
 	auditHighlight = (limit = 500) => {
-		var today = new Date();
+		const today = new Date();
 		today.setDate(today.getDate() + 1);
 		let req = {
 			identification: "10.10.16.30",
@@ -630,6 +635,7 @@ class AuditTrials extends React.Component {
 									}}
 								>
 									<Input.Search
+										id="table_input_search"
 										className="table-search"
 										placeholder="Search by..."
 										enterButton
@@ -706,7 +712,7 @@ class AuditTrials extends React.Component {
 								bordered
 							/>
 							<Modal
-								className="dinesh"
+								width={1280}
 								open={this.state.esignOpen}
 								title="Esign Details"
 								onCancel={() => this.setState({ esignOpen: false })}

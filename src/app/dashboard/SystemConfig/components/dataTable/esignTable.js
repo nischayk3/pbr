@@ -45,6 +45,7 @@ const EsignTable = ({ tableData }) => {
 	const dispatch = useDispatch();
 	const [data, setData] = useState([]);
 	const [editingKey, setEditingKey] = useState('');
+	const [isEdit, setIsEdit] = useState(false);
 	const isEditing = (record) => record.key === editingKey;
 
 	useEffect(() => {
@@ -63,15 +64,7 @@ const EsignTable = ({ tableData }) => {
 		let column = [];
 		objkeys &&
 			objkeys.map((val, i) => {
-				if (val == 'smtp_enable') {
-					return (
-						column.push({
-							title: val.toUpperCase().replace(/_/g, " "),
-							dataIndex: val,
-							key: i,
-						})
-					)
-				} else if (val == 'key') {
+				if (val == 'key') {
 					return val
 				} else {
 					return (
@@ -88,6 +81,7 @@ const EsignTable = ({ tableData }) => {
 			title: 'ACTION',
 			dataIndex: 'operation',
 			key: 9,
+			width: '150',
 			render: (_, record) => {
 				const editable = isEditing(record);
 				return editable ? (
@@ -140,6 +134,7 @@ const EsignTable = ({ tableData }) => {
 		};
 		setEditingKey(newData.key);
 		setData([...data, newData]);
+		setIsEdit(false);
 	};
 
 	const updateTableConfig = async (_req) => {
@@ -193,7 +188,7 @@ const EsignTable = ({ tableData }) => {
 
 	const handleEdit = (record) => {
 		setEditingKey(record.key);
-
+		setIsEdit(true);
 		form.setFieldsValue({
 			language: "",
 			reason_code: "",
@@ -211,7 +206,7 @@ const EsignTable = ({ tableData }) => {
 			const row = await form.validateFields();
 			const newData = [...data];
 			const index = newData.findIndex((item) => key === item.key);
-
+			setIsEdit(false);
 			if (index > -1) {
 				const item = newData[index];
 				newData.splice(index, 1, {
@@ -245,7 +240,7 @@ const EsignTable = ({ tableData }) => {
 				inputType: 'text',
 				dataIndex: col.dataIndex,
 				title: col.title,
-				editing: isEditing(record),
+				editing: col.dataIndex === 'reason_code' && isEdit ? false : isEditing(record),
 			}),
 		};
 	});

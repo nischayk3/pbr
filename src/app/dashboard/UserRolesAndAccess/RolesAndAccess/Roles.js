@@ -155,7 +155,7 @@ const Roles = () => {
 	console.log("searchText", searchText)
 
 	const editRole = (resName) => {
-
+		console.log('editRole', resName);
 		setResourceType('edit_resource')
 		setResourceDataTable([])
 		setIsVisible(true)

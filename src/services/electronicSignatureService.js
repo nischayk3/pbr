@@ -27,7 +27,7 @@ export const publishEvent = (request, headers) => {
 	);
 };
 
-//approve reject 
+//approve reject
 export const approveRecord = (request) => {
 	return Service.put(BMS_APP_PYTHON_SERVICE + '/workflow-status', request).then(
 		(response) => {
@@ -39,7 +39,13 @@ export const approveRecord = (request) => {
 	);
 };
 
-
-
-
-
+export const eSignReason = (request, headers) => {
+	return Service.get(BMS_APP_PYTHON_SERVICE + '/esign-reasons', request, headers).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};

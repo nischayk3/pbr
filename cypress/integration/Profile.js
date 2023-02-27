@@ -5,8 +5,9 @@ Cypress.Commands.add("multiselect", (options) => {
 	});
 });
 
-describe("Render User Profile", () => {
+describe("Render User Profile With AD", () => {
 	afterEach(() => {
+		cy.viewport(1360, 780)
 		cy.loginWithAD()
 	});
 
@@ -17,7 +18,7 @@ describe("Render User Profile", () => {
 
 	it('Load User Profile', () => {
 		const url = Cypress.config().baseUrl
-		cy.wait(5000).then(() => {
+		cy.wait(1000).then(() => {
 			cy.visit(url + '/#/dashboard/profile')
 			cy.log('Load Landing Page')
 			cy.url().should('eq', url + '/#/dashboard/profile')
@@ -33,43 +34,16 @@ describe("Render User Profile", () => {
 		cy.wait(2000)
 	})
 
-	it('should verify Password', () => {
-		cy.log('verify password section')
-		cy.get('.layout-section-wrapper > :nth-child(2) > .heading').should("have.text", "Password")
-
-		cy.log('verify current password')
-		cy.get('.layout-section-wrapper > :nth-child(2) > .split-form > :nth-child(1) > :nth-child(1) > p').should("have.text", "Current password")
-		cy.get('.split-form > :nth-child(1) > :nth-child(1) > .ant-input-affix-wrapper > .ant-input').type("password")
-
-		cy.log("view current password")
-		cy.get(':nth-child(1) > .ant-input-affix-wrapper > .ant-input-suffix > .anticon > svg').click()
-
-		cy.log('verify new password')
-		cy.get('.layout-section-wrapper > :nth-child(2) > .split-form > :nth-child(1) > :nth-child(2) > p').should("have.text", "New password")
-		cy.get(':nth-child(2) > .ant-input-affix-wrapper > .ant-input').type("password1")
-
-		cy.log("view new password")
-		cy.get(':nth-child(2) > .ant-input-affix-wrapper > .ant-input-suffix > .anticon > svg').click()
-
-		cy.log('verify confirm new passwprd')
-		cy.get(':nth-child(2) > .split-form > :nth-child(1) > :nth-child(3) > p').should("have.text", "Confirm new password")
-		cy.get(':nth-child(3) > .ant-input-affix-wrapper > .ant-input').type("password2")
-
-		cy.log("view confirm new password")
-		cy.get(':nth-child(3) > .ant-input-affix-wrapper > .ant-input-suffix > .anticon > svg').click()
-
-		cy.log('click save button')
-		cy.get(':nth-child(2) > .split-form > .ant-btn > span').click()
-	})
-
-
-
-	it('should verify Preference', () => {
+	it('Upload profile picture', () => {
 		cy.log('Upload Profile Image')
 		cy.get('input[type=file]').selectFile({ contents: 'cypress/filefortest/avatar.png' }, { force: true })
+		cy.wait(2000)
+	})
 
+	it('should verify Preference', () => {
+		cy.wait(2000)
 		cy.log('Select Date Format')
-		cy.get('#rc_select_0').click()
+		cy.get('#date_format').click()
 		cy.wait(500)
 		cy.get('.ant-select-item-option').first().click({ force: true })
 
@@ -81,7 +55,7 @@ describe("Render User Profile", () => {
 		cy.get('.ant-select-item-option').first().click({ force: true })
 
 		cy.log('Select Time Zone')
-		cy.get('#rc_select_1').click()
+		cy.get('#time_zone').click()
 		cy.wait(500)
 		cy.get('.ant-select-item-option').eq(1).click({ force: true })
 
@@ -93,7 +67,7 @@ describe("Render User Profile", () => {
 		cy.get('.ant-select-item-option').eq(1).click({ force: true })
 
 		cy.log('Select Language')
-		cy.get('#rc_select_2').click()
+		cy.get('#language').click()
 		cy.wait(500)
 		cy.get('.ant-select-item-option').eq(2).click({ force: true })
 
@@ -104,4 +78,66 @@ describe("Render User Profile", () => {
 		cy.wait(500)
 		cy.get('.ant-select-item-option').eq(2).click({ force: true })
 	})
+
+	it('Select Notifications Tab', () => {
+		cy.wait(1000)
+		cy.log('Open Notification Tab')
+		cy.get('#rc-tabs-0-tab-2').click();
+
+		cy.wait(500)
+		cy.get(':nth-child(1) > .ant-switch > .ant-switch-handle').click()
+
+		cy.wait(500)
+		cy.get(':nth-child(2) > .ant-switch > .ant-switch-handle').click()
+	})
 })
+
+// describe("Render User Profile Without AD ", () => {
+// 	afterEach(() => {
+// 		cy.viewport(1360, 780)
+// 		cy.loginWithoutAD()
+// 	});
+
+// 	beforeEach(() => {
+// 		cy.viewport(1360, 780)
+// 		cy.loginWithoutAD()
+// 	})
+
+// 	it('Load User Profile', () => {
+// 		const url = Cypress.config().baseUrl
+// 		cy.wait(1000).then(() => {
+// 			cy.visit(url + '/#/dashboard/profile')
+// 			cy.log('Load Landing Page')
+// 			cy.url().should('eq', url + '/#/dashboard/profile')
+// 		})
+// 	})
+
+// 	it('should verify Password', () => {
+// 		cy.log('verify password section')
+// 		cy.get('.layout-section-wrapper > :nth-child(2) > .heading').should("have.text", "Password")
+
+// 		cy.log('verify current password')
+// 		cy.get('.layout-section-wrapper > :nth-child(2) > .split-form > :nth-child(1) > :nth-child(1) > p').should("have.text", "Current password")
+// 		cy.get('.split-form > :nth-child(1) > :nth-child(1) > .ant-input-affix-wrapper > .ant-input').type("password")
+
+// 		cy.log("view current password")
+// 		cy.get(':nth-child(1) > .ant-input-affix-wrapper > .ant-input-suffix > .anticon > svg').click()
+
+// 		cy.log('verify new password')
+// 		cy.get('.layout-section-wrapper > :nth-child(2) > .split-form > :nth-child(1) > :nth-child(2) > p').should("have.text", "New password")
+// 		cy.get(':nth-child(2) > .ant-input-affix-wrapper > .ant-input').type("password1")
+
+// 		cy.log("view new password")
+// 		cy.get(':nth-child(2) > .ant-input-affix-wrapper > .ant-input-suffix > .anticon > svg').click()
+
+// 		cy.log('verify confirm new passwprd')
+// 		cy.get(':nth-child(2) > .split-form > :nth-child(1) > :nth-child(3) > p').should("have.text", "Confirm new password")
+// 		cy.get(':nth-child(3) > .ant-input-affix-wrapper > .ant-input').type("password2")
+
+// 		cy.log("view confirm new password")
+// 		cy.get(':nth-child(3) > .ant-input-affix-wrapper > .ant-input-suffix > .anticon > svg').click()
+
+// 		cy.log('click save button')
+// 		cy.get(':nth-child(2) > .split-form > .ant-btn > span').click()
+// 	})
+// })

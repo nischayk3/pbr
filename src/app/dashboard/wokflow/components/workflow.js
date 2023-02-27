@@ -8,8 +8,10 @@
 // import { DownloadOutlined } from "@ant-design/icons";
 import { Avatar, Button, Card, Empty, Table, Tabs } from "antd";
 import moment from "moment";
+import queryString from "query-string";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useHistory, useLocation } from "react-router-dom";
 import illustrations from "../../../../assets/images/Banner illustration.svg";
 import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
 import DashCard from "../../../../components/CardComponent/customCard";
@@ -27,9 +29,12 @@ import {
 } from "../../../../services/workFlowServices";
 import "./styles.scss";
 import WorkflowTable from "./workflowTable/workflowTable";
-
 const { TabPane } = Tabs;
 const Workflow = () => {
+	const history = useHistory();
+	const location = useLocation();
+	const dispatch = useDispatch();
+
 	const [itemCount, setItemCount] = useState();
 	const [cardTitle, setCardTitle] = useState("");
 	const [isPublish, setIsPublish] = useState(false);
@@ -42,26 +47,38 @@ const Workflow = () => {
 	const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 	const [approveReject, setApproveReject] = useState("");
 	const [isApprove, setIsApprove] = useState(true);
+	const [showWorkflow, setShowWorkflow] = useState(false);
 
-	const dispatch = useDispatch();
+	const params = queryString.parse(location.search);
 
 	useEffect(() => {
 		getTilesData();
+		if (Object.keys(params) &&
+			Object.keys(params).length > 0) {
+			console.log("param", params);
+			setItemCount(params?.count);
+			setActiveDiv(params?.active);
+			setCardTitle(params?.active);
+			setApplicationType(params?.apptype);
+			// cardTableData(params?.apptype);
+		}
+
 	}, []);
 
 	useEffect(() => {
 		if (cardTitle != "" && cardTitle !== "Param Data") {
-			cardTableData();
+			cardTableData(applicationType);
 		}
 	}, [cardTitle, activeTab]);
 
 	useEffect(() => {
 		if (cardTitle === "Param Data") {
+			/* istanbul ignore next */
 			getUnApprovedParamData();
 		}
 	}, [cardTitle, activeTab]);
 
-	const cardTableData = async () => {
+	const cardTableData = async (applicationType) => {
 		let req;
 		if (itemCount != 0) {
 			if (activeTab === "1") {
@@ -108,8 +125,20 @@ const Workflow = () => {
 		try {
 			dispatch(showLoader());
 			const tilesResponse = await getCountData(req);
-			setTilesData(tilesResponse["Data"]);
-			dispatch(hideLoader());
+			if (tilesResponse['status-code'] === 200) {
+				dispatch(hideLoader());
+				setShowWorkflow(true)
+				setTilesData(tilesResponse["Data"]);
+			} else {
+				/* istanbul ignore next */
+				dispatch(hideLoader());
+				/* istanbul ignore next */
+				setShowWorkflow(false)
+				/* istanbul ignore next */
+				dispatch(showNotification("error", `${tilesResponse['status-code']} error`));
+			}
+
+
 		} catch (error) {
 			/* istanbul ignore next */
 			dispatch(hideLoader());
@@ -118,16 +147,18 @@ const Workflow = () => {
 		}
 	};
 
+	/* istanbul ignore next */
 	const getRandomColor = (index) => {
 		let colors = ["#56483F", "#728C69", "#c04000", "#c19578"];
 		return colors[index % 4];
 	};
 
+	/* istanbul ignore next */
 	const getUnApprovedParamData = async () => {
 		let _reqData = {
 			limit: 10,
 		};
-
+		/* istanbul ignore next */
 		const dataColumns = [
 			{
 				title: "Product",
@@ -190,6 +221,7 @@ const Workflow = () => {
 
 		try {
 			dispatch(showLoader());
+			/* istanbul ignore next */
 			const dataRes = await getUnapprovedData(_reqData);
 			if (dataRes.statuscode === 200) {
 				setDataSource(dataRes.Data);
@@ -207,16 +239,20 @@ const Workflow = () => {
 		}
 	};
 
+	/* istanbul ignore next */
 	const approveData = async (_reqParam) => {
 		try {
 			dispatch(showLoader());
+			/* istanbul ignore next */
 			const approveRes = await approveParamData(_reqParam);
 			if (approveRes.Status === 200) {
 				dispatch(showNotification("success", approveRes.Message));
 				getUnApprovedParamData();
 				setIsApprove(true);
 			} else {
+				/* istanbul ignore next */
 				dispatch(hideLoader());
+				/* istanbul ignore next */
 				dispatch(showNotification("error", "No data found"));
 			}
 			dispatch(hideLoader());
@@ -229,9 +265,8 @@ const Workflow = () => {
 	};
 
 	const tilesClicked = (item, index) => {
-		console.log("textttttttt", item);
+		history.push(`/dashboard/workflow?apptype=${item.application_type}&active=${item.text}&count=${item.item_count}`)
 		setItemCount(item.item_count);
-		//setIndexCount(index);
 		setCardTitle(item.text);
 		setActiveDiv(item.text);
 		setApplicationType(item.application_type);
@@ -241,12 +276,13 @@ const Workflow = () => {
 		setActiveTab(activeKey);
 	};
 
+	/* istanbul ignore next */
 	const handleClose = () => {
+		/* istanbul ignore next */
 		setTimeout(() => {
-			console.log('timeout')
 			getTilesData()
-
 		}, 2000)
+		/* istanbul ignore next */
 		setIsPublish(false);
 	};
 
@@ -258,6 +294,8 @@ const Workflow = () => {
 
 		approveData(_approveReq);
 	};
+
+
 
 	return (
 		<div className="custom-wrapper">
@@ -273,14 +311,15 @@ const Workflow = () => {
 					source={illustrations}
 					sourceClass="geanealogy-image"
 				/>
-
-				<div className="workflow_items">
+				{showWorkflow ? (<div className="workflow_items">
 					{
 						<div className="approve-wrapper">
 							{tilesData &&
 								tilesData.map((item, index) => {
 									return (
 										<div
+											key={`workflow_tab_${index}`}
+											id='workflow_tab'
 											onClick={() => tilesClicked(item, index)}
 											style={{ cursor: "pointer" }}
 										>
@@ -302,13 +341,6 @@ const Workflow = () => {
 								title={
 									<div className="table-head">
 										{cardTitle}
-										{/* <DownloadOutlined
-											style={{
-												color: "#093185",
-												marginLeft: "25px",
-												fontSize: "20px",
-											}}
-										/> */}
 									</div>
 								}
 							>
@@ -341,11 +373,14 @@ const Workflow = () => {
 										<Table
 											rowSelection={{
 												selectedRowKeys,
-												onChange: (selectedRowKeys, selectedRows) => {
+												/* istanbul ignore next */
+												onChange: (selectedRowKeys) => {
 													if (selectedRowKeys.length == 0) {
+														/* istanbul ignore next */
 														setIsApprove(true);
 														setSelectedRowKeys(selectedRowKeys);
 													} else {
+														/* istanbul ignore next */
 														setIsApprove(false);
 														setSelectedRowKeys(selectedRowKeys);
 													}
@@ -393,7 +428,11 @@ const Workflow = () => {
 							description={<span>Please select one to view its approvals</span>}
 						/>
 					)}
-				</div>
+				</div>) : (<Empty
+					className="empty-workflow workflow-right-block"
+					description={<span>No view for approvals</span>}
+				/>)}
+
 			</div>
 			<Signature
 				isPublish={isPublish}

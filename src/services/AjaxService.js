@@ -27,13 +27,15 @@ class Service {
 					Store.dispatch(checkAuth(false));
 				} else if (error.response.status === 500) {
 					Store.dispatch(checkNetworkError(true));
-					Store.dispatch(showNotification("error", '500 error, Internal Server Error'));
+					Store.dispatch(showNotification("error", '500 error, Internal Server Error', 'Please try again later'));
 				} else if (error.response.status === 501) {
-					Store.dispatch(showNotification("error", '501 error, Not Implemented'));
+					Store.dispatch(showNotification("error", '501 error, Not Implemented', 'Please try again later'));
 				} else if (error.response.status === 502) {
-					Store.dispatch(showNotification("error", '502 error, Bad Gateway'));
+					Store.dispatch(showNotification("error", '502 error, Bad Gateway', 'Please try again later'));
 				} else if (error.response.status === 503) {
-					Store.dispatch(showNotification("error", '502 error, Service Unavailable'));
+					Store.dispatch(showNotification("error", '503 error, Service Unavailable', 'Please try again later'));
+				} else if (error.response.status === 504) {
+					Store.dispatch(showNotification("error", '504 error, Gateway Timeout', 'Please try again later'));
 				}
 				return Promise.reject(error);
 			}

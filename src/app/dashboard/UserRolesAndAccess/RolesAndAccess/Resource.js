@@ -15,7 +15,7 @@ import { resourceActionUpdated, resourceAuth } from '../../../../services/userRo
 
 const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackResource, callbackResourceCard, resourceDataTable, editResource, resourceType }) => {
 	const [resList, setResList] = useState([]);
-	const [selectedResource, setSelectedResource] = useState('');
+	const [selectedResource, setSelectedResource] = useState(editResource);
 	const [data, setData] = useState([]);
 	const [selectedAuth, setSelectedAuth] = useState([]);
 	const [rolePriv, setRolePriv] = useState('');
@@ -94,15 +94,15 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 		setSelectedResource('')
 	}
 
-	const warning = () => {
-		messageApi.open({
-			type: 'error',
-			content: 'Please Select READ as a default Authorizations',
-			style: {
-				marginTop: '15vh',
-			},
-		});
-	};
+	// const warning = () => {
+	// 	messageApi.open({
+	// 		type: 'error',
+	// 		content: 'Please Select READ as a default Authorizations',
+	// 		style: {
+	// 			marginTop: '15vh',
+	// 		},
+	// 	});
+	// };
 
 	const authSave = () => {
 		let _reqAuth = {

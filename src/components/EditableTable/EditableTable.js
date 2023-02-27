@@ -376,7 +376,7 @@ class EditableTable extends Component {
 					dataSource={dataSource}
 					columns={columns}
 					pagination={{ current: this.state.currentPage, onChange: (page) => this.onChangeCurrentPage(page) }}
-					scroll={this.props.screens === "Roles" ? { y: 400 } : { y: 300 }}
+					scroll={this.props.screens === "Roles" ? { y: 400 } : { y: 350 }}
 				/>
 
 				<Modal

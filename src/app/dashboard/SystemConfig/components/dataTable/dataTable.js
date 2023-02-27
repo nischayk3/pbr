@@ -1,4 +1,4 @@
-import { Button, Form, Input, InputNumber, Popconfirm, Table, Tooltip, Typography } from 'antd';
+import { Button, Checkbox, Form, Input, InputNumber, Popconfirm, Table, Tooltip, Typography } from 'antd';
 import { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
 import { v1 as uuid } from "uuid";
@@ -16,6 +16,7 @@ const EditableCell = ({
 	children,
 	...restProps
 }) => {
+
 	const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
 	return (
 		<td {...restProps}>
@@ -46,6 +47,7 @@ const DataTable = ({ tableData }) => {
 	const dispatch = useDispatch();
 	const [data, setData] = useState([]);
 	const [editingKey, setEditingKey] = useState('');
+	const [isEdit, setIsEdit] = useState(false);
 	const isEditing = (record) => record.key === editingKey;
 
 	useEffect(() => {
@@ -56,6 +58,12 @@ const DataTable = ({ tableData }) => {
 			setData(tableData)
 		}
 	}, [])
+
+	const onChange = (e, record, rowIndex) => {
+		const rowData = [...data];
+		rowData[rowIndex]['smtp_enable'] = e.target.checked == false ? "" : e.target.checked;
+		setData(rowData)
+	};
 
 	// const defaultColumns = tableColumns(tableData)
 	const tableColumns = (item) => {
@@ -70,6 +78,11 @@ const DataTable = ({ tableData }) => {
 							title: val.toUpperCase().replace(/_/g, " "),
 							dataIndex: val,
 							key: i,
+							render: (value, record, rowIndex) => {
+								return (
+									<Checkbox key={rowIndex} checked={value} onChange={(e) => onChange(e, record, rowIndex)} />
+								)
+							}
 						})
 					)
 				} else if (val == 'key') {
@@ -89,7 +102,7 @@ const DataTable = ({ tableData }) => {
 			title: 'ACTION',
 			dataIndex: 'operation',
 			key: 9,
-			width: '120',
+			width: '150',
 			render: (_, record) => {
 				const editable = isEditing(record);
 				return editable ? (
@@ -128,8 +141,8 @@ const DataTable = ({ tableData }) => {
 	const handleDelete = (key) => {
 		const newData = data.filter((item) => item.key !== key);
 		const filterData = data.filter((item) => item.key === key)
-		deleteTableConfig(filterData[0])
 		setData(newData);
+		deleteTableConfig(filterData[0])
 	};
 
 	const handleAdd = () => {
@@ -145,8 +158,11 @@ const DataTable = ({ tableData }) => {
 			use_type: "",
 			key: uuid(),
 		};
+
 		setEditingKey(newData.key);
 		setData([...data, newData]);
+		setIsEdit(false);
+
 	};
 
 	const updateTableConfig = async (_req) => {
@@ -199,7 +215,7 @@ const DataTable = ({ tableData }) => {
 
 	const handleEdit = (record) => {
 		setEditingKey(record.key);
-
+		setIsEdit(true);
 		form.setFieldsValue({
 			email_id: "",
 			imap_port: "",
@@ -223,7 +239,7 @@ const DataTable = ({ tableData }) => {
 			const row = await form.validateFields();
 			const newData = [...data];
 			const index = newData.findIndex((item) => key === item.key);
-
+			setIsEdit(false);
 			if (index > -1) {
 				const item = newData[index];
 				newData.splice(index, 1, {
@@ -257,7 +273,7 @@ const DataTable = ({ tableData }) => {
 				inputType: col.dataIndex === 'imap_port' || col.dataIndex === 'pop_port' || col.dataIndex === 'smtp_port' ? 'number' : 'text',
 				dataIndex: col.dataIndex,
 				title: col.title,
-				editing: isEditing(record),
+				editing: col.dataIndex === 'use_type' && isEdit ? false : isEditing(record),
 			}),
 		};
 	});
@@ -289,7 +305,7 @@ const DataTable = ({ tableData }) => {
 				pagination={{
 					onChange: cancel,
 				}}
-				rowKey={(record) => record.email_id}
+				rowKey={(record) => record.key}
 				bordered={false} className="config-table"
 			/>
 		</Form>

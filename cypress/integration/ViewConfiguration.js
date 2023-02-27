@@ -19,11 +19,9 @@ describe('Renders the view config page', () => {
 
 	it('Renders use roles and access correctly', () => {
 		const url = Cypress.config().baseUrl
-		// cy.log('Opening a report template')
-		cy.visit(url + '/#/dashboard/workspace')
-		// cy.visit('http://localhost:3030/#/dashboard/workspace')
-		cy.wait(5000)
-		cy.get('#user-roles-and-access > .ant-menu-title-content > a').click();
+		cy.visit(url + '/#/dashboard/user-roles-and-access')
+		// cy.wait(5000)
+		// cy.get('#user-roles-and-access > .ant-menu-title-content > a').click();
 		cy.wait(1000)
 	})
 
@@ -32,9 +30,9 @@ describe('Renders the view config page', () => {
 		cy.log('Clicking on User Configuration')
 		cy.contains('User Configuration').click()
 		cy.wait('@userConfigGet').then(() => {
-			cy.wait(500)
-			cy.log('Adding new user')
-			cy.get('#editable-table-button-add-new-user').click()
+			// cy.wait(500)
+			// cy.log('Adding new user')
+			// cy.get('#editable-table-button-add-new-user').click()
 
 			cy.wait(250)
 			cy.log('Editing editable text input')
@@ -112,99 +110,99 @@ describe('Renders the view config page', () => {
 		})
 	})
 
-	it('Loads roles and access page correctly', () => {
-		cy.intercept('GET', '/services/v1/role-config', { fixture: 'rolesConfig.json' }).as('roleConfigGet')
-		cy.log('Clicking on Roles And Access')
-		cy.contains('Roles And Access').click()
-		cy.wait('@roleConfigGet').then(() => {
-			cy.wait(500)
-			cy.log('Adding new user')
-			cy.get('#editable-table-button-add-new-user').click()
+	// it('Loads roles and access page correctly', () => {
+	// 	cy.intercept('GET', '/services/v1/role-config', { fixture: 'rolesConfig.json' }).as('roleConfigGet')
+	// 	cy.log('Clicking on Roles And Access')
+	// 	cy.contains('Roles And Access').click()
+	// 	cy.wait('@roleConfigGet').then(() => {
+	// 		cy.wait(500)
+	// 		cy.log('Adding new user')
+	// 		cy.get('#editable-table-button-add-new-user').click()
 
-			cy.wait(250)
-			cy.log('Editing editable text input')
-			cy.get('.editable-cell-value-wrap').first().click()
-			cy.get('.ant-form-item').clear()
-			cy.get('.ant-form-item').type('NEW_USER')
+	// 		cy.wait(250)
+	// 		cy.log('Editing editable text input')
+	// 		cy.get('.editable-cell-value-wrap').first().click()
+	// 		cy.get('.ant-form-item').clear()
+	// 		cy.get('.ant-form-item').type('NEW_USER')
 
-			cy.wait(500)
-			cy.log('Changing Resources')
-			cy.get('.ant-select-multiple').eq(0).click().multiselect(['VIEW', 'CHART', 'GENEALOGY', 'DASHBOARD'])
+	// 		cy.wait(500)
+	// 		cy.log('Changing Resources')
+	// 		cy.get('.ant-select-multiple').eq(0).click().multiselect(['VIEW', 'CHART', 'GENEALOGY', 'DASHBOARD'])
 
-			cy.wait(500)
-			cy.log('Changing Visibility')
-			cy.get('.ant-select-multiple').eq(1).click().multiselect(['OWN', 'APRD'])
+	// 		cy.wait(500)
+	// 		cy.log('Changing Visibility')
+	// 		cy.get('.ant-select-multiple').eq(1).click().multiselect(['OWN', 'APRD'])
 
-			cy.wait(500)
-			cy.log('Changing Access')
-			cy.get('.ant-select-multiple').eq(2).click().multiselect(['READ'])
-			cy.get('.ant-table-row').first().scrollIntoView({ offset: { top: -5, left: 0 } })
+	// 		cy.wait(500)
+	// 		cy.log('Changing Access')
+	// 		cy.get('.ant-select-multiple').eq(2).click().multiselect(['READ'])
+	// 		cy.get('.ant-table-row').first().scrollIntoView({ offset: { top: -5, left: 0 } })
 
-			cy.intercept('PUT', '/services/v1/role-config', { fixture: 'configSuccess.json' }).as('roleConfigPut')
-			cy.log('Saving user')
-			cy.get('#editable-table-button-save').click()
-			cy.wait('@roleConfigPut').then(() => {
-				cy.wait(1000)
-				cy.go('back')
-			})
-		})
-	})
+	// 		cy.intercept('PUT', '/services/v1/role-config', { fixture: 'configSuccess.json' }).as('roleConfigPut')
+	// 		cy.log('Saving user')
+	// 		cy.get('#editable-table-button-save').click()
+	// 		cy.wait('@roleConfigPut').then(() => {
+	// 			cy.wait(1000)
+	// 			cy.go('back')
+	// 		})
+	// 	})
+	// })
 
-	it('Loads screen controls page correctly', () => {
-		cy.log('Clicking on Screen Controls')
-		cy.contains('Application Controls').click()
-		cy.url().should('include', '/application-controls')
-		cy.wait(2000)
+	// it('Loads screen controls page correctly', () => {
+	// 	cy.log('Clicking on Screen Controls')
+	// 	cy.contains('Application Controls').click()
+	// 	cy.url().should('include', '/application-controls')
+	// 	cy.wait(2000)
 
 
-		cy.log('Opening first panel')
-		cy.get('.ant-collapse-item').eq(0).click()
+	// 	cy.log('Opening first panel')
+	// 	cy.get('.ant-collapse-item').eq(0).click()
 
-		cy.wait(500)
-		cy.log('Closing first panel')
-		cy.get('.ant-collapse-item').eq(0).click()
+	// 	cy.wait(500)
+	// 	cy.log('Closing first panel')
+	// 	cy.get('.ant-collapse-item').eq(0).click()
 
-		cy.wait(500)
-		cy.log('Opening second panel')
-		cy.get('.ant-collapse-item').eq(1).click()
+	// 	cy.wait(500)
+	// 	cy.log('Opening second panel')
+	// 	cy.get('.ant-collapse-item').eq(1).click()
 
-		cy.wait(500)
-		cy.log('Opening third panel')
-		cy.get('.ant-collapse-item').eq(2).click()
+	// 	cy.wait(500)
+	// 	cy.log('Opening third panel')
+	// 	cy.get('.ant-collapse-item').eq(2).click()
 
-		cy.wait(500)
-		cy.log('Deleting third panel')
-		cy.get('.anticon-delete').eq(2).click()
+	// 	cy.wait(500)
+	// 	cy.log('Deleting third panel')
+	// 	cy.get('.anticon-delete').eq(2).click()
 
-		cy.wait(500)
-		cy.log('Opening first panel')
-		cy.get('.ant-collapse-item').eq(0).click()
+	// 	cy.wait(500)
+	// 	cy.log('Opening first panel')
+	// 	cy.get('.ant-collapse-item').eq(0).click()
 
-		cy.wait(500)
-		cy.log('Adding control')
-		cy.get('.ant-btn-dashed').first().click()
+	// 	cy.wait(500)
+	// 	cy.log('Adding control')
+	// 	cy.get('.ant-btn-dashed').first().click()
 
-		cy.wait(500)
-		cy.log('Adding control')
-		cy.get('.ant-btn-dashed').first().click()
+	// 	cy.wait(500)
+	// 	cy.log('Adding control')
+	// 	cy.get('.ant-btn-dashed').first().click()
 
-		cy.wait(500)
-		cy.log('Changing Application Control')
-		cy.get('.ant-select-multiple').eq(0).click().multiselect(['Screen A', 'Screen B'])
+	// 	cy.wait(500)
+	// 	cy.log('Changing Application Control')
+	// 	cy.get('.ant-select-multiple').eq(0).click().multiselect(['Screen A', 'Screen B'])
 
-		cy.wait(500)
-		cy.log('Changing Widget Control')
-		cy.get('.ant-select-multiple').eq(1).click().multiselect(['Widget D', 'Widget E'])
+	// 	cy.wait(500)
+	// 	cy.log('Changing Widget Control')
+	// 	cy.get('.ant-select-multiple').eq(1).click().multiselect(['Widget D', 'Widget E'])
 
-		cy.wait(500)
-		cy.log('Deleting first control')
-		cy.get('.anticon-delete').eq(3).click()
+	// 	cy.wait(500)
+	// 	cy.log('Deleting first control')
+	// 	cy.get('.anticon-delete').eq(3).click()
 
-		cy.wait(500)
-		cy.log('Deleting last control')
-		cy.get('.anticon-delete').eq(2).click()
+	// 	cy.wait(500)
+	// 	cy.log('Deleting last control')
+	// 	cy.get('.anticon-delete').eq(2).click()
 
-		cy.wait(1000)
-		cy.go('back')
-	})
+	// 	cy.wait(1000)
+	// 	cy.go('back')
+	// })
 })

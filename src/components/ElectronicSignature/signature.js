@@ -3,7 +3,7 @@ import { Button, Input, Modal, Select } from "antd";
 import queryString from "query-string";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useLocation } from "react-router";
+import { useHistory, useLocation } from "react-router-dom";
 import { BMS_APP_LOGIN_PASS, MDH_APP_PYTHON_SERVICE } from "../../constants/apiBaseUrl";
 import {
 	hideLoader,
@@ -13,6 +13,7 @@ import {
 import {
 	approveRecord,
 	eSign,
+	eSignReason,
 	publishEvent
 } from "../../services/electronicSignatureService";
 import {
@@ -21,11 +22,12 @@ import {
 	getAuthenticateWithLdap,
 	getAuthenticateWithoutAD
 } from "../../services/loginService";
+import { currentTimeStamp, latestDate } from "../../utils/dateHelper";
 import "./styles.scss";
 
-const { Option } = Select;
 
 const Signature = (props) => {
+	const history = useHistory();
 	const location = useLocation();
 	const params = queryString.parse(location.search);
 	// eslint-disable-next-line react/prop-types
@@ -36,21 +38,62 @@ const Signature = (props) => {
 	const [isauth, setIsAuth] = useState("");
 	const [loginStatus, setLoginStatus] = useState("");
 	const [checkRejectReason, setCheckRejectReason] = useState(false);
+	const [reasonList, setReasonList] = useState([]);
+	const [otherReason, setOtherReason] = useState('');
 
 	const dispatch = useDispatch();
+	const login_response = JSON.parse(localStorage.getItem("login_details"));
 
 	useEffect(() => {
-		const loginDetails = JSON.parse(localStorage.getItem("login_details"));
 		const status = localStorage.getItem("loginwith");
-
-		if
-			(status) {
+		if (status) {
 			setLoginStatus(status);
 		}
-		if (loginDetails) {
-			setUsername(loginDetails.email_id);
+		if (login_response) {
+			setUsername(login_response.email_id);
 		}
 	}, []);
+
+	useEffect(() => {
+		if (!isPublish) {
+			setReason("")
+			setCheckRejectReason(false)
+		}
+		if (isPublish) {
+			getReasonList()
+		}
+	}, [isPublish])
+
+
+	const getReasonList = async () => {
+		const _headers = {
+			"content-type": "application/json",
+			"x-access-token": login_response.token ? login_response.token : "",
+			"resource-name": "WORKITEMS",
+		};
+		const _req = {}
+		try {
+			const reason = await eSignReason(_req, _headers)
+			if (reason.statuscode === 200) {
+				const reasonData = [];
+				const data = reason?.message
+
+				data.forEach((item) => {
+					let obj = {};
+					obj['value'] = item;
+					obj['label'] = item;
+					reasonData.push(obj)
+				})
+
+				setReasonList(reasonData)
+			} else {
+				dispatch(showNotification("error", reason.message));
+			}
+		} catch (error) {
+			dispatch(showNotification("error", error));
+		}
+	}
+
 
 	const authenticateUser = async () => {
 		let req = {};
@@ -125,23 +168,11 @@ const Signature = (props) => {
 	};
 
 	const handleConfirm = async () => {
-		let login_response = JSON.parse(localStorage.getItem("login_details"));
-
-		var today = new Date();
-		var h = today.getHours();
-		var m = today.getMinutes();
-		var s = today.getSeconds();
-		let time_today = h + ":" + m + ":" + s;
-		var date = new Date();
-		var day = date.getDate();
-		var month = date.getMonth() + 1;
-		var year = date.getFullYear();
-		let date_today = year + "-" + month + "-" + day;
 		let req = {};
 
-		req["date"] = date_today;
-		req["timestamp"] = time_today;
-		req["reason"] = reason;
+		req["date"] = latestDate();
+		req["timestamp"] = currentTimeStamp();
+		req["reason"] = reason === 'Reason for signature' ? otherReason : reason;
 		req["user_id"] = username;
 		// eslint-disable-next-line react/prop-types
 		req["screen"] = props.screenName;
@@ -157,7 +188,9 @@ const Signature = (props) => {
 						? "AUTO_ML"
 						: props.appType == "ELOGBOOK-READING"
 							? "DASHBOARD"
-							: props.appType,
+							: params?.fromScreen == 'Workflow'
+								? 'WORKITEMS'
+								: props.appType,
 			"x-access-token": login_response.token ? login_response.token : "",
 		};
 
@@ -202,16 +235,16 @@ const Signature = (props) => {
 						? await publishEvent(reqs, headers) : await approveRecord(req1)
 
 				} else if (props.appType == "PBR_TEMPLATE") {
-					if(params.fromScreen == "Workflow" || params.fromScreen == "Workspace"){
+					if (params.fromScreen == "Workflow" || params.fromScreen == "Workspace") {
 						publish_response =
-						Object.keys(params).length > 0 && params.fromScreen !== "Workspace"
-							? await approveRecord(req1)
-							: await publishEvent(reqs, headers);
-					}else{
+							Object.keys(params).length > 0 && params.fromScreen !== "Workspace"
+								? await approveRecord(req1)
+								: await publishEvent(reqs, headers);
+					} else {
 						publish_response =
-						Object.keys(params).length > 0 && await approveRecord(req1)
+							Object.keys(params).length > 0 && await approveRecord(req1)
 					}
-					
+
 				} else {
 					publish_response =
 						Object.keys(params).length > 0 && params.fromScreen !== "Workspace"
@@ -222,13 +255,19 @@ const Signature = (props) => {
 				if (publish_response.status_code == 200) {
 					dispatch(showNotification("success", publish_response.msg));
 					props.PublishResponse(publish_response);
+					if (location?.state?.path) {
+						history.push(`${location.state.path}`)
+					}
+
 				} else if (publish_response.Status == 200) {
 					dispatch(showNotification("success", publish_response.Message));
 					props.PublishResponse(publish_response);
-				} 
-				// else {
-				// 	dispatch(showNotification("error", publish_response.msg));
-				// }
+					if (location?.state?.path) {
+						history.push(`${location.state.path}`)
+					}
+				} else {
+					dispatch(showNotification("error", publish_response.msg));
+				}
 			} else if (esign_response.Status == 403) {
 				dispatch(showNotification("error", esign_response.Message));
 			} else {
@@ -245,7 +284,7 @@ const Signature = (props) => {
 
 		const _reqSaml = {
 			SignedInfoData: {
-				Reason: reason,
+				Reason: reason === 'Reason for signature' ? otherReason : reason,
 				screenName: props.screenName,
 				appType: props.appType,
 				dispId: props.dispId,
@@ -265,12 +304,7 @@ const Signature = (props) => {
 		}
 	}
 
-	useEffect(() => {
-		if (!isPublish) {
-			setReason("")
-			setCheckRejectReason(false)
-		}
-	}, [isPublish])
+
 
 	return (
 		<div>
@@ -294,12 +328,14 @@ const Signature = (props) => {
 									handleClose();
 									setIsAuth("");
 								}}
+								id="cancel"
 							>
 								Cancel
 							</Button>,
 							<Button
 								className="custom-secondary-btn"
 								disabled={!reason?.length}
+								id="confirm"
 								key="1"
 								onClick={() => {
 									handleConfirm();
@@ -311,6 +347,7 @@ const Signature = (props) => {
 						: [
 							loginStatus == "WITH_AD" ? (
 								<Button
+									id='auth_with_ad'
 									className="custom-secondary-btn"
 									key="3"
 									onClick={() => authenticateUser()}
@@ -320,6 +357,7 @@ const Signature = (props) => {
 								</Button>
 							) : loginStatus == "WITHOUT_AD" ? (
 								<Button
+									id="auth_without_ad"
 									className="custom-secondary-btn"
 									key="3"
 									disabled={username == "" || password == ""}
@@ -329,6 +367,7 @@ const Signature = (props) => {
 								</Button>
 							) : loginStatus == "WITH_LDAP" ? (
 								<Button
+									id="auth_without_ldap"
 									className="custom-secondary-btn"
 									key="3"
 									disabled={username == "" || password == ""}
@@ -338,6 +377,7 @@ const Signature = (props) => {
 								</Button>
 							) : loginStatus == "WITH_SAML" ? (
 								<Button
+									id="auth_without_saml"
 									className="custom-secondary-btn"
 									key="3"
 									// disabled={username == "" || password == ""}
@@ -356,6 +396,7 @@ const Signature = (props) => {
 								<div>
 									<p style={{ margin: "8px 0px" }}>User ID</p>
 									<Input
+										id="username"
 										value={username}
 										disabled
 										onChange={(e) => setUsername(e.target.value)}
@@ -364,6 +405,7 @@ const Signature = (props) => {
 								<div>
 									<p style={{ margin: "8px 0px" }}>Password</p>
 									<Input
+										id="password"
 										type="password"
 										value={password}
 										onChange={(e) => setPassword(e.target.value)}
@@ -377,23 +419,22 @@ const Signature = (props) => {
 										<Select
 											onChange={(e, value) => {
 												let reason_value = value.value ? value.value : "";
-												if (reason_value === "Other Reason") {
+												if (reason_value === "Reason for signature") {
 													setCheckRejectReason(true);
-													setReason("");
+													setReason(reason_value);
+													setOtherReason('')
 												} else {
 													setReason(reason_value);
 													setCheckRejectReason(false);
 												}
 											}}
+											value={reason}
+											placeholder="Select reason"
+											options={reasonList}
 											className="sign-select"
-										>
-											<Option key="Signing on behalf of team mate">
-												Signing on behalf of team mate
-											</Option>
-											<Option key="I am an approver">I am an approver</Option>
-											<Option key="I am the author">I am the author</Option>
-											<Option key="Other Reason">Other Reason</Option>
-										</Select>
+											id="esign_reason"
+										/>
+
 									</div>
 								)}
 
@@ -402,10 +443,11 @@ const Signature = (props) => {
 									<p>Comment*</p>
 									<Input.TextArea
 										rows={3}
-										value={reason}
+										value={otherReason}
 										style={{ width: "450px" }}
 										onChange={(e) => {
-											setReason(e.target.value);
+											setOtherReason(e.target.value)
+											// setReason(e.target.value);
 										}}
 									/>
 								</div>
@@ -419,23 +461,22 @@ const Signature = (props) => {
 							<Select
 								onChange={(e, value) => {
 									let reason_value = value.value ? value.value : "";
-									if (reason_value === "Other Reason") {
+									if (reason_value === "Reason for signature") {
 										setCheckRejectReason(true);
-										setReason("");
+										setReason(reason_value);
+										setOtherReason('')
 									} else {
 										setReason(reason_value);
 										setCheckRejectReason(false);
 									}
 								}}
+								value={reason}
+								placeholder="Select reason"
+								options={reasonList}
 								className="sign-select"
-							>
-								<Option key="Signing on behalf of team mate">
-									Signing on behalf of team mate
-								</Option>
-								<Option key="I am an approver">I am an approver</Option>
-								<Option key="I am the author">I am the author</Option>
-								<Option key="Other Reason">Other Reason</Option>
-							</Select>
+								id="esign_reason"
+							/>
+
 						</div>
 					)}
 

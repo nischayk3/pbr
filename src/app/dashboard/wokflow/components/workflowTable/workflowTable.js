@@ -3,7 +3,7 @@ import { Avatar, Button, Input, Space, Table } from "antd";
 import moment from "moment";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import "./styles.scss";
 
 const WorkflowTable = (props) => {
@@ -13,7 +13,7 @@ const WorkflowTable = (props) => {
 
 	const refSearchInput = useRef();
 	const history = useHistory();
-
+	const location = useLocation();
 	useEffect(() => {
 		updateTableColumns();
 	}, [props.columns]);
@@ -193,10 +193,13 @@ const WorkflowTable = (props) => {
 							if (text == "/dashboard/chart_personalization") {
 								return (
 									<a
+										id={`review_submit_${index}`}
 										onClick={() =>
-											history.push(
-												`${text}/${row.Id}&${row.version}?id=${row.Id}&version=${row.version}`
-											)
+											history.push({
+												pathname: `${text}/${row.Id}&${row.version}`,
+												search: `?id=${row.Id}&version=${row.version}&fromScreen=Workflow`,
+												state: { path: `${location.pathname}${location.search}` }
+											})
 										}
 										className="review-submission"
 									>
@@ -206,10 +209,13 @@ const WorkflowTable = (props) => {
 							} else if (text == "/dashboard/view_creation") {
 								return (
 									<a
+										id={`review_submit_${index}`}
 										onClick={() =>
-											history.push(
-												`${text}/${row.Id}&${row.version}?id=${row.Id}&version=${row.version}&fromScreen=Workflow`
-											)
+											history.push({
+												pathname: `${text}/${row.Id}&${row.version}`,
+												search: `?id=${row.Id}&version=${row.version}&fromScreen=Workflow`,
+												state: { path: `${location.pathname}${location.search}` }
+											})
 										}
 										className="review-submission"
 									>
@@ -217,9 +223,10 @@ const WorkflowTable = (props) => {
 									</a>
 								);
 							} else if (text == "/dashboard/paper_batch_records") {
-
 								return (
+
 									<a
+										id={`review_submit_${index}`}
 										onClick={() =>
 											history.push(
 												`${text}/${row.Id}?id=${row.Id}&temp_disp_id=${row.Id}&file=${row.filename}&fromScreen=Workflow&version=${row.version}&tempalteName=${row.pbr_template_name}`
@@ -234,6 +241,7 @@ const WorkflowTable = (props) => {
 							else if (text == "/dashboard/elog_book_template") {
 								return (
 									<a
+										id={`review_submit_${index}`}
 										onClick={() =>
 											history.push(
 												`/dashboard/elog_book_data_entry/data_entry_forms?id=${row.recording_id}&molecule=${row.molecule}&version=${row.version}&template_disp_id=${row.template_disp_id}&site=${row.site}&recording_id=${row.recording_id}&publish=true&fromScreen=Workflow`
@@ -247,11 +255,10 @@ const WorkflowTable = (props) => {
 							} else if (text == "/dashboard/analysis") {
 								return (
 									<a
+										id={`review_submit_${index}`}
 										onClick={() =>
 											history.push(
-												history.push(
-													`${text}/${row.Id}`
-												)
+												`${text}/${row.Id}`
 											)
 										}
 										className="review-submission"
@@ -262,11 +269,10 @@ const WorkflowTable = (props) => {
 							} else if (text == "/dashboard/elog_book_template") {
 								return (
 									<a
+										id={`review_submit_${index}`}
 										onClick={() =>
 											history.push(
-												history.push(
-													`${text}/${row.template_disp_id}&${row.version}?id=${row.template_disp_id}&version=${row.version}`
-												)
+												`${text}/${row.template_disp_id}&${row.version}?id=${row.template_disp_id}&version=${row.version}`
 											)
 										}
 										className="review-submission"
@@ -277,6 +283,7 @@ const WorkflowTable = (props) => {
 							} else {
 								return (
 									<a
+										id={`review_submit_${index}`}
 										onClick={() =>
 											history.push(
 												`${text}/${row.Id}?id=${row.Id}&version=${row.version ? row.version : "0"

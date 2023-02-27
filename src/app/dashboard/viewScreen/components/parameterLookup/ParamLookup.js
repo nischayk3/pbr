@@ -7,8 +7,10 @@
  */
 import { Select } from "antd";
 import debounce from "lodash/debounce";
+import queryString from "query-string";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useLocation } from "react-router-dom";
 import SelectSearchField from "../../../../../components/SelectSearchField/SelectSearchField";
 import {
 	hideLoader,
@@ -19,10 +21,10 @@ import { filterMolequles, getMoleculeList } from "../../../../../services/viewCr
 import "./styles.scss";
 
 const ParamLookup = ({ callbackMoleculeId, callbackFilter, moleculeId, setMoleculeId, isEditView, fromWorkflowScreen }) => {
-
-	const { Option } = Select;
-
 	const dispatch = useDispatch();
+	const location = useLocation();
+	const { Option } = Select;
+	const parameters = queryString.parse(location.search);
 
 	// const [moleculeId, setMoleculeId] = useState("");
 	const [moleculeList, setMoleculeList] = useState([]);
@@ -50,14 +52,14 @@ const ParamLookup = ({ callbackMoleculeId, callbackFilter, moleculeId, setMolecu
 
 	const clearSearch = (e) => {
 		setFilterValue('')
-
 	}
 
 	//Moleculelist api call
 	const loadMolecule = async (_reqMolecule) => {
 		try {
+			const _resourceName = parameters?.fromScreen == "Workflow" ? 'WORKITEMS' : 'VIEW';
 			dispatch(showLoader());
-			const moleculeRes = await getMoleculeList(_reqMolecule);
+			const moleculeRes = await getMoleculeList(_reqMolecule, _resourceName);
 			/* istanbul ignore else  */
 			if (moleculeRes.Status === 200) {
 				setMoleculeList(moleculeRes.Data.hierarchy);
@@ -121,7 +123,6 @@ const ParamLookup = ({ callbackMoleculeId, callbackFilter, moleculeId, setMolecu
 					molecule_name: moleculeId,
 					search_text: type
 				}
-
 				searchMolequles(filterPayload)
 			}
 		}
@@ -138,6 +139,7 @@ const ParamLookup = ({ callbackMoleculeId, callbackFilter, moleculeId, setMolecu
 			<div className="param-select">
 				<p>Molecule</p>
 				<Select
+					id="select-molecule"
 					placeholder="Select"
 					style={{ width: "100%" }}
 					onChange={onChangeMolecule}
