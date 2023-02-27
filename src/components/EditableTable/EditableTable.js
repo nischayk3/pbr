@@ -34,6 +34,12 @@ class EditableTable extends Component {
 		this.loadTableData();
 	}
 
+	esignResponseStatus = (status) => {
+		if (status === 200) {
+			this.loadTableData();
+		}
+	}
+
 	loadTableData = async () => {
 		this.props.showLoader();
 		try {
@@ -216,6 +222,7 @@ class EditableTable extends Component {
 	handleCancel = () => this.setState({ visible: false });
 
 	handleUserCancle = () => this.setState({ importUserModal: false })
+
 
 	onDeleteRows = () => this.setState({ visible: true });
 
@@ -422,7 +429,7 @@ class EditableTable extends Component {
 						</div>
 					</div>
 				</Modal>
-				<ImportUser openUserModal={this.state.importUserModal} handleUserCancle={this.handleUserCancle} />
+				<ImportUser openUserModal={this.state.importUserModal} handleUserCancle={this.handleUserCancle} esignResponseStatus={this.esignResponseStatus} />
 			</div>
 		);
 	}

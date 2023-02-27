@@ -423,7 +423,9 @@ const Roles = () => {
 			field_name: ''
 		}
 		try {
+			dispatch(showLoader());
 			const resCard = await resourceDelete(_resCard);
+			dispatch(hideLoader());
 			if (resCard.statuscode === 200) {
 				dispatch(showNotification("success", resCard.message));
 				getResourceData(_dltReqRecord)
@@ -440,11 +442,12 @@ const Roles = () => {
 		try {
 			setLoading(true)
 			const resource = await getResource(_resourceQuery);
+			setLoading(false)
 			if (resource.statuscode === 200) {
 				setAllRoles(resource.message)
+			} else {
+				dispatch(showNotification("error", resource.message));
 			}
-			setLoading(false)
-
 		} catch (error) {
 			setLoading(false)
 			dispatch(showNotification("error", error));
@@ -478,6 +481,7 @@ const Roles = () => {
 				setIsUnapproved(res?.message?.unapproved_data)
 				setIsRoleDetailsAvailable(true)
 			} else {
+				dispatch(showNotification("error", res?.message));
 				setIsRoleDetailsAvailable(false)
 			}
 			dispatch(hideLoader());
