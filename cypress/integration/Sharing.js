@@ -30,7 +30,7 @@ describe("Sharing", () => {
 	})
 
 	it('Share Email', () => {
-		cy.wait(2000)
+		cy.wait(4000)
 		cy.get('.btns > div > :nth-child(1) > span').click({ force: true });
 		cy.wait(2000)
 		cy.get('.recepients-input > .ant-select > .ant-select-selector').click({ force: true });

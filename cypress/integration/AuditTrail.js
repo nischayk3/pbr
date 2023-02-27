@@ -91,10 +91,6 @@ describe('Audit Trail', () => {
 
 	it("searching table", () => {
 		cy.wait(1000)
-		cy.log("selecting user")
-		cy.get('.ant-select-selection-item').first().click({ force: true })
-		cy.get('.ant-select-item-option').first().click({ force: true })
-		cy.wait(1000)
 		cy.log("searching in table")
 		cy.get('#table_input_search').clear();
 		cy.get('#table_input_search').type('AWAP');

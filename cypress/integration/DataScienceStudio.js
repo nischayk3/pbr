@@ -83,7 +83,7 @@ describe("Render Data Science Studio", () => {
 		cy.get(".ant-input-wrapper > .ant-input").click({ force: true });
 
 		cy.get('[data-row-key="0"] > :nth-child(1)').click()
-		cy.wait(20000)
+		cy.wait(10000)
 
 		cy.get('#next-btn > span').click()
 	})
@@ -107,7 +107,13 @@ describe("Render Data Science Studio", () => {
 
 	it('Jupyter Hub Studio', () => {
 		cy.wait(4000)
-		cy.get('.jupyter-card').click({ force: true })
+		const url = Cypress.config().baseUrl
+		cy.visit(url + '/#/dashboard/data_science_studio')
+		cy.log('Load Data Science Studio Page')
+		cy.url().should('eq', url + '/#/dashboard/data_science_studio')
+		cy.wait(2000)
+		cy.get('#explore-jupyter > p').should("have.text", 'Explore on your own')
+		cy.get('#explore-jupyter > span').should("have.text", 'RECOMMENDED FOR POWER USERS')
 		cy.wait(2000)
 	})
 })

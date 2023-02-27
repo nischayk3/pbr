@@ -234,6 +234,7 @@ function Esign(props) {
 								<div>
 									<p>Username</p>
 									<Input
+										id="username"
 										disabled
 										placeholder='Username'
 										value={username}
@@ -244,6 +245,7 @@ function Esign(props) {
 								<div>
 									<p>Password</p>
 									<Input
+										id="password"
 										placeholder='Password'
 										autocomplete='new-password'
 										type='password'
@@ -272,6 +274,7 @@ function Esign(props) {
 										value={reason}
 										placeholder="Select reason"
 										options={reasonList}
+										id="esign_reason"
 									/>
 
 								</div>
@@ -310,6 +313,7 @@ function Esign(props) {
 								value={reason}
 								placeholder="Select reason"
 								options={reasonList}
+								id="esign_reason"
 
 							/>
 						</div>
@@ -324,6 +328,7 @@ function Esign(props) {
 								style={{
 									backgroundColor: '#093185',
 								}}
+								id="confirm"
 								onClick={() => handleConfirm()}
 							>
 								Confirm
@@ -331,6 +336,7 @@ function Esign(props) {
 							<Button
 								className='custom-primary-btn'
 								onClick={() => handleEsignCancle()}
+								id="cancel"
 							>
 								Cancel
 							</Button>
@@ -364,7 +370,7 @@ function Esign(props) {
 							) : loginStatus == "WITH_LDAP" ? (
 								<Button
 									type='primary'
-									id="auth_without_ad"
+									id="auth_without_ldap"
 									style={{
 										backgroundColor: '#093185',
 									}}
@@ -375,6 +381,7 @@ function Esign(props) {
 								</Button>
 							) : loginStatus == "WITH_SAML" ? (
 								<Button
+									id="auth_without_saml"
 									className="custom-secondary-btn"
 									key="3"
 									// disabled={username == "" || password == ""}

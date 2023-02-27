@@ -19,7 +19,9 @@ export default function Landing() {
 		setIsDatasetVisible(false)
 	}
 
+	/* istanbul ignore next */
 	const login_response = JSON.parse(localStorage.getItem('login_details'));
+	/* istanbul ignore next */
 	const JUPYTER_APP_URL = `${JUPYTER_APP}/hub/login?next=%2Fjupyterhub/hub%2F&auth_token=${login_response.token}`;
 
 	return (

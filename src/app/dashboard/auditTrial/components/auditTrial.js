@@ -712,7 +712,7 @@ class AuditTrials extends React.Component {
 								bordered
 							/>
 							<Modal
-								width={600}
+								width={1280}
 								open={this.state.esignOpen}
 								title="Esign Details"
 								onCancel={() => this.setState({ esignOpen: false })}
