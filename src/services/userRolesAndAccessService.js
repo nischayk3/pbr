@@ -4,7 +4,7 @@ import Service from "./AjaxService";
 
 let login_response = JSON.parse(localStorage.getItem('login_details'));
 const _request_headers = {
-	'x-access-token': login_response.token ? login_response.token : '',
+	'x-access-token': login_response?.token ? login_response?.token : '',
 	'resource-name': 'CONFIGURATION',
 	"content-type": "application/json",
 };
