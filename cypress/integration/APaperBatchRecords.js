@@ -39,7 +39,7 @@ describe('PBR', () => {
 		}).as("limitlist")
 		cy.intercept('POST', '**/pbr/udh/ocr-json-extraction', (req) => {
 			req.reply({
-				["status-code"]: 200, fixture: 'pbrBoundingBox.json'
+				["status-code"]: 202, fixture: 'pbrBoundingBox.json'
 			})
 		})
 		cy.intercept('GET', '**/pbr/udh/pbr_template?template_displ_id=P718&version=1', (req) => {
@@ -201,11 +201,16 @@ describe('PBR', () => {
 		// cy.get('#basic_templateName').type('test');
 		// cy.get('.ant-modal-footer > .ant-btn > span').click({ force: true });
 		cy.visit(url + '/#/dashboard/paper_batch_records/Untitled?file=Batch%20Record%20Example%201.pdf&tempalteName=dasdas&fromScreen=Workspace')
-
+		cy.wait(6000);
 	})
 
 	it("click of parameter pannel", () => {
 		cy.wait(6000);
+		cy.intercept('POST', '**/pbr/udh/ocr-json-extraction', (req) => {
+			req.reply({
+				["status-code"]: 202, fixture: 'pbrBoundingBox.json'
+			})
+		})
 		cy.get('#parameter-panel > .ant-collapse-header').click({ force: true });
 
 	})
