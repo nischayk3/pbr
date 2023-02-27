@@ -9,7 +9,7 @@ import Esign from './eSign';
 import './importUser.scss';
 
 function ImportUser(prop) {
-	let { openUserModal, handleUserCancle } = prop
+	let { openUserModal, handleUserCancle, esignResponseStatus } = prop
 	const [fileList, setFileList] = useState([]);
 	const [showProgress, setShowProgress] = useState(false);
 	const [progressPercent, setProgressPercent] = useState(30);
@@ -70,6 +70,12 @@ function ImportUser(prop) {
 		setShowEsign(false)
 	}
 
+	const esignResponse = (status) => {
+		esignResponseStatus(status)
+	}
+
+
+
 	return (
 		<div>
 			<Modal className='userModal' title={<div><FileExcelFilled style={{ marginRight: 5 }} />Import Users</div>}
@@ -112,7 +118,6 @@ function ImportUser(prop) {
 									beforeUpload={() => false}
 									onChange={handleInternalChange} >
 									<Button
-										// type="dashed"
 										className='custom-primary-btn'
 										icon={<UploadOutlined className='iconSize' />}
 										style={{ marginBottom: 16, width: 187 }}
@@ -221,6 +226,7 @@ function ImportUser(prop) {
 				handlePopUpClose={handleCancel}
 				screenName="CONFIGURATION"
 				appType="CONFIGURATION"
+				esignResponse={esignResponse}
 			/>
 		</div>
 	)
