@@ -182,7 +182,7 @@ describe("Analysis", () => {
 		cy.get('[data-row-key="2"] > :nth-child(4) > .ant-input').type(10)
 		cy.get('[data-row-key="3"] > :nth-child(4) > .ant-input').type(2.0)
 		cy.get('.ant-modal-footer > .ant-btn').click();
-		cy.get('.button-save > :nth-child(1)').click();
+		cy.get('.button-save').click();
 	});
 
 	it("Modal Simple Imputer Node", () => {
@@ -273,17 +273,11 @@ describe("Analysis", () => {
 		cy.visit(url + "/#/dashboard/analysis");
 
 		cy.log("Search in Landing page");
-		cy.get(
-			".ant-col-12 > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input-affix-wrapper"
-		).click({ force: true });
+		cy.get('.ant-input').click({ force: true });
 
 		cy.log("Type in Landing page");
-		cy.get(
-			".ant-col-12 > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input-affix-wrapper > .ant-input"
-		).clear({ force: true });
-		cy.get(
-			".ant-col-12 > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input-affix-wrapper > .ant-input"
-		).type("P352{enter}", { force: true });
+		cy.get('.ant-input').clear({ force: true });
+		cy.get('.ant-input').type("P352{enter}", { force: true });
 		cy.log("Click on the created pipeline");
 		cy.get(".ant-table-row > :nth-child(1)").click({ force: true });
 		cy.wait(10000);
