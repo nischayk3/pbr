@@ -876,6 +876,7 @@ const PaperBatchRecordsTemplate = () => {
 	/* istanbul ignore next */
 	useEffect(() => {
 		if ((templateInfo?.length > 0 && imageWidth !== 0 && imageHeight !== 0) || localStorage.getItem("test_enabled") == !null) {
+			let newArray = formValues
 			let arr = templateInfo.map((item, index) => ({
 				name: item.name,
 				method: item.method,
@@ -916,9 +917,8 @@ const PaperBatchRecordsTemplate = () => {
 
 
 			}))
-			if (formValues.length === 0) {
-				setFormValues(arr)
-			}
+			const ResultArrayObjOne = newArray.filter(({ name: name }) => !arr.some(({ name: name1 }) => name === name1));
+			setFormValues([...arr, ...ResultArrayObjOne])
 			setActiveNumber(templateInfo?.length)
 			setParamaterAdded(true)
 			// setTemplateInfo([])
@@ -926,7 +926,7 @@ const PaperBatchRecordsTemplate = () => {
 		}
 
 	}, [areasMap, imageWidth, imageHeight])
-
+	
 	const getImage = async (val) => {
 		// dispatch(showLoader());
 		let login_response = JSON.parse(localStorage.getItem('login_details'));
