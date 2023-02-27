@@ -7,7 +7,7 @@
  */
 
 import { InfoCircleOutlined } from "@ant-design/icons";
-import { Button, Checkbox, message, Modal, Select, Table } from 'antd';
+import { Button, Checkbox, Modal, Select, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
 import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
@@ -20,7 +20,6 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 	const [selectedAuth, setSelectedAuth] = useState([]);
 	const [rolePriv, setRolePriv] = useState('');
 
-	const [messageApi, contextHolder] = message.useMessage();
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -94,15 +93,7 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 		setSelectedResource('')
 	}
 
-	// const warning = () => {
-	// 	messageApi.open({
-	// 		type: 'error',
-	// 		content: 'Please Select READ as a default Authorizations',
-	// 		style: {
-	// 			marginTop: '15vh',
-	// 		},
-	// 	});
-	// };
+
 
 	const authSave = () => {
 		let _reqAuth = {
@@ -183,7 +174,7 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 			onCancel={handleCancel}
 			footer={null}
 		>
-			{contextHolder}
+
 			<div className='modal-resource-wrapper'>
 				<p className='card-heading'>Resources</p>
 				<div className='modal-sub-header'>

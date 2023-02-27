@@ -51,24 +51,28 @@ const NewPipeline = (props) => {
 		try {
 			dispatch(showLoader());
 			const viewRes = await getViewList(reqView);
-			viewRes.Data.forEach((item, key) => {
-				let antdObj = {};
-				antdObj["key"] = key;
-				antdObj["created_by"] = item.created_by;
-				antdObj["created_on"] = item.created_on;
-				antdObj["product_num"] = item.product_num;
-				antdObj["view_disp_id"] = item.view_disp_id;
-				antdObj["view_info"] = item.view_info;
-				antdObj["view_name"] = item.view_name;
-				antdObj["view_status"] = item.view_status;
-				antdObj["view_version"] = item.view_version;
-				antdObj["view"] = item.view;
-				antdDataTable.push(antdObj);
-			});
-			searchViewData.current = JSON.parse(JSON.stringify(antdDataTable));
-			setSearchTableData(antdDataTable);
-
 			dispatch(hideLoader());
+			if (viewRes['status-code'] === 200) {
+				viewRes.Data.forEach((item, key) => {
+					let antdObj = {};
+					antdObj["key"] = key;
+					antdObj["created_by"] = item.created_by;
+					antdObj["created_on"] = item.created_on;
+					antdObj["product_num"] = item.product_num;
+					antdObj["view_disp_id"] = item.view_disp_id;
+					antdObj["view_info"] = item.view_info;
+					antdObj["view_name"] = item.view_name;
+					antdObj["view_status"] = item.view_status;
+					antdObj["view_version"] = item.view_version;
+					antdObj["view"] = item.view;
+					antdDataTable.push(antdObj);
+				});
+				searchViewData.current = JSON.parse(JSON.stringify(antdDataTable));
+				setSearchTableData(antdDataTable);
+			} else if (viewRes?.Status === 403) {
+				/* istanbul ignore next */
+				dispatch(showNotification("error", viewRes.Message));
+			}
 		} catch (error) {
 			/* istanbul ignore next */
 			dispatch(hideLoader());
