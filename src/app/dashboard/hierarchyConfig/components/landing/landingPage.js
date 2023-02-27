@@ -35,6 +35,7 @@ export default function LandingPage() {
 	}, []);
 
 	const loadHier = async (ds_name) => {
+		dispatch(sendDrugSub(ds_name));
 		dispatch(loadDrug(true));
 		history.push({
 			pathname: `/dashboard/molecule_hierarchy_configuration/${ds_name}`,
@@ -46,7 +47,6 @@ export default function LandingPage() {
 			ds_name: hierarchyName
 		}
 		let check_unique = await getAuthorisedPermission(req, 'VIEW')
-		console.log(check_unique.response)
 		if (check_unique.data && check_unique.data.statuscode == 200) {
 			history.push({
 				pathname:

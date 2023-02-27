@@ -5,12 +5,42 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 describe("Renders the view Hierarachy page", () => {
 	afterEach(() => {
 		cy.viewport(1360, 720)
-		cy.loginWithAD()
+		localStorage.setItem("loginwith", "WITH_AD");
+		localStorage.setItem("test_enabled", true);
+		localStorage.setItem("user", "dinesh.jinjala@mareana.com");
+		localStorage.setItem("username", "Dinesh");
+		localStorage.setItem(
+			"login_details", JSON.stringify({
+				ad_role: false,
+				email_id: "dinesh.jinjala@mareana.com",
+				firstname: "Dinesh",
+				lastname: "Jinjala",
+				mdh_role: "USER",
+				screen_set: "1000_USER",
+				token:
+					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Ik1paGlyICBCYWdnYSIsInVuaXhfdGltZXN0YW1wIjoxNjUwNDIyMDcyLjgzNTg5MSwidGltZXN0YW1wIjoiMjAvMDQvMjAyMiAwODowNDozMiIsImV4cCI6NDgwNDA0MTg3MiwiYWRfcm9sZSI6ZmFsc2UsIm1kaF9yb2xlIjoiVVNFUiIsImVtYWlsX2lkIjoibWloaXIuYmFnZ2FAbWFyZWFuYS5jb20iLCJjdXN0X2tleSI6IjEwMDAifQ.NpmhWhMBWtRcDkSBDdw-94Kqy9vuZyY1PSHbOpTyzMM"
+			})
+		);
 	});
 
 	beforeEach(() => {
 		cy.viewport(1366, 720)
-		cy.loginWithAD()
+		localStorage.setItem("loginwith", "WITH_AD");
+		localStorage.setItem("test_enabled", true);
+		localStorage.setItem("user", "dinesh.jinjala@mareana.com");
+		localStorage.setItem("username", "Dinesh");
+		localStorage.setItem(
+			"login_details", JSON.stringify({
+				ad_role: false,
+				email_id: "dinesh.jinjala@mareana.com",
+				firstname: "Dinesh",
+				lastname: "Jinjala",
+				mdh_role: "USER",
+				screen_set: "1000_USER",
+				token:
+					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Ik1paGlyICBCYWdnYSIsInVuaXhfdGltZXN0YW1wIjoxNjUwNDIyMDcyLjgzNTg5MSwidGltZXN0YW1wIjoiMjAvMDQvMjAyMiAwODowNDozMiIsImV4cCI6NDgwNDA0MTg3MiwiYWRfcm9sZSI6ZmFsc2UsIm1kaF9yb2xlIjoiVVNFUiIsImVtYWlsX2lkIjoibWloaXIuYmFnZ2FAbWFyZWFuYS5jb20iLCJjdXN0X2tleSI6IjEwMDAifQ.NpmhWhMBWtRcDkSBDdw-94Kqy9vuZyY1PSHbOpTyzMM"
+			})
+		);
 	});
 
 	it('Load View Landing Page Correctly', () => {
@@ -69,10 +99,10 @@ describe("Renders the view Hierarachy page", () => {
 		cy.intercept('GET', 'drug-substance', { fixture: 'view-hierarchy.json' })
 		cy.visit(url + '/#/dashboard/molecule_hierarchy_configuration')
 		cy.wait(3000)
-		cy.get('.ant-input').eq(1).clear();
-		cy.get('.ant-input').eq(1).type('BELA{enter}');
-		cy.get('.ant-input').eq(1).clear();
-		cy.get('.ant-input').eq(1).type('BELA{enter}');
+		cy.get('.ant-input').eq(0).clear();
+		cy.get('.ant-input').eq(0).type('BELA{enter}');
+		cy.get('.ant-input').eq(0).clear();
+		cy.get('.ant-input').eq(0).type('BELA{enter}');
 		cy.intercept('GET', '**/drug-substance?ds_name=BELATACEPT', { fixture: 'plantMol.json' })
 		cy.get('.ant-table-tbody > :nth-child(1) > :nth-child(1)').click();
 		cy.wait(3000)

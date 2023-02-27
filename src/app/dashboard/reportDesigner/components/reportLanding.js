@@ -328,20 +328,20 @@ export default function ReportLanding(props) {
 	};
 	const NewReportGenerator = async (report_id) => {
 		dispatch(showNotification("success", report_id + " selected"));
-		setLetDis(true);
-		dispatch(showLoader());
-		let req = { report_displ_id: report_id };
-		let data = await loadReport(req);
-		if (data.report_designer) dispatch(sendReport(data.report_designer.data));
-		if (data.Status == 200 || data.report_designer) {
-			dispatch(hideLoader());
-			dispatch(showNotification("success", `Loaded ${report_id}`));
-			setLetDis(false);
-			dispatch(genLoad(false));
-		} else {
-			dispatch(hideLoader());
-			dispatch(showNotification("error", data.Message));
-		}
+		setLetDis(false);
+		// dispatch(showLoader());
+		// let req = { report_displ_id: report_id };
+		// let data = await loadReport(req);
+		// if (data.report_designer) dispatch(sendReport(data.report_designer.data));
+		// if (data.Status == 200 || data.report_designer) {
+		// 	dispatch(hideLoader());
+		// 	dispatch(showNotification("success", `Loaded ${report_id}`));
+		// 	setLetDis(false);
+		// 	dispatch(genLoad(false));
+		// } else {
+		// 	dispatch(hideLoader());
+		// 	dispatch(showNotification("error", data.Message));
+		// }
 	};
 
 	// const statusColor = status => {
@@ -619,6 +619,8 @@ export default function ReportLanding(props) {
 										// pagination={false}
 										onRow={(record) => ({
 											onClick: (e) => {
+												// setLetDis(false);
+
 												NewReportGenerator(record.rep_disp_id);
 												setReportGen(record.rep_disp_id);
 												setReportIds(record.rep_disp_id);
