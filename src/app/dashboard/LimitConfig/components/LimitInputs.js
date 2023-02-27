@@ -292,7 +292,7 @@ const LimitInputs = ({ expandedMol, selectedMol, getMoleData, editable, totalVie
 				paramData.map((data, index) => {
 					if (record.key === data.key) {
 						if (!editable) {
-							return <a href={data.document_url} target="_blank" style={{ margin: "0" }}>{data.document_url}</a>;
+							return <a href={`//${data.document_url}`} target="_blank" style={{ margin: "0" }}>{data.document_url}</a>;
 						}
 						return (
 							<Input
@@ -326,11 +326,12 @@ const LimitInputs = ({ expandedMol, selectedMol, getMoleData, editable, totalVie
 			rowsInput[index]['view_disp_id'] = event;
 			rowsInput[index]['view_version'] = ''
 			rowsInput[index]['parameters'] = '';
-			const tempVersionList = [];
+			let tempVersionList = [];
 			totalViewList.current.forEach((view) => {
 				if (view?.split('-')[0] === event) {
 					const viewVersion = view?.split('-')[1]
 					tempVersionList.push(viewVersion);
+					tempVersionList = [...new Set(tempVersionList)]?.sort((a,b) => a-b)
 				}
 			});
 			rowsInput[index]['versionList'] = tempVersionList
@@ -347,7 +348,6 @@ const LimitInputs = ({ expandedMol, selectedMol, getMoleData, editable, totalVie
 		})
 		setMoleculeData(tempMoleculeData)
 	};
-
 
 	const deleteParam = async (record) => {
 		let tempParamData;
@@ -387,12 +387,12 @@ const LimitInputs = ({ expandedMol, selectedMol, getMoleData, editable, totalVie
 		const newData = {
 			key: paramData?.length + 1,
 			"cust_key": paramData[0]?.cust_key,
-			"from_": Number,
+			"from_": "",
 			"limit_type": "",
 			"molecule": selectedMol.current,
 			"parameters": '',
 			"site": "",
-			"to_": Number,
+			"to_": "",
 			"validity_date": "",
 			"view_disp_id": "",
 			"view_version": '',
@@ -409,7 +409,6 @@ const LimitInputs = ({ expandedMol, selectedMol, getMoleData, editable, totalVie
 		})
 		setMoleculeData(tempMoleculeData)
 	};
-
 
 	useEffect(() => {
 		const obj = {
