@@ -1,0 +1,95 @@
+{
+    "Data": [
+        {
+            "file_id": 400,
+            "filename": "POC_ABL2261_reduced_nocomments.pdf",
+            "site_code": "1513",
+            "product_num": "1322454",
+            "batch_num": "ABL2259-20",
+            "timezone": "GMT-05:00",
+            "created_by": "yash.madhogaria@mareana.com",
+            "created_on": "2023-02-27T07:14:08.862836+00:00",
+            "status": "N"
+        },
+        {
+            "file_id": 398,
+            "filename": "CMC_Demo_BR_999.pdf",
+            "site_code": "1255",
+            "product_num": "1322454",
+            "batch_num": "ABL2215",
+            "timezone": "GMT +5:30",
+            "created_by": "kyle.caspary@mareana.com",
+            "created_on": "2023-02-23T15:59:07.553990+00:00",
+            "status": "api_error"
+        },
+        {
+            "file_id": 396,
+            "filename": "POC_ABL2261_reduced_nocomments.pdf",
+            "site_code": "1255",
+            "product_num": "1176150",
+            "batch_num": "ABN0854",
+            "timezone": "GMT +5:30",
+            "created_by": "yash.madhogaria@mareana.com",
+            "created_on": "2023-02-23T08:22:38.550725+00:00",
+            "status": "P"
+        },
+        {
+            "file_id": 394,
+            "filename": "CMC_Demo_BR_003.pdf",
+            "site_code": "1255",
+            "product_num": "1322454",
+            "batch_num": "ABL2257-09",
+            "timezone": "GMT +5:30",
+            "created_by": "KyleCaspary",
+            "created_on": "2023-02-16T16:00:06.815272+00:00",
+            "status": "P"
+        },
+        {
+            "file_id": 393,
+            "filename": "CMC_Demo_BR_004.pdf",
+            "site_code": "1255",
+            "product_num": "1322454",
+            "batch_num": "ABL2257-09",
+            "timezone": "GMT +5:30",
+            "created_by": "KyleCaspary",
+            "created_on": "2023-02-16T16:00:06.815272+00:00",
+            "status": "P"
+        },
+        {
+            "file_id": 392,
+            "filename": "CMC_Demo_BR_005.pdf",
+            "site_code": "1255",
+            "product_num": "1322454",
+            "batch_num": "ABL2257-09",
+            "timezone": "GMT +5:30",
+            "created_by": "KyleCaspary",
+            "created_on": "2023-02-16T16:00:06.815272+00:00",
+            "status": "P"
+        },
+        {
+            "file_id": 391,
+            "filename": "CMC_Demo_BR_002.pdf",
+            "site_code": "1255",
+            "product_num": "1322454",
+            "batch_num": "ABL2257-09",
+            "timezone": "GMT +5:30",
+            "created_by": "KyleCaspary",
+            "created_on": "2023-02-16T16:00:06.815272+00:00",
+            "status": "P"
+        },
+        {
+            "file_id": 390,
+            "filename": "PO987123456_389418_PBR-54321.pdf",
+            "site_code": "1338",
+            "product_num": "1086126-DIISOPROPANOLAMINE",
+            "batch_num": "389418",
+            "timezone": "GMT +5:30",
+            "created_by": "YashMadhogaria",
+            "created_on": "2023-02-14T12:50:23.393941+00:00",
+            "status": "P"
+        }
+    ],
+    "Count": 166,
+    "Message": "Success",
+    "status-code": 200
+}

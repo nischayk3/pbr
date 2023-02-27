@@ -1,439 +1,955 @@
 {
     "Data": [
         {
-            "anchor_key": null,
-            "batch_num": "402020",
-            "changed_by": null,
-            "changed_on": null,
-            "confidence": "Low",
-            "created_by": "yash.madhogaria@mareana.com",
-            "created_on": "2022-07-21T16:11:56.659696+00:00",
+            "id": 2122,
             "cust_key": "1000",
-            "file_path": "Batch Record Example 5_page-0.jpeg",
-            "id": 362,
-            "param_name": "T2",
-            "product_num": "1090853",
+            "file_path": "multipage1_page-0.jpeg",
+            "site_code": "1338",
+            "product_num": "1089084",
+            "batch_num": "394154",
+            "anchor_key": "Pipette",
+            "snippet_value": "density",
+            "uom": null,
             "recorded_date": null,
             "recorded_time": null,
-            "site_code": "1338",
-            "snippet_image": null,
-            "snippet_value": null,
+            "snippet_image": "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",
             "status": "unapproved",
-            "table_value": [
-                [
-                    {
-                        "cell_text": "STEP",
-                        "columnindex": 1,
-                        "rowindex": 1
-                    },
-                    {
-                        "cell_text": "DESCRIPTION",
-                        "columnindex": 2,
-                        "rowindex": 1
-                    },
-                    {
-                        "cell_text": "RECORDED",
-                        "columnindex": 3,
-                        "rowindex": 1
-                    },
-                    {
-                        "cell_text": "PARAMETER",
-                        "columnindex": 4,
-                        "rowindex": 1
-                    },
-                    {
-                        "cell_text": "",
-                        "columnindex": 5,
-                        "rowindex": 1
-                    },
-                    {
-                        "cell_text": "RESULTS",
-                        "columnindex": 6,
-                        "rowindex": 1
-                    }
-                ],
-                [
-                    {
-                        "cell_text": " ",
-                        "columnindex": 1,
-                        "rowindex": 2
-                    },
-                    {
-                        "cell_text": " ",
-                        "columnindex": 2,
-                        "rowindex": 2
-                    },
-                    {
-                        "cell_text": " Thaw Time Start",
-                        "columnindex": 3,
-                        "rowindex": 2
-                    },
-                    {
-                        "cell_text": "Date Time",
-                        "columnindex": 4,
-                        "rowindex": 2
-                    },
-                    {
-                        "cell_text": "16 10 , 34 ,",
-                        "columnindex": 5,
-                        "rowindex": 2
-                    },
-                    {
-                        "cell_text": "JUNZI AM/PM",
-                        "columnindex": 6,
-                        "rowindex": 2
-                    }
-                ],
-                [
-                    {
-                        "cell_text": " 1.3",
-                        "columnindex": 1,
-                        "rowindex": 3
-                    },
-                    {
-                        "cell_text": " Remove Product from freezer",
-                        "columnindex": 2,
-                        "rowindex": 3
-                    },
-                    {
-                        "cell_text": " Thaw Time End",
-                        "columnindex": 3,
-                        "rowindex": 3
-                    },
-                    {
-                        "cell_text": "Date Time",
-                        "columnindex": 4,
-                        "rowindex": 3
-                    },
-                    {
-                        "cell_text": "18 09 :",
-                        "columnindex": 5,
-                        "rowindex": 3
-                    },
-                    {
-                        "cell_text": "JUNZI 16 AM)PM",
-                        "columnindex": 6,
-                        "rowindex": 3
-                    }
-                ]
-            ],
-            "template_id": "P532",
-            "template_name": "T01",
-            "uom": null
-        },
-        {
-            "anchor_key": "Document",
-            "batch_num": "393485",
-            "changed_by": null,
-            "changed_on": null,
             "confidence": "High",
-            "created_by": "nischay.kumar@mareana.com",
-            "created_on": "2022-07-15T07:53:31.137528+00:00",
-            "cust_key": "1000",
-            "file_path": "Batch Record Example 3_page-0.jpeg",
-            "id": 356,
-            "param_name": "para1",
-            "product_num": "1091460",
-            "recorded_date": "Stage:",
-            "recorded_time": "01AUG2021",
-            "site_code": "1338",
-            "snippet_image": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAhALADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD0H4jePW8F20HkQrLPMxADdBxmtDwL4zg8YaYZwoSdMCRB2NebfHlDJe6cg6s+P0rN+F9xceFfGp0m6b5J13E9ATjj+dOgudNPzt8gre7Zrpa59AX1zHY2U1zJwkSlj+FeUaN8YJdV8Zx6T9miFrLL5aOB81dH8VdYbT/Cz28OTNdN5SgdTmvFfD+g3Gg/EHQorlsvKyS4x0yDRQXNV122+dh1Fandb7nqfxA+JOpeGdXgsNNtIZnkxnzAe/piqsnjH4jxWi3C6BbuGGdqo2a5r4qxDTvG1hqM0gMT7fl/u4Ar0hPil4Qi09G/taAuEH7sZz/Koh/C5m9bsJfGklpZGb4J+JlzreqNpWsWgtL0fwgYH0rT+I3jmXwbp8ElvAss8zFVDjjpmvPPD8reMPif/a2nwGO0hbJYY+bn2rX+OkLfZdJlP3BOc/kKqWqp30beoU1+8lHdIqQ/Ez4gTQrOnhhHgP8AGsbYIrQt/i/e2dzGmu6RJaxuQN2zGK73QNV0w6DaKLiHb5Y4/CuB+MGr6FNoS2cLQyXrSAqEHzAU5vkla19RU17Ra6Hqun30GpWUV3bsGikUMCKt4HpXLfD6N4vB1gsilT5S8H6V1VVUioyaRMHeKbMnxDrtp4d0mW/u2ARBwPU9q8nPxT8Z3u650vw4JbI8pIYyeK0/jFPJNe6Npu79zPKhceuHFem6Zp1vYaZDaQxIsaLjAHWs4puLn52RpP3Wo91c5HwN8QE8TRTQX0S219AMyR9O+K57XPipqr6tJY+GNL+3GI4c7Sf5Vx3xNF14S8bPd6awiE8a5AHBPJr0P4PabCnhZdQZFa4uHYu+OetVH95H2myX5ky/dvl3vt6GXoPxU1ga3FYeJdLWx804QhSOeneu98U+LLPwzoxv5m3ZH7tR/Ea5L4x6Qkvh1NRhRVuLeVSGA565riLnUpPEl94W0+5bdCwj3g9zzSj+8SitHe3y7j5eV8z1Vm/mjXb4o+OpUNzbeHA1nnKyGM9K7/wN42j8WWLGRRFdxcSR+hrpILKCKwS2WJBGEC7ccdK8ZsQ/hn4ySW8Py21xk7B0ziqhZz9n32Jlfk5+35HtF5e21hA093MkUS9Wc4ArkNI+Ithrnil9Jsh5iKB+9HIJzVT4geENa8V3ltb2l8LexA/eDB5OfauJ8I6DB4P+KKaa1wHLxoVPPJyaml707S8/wHV92F15fmWPjl/yFdK/66j+Qql8Q7CTS7vQtbg+VcJ5jD6iuh+MOg3+q6hpUlnbySgS/NsUnHArpPGfhd9c8BCzVT58aKw454GcVMW4UVJbqTZbSlUUXs42PP8AXNd/4THxroltbPvhj2tIB0yGqbxPGIvjPokYGAvlj9DTfg/4Jv7TVZNV1CBolRSqq4wc+ta3iXQ9QufjBpV5FbSNbKU3SBTgcHvW8Eo1Ka9X95mm3Gd+isZnxgtUvfEWj28n3HYA/TArrk+D3hF7NP8AQW8wqPm8w9a5H4uWeuSeILG4s9PlnjgwVaJSxzgdcU6P4p+NktVgHhJywXb5m2TP8qxg17K3W7Kmpc6fSyMyXS5vh58RbG106cm2umGU9ielbnxyuJJNI0mPHEkp5+qiq/hnwv4j8V+K4Nf1+MxRQkMiMeRz0wRW58Y9EvdSsNLSxt3m8uYlgik4GBTlF8tOMt7/AIFU3H2knHRW/E5vSvgvd32kRXa+IZoy6bhGAcD9awPD/hmDSviIum+JC8kak+U7scMcjFfQ2hW72ui2sMgwyxjI/CuM+KHhSTV9OTUdPj/4mFqQyMo5wOaqU/Z1OZbf1qZwjz0+V7s6LxHc3uk+Hmk0aASSRr8iCvPLbxj48muY4zpXDMAckf4V2/gDVb/VPDsY1K1lhuIv3beapBbHfmur2j+6PyoceWbvqCd4rSx478UjN/anhy4uU2EOm/2O8V7BbuslujqcqRkGuW8f+F28TaE0UJ23MREkbe6815vZ/EDx1oVmNLk8OPdPCNgnKuc+/AxUxl7rh1vf7ypJtxl5WML413JuvGYhjBbZEvC8+tepfB+VH8C2yKfmVmyPTmuc8GeCdQ1vVbjxB4ji2vKv7uNuq8+/1rM8zxZ8NdWuINO019RsZWLIoDEDPP8ACKdP91D2ct3r8+wVH7SXNHZflY6/4zXYg8FNGD8zyoMfnXm2lwvZ694VlmUqjeWQT+Na7p4r+Jur2yajprafZQuC6NuAODnuK7fxx4He98PWo0r5LuwAMRHGcDgUofuvffV/gNy5/cXZ/ezv1YGJWHQrmvC7t31D44bIxuEfp9BT4/iP45tbL+zm8MvJIg8vz9r59M9MV0nw18HX1vfz+INaX/TZ+VB5Kg1UF+8U+iuRJ2puHV6HqB614fqaS3PxzsDGpIjKFsenNe4HrXmFtpF8vxclvGt3+z+Sn7zBx1PelT0rRfk/yHP+FJLy/M9Qpr/cP0oopARw/wCrFSjrRRQAtFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAf//Z",
-            "snippet_value": "MBR-0001",
-            "status": "unapproved",
-            "table_value": null,
-            "template_id": "P259",
-            "template_name": "dasdas",
-            "uom": "Effective"
-        },
-        {
-            "anchor_key": null,
-            "batch_num": "402020",
+            "template_name": "demo",
+            "created_on": "2023-02-09T05:19:13.095378+00:00",
             "changed_by": null,
             "changed_on": null,
-            "confidence": "Low",
-            "created_by": "yash.madhogaria@mareana.com",
-            "created_on": "2022-07-22T09:08:18.724307+00:00",
+            "created_by": "krishnapriyam@mareana.com",
+            "param_name": "p1",
+            "template_id": "P700",
+            "table_value": null,
+            "page_num": 1,
+            "page_name": "ALL",
+            "template_version": 1,
+            "key_bbox": {
+                "Width": 0.04710257425904274,
+                "Height": 0.011591720394790173,
+                "Left": 0.11491861194372177,
+                "Top": 0.2875179648399353
+            },
+            "value_bbox": {
+                "Width": 0.05645912513136864,
+                "Height": 0.014294832944869995,
+                "Left": 0.14070332050323486,
+                "Top": 0.23397067189216614
+            },
+            "esign_id": null
+        },
+        {
+            "id": 2123,
             "cust_key": "1000",
-            "file_path": "Batch Record Example 5_page-0.jpeg",
-            "id": 366,
-            "param_name": "T2",
-            "product_num": "1090853",
+            "file_path": "multipage1_page-1.jpeg",
+            "site_code": "1338",
+            "product_num": "1089084",
+            "batch_num": "394154",
+            "anchor_key": null,
+            "snippet_value": "Passage",
+            "uom": null,
             "recorded_date": null,
             "recorded_time": null,
+            "snippet_image": "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",
+            "status": "unapproved",
+            "confidence": "High",
+            "template_name": "demo",
+            "created_on": "2023-02-09T05:19:13.095378+00:00",
+            "changed_by": null,
+            "changed_on": null,
+            "created_by": "krishnapriyam@mareana.com",
+            "param_name": "p1",
+            "template_id": "P700",
+            "table_value": null,
+            "page_num": 2,
+            "page_name": "ALL",
+            "template_version": 1,
+            "key_bbox": null,
+            "value_bbox": {
+                "Width": 0.07229238748550415,
+                "Height": 0.014350689016282558,
+                "Left": 0.14068524539470673,
+                "Top": 0.23243072628974915
+            },
+            "esign_id": null
+        },
+        {
+            "id": 2124,
+            "cust_key": "1000",
+            "file_path": "multipage1_page-10.jpeg",
             "site_code": "1338",
+            "product_num": "1089084",
+            "batch_num": "394154",
+            "anchor_key": null,
+            "snippet_value": "COLUMN",
+            "uom": null,
+            "recorded_date": null,
+            "recorded_time": null,
+            "snippet_image": "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",
+            "status": "unapproved",
+            "confidence": "High",
+            "template_name": "demo",
+            "created_on": "2023-02-09T05:19:13.095378+00:00",
+            "changed_by": null,
+            "changed_on": null,
+            "created_by": "krishnapriyam@mareana.com",
+            "param_name": "p1",
+            "template_id": "P700",
+            "table_value": null,
+            "page_num": 11,
+            "page_name": "ALL",
+            "template_version": 1,
+            "key_bbox": null,
+            "value_bbox": {
+                "Width": 0.09209217131137848,
+                "Height": 0.013749437406659126,
+                "Left": 0.13731162250041962,
+                "Top": 0.22890439629554749
+            },
+            "esign_id": null
+        },
+        {
+            "id": 2125,
+            "cust_key": "1000",
+            "file_path": "multipage1_page-2.jpeg",
+            "site_code": "1338",
+            "product_num": "1089084",
+            "batch_num": "394154",
+            "anchor_key": null,
+            "snippet_value": "Batch",
+            "uom": null,
+            "recorded_date": null,
+            "recorded_time": null,
+            "snippet_image": "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",
+            "status": "unapproved",
+            "confidence": "High",
+            "template_name": "demo",
+            "created_on": "2023-02-09T05:19:13.095378+00:00",
+            "changed_by": null,
+            "changed_on": null,
+            "created_by": "krishnapriyam@mareana.com",
+            "param_name": "p1",
+            "template_id": "P700",
+            "table_value": null,
+            "page_num": 3,
+            "page_name": "ALL",
+            "template_version": 1,
+            "key_bbox": null,
+            "value_bbox": {
+                "Width": 0.03821995109319687,
+                "Height": 0.009862225502729416,
+                "Left": 0.15567858517169952,
+                "Top": 0.23240616917610168
+            },
+            "esign_id": null
+        },
+        {
+            "id": 2126,
+            "cust_key": "1000",
+            "file_path": "multipage1_page-3.jpeg",
+            "site_code": "1338",
+            "product_num": "1089084",
+            "batch_num": "394154",
+            "anchor_key": null,
+            "snippet_value": "Batch",
+            "uom": null,
+            "recorded_date": null,
+            "recorded_time": null,
+            "snippet_image": "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",
+            "status": "unapproved",
+            "confidence": "High",
+            "template_name": "demo",
+            "created_on": "2023-02-09T05:19:13.095378+00:00",
+            "changed_by": null,
+            "changed_on": null,
+            "created_by": "krishnapriyam@mareana.com",
+            "param_name": "p1",
+            "template_id": "P700",
+            "table_value": null,
+            "page_num": 4,
+            "page_name": "ALL",
+            "template_version": 1,
+            "key_bbox": null,
+            "value_bbox": {
+                "Width": 0.037365250289440155,
+                "Height": 0.009444420225918293,
+                "Left": 0.1598631739616394,
+                "Top": 0.23673073947429657
+            },
+            "esign_id": null
+        },
+        {
+            "id": 2127,
+            "cust_key": "1000",
+            "file_path": "multipage1_page-4.jpeg",
+            "site_code": "1338",
+            "product_num": "1089084",
+            "batch_num": "394154",
+            "anchor_key": null,
+            "snippet_value": null,
+            "uom": null,
+            "recorded_date": null,
+            "recorded_time": null,
             "snippet_image": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAcFBQYFBAcGBgYIBwcICxILCwoKCxYPEA0SGhYbGhkWGRgcICgiHB4mHhgZIzAkJiorLS4tGyIyNTEsNSgsLSz/wAALCAAeAKsBAREA/8QAGwAAAQUBAQAAAAAAAAAAAAAAAAEDBAUGAgf/xAAxEAABAwQABAQFAwUBAAAAAAABAgMEAAURIQYSMVETQWFxFBUigZEjocEHFjNCUtH/2gAIAQEAAD8A90/Ydz0ppiVHkhZYfbdCFcqihQOD2NdNvsvLWht1C1Nq5VhKgSk+vauwQfOlx9vU6ppiSxJCiw8h0JUUKKFBQBHUHHnTmRg70OtLnqBg49aNnypDpWDo0dRkboBBOAR+aU6O9e+qr/n1o87rCHu+kfzUxl5uQyl5lxLrahkLQeYH7iu/4oyO4pfM+lGdZHSo0+fGtkVUmW74TKTgqwVbzjyqTRSfivP7A89aJb9z5lGG/LcjSEnYTscq/wAmrO0zW7eviabjmQ08XNf7f+1y5c7/AALTHvsiY27GcUhTkTwQAlCjjr36Vr0KDiElOgoZAFYa3S3oPCt+lx1BDrcxRSSAf+e9SZFw4ggP215U9iSLgQ2lsshIbJA3kYz+asLXNuUfid+0TpaJ36HjNuBsII+oDGO3vVFO4rmsPPui8RwtlzlRCQxzpWn1c6A+lXVwuk+TcLfbba8iG5JZ+IcdKeYpT2APrmm4V3uES6Xli4yUSm7eyHPpb5Ao4znXuKp2uMpeWJSroh5TrgC4AjnCUnsvGP3rfpIKQoaBGR7V57w1JgNWZKZPD8mc4Fqy8iIlwHfQk1ornOksv2y1WhtEN6YCoFbX+JI7Dv1pIFwuMS8ybTPfElSGC+zI8MIJGxse9RWL1cF/06XczIJmBKsOBI0Ocjp7CnZlwujt3tEOLKSz8XHKlqU0Fb5eu6LfeZsN+8RLlIRLctzYdS6GwnmBGeg+3XvVJfHLxL4PFwmTW3GJJSoRw0MoBPevQumRRRjOv5xVLaLEYtsmQp3huNyn1rIRk4Sffz1USx8LOQYNxhzHUOtSjgKRnmxjXXtTJ4cvEmGzaZc2MbYyUgrSFeKtI2AfKtUBhICRgAADJ+28VmG+GpieHbrA8WP4s14uIIKsAa1066qZcbLJlfJwhxsfAuoW4ST9QGM416U6bS8ri1dzKkfDqjeDy5JUDkH8VS/2vem7LItDUuEIqiVJc5D4i95wTjVSrvCdhO2yczPiQ5bDRYxIV+ksY6ZwKicPIVdL3fnH3WpDT7aGlusE8h1g8vtU+32niC3ttQWpUFUJpWELU2S5y9jjX81o85JxjeNnQ9Tqqnhm1v2ayohyHEqWlSj9BJGD71zerO/OkxJ0F1tmbEJKPFTlCgRtJxvdN2yyyhc5FxurrLkh5vwglgEIbTnOs/eqtXDN7TZn7O3Lh/BElSFKSrxDk5wcaq0+SyPnVpllTJbhsFpY3kkpxkUibA45erxIeWj4e4MoaSEZ5k4SBkg68qq5XDV/fsXyky4SozOPDOFc6gD0OtVsAMeeaWiigDNAG8Unnilo8zRRTMmLGlthMlhp9CTnlcQFCumI7MZoNsNNtNgjCUJCRTmMHpsetHTVFHlR6UUUdKKKK//Z",
-            "snippet_value": null,
-            "status": "unapproved",
-            "table_value": [
-                [
-                    {
-                        "cell_text": "STEP",
-                        "columnindex": 1,
-                        "rowindex": 1
-                    },
-                    {
-                        "cell_text": "DESCRIPTION",
-                        "columnindex": 2,
-                        "rowindex": 1
-                    },
-                    {
-                        "cell_text": "RECORDED",
-                        "columnindex": 3,
-                        "rowindex": 1
-                    },
-                    {
-                        "cell_text": "PARAMETER",
-                        "columnindex": 4,
-                        "rowindex": 1
-                    },
-                    {
-                        "cell_text": "",
-                        "columnindex": 5,
-                        "rowindex": 1
-                    },
-                    {
-                        "cell_text": "RESULTS",
-                        "columnindex": 6,
-                        "rowindex": 1
-                    }
-                ],
-                [
-                    {
-                        "cell_text": " ",
-                        "columnindex": 1,
-                        "rowindex": 2
-                    },
-                    {
-                        "cell_text": " ",
-                        "columnindex": 2,
-                        "rowindex": 2
-                    },
-                    {
-                        "cell_text": " Thaw Time Start",
-                        "columnindex": 3,
-                        "rowindex": 2
-                    },
-                    {
-                        "cell_text": "Date Time",
-                        "columnindex": 4,
-                        "rowindex": 2
-                    },
-                    {
-                        "cell_text": "16 10 , 34 ,",
-                        "columnindex": 5,
-                        "rowindex": 2
-                    },
-                    {
-                        "cell_text": "JUNZI AM/PM",
-                        "columnindex": 6,
-                        "rowindex": 2
-                    }
-                ],
-                [
-                    {
-                        "cell_text": " 1.3",
-                        "columnindex": 1,
-                        "rowindex": 3
-                    },
-                    {
-                        "cell_text": " Remove Product from freezer",
-                        "columnindex": 2,
-                        "rowindex": 3
-                    },
-                    {
-                        "cell_text": " Thaw Time End",
-                        "columnindex": 3,
-                        "rowindex": 3
-                    },
-                    {
-                        "cell_text": "Date Time",
-                        "columnindex": 4,
-                        "rowindex": 3
-                    },
-                    {
-                        "cell_text": "18 09 :",
-                        "columnindex": 5,
-                        "rowindex": 3
-                    },
-                    {
-                        "cell_text": "JUNZI 16 AM)PM",
-                        "columnindex": 6,
-                        "rowindex": 3
-                    }
-                ]
-            ],
-            "template_id": "P532",
-            "template_name": "T05",
-            "uom": null
-        },
-        {
-            "anchor_key": "Site",
-            "batch_num": "402020",
-            "changed_by": "krishnapriyam@mareana.com",
-            "changed_on": null,
-            "confidence": "High",
-            "created_by": "yash.madhogaria@mareana.com",
-            "created_on": "2022-07-21T16:11:56.659696+00:00",
-            "cust_key": "1000",
-            "file_path": "Batch Record Example 5_page-0.jpeg",
-            "id": 361,
-            "param_name": "Site",
-            "product_num": "1090853",
-            "recorded_date": null,
-            "recorded_time": null,
-            "site_code": "1338",
-            "snippet_image": "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",
-            "snippet_value": "US01",
-            "status": "approved",
-            "table_value": null,
-            "template_id": "P532",
-            "template_name": "T01",
-            "uom": null
-        },
-        {
-            "anchor_key": null,
-            "batch_num": "402020",
+            "status": null,
+            "confidence": "Low",
+            "template_name": "demo",
+            "created_on": "2023-02-09T05:19:13.095378+00:00",
             "changed_by": null,
             "changed_on": null,
-            "confidence": "Low",
-            "created_by": "yash.madhogaria@mareana.com",
-            "created_on": "2022-07-28T07:06:45.811885+00:00",
-            "cust_key": "1000",
-            "file_path": "Batch Record Example 5_page-0.jpeg",
-            "id": 367,
-            "param_name": "Test_Table",
-            "product_num": "1090853",
-            "recorded_date": null,
-            "recorded_time": null,
-            "site_code": "1338",
-            "snippet_image": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAcFBQYFBAcGBgYIBwcICxILCwoKCxYPEA0SGhYbGhkWGRgcICgiHB4mHhgZIzAkJiorLS4tGyIyNTEsNSgsLSz/wAALCAAeAKsBAREA/8QAGwAAAQUBAQAAAAAAAAAAAAAAAAEDBAUGAgf/xAAxEAABAwQABAQFAwUBAAAAAAABAgMEAAURIQYSMVETQWFxFBUigZEjocEHFjNCUtH/2gAIAQEAAD8A90/Ydz0ppiVHkhZYfbdCFcqihQOD2NdNvsvLWht1C1Nq5VhKgSk+vauwQfOlx9vU6ppiSxJCiw8h0JUUKKFBQBHUHHnTmRg70OtLnqBg49aNnypDpWDo0dRkboBBOAR+aU6O9e+qr/n1o87rCHu+kfzUxl5uQyl5lxLrahkLQeYH7iu/4oyO4pfM+lGdZHSo0+fGtkVUmW74TKTgqwVbzjyqTRSfivP7A89aJb9z5lGG/LcjSEnYTscq/wAmrO0zW7eviabjmQ08XNf7f+1y5c7/AALTHvsiY27GcUhTkTwQAlCjjr36Vr0KDiElOgoZAFYa3S3oPCt+lx1BDrcxRSSAf+e9SZFw4ggP215U9iSLgQ2lsshIbJA3kYz+asLXNuUfid+0TpaJ36HjNuBsII+oDGO3vVFO4rmsPPui8RwtlzlRCQxzpWn1c6A+lXVwuk+TcLfbba8iG5JZ+IcdKeYpT2APrmm4V3uES6Xli4yUSm7eyHPpb5Ao4znXuKp2uMpeWJSroh5TrgC4AjnCUnsvGP3rfpIKQoaBGR7V57w1JgNWZKZPD8mc4Fqy8iIlwHfQk1ornOksv2y1WhtEN6YCoFbX+JI7Dv1pIFwuMS8ybTPfElSGC+zI8MIJGxse9RWL1cF/06XczIJmBKsOBI0Ocjp7CnZlwujt3tEOLKSz8XHKlqU0Fb5eu6LfeZsN+8RLlIRLctzYdS6GwnmBGeg+3XvVJfHLxL4PFwmTW3GJJSoRw0MoBPevQumRRRjOv5xVLaLEYtsmQp3huNyn1rIRk4Sffz1USx8LOQYNxhzHUOtSjgKRnmxjXXtTJ4cvEmGzaZc2MbYyUgrSFeKtI2AfKtUBhICRgAADJ+28VmG+GpieHbrA8WP4s14uIIKsAa1066qZcbLJlfJwhxsfAuoW4ST9QGM416U6bS8ri1dzKkfDqjeDy5JUDkH8VS/2vem7LItDUuEIqiVJc5D4i95wTjVSrvCdhO2yczPiQ5bDRYxIV+ksY6ZwKicPIVdL3fnH3WpDT7aGlusE8h1g8vtU+32niC3ttQWpUFUJpWELU2S5y9jjX81o85JxjeNnQ9Tqqnhm1v2ayohyHEqWlSj9BJGD71zerO/OkxJ0F1tmbEJKPFTlCgRtJxvdN2yyyhc5FxurrLkh5vwglgEIbTnOs/eqtXDN7TZn7O3Lh/BElSFKSrxDk5wcaq0+SyPnVpllTJbhsFpY3kkpxkUibA45erxIeWj4e4MoaSEZ5k4SBkg68qq5XDV/fsXyky4SozOPDOFc6gD0OtVsAMeeaWiigDNAG8Unnilo8zRRTMmLGlthMlhp9CTnlcQFCumI7MZoNsNNtNgjCUJCRTmMHpsetHTVFHlR6UUUdKKKK//Z",
-            "snippet_value": null,
-            "status": "unapproved",
-            "table_value": [
-                [
-                    {
-                        "cell_text": "STEP",
-                        "columnindex": 1,
-                        "rowindex": 1
-                    },
-                    {
-                        "cell_text": "DESCRIPTION",
-                        "columnindex": 2,
-                        "rowindex": 1
-                    },
-                    {
-                        "cell_text": "RECORDED",
-                        "columnindex": 3,
-                        "rowindex": 1
-                    },
-                    {
-                        "cell_text": "PARAMETER",
-                        "columnindex": 4,
-                        "rowindex": 1
-                    },
-                    {
-                        "cell_text": "",
-                        "columnindex": 5,
-                        "rowindex": 1
-                    },
-                    {
-                        "cell_text": "RESULTS",
-                        "columnindex": 6,
-                        "rowindex": 1
-                    }
-                ],
-                [
-                    {
-                        "cell_text": " ",
-                        "columnindex": 1,
-                        "rowindex": 2
-                    },
-                    {
-                        "cell_text": " ",
-                        "columnindex": 2,
-                        "rowindex": 2
-                    },
-                    {
-                        "cell_text": " Thaw Time Start",
-                        "columnindex": 3,
-                        "rowindex": 2
-                    },
-                    {
-                        "cell_text": "Date Time",
-                        "columnindex": 4,
-                        "rowindex": 2
-                    },
-                    {
-                        "cell_text": "16 10 , 34 ,",
-                        "columnindex": 5,
-                        "rowindex": 2
-                    },
-                    {
-                        "cell_text": "JUNZI AM/PM",
-                        "columnindex": 6,
-                        "rowindex": 2
-                    }
-                ],
-                [
-                    {
-                        "cell_text": " 1.3",
-                        "columnindex": 1,
-                        "rowindex": 3
-                    },
-                    {
-                        "cell_text": " Remove Product from freezer",
-                        "columnindex": 2,
-                        "rowindex": 3
-                    },
-                    {
-                        "cell_text": " Thaw Time End",
-                        "columnindex": 3,
-                        "rowindex": 3
-                    },
-                    {
-                        "cell_text": "Date Time",
-                        "columnindex": 4,
-                        "rowindex": 3
-                    },
-                    {
-                        "cell_text": "18 09 :",
-                        "columnindex": 5,
-                        "rowindex": 3
-                    },
-                    {
-                        "cell_text": "JUNZI 16 AM)PM",
-                        "columnindex": 6,
-                        "rowindex": 3
-                    }
-                ]
-            ],
-            "template_id": "P532",
-            "template_name": "T10",
-            "uom": null
+            "created_by": "krishnapriyam@mareana.com",
+            "param_name": "p1",
+            "template_id": "P700",
+            "table_value": null,
+            "page_num": 5,
+            "page_name": "ALL",
+            "template_version": 1,
+            "key_bbox": null,
+            "value_bbox": null,
+            "esign_id": null
         },
         {
-            "anchor_key": "Document",
-            "batch_num": "393485",
-            "changed_by": "clouddemo@mareana.com",
-            "changed_on": null,
-            "confidence": "High",
-            "created_by": "nischay.kumar@mareana.com",
-            "created_on": "2022-07-15T07:53:31.137528+00:00",
+            "id": 2128,
             "cust_key": "1000",
-            "file_path": "Batch Record Example 4_page-0.jpeg",
-            "id": 357,
-            "param_name": "para1",
-            "product_num": "1091460",
-            "recorded_date": "Stage:",
-            "recorded_time": "01AUG2021",
+            "file_path": "multipage1_page-5.jpeg",
             "site_code": "1338",
-            "snippet_image": "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",
-            "snippet_value": "MBR-0001",
+            "product_num": "1089084",
+            "batch_num": "394154",
+            "anchor_key": null,
+            "snippet_value": "Sample",
+            "uom": null,
+            "recorded_date": null,
+            "recorded_time": null,
+            "snippet_image": "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",
             "status": "unapproved",
+            "confidence": "High",
+            "template_name": "demo",
+            "created_on": "2023-02-09T05:19:13.095378+00:00",
+            "changed_by": null,
+            "changed_on": null,
+            "created_by": "krishnapriyam@mareana.com",
+            "param_name": "p1",
+            "template_id": "P700",
             "table_value": null,
-            "template_id": "P259",
-            "template_name": "dasdas",
-            "uom": "\\..\\..\\..\\WEB-INF\\web.xml"
+            "page_num": 6,
+            "page_name": "ALL",
+            "template_version": 1,
+            "key_bbox": null,
+            "value_bbox": {
+                "Width": 0.051073938608169556,
+                "Height": 0.012437507510185242,
+                "Left": 0.15265698730945587,
+                "Top": 0.23640009760856628
+            },
+            "esign_id": null
+        },
+        {
+            "id": 2129,
+            "cust_key": "1000",
+            "file_path": "multipage1_page-6.jpeg",
+            "site_code": "1338",
+            "product_num": "1089084",
+            "batch_num": "394154",
+            "anchor_key": null,
+            "snippet_value": "Vessel",
+            "uom": null,
+            "recorded_date": null,
+            "recorded_time": null,
+            "snippet_image": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAhAHQDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD0S+8WGx1N4pWCrnArsLCf7RaRzDkOuRXl/wAVNGaC1iu7Vf3hkBJ/EV2Hg3Vo7rR7a3LZkjjwwoA2dUv0stPnnJwY1yK5Xwt4svNdLsqho1cqT+NUfiRq5snisVbH2kbcevFZHhbULXwjpM0UzbJpDuA+vNAHrQ27sscGhXczYx8vrXk8nji/nk8yCTMf1rp/C/jSDVLlbF5c3I6jNAHZ7PmJoBYnB6V5xrfjyQ38thpsubiM4IzWMPHOt6bdwrqMm1JmAXk0AexE4FCZxzXM6j4ptdP01ZZ5MSvGGXmuGl8Z+ILuCS5sXzCp65NAHrpGWxQPlbnpXEeD/FUup2qRXkmbs44zVbxJ4zkt7h7Gzk/0peozQB6CWNZ2t3MlrYyTxjlFLV5hH4q8T2kiS3rYt2Iwcmu1n1iLVfDlwY23OITuoA57SPH99e2jyOoysrJ+RorhfDTkafP/ANfMn86KAPbde0wahYsky7gqkivM/AuqfZNc1aKY4SEnaDx2r2V03oynnIxXh3xOspvDrCaxjcNdH5jGuepx2oAj1i8bxf4mtGtzuS3lw3fpxUHxJkjsPEdjbYO1kGR+Ara+EGmNHFcTXkTM7ncpYYxzWh8RPD3maimrtH5iQD7oGT0oA5/S5LFYQhiaoPCdpKnxDkmh+WIgYH4mrGmfEDR4LYCTRpdw7mJv8KseEL9dX8atcQW0kMLAYDKQOp9aAMbWPDGqad4judTDjZI2eBVlfE+hefbQ6xC8kisAhzjB/Kr2qatPo+v3D3sMtxbk/KoQkfpWN4h13StUmsltdHkSTcMt5betAHouv6ZB4h0ZZbNQFSIbc151ZTT6DaS29zkoScgCutubXUbLS0njkcRCMMUA7VgQeNdNWzkju9ImlfOMmJv8KAN/wvrmjSwIttGVvOxJrgdQuppPHtwCctx/M10nhbT21fxFFqdrC9van/lmVI/nUOs2H/CO+LZ9XuLZ54TxtVSe59KALEpury2WOUkqo44rU8MW90NM1QM3yiNsflWTd/EPT7qGOGDSJkcnGfKb/Cuo0aKX+xL2UIy+bESBigDgvDWBp84PX7TJ/OirHhrT7hdPm3Rvk3Mh5U+tFAH0BXCfED7lv9R/OiigC54P/wBQ30rR8Rf8eMn0oooA8pn6mur8H/8AHwtFFADvEX+sb61z8H/H5F/vCiigD0G9/wCQWP8ArmK4GX7r/WiigDrfCP8Ax7p+FN8VfcaiigDj7f8A16/UV6NZ/wDIKf8A650UUAYWmf8AHs//AF1b+dFFFAH/2Q==",
+            "status": "unapproved",
+            "confidence": "High",
+            "template_name": "demo",
+            "created_on": "2023-02-09T05:19:13.095378+00:00",
+            "changed_by": null,
+            "changed_on": null,
+            "created_by": "krishnapriyam@mareana.com",
+            "param_name": "p1",
+            "template_id": "P700",
+            "table_value": null,
+            "page_num": 7,
+            "page_name": "ALL",
+            "template_version": 1,
+            "key_bbox": null,
+            "value_bbox": {
+                "Width": 0.04553065076470375,
+                "Height": 0.01012126263231039,
+                "Left": 0.14792652428150177,
+                "Top": 0.23429156839847565
+            },
+            "esign_id": null
+        },
+        {
+            "id": 2130,
+            "cust_key": "1000",
+            "file_path": "multipage1_page-7.jpeg",
+            "site_code": "1338",
+            "product_num": "1089084",
+            "batch_num": "394154",
+            "anchor_key": null,
+            "snippet_value": "Cell",
+            "uom": null,
+            "recorded_date": null,
+            "recorded_time": null,
+            "snippet_image": "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",
+            "status": "unapproved",
+            "confidence": "High",
+            "template_name": "demo",
+            "created_on": "2023-02-09T05:19:13.095378+00:00",
+            "changed_by": null,
+            "changed_on": null,
+            "created_by": "krishnapriyam@mareana.com",
+            "param_name": "p1",
+            "template_id": "P700",
+            "table_value": null,
+            "page_num": 8,
+            "page_name": "ALL",
+            "template_version": 1,
+            "key_bbox": null,
+            "value_bbox": {
+                "Width": 0.02552424557507038,
+                "Height": 0.010141597129404545,
+                "Left": 0.15083137154579163,
+                "Top": 0.2365863025188446
+            },
+            "esign_id": null
+        },
+        {
+            "id": 2131,
+            "cust_key": "1000",
+            "file_path": "multipage1_page-8.jpeg",
+            "site_code": "1338",
+            "product_num": "1089084",
+            "batch_num": "394154",
+            "anchor_key": "Triton",
+            "snippet_value": null,
+            "uom": null,
+            "recorded_date": null,
+            "recorded_time": null,
+            "snippet_image": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAcFBQYFBAcGBgYIBwcICxILCwoKCxYPEA0SGhYbGhkWGRgcICgiHB4mHhgZIzAkJiorLS4tGyIyNTEsNSgsLSz/wAALCAAeAKsBAREA/8QAGwAAAQUBAQAAAAAAAAAAAAAAAAEDBAUGAgf/xAAxEAABAwQABAQFAwUBAAAAAAABAgMEAAURIQYSMVETQWFxFBUigZEjocEHFjNCUtH/2gAIAQEAAD8A90/Ydz0ppiVHkhZYfbdCFcqihQOD2NdNvsvLWht1C1Nq5VhKgSk+vauwQfOlx9vU6ppiSxJCiw8h0JUUKKFBQBHUHHnTmRg70OtLnqBg49aNnypDpWDo0dRkboBBOAR+aU6O9e+qr/n1o87rCHu+kfzUxl5uQyl5lxLrahkLQeYH7iu/4oyO4pfM+lGdZHSo0+fGtkVUmW74TKTgqwVbzjyqTRSfivP7A89aJb9z5lGG/LcjSEnYTscq/wAmrO0zW7eviabjmQ08XNf7f+1y5c7/AALTHvsiY27GcUhTkTwQAlCjjr36Vr0KDiElOgoZAFYa3S3oPCt+lx1BDrcxRSSAf+e9SZFw4ggP215U9iSLgQ2lsshIbJA3kYz+asLXNuUfid+0TpaJ36HjNuBsII+oDGO3vVFO4rmsPPui8RwtlzlRCQxzpWn1c6A+lXVwuk+TcLfbba8iG5JZ+IcdKeYpT2APrmm4V3uES6Xli4yUSm7eyHPpb5Ao4znXuKp2uMpeWJSroh5TrgC4AjnCUnsvGP3rfpIKQoaBGR7V57w1JgNWZKZPD8mc4Fqy8iIlwHfQk1ornOksv2y1WhtEN6YCoFbX+JI7Dv1pIFwuMS8ybTPfElSGC+zI8MIJGxse9RWL1cF/06XczIJmBKsOBI0Ocjp7CnZlwujt3tEOLKSz8XHKlqU0Fb5eu6LfeZsN+8RLlIRLctzYdS6GwnmBGeg+3XvVJfHLxL4PFwmTW3GJJSoRw0MoBPevQumRRRjOv5xVLaLEYtsmQp3huNyn1rIRk4Sffz1USx8LOQYNxhzHUOtSjgKRnmxjXXtTJ4cvEmGzaZc2MbYyUgrSFeKtI2AfKtUBhICRgAADJ+28VmG+GpieHbrA8WP4s14uIIKsAa1066qZcbLJlfJwhxsfAuoW4ST9QGM416U6bS8ri1dzKkfDqjeDy5JUDkH8VS/2vem7LItDUuEIqiVJc5D4i95wTjVSrvCdhO2yczPiQ5bDRYxIV+ksY6ZwKicPIVdL3fnH3WpDT7aGlusE8h1g8vtU+32niC3ttQWpUFUJpWELU2S5y9jjX81o85JxjeNnQ9Tqqnhm1v2ayohyHEqWlSj9BJGD71zerO/OkxJ0F1tmbEJKPFTlCgRtJxvdN2yyyhc5FxurrLkh5vwglgEIbTnOs/eqtXDN7TZn7O3Lh/BElSFKSrxDk5wcaq0+SyPnVpllTJbhsFpY3kkpxkUibA45erxIeWj4e4MoaSEZ5k4SBkg68qq5XDV/fsXyky4SozOPDOFc6gD0OtVsAMeeaWiigDNAG8Unnilo8zRRTMmLGlthMlhp9CTnlcQFCumI7MZoNsNNtNgjCUJCRTmMHpsetHTVFHlR6UUUdKKKK//Z",
+            "status": null,
+            "confidence": "Low",
+            "template_name": "demo",
+            "created_on": "2023-02-09T05:19:13.095378+00:00",
+            "changed_by": null,
+            "changed_on": null,
+            "created_by": "krishnapriyam@mareana.com",
+            "param_name": "p1",
+            "template_id": "P700",
+            "table_value": null,
+            "page_num": 9,
+            "page_name": "ALL",
+            "template_version": 1,
+            "key_bbox": {
+                "Width": 0.04365047812461853,
+                "Height": 0.011070303618907928,
+                "Left": 0.13303238153457642,
+                "Top": 0.283292293548584
+            },
+            "value_bbox": null,
+            "esign_id": null
+        },
+        {
+            "id": 2132,
+            "cust_key": "1000",
+            "file_path": "multipage1_page-9.jpeg",
+            "site_code": "1338",
+            "product_num": "1089084",
+            "batch_num": "394154",
+            "anchor_key": null,
+            "snippet_value": null,
+            "uom": null,
+            "recorded_date": null,
+            "recorded_time": null,
+            "snippet_image": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAcFBQYFBAcGBgYIBwcICxILCwoKCxYPEA0SGhYbGhkWGRgcICgiHB4mHhgZIzAkJiorLS4tGyIyNTEsNSgsLSz/wAALCAAeAKsBAREA/8QAGwAAAQUBAQAAAAAAAAAAAAAAAAEDBAUGAgf/xAAxEAABAwQABAQFAwUBAAAAAAABAgMEAAURIQYSMVETQWFxFBUigZEjocEHFjNCUtH/2gAIAQEAAD8A90/Ydz0ppiVHkhZYfbdCFcqihQOD2NdNvsvLWht1C1Nq5VhKgSk+vauwQfOlx9vU6ppiSxJCiw8h0JUUKKFBQBHUHHnTmRg70OtLnqBg49aNnypDpWDo0dRkboBBOAR+aU6O9e+qr/n1o87rCHu+kfzUxl5uQyl5lxLrahkLQeYH7iu/4oyO4pfM+lGdZHSo0+fGtkVUmW74TKTgqwVbzjyqTRSfivP7A89aJb9z5lGG/LcjSEnYTscq/wAmrO0zW7eviabjmQ08XNf7f+1y5c7/AALTHvsiY27GcUhTkTwQAlCjjr36Vr0KDiElOgoZAFYa3S3oPCt+lx1BDrcxRSSAf+e9SZFw4ggP215U9iSLgQ2lsshIbJA3kYz+asLXNuUfid+0TpaJ36HjNuBsII+oDGO3vVFO4rmsPPui8RwtlzlRCQxzpWn1c6A+lXVwuk+TcLfbba8iG5JZ+IcdKeYpT2APrmm4V3uES6Xli4yUSm7eyHPpb5Ao4znXuKp2uMpeWJSroh5TrgC4AjnCUnsvGP3rfpIKQoaBGR7V57w1JgNWZKZPD8mc4Fqy8iIlwHfQk1ornOksv2y1WhtEN6YCoFbX+JI7Dv1pIFwuMS8ybTPfElSGC+zI8MIJGxse9RWL1cF/06XczIJmBKsOBI0Ocjp7CnZlwujt3tEOLKSz8XHKlqU0Fb5eu6LfeZsN+8RLlIRLctzYdS6GwnmBGeg+3XvVJfHLxL4PFwmTW3GJJSoRw0MoBPevQumRRRjOv5xVLaLEYtsmQp3huNyn1rIRk4Sffz1USx8LOQYNxhzHUOtSjgKRnmxjXXtTJ4cvEmGzaZc2MbYyUgrSFeKtI2AfKtUBhICRgAADJ+28VmG+GpieHbrA8WP4s14uIIKsAa1066qZcbLJlfJwhxsfAuoW4ST9QGM416U6bS8ri1dzKkfDqjeDy5JUDkH8VS/2vem7LItDUuEIqiVJc5D4i95wTjVSrvCdhO2yczPiQ5bDRYxIV+ksY6ZwKicPIVdL3fnH3WpDT7aGlusE8h1g8vtU+32niC3ttQWpUFUJpWELU2S5y9jjX81o85JxjeNnQ9Tqqnhm1v2ayohyHEqWlSj9BJGD71zerO/OkxJ0F1tmbEJKPFTlCgRtJxvdN2yyyhc5FxurrLkh5vwglgEIbTnOs/eqtXDN7TZn7O3Lh/BElSFKSrxDk5wcaq0+SyPnVpllTJbhsFpY3kkpxkUibA45erxIeWj4e4MoaSEZ5k4SBkg68qq5XDV/fsXyky4SozOPDOFc6gD0OtVsAMeeaWiigDNAG8Unnilo8zRRTMmLGlthMlhp9CTnlcQFCumI7MZoNsNNtNgjCUJCRTmMHpsetHTVFHlR6UUUdKKKK//Z",
+            "status": null,
+            "confidence": "Low",
+            "template_name": "demo",
+            "created_on": "2023-02-09T05:19:13.095378+00:00",
+            "changed_by": null,
+            "changed_on": null,
+            "created_by": "krishnapriyam@mareana.com",
+            "param_name": "p1",
+            "template_id": "P700",
+            "table_value": null,
+            "page_num": 10,
+            "page_name": "ALL",
+            "template_version": 1,
+            "key_bbox": null,
+            "value_bbox": null,
+            "esign_id": null
+        },
+        {
+            "id": 2133,
+            "cust_key": "1000",
+            "file_path": "multipage1_page-0.jpeg",
+            "site_code": "1338",
+            "product_num": "1089084",
+            "batch_num": "394154",
+            "anchor_key": null,
+            "snippet_value": null,
+            "uom": null,
+            "recorded_date": null,
+            "recorded_time": null,
+            "snippet_image": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAcFBQYFBAcGBgYIBwcICxILCwoKCxYPEA0SGhYbGhkWGRgcICgiHB4mHhgZIzAkJiorLS4tGyIyNTEsNSgsLSz/wAALCAAeAKsBAREA/8QAGwAAAQUBAQAAAAAAAAAAAAAAAAEDBAUGAgf/xAAxEAABAwQABAQFAwUBAAAAAAABAgMEAAURIQYSMVETQWFxFBUigZEjocEHFjNCUtH/2gAIAQEAAD8A90/Ydz0ppiVHkhZYfbdCFcqihQOD2NdNvsvLWht1C1Nq5VhKgSk+vauwQfOlx9vU6ppiSxJCiw8h0JUUKKFBQBHUHHnTmRg70OtLnqBg49aNnypDpWDo0dRkboBBOAR+aU6O9e+qr/n1o87rCHu+kfzUxl5uQyl5lxLrahkLQeYH7iu/4oyO4pfM+lGdZHSo0+fGtkVUmW74TKTgqwVbzjyqTRSfivP7A89aJb9z5lGG/LcjSEnYTscq/wAmrO0zW7eviabjmQ08XNf7f+1y5c7/AALTHvsiY27GcUhTkTwQAlCjjr36Vr0KDiElOgoZAFYa3S3oPCt+lx1BDrcxRSSAf+e9SZFw4ggP215U9iSLgQ2lsshIbJA3kYz+asLXNuUfid+0TpaJ36HjNuBsII+oDGO3vVFO4rmsPPui8RwtlzlRCQxzpWn1c6A+lXVwuk+TcLfbba8iG5JZ+IcdKeYpT2APrmm4V3uES6Xli4yUSm7eyHPpb5Ao4znXuKp2uMpeWJSroh5TrgC4AjnCUnsvGP3rfpIKQoaBGR7V57w1JgNWZKZPD8mc4Fqy8iIlwHfQk1ornOksv2y1WhtEN6YCoFbX+JI7Dv1pIFwuMS8ybTPfElSGC+zI8MIJGxse9RWL1cF/06XczIJmBKsOBI0Ocjp7CnZlwujt3tEOLKSz8XHKlqU0Fb5eu6LfeZsN+8RLlIRLctzYdS6GwnmBGeg+3XvVJfHLxL4PFwmTW3GJJSoRw0MoBPevQumRRRjOv5xVLaLEYtsmQp3huNyn1rIRk4Sffz1USx8LOQYNxhzHUOtSjgKRnmxjXXtTJ4cvEmGzaZc2MbYyUgrSFeKtI2AfKtUBhICRgAADJ+28VmG+GpieHbrA8WP4s14uIIKsAa1066qZcbLJlfJwhxsfAuoW4ST9QGM416U6bS8ri1dzKkfDqjeDy5JUDkH8VS/2vem7LItDUuEIqiVJc5D4i95wTjVSrvCdhO2yczPiQ5bDRYxIV+ksY6ZwKicPIVdL3fnH3WpDT7aGlusE8h1g8vtU+32niC3ttQWpUFUJpWELU2S5y9jjX81o85JxjeNnQ9Tqqnhm1v2ayohyHEqWlSj9BJGD71zerO/OkxJ0F1tmbEJKPFTlCgRtJxvdN2yyyhc5FxurrLkh5vwglgEIbTnOs/eqtXDN7TZn7O3Lh/BElSFKSrxDk5wcaq0+SyPnVpllTJbhsFpY3kkpxkUibA45erxIeWj4e4MoaSEZ5k4SBkg68qq5XDV/fsXyky4SozOPDOFc6gD0OtVsAMeeaWiigDNAG8Unnilo8zRRTMmLGlthMlhp9CTnlcQFCumI7MZoNsNNtNgjCUJCRTmMHpsetHTVFHlR6UUUdKKKK//Z",
+            "status": "unapproved",
+            "confidence": "Low",
+            "template_name": "demo",
+            "created_on": "2023-02-09T05:19:13.095378+00:00",
+            "changed_by": null,
+            "changed_on": null,
+            "created_by": "krishnapriyam@mareana.com",
+            "param_name": "t1",
+            "template_id": "P700",
+            "table_value": [
+                {
+                    "Column1": "Parameter",
+                    "Column2": "Actual",
+                    "Column3": "Done By/ Date",
+                    "Column4": "Verified By/ Date"
+                },
+                {
+                    "Column1": "1-mL Pipette Material #",
+                    "Column2": "1176423",
+                    "Column3": "",
+                    "Column4": ""
+                },
+                {
+                    "Column1": "1-mL Pipette Batch #",
+                    "Column2": "ABK9156",
+                    "Column3": "",
+                    "Column4": ""
+                },
+                {
+                    "Column1": "Day #",
+                    "Column2": "0",
+                    "Column3": "",
+                    "Column4": ""
+                },
+                {
+                    "Column1": "Time",
+                    "Column2": "0818",
+                    "Column3": "",
+                    "Column4": ""
+                },
+                {
+                    "Column1": "Passage ID #",
+                    "Column2": "260-1.1",
+                    "Column3": "",
+                    "Column4": ""
+                },
+                {
+                    "Column1": "Cell type Selected Inoc-CHO",
+                    "Column2": "  Yes No",
+                    "Column3": "",
+                    "Column4": ""
+                },
+                {
+                    "Column1": "Viable Cell Density 0.20 to 0.50 x 10\u00b0 cells/mL (Action)",
+                    "Column2": "0. 36 X 10*",
+                    "Column3": "NA",
+                    "Column4": "in"
+                },
+                {
+                    "Column1": "Percent Viability",
+                    "Column2": "94 %",
+                    "Column3": "31 Jan20",
+                    "Column4": "31janzu"
+                }
+            ],
+            "page_num": 1,
+            "page_name": "ALL",
+            "template_version": 1,
+            "key_bbox": null,
+            "value_bbox": null,
+            "esign_id": null
+        },
+        {
+            "id": 2134,
+            "cust_key": "1000",
+            "file_path": "multipage1_page-1.jpeg",
+            "site_code": "1338",
+            "product_num": "1089084",
+            "batch_num": "394154",
+            "anchor_key": null,
+            "snippet_value": null,
+            "uom": null,
+            "recorded_date": null,
+            "recorded_time": null,
+            "snippet_image": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAcFBQYFBAcGBgYIBwcICxILCwoKCxYPEA0SGhYbGhkWGRgcICgiHB4mHhgZIzAkJiorLS4tGyIyNTEsNSgsLSz/wAALCAAeAKsBAREA/8QAGwAAAQUBAQAAAAAAAAAAAAAAAAEDBAUGAgf/xAAxEAABAwQABAQFAwUBAAAAAAABAgMEAAURIQYSMVETQWFxFBUigZEjocEHFjNCUtH/2gAIAQEAAD8A90/Ydz0ppiVHkhZYfbdCFcqihQOD2NdNvsvLWht1C1Nq5VhKgSk+vauwQfOlx9vU6ppiSxJCiw8h0JUUKKFBQBHUHHnTmRg70OtLnqBg49aNnypDpWDo0dRkboBBOAR+aU6O9e+qr/n1o87rCHu+kfzUxl5uQyl5lxLrahkLQeYH7iu/4oyO4pfM+lGdZHSo0+fGtkVUmW74TKTgqwVbzjyqTRSfivP7A89aJb9z5lGG/LcjSEnYTscq/wAmrO0zW7eviabjmQ08XNf7f+1y5c7/AALTHvsiY27GcUhTkTwQAlCjjr36Vr0KDiElOgoZAFYa3S3oPCt+lx1BDrcxRSSAf+e9SZFw4ggP215U9iSLgQ2lsshIbJA3kYz+asLXNuUfid+0TpaJ36HjNuBsII+oDGO3vVFO4rmsPPui8RwtlzlRCQxzpWn1c6A+lXVwuk+TcLfbba8iG5JZ+IcdKeYpT2APrmm4V3uES6Xli4yUSm7eyHPpb5Ao4znXuKp2uMpeWJSroh5TrgC4AjnCUnsvGP3rfpIKQoaBGR7V57w1JgNWZKZPD8mc4Fqy8iIlwHfQk1ornOksv2y1WhtEN6YCoFbX+JI7Dv1pIFwuMS8ybTPfElSGC+zI8MIJGxse9RWL1cF/06XczIJmBKsOBI0Ocjp7CnZlwujt3tEOLKSz8XHKlqU0Fb5eu6LfeZsN+8RLlIRLctzYdS6GwnmBGeg+3XvVJfHLxL4PFwmTW3GJJSoRw0MoBPevQumRRRjOv5xVLaLEYtsmQp3huNyn1rIRk4Sffz1USx8LOQYNxhzHUOtSjgKRnmxjXXtTJ4cvEmGzaZc2MbYyUgrSFeKtI2AfKtUBhICRgAADJ+28VmG+GpieHbrA8WP4s14uIIKsAa1066qZcbLJlfJwhxsfAuoW4ST9QGM416U6bS8ri1dzKkfDqjeDy5JUDkH8VS/2vem7LItDUuEIqiVJc5D4i95wTjVSrvCdhO2yczPiQ5bDRYxIV+ksY6ZwKicPIVdL3fnH3WpDT7aGlusE8h1g8vtU+32niC3ttQWpUFUJpWELU2S5y9jjX81o85JxjeNnQ9Tqqnhm1v2ayohyHEqWlSj9BJGD71zerO/OkxJ0F1tmbEJKPFTlCgRtJxvdN2yyyhc5FxurrLkh5vwglgEIbTnOs/eqtXDN7TZn7O3Lh/BElSFKSrxDk5wcaq0+SyPnVpllTJbhsFpY3kkpxkUibA45erxIeWj4e4MoaSEZ5k4SBkg68qq5XDV/fsXyky4SozOPDOFc6gD0OtVsAMeeaWiigDNAG8Unnilo8zRRTMmLGlthMlhp9CTnlcQFCumI7MZoNsNNtNgjCUJCRTmMHpsetHTVFHlR6UUUdKKKK//Z",
+            "status": "unapproved",
+            "confidence": "Low",
+            "template_name": "demo",
+            "created_on": "2023-02-09T05:19:13.095378+00:00",
+            "changed_by": null,
+            "changed_on": null,
+            "created_by": "krishnapriyam@mareana.com",
+            "param_name": "t1",
+            "template_id": "P700",
+            "table_value": [
+                {
+                    "Column1": "Parameter",
+                    "Column2": "Actual",
+                    "Column3": "Done By/ Date",
+                    "Column4": "Verified By/ Date"
+                },
+                {
+                    "Column1": "1-mL Pipette Material #",
+                    "Column2": "1176423",
+                    "Column3": "",
+                    "Column4": ""
+                },
+                {
+                    "Column1": "1-mL Pipette Batch #",
+                    "Column2": "ABK9156",
+                    "Column3": "",
+                    "Column4": ""
+                },
+                {
+                    "Column1": "Day #",
+                    "Column2": "3",
+                    "Column3": "",
+                    "Column4": ""
+                },
+                {
+                    "Column1": "Time",
+                    "Column2": "0725",
+                    "Column3": "",
+                    "Column4": ""
+                },
+                {
+                    "Column1": "Passage ID #",
+                    "Column2": "260-13",
+                    "Column3": "",
+                    "Column4": ""
+                },
+                {
+                    "Column1": "Cell type Selected Inoc-CHO",
+                    "Column2": "  Yes No",
+                    "Column3": "",
+                    "Column4": ""
+                },
+                {
+                    "Column1": "Viable Cell Density (A) cells/mL",
+                    "Column2": "1.29 x 10\u00b0",
+                    "Column3": "",
+                    "Column4": ""
+                },
+                {
+                    "Column1": "Percent Viability 70% (Action)",
+                    "Column2": "94 %",
+                    "Column3": "",
+                    "Column4": ""
+                }
+            ],
+            "page_num": 2,
+            "page_name": "ALL",
+            "template_version": 1,
+            "key_bbox": null,
+            "value_bbox": null,
+            "esign_id": null
+        },
+        {
+            "id": 2135,
+            "cust_key": "1000",
+            "file_path": "multipage1_page-10.jpeg",
+            "site_code": "1338",
+            "product_num": "1089084",
+            "batch_num": "394154",
+            "anchor_key": null,
+            "snippet_value": null,
+            "uom": null,
+            "recorded_date": null,
+            "recorded_time": null,
+            "snippet_image": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAcFBQYFBAcGBgYIBwcICxILCwoKCxYPEA0SGhYbGhkWGRgcICgiHB4mHhgZIzAkJiorLS4tGyIyNTEsNSgsLSz/wAALCAAeAKsBAREA/8QAGwAAAQUBAQAAAAAAAAAAAAAAAAEDBAUGAgf/xAAxEAABAwQABAQFAwUBAAAAAAABAgMEAAURIQYSMVETQWFxFBUigZEjocEHFjNCUtH/2gAIAQEAAD8A90/Ydz0ppiVHkhZYfbdCFcqihQOD2NdNvsvLWht1C1Nq5VhKgSk+vauwQfOlx9vU6ppiSxJCiw8h0JUUKKFBQBHUHHnTmRg70OtLnqBg49aNnypDpWDo0dRkboBBOAR+aU6O9e+qr/n1o87rCHu+kfzUxl5uQyl5lxLrahkLQeYH7iu/4oyO4pfM+lGdZHSo0+fGtkVUmW74TKTgqwVbzjyqTRSfivP7A89aJb9z5lGG/LcjSEnYTscq/wAmrO0zW7eviabjmQ08XNf7f+1y5c7/AALTHvsiY27GcUhTkTwQAlCjjr36Vr0KDiElOgoZAFYa3S3oPCt+lx1BDrcxRSSAf+e9SZFw4ggP215U9iSLgQ2lsshIbJA3kYz+asLXNuUfid+0TpaJ36HjNuBsII+oDGO3vVFO4rmsPPui8RwtlzlRCQxzpWn1c6A+lXVwuk+TcLfbba8iG5JZ+IcdKeYpT2APrmm4V3uES6Xli4yUSm7eyHPpb5Ao4znXuKp2uMpeWJSroh5TrgC4AjnCUnsvGP3rfpIKQoaBGR7V57w1JgNWZKZPD8mc4Fqy8iIlwHfQk1ornOksv2y1WhtEN6YCoFbX+JI7Dv1pIFwuMS8ybTPfElSGC+zI8MIJGxse9RWL1cF/06XczIJmBKsOBI0Ocjp7CnZlwujt3tEOLKSz8XHKlqU0Fb5eu6LfeZsN+8RLlIRLctzYdS6GwnmBGeg+3XvVJfHLxL4PFwmTW3GJJSoRw0MoBPevQumRRRjOv5xVLaLEYtsmQp3huNyn1rIRk4Sffz1USx8LOQYNxhzHUOtSjgKRnmxjXXtTJ4cvEmGzaZc2MbYyUgrSFeKtI2AfKtUBhICRgAADJ+28VmG+GpieHbrA8WP4s14uIIKsAa1066qZcbLJlfJwhxsfAuoW4ST9QGM416U6bS8ri1dzKkfDqjeDy5JUDkH8VS/2vem7LItDUuEIqiVJc5D4i95wTjVSrvCdhO2yczPiQ5bDRYxIV+ksY6ZwKicPIVdL3fnH3WpDT7aGlusE8h1g8vtU+32niC3ttQWpUFUJpWELU2S5y9jjX81o85JxjeNnQ9Tqqnhm1v2ayohyHEqWlSj9BJGD71zerO/OkxJ0F1tmbEJKPFTlCgRtJxvdN2yyyhc5FxurrLkh5vwglgEIbTnOs/eqtXDN7TZn7O3Lh/BElSFKSrxDk5wcaq0+SyPnVpllTJbhsFpY3kkpxkUibA45erxIeWj4e4MoaSEZ5k4SBkg68qq5XDV/fsXyky4SozOPDOFc6gD0OtVsAMeeaWiigDNAG8Unnilo8zRRTMmLGlthMlhp9CTnlcQFCumI7MZoNsNNtNgjCUJCRTmMHpsetHTVFHlR6UUUdKKKK//Z",
+            "status": "unapproved",
+            "confidence": "Low",
+            "template_name": "demo",
+            "created_on": "2023-02-09T05:19:13.095378+00:00",
+            "changed_by": null,
+            "changed_on": null,
+            "created_by": "krishnapriyam@mareana.com",
+            "param_name": "t1",
+            "template_id": "P700",
+            "table_value": [
+                {
+                    "Column1": "",
+                    "Column2": "Instruction",
+                    "Column3": "Parameter",
+                    "Column4": "Actual"
+                },
+                {
+                    "Column1": "22.2 Load",
+                    "Column2": "Confirmation",
+                    "Column3": "Volume Loaded (A)",
+                    "Column4": "21504"
+                },
+                {
+                    "Column1": "(A) Load (B)",
+                    "Column2": "Volume From Controller Belatacept Total Load from",
+                    "Column3": "Belatacept Total Load (B)",
+                    "Column4": "10699 g"
+                },
+                {
+                    "Column1": "Step (C) After Step",
+                    "Column2": "5.14 (D). Centrate Vessel Stop Volume 20% from Step 5.15 (B) or 5.16 (F)",
+                    "Column3": "Centrate Vessel Stop Volume After 20% Triton (c)",
+                    "Column4": "4569"
+                },
+                {
+                    "Column1": "",
+                    "Column2": "",
+                    "Column3": "Mass Loaded (D) = (A) x ((B)/ (C))",
+                    "Column4": "5035 g"
+                },
+                {
+                    "Column1": "",
+                    "Column2": "",
+                    "Column3": "Protein Load (F) = (D) / Step 5.14 (E) 13 to 25 g/Lresin (CPP)",
+                    "Column4": "23 g/Lresin"
+                },
+                {
+                    "Column1": "STOP",
+                    "Column2": "If calculated protein load is < and notify area",
+                    "Column3": "13 g/Lresin or >25 supervision, Manufacturing Assurance.",
+                    "Column4": "g/Lresin (CPP), Technology"
+                }
+            ],
+            "page_num": 11,
+            "page_name": "ALL",
+            "template_version": 1,
+            "key_bbox": null,
+            "value_bbox": null,
+            "esign_id": null
+        },
+        {
+            "id": 2136,
+            "cust_key": "1000",
+            "file_path": "multipage1_page-5.jpeg",
+            "site_code": "1338",
+            "product_num": "1089084",
+            "batch_num": "394154",
+            "anchor_key": null,
+            "snippet_value": null,
+            "uom": null,
+            "recorded_date": null,
+            "recorded_time": null,
+            "snippet_image": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAcFBQYFBAcGBgYIBwcICxILCwoKCxYPEA0SGhYbGhkWGRgcICgiHB4mHhgZIzAkJiorLS4tGyIyNTEsNSgsLSz/wAALCAAeAKsBAREA/8QAGwAAAQUBAQAAAAAAAAAAAAAAAAEDBAUGAgf/xAAxEAABAwQABAQFAwUBAAAAAAABAgMEAAURIQYSMVETQWFxFBUigZEjocEHFjNCUtH/2gAIAQEAAD8A90/Ydz0ppiVHkhZYfbdCFcqihQOD2NdNvsvLWht1C1Nq5VhKgSk+vauwQfOlx9vU6ppiSxJCiw8h0JUUKKFBQBHUHHnTmRg70OtLnqBg49aNnypDpWDo0dRkboBBOAR+aU6O9e+qr/n1o87rCHu+kfzUxl5uQyl5lxLrahkLQeYH7iu/4oyO4pfM+lGdZHSo0+fGtkVUmW74TKTgqwVbzjyqTRSfivP7A89aJb9z5lGG/LcjSEnYTscq/wAmrO0zW7eviabjmQ08XNf7f+1y5c7/AALTHvsiY27GcUhTkTwQAlCjjr36Vr0KDiElOgoZAFYa3S3oPCt+lx1BDrcxRSSAf+e9SZFw4ggP215U9iSLgQ2lsshIbJA3kYz+asLXNuUfid+0TpaJ36HjNuBsII+oDGO3vVFO4rmsPPui8RwtlzlRCQxzpWn1c6A+lXVwuk+TcLfbba8iG5JZ+IcdKeYpT2APrmm4V3uES6Xli4yUSm7eyHPpb5Ao4znXuKp2uMpeWJSroh5TrgC4AjnCUnsvGP3rfpIKQoaBGR7V57w1JgNWZKZPD8mc4Fqy8iIlwHfQk1ornOksv2y1WhtEN6YCoFbX+JI7Dv1pIFwuMS8ybTPfElSGC+zI8MIJGxse9RWL1cF/06XczIJmBKsOBI0Ocjp7CnZlwujt3tEOLKSz8XHKlqU0Fb5eu6LfeZsN+8RLlIRLctzYdS6GwnmBGeg+3XvVJfHLxL4PFwmTW3GJJSoRw0MoBPevQumRRRjOv5xVLaLEYtsmQp3huNyn1rIRk4Sffz1USx8LOQYNxhzHUOtSjgKRnmxjXXtTJ4cvEmGzaZc2MbYyUgrSFeKtI2AfKtUBhICRgAADJ+28VmG+GpieHbrA8WP4s14uIIKsAa1066qZcbLJlfJwhxsfAuoW4ST9QGM416U6bS8ri1dzKkfDqjeDy5JUDkH8VS/2vem7LItDUuEIqiVJc5D4i95wTjVSrvCdhO2yczPiQ5bDRYxIV+ksY6ZwKicPIVdL3fnH3WpDT7aGlusE8h1g8vtU+32niC3ttQWpUFUJpWELU2S5y9jjX81o85JxjeNnQ9Tqqnhm1v2ayohyHEqWlSj9BJGD71zerO/OkxJ0F1tmbEJKPFTlCgRtJxvdN2yyyhc5FxurrLkh5vwglgEIbTnOs/eqtXDN7TZn7O3Lh/BElSFKSrxDk5wcaq0+SyPnVpllTJbhsFpY3kkpxkUibA45erxIeWj4e4MoaSEZ5k4SBkg68qq5XDV/fsXyky4SozOPDOFc6gD0OtVsAMeeaWiigDNAG8Unnilo8zRRTMmLGlthMlhp9CTnlcQFCumI7MZoNsNNtNgjCUJCRTmMHpsetHTVFHlR6UUUdKKKK//Z",
+            "status": "unapproved",
+            "confidence": "Low",
+            "template_name": "demo",
+            "created_on": "2023-02-09T05:19:13.095378+00:00",
+            "changed_by": null,
+            "changed_on": null,
+            "created_by": "krishnapriyam@mareana.com",
+            "param_name": "t1",
+            "template_id": "P700",
+            "table_value": [
+                {
+                    "Column1": "",
+                    "Column2": "",
+                    "Column3": "",
+                    "Column4": ""
+                },
+                {
+                    "Column1": "",
+                    "Column2": "Parameter",
+                    "Column3": "Value",
+                    "Column4": "Units"
+                },
+                {
+                    "Column1": "Gas Parameters",
+                    "Column2": "",
+                    "Column3": "",
+                    "Column4": ""
+                },
+                {
+                    "Column1": "",
+                    "Column2": "pH",
+                    "Column3": "6.971",
+                    "Column4": "-"
+                },
+                {
+                    "Column1": "",
+                    "Column2": "PO2",
+                    "Column3": "72.7",
+                    "Column4": "mm Hg"
+                },
+                {
+                    "Column1": "",
+                    "Column2": "PCO2",
+                    "Column3": "64.4",
+                    "Column4": "mm Hg"
+                },
+                {
+                    "Column1": "Nutrient/Metabolite Parameters",
+                    "Column2": "",
+                    "Column3": "",
+                    "Column4": ""
+                },
+                {
+                    "Column1": "",
+                    "Column2": "Gln",
+                    "Column3": "0.99",
+                    "Column4": "mmol/L"
+                },
+                {
+                    "Column1": "",
+                    "Column2": "Glu",
+                    "Column3": "1.92",
+                    "Column4": "mmol/L"
+                }
+            ],
+            "page_num": 6,
+            "page_name": "ALL",
+            "template_version": 1,
+            "key_bbox": null,
+            "value_bbox": null,
+            "esign_id": null
+        },
+        {
+            "id": 2137,
+            "cust_key": "1000",
+            "file_path": "multipage1_page-6.jpeg",
+            "site_code": "1338",
+            "product_num": "1089084",
+            "batch_num": "394154",
+            "anchor_key": null,
+            "snippet_value": null,
+            "uom": null,
+            "recorded_date": null,
+            "recorded_time": null,
+            "snippet_image": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAcFBQYFBAcGBgYIBwcICxILCwoKCxYPEA0SGhYbGhkWGRgcICgiHB4mHhgZIzAkJiorLS4tGyIyNTEsNSgsLSz/wAALCAAeAKsBAREA/8QAGwAAAQUBAQAAAAAAAAAAAAAAAAEDBAUGAgf/xAAxEAABAwQABAQFAwUBAAAAAAABAgMEAAURIQYSMVETQWFxFBUigZEjocEHFjNCUtH/2gAIAQEAAD8A90/Ydz0ppiVHkhZYfbdCFcqihQOD2NdNvsvLWht1C1Nq5VhKgSk+vauwQfOlx9vU6ppiSxJCiw8h0JUUKKFBQBHUHHnTmRg70OtLnqBg49aNnypDpWDo0dRkboBBOAR+aU6O9e+qr/n1o87rCHu+kfzUxl5uQyl5lxLrahkLQeYH7iu/4oyO4pfM+lGdZHSo0+fGtkVUmW74TKTgqwVbzjyqTRSfivP7A89aJb9z5lGG/LcjSEnYTscq/wAmrO0zW7eviabjmQ08XNf7f+1y5c7/AALTHvsiY27GcUhTkTwQAlCjjr36Vr0KDiElOgoZAFYa3S3oPCt+lx1BDrcxRSSAf+e9SZFw4ggP215U9iSLgQ2lsshIbJA3kYz+asLXNuUfid+0TpaJ36HjNuBsII+oDGO3vVFO4rmsPPui8RwtlzlRCQxzpWn1c6A+lXVwuk+TcLfbba8iG5JZ+IcdKeYpT2APrmm4V3uES6Xli4yUSm7eyHPpb5Ao4znXuKp2uMpeWJSroh5TrgC4AjnCUnsvGP3rfpIKQoaBGR7V57w1JgNWZKZPD8mc4Fqy8iIlwHfQk1ornOksv2y1WhtEN6YCoFbX+JI7Dv1pIFwuMS8ybTPfElSGC+zI8MIJGxse9RWL1cF/06XczIJmBKsOBI0Ocjp7CnZlwujt3tEOLKSz8XHKlqU0Fb5eu6LfeZsN+8RLlIRLctzYdS6GwnmBGeg+3XvVJfHLxL4PFwmTW3GJJSoRw0MoBPevQumRRRjOv5xVLaLEYtsmQp3huNyn1rIRk4Sffz1USx8LOQYNxhzHUOtSjgKRnmxjXXtTJ4cvEmGzaZc2MbYyUgrSFeKtI2AfKtUBhICRgAADJ+28VmG+GpieHbrA8WP4s14uIIKsAa1066qZcbLJlfJwhxsfAuoW4ST9QGM416U6bS8ri1dzKkfDqjeDy5JUDkH8VS/2vem7LItDUuEIqiVJc5D4i95wTjVSrvCdhO2yczPiQ5bDRYxIV+ksY6ZwKicPIVdL3fnH3WpDT7aGlusE8h1g8vtU+32niC3ttQWpUFUJpWELU2S5y9jjX81o85JxjeNnQ9Tqqnhm1v2ayohyHEqWlSj9BJGD71zerO/OkxJ0F1tmbEJKPFTlCgRtJxvdN2yyyhc5FxurrLkh5vwglgEIbTnOs/eqtXDN7TZn7O3Lh/BElSFKSrxDk5wcaq0+SyPnVpllTJbhsFpY3kkpxkUibA45erxIeWj4e4MoaSEZ5k4SBkg68qq5XDV/fsXyky4SozOPDOFc6gD0OtVsAMeeaWiigDNAG8Unnilo8zRRTMmLGlthMlhp9CTnlcQFCumI7MZoNsNNtNgjCUJCRTmMHpsetHTVFHlR6UUUdKKKK//Z",
+            "status": "unapproved",
+            "confidence": "Low",
+            "template_name": "demo",
+            "created_on": "2023-02-09T05:19:13.095378+00:00",
+            "changed_by": null,
+            "changed_on": null,
+            "created_by": "krishnapriyam@mareana.com",
+            "param_name": "t1",
+            "template_id": "P700",
+            "table_value": [
+                {
+                    "Column1": "",
+                    "Column2": "",
+                    "Column3": "",
+                    "Column4": ""
+                },
+                {
+                    "Column1": "",
+                    "Column2": "Parameter",
+                    "Column3": "Value",
+                    "Column4": "Units"
+                },
+                {
+                    "Column1": "Gas Parameters",
+                    "Column2": "",
+                    "Column3": "",
+                    "Column4": ""
+                },
+                {
+                    "Column1": "",
+                    "Column2": "pH",
+                    "Column3": "6.926",
+                    "Column4": "-"
+                },
+                {
+                    "Column1": "",
+                    "Column2": "PO2",
+                    "Column3": "76.7",
+                    "Column4": "mm Hg"
+                },
+                {
+                    "Column1": "",
+                    "Column2": "PCO2",
+                    "Column3": "65.0",
+                    "Column4": "mm Hg"
+                },
+                {
+                    "Column1": "Nutrient/Metabolite Parameters",
+                    "Column2": "",
+                    "Column3": "",
+                    "Column4": ""
+                },
+                {
+                    "Column1": "",
+                    "Column2": "Gln",
+                    "Column3": "0.55",
+                    "Column4": "mmol/L"
+                },
+                {
+                    "Column1": "",
+                    "Column2": "Glu",
+                    "Column3": "1,77",
+                    "Column4": "mmol/L"
+                }
+            ],
+            "page_num": 7,
+            "page_name": "ALL",
+            "template_version": 1,
+            "key_bbox": null,
+            "value_bbox": null,
+            "esign_id": null
+        },
+        {
+            "id": 2138,
+            "cust_key": "1000",
+            "file_path": "multipage1_page-8.jpeg",
+            "site_code": "1338",
+            "product_num": "1089084",
+            "batch_num": "394154",
+            "anchor_key": null,
+            "snippet_value": null,
+            "uom": null,
+            "recorded_date": null,
+            "recorded_time": null,
+            "snippet_image": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAcFBQYFBAcGBgYIBwcICxILCwoKCxYPEA0SGhYbGhkWGRgcICgiHB4mHhgZIzAkJiorLS4tGyIyNTEsNSgsLSz/wAALCAAeAKsBAREA/8QAGwAAAQUBAQAAAAAAAAAAAAAAAAEDBAUGAgf/xAAxEAABAwQABAQFAwUBAAAAAAABAgMEAAURIQYSMVETQWFxFBUigZEjocEHFjNCUtH/2gAIAQEAAD8A90/Ydz0ppiVHkhZYfbdCFcqihQOD2NdNvsvLWht1C1Nq5VhKgSk+vauwQfOlx9vU6ppiSxJCiw8h0JUUKKFBQBHUHHnTmRg70OtLnqBg49aNnypDpWDo0dRkboBBOAR+aU6O9e+qr/n1o87rCHu+kfzUxl5uQyl5lxLrahkLQeYH7iu/4oyO4pfM+lGdZHSo0+fGtkVUmW74TKTgqwVbzjyqTRSfivP7A89aJb9z5lGG/LcjSEnYTscq/wAmrO0zW7eviabjmQ08XNf7f+1y5c7/AALTHvsiY27GcUhTkTwQAlCjjr36Vr0KDiElOgoZAFYa3S3oPCt+lx1BDrcxRSSAf+e9SZFw4ggP215U9iSLgQ2lsshIbJA3kYz+asLXNuUfid+0TpaJ36HjNuBsII+oDGO3vVFO4rmsPPui8RwtlzlRCQxzpWn1c6A+lXVwuk+TcLfbba8iG5JZ+IcdKeYpT2APrmm4V3uES6Xli4yUSm7eyHPpb5Ao4znXuKp2uMpeWJSroh5TrgC4AjnCUnsvGP3rfpIKQoaBGR7V57w1JgNWZKZPD8mc4Fqy8iIlwHfQk1ornOksv2y1WhtEN6YCoFbX+JI7Dv1pIFwuMS8ybTPfElSGC+zI8MIJGxse9RWL1cF/06XczIJmBKsOBI0Ocjp7CnZlwujt3tEOLKSz8XHKlqU0Fb5eu6LfeZsN+8RLlIRLctzYdS6GwnmBGeg+3XvVJfHLxL4PFwmTW3GJJSoRw0MoBPevQumRRRjOv5xVLaLEYtsmQp3huNyn1rIRk4Sffz1USx8LOQYNxhzHUOtSjgKRnmxjXXtTJ4cvEmGzaZc2MbYyUgrSFeKtI2AfKtUBhICRgAADJ+28VmG+GpieHbrA8WP4s14uIIKsAa1066qZcbLJlfJwhxsfAuoW4ST9QGM416U6bS8ri1dzKkfDqjeDy5JUDkH8VS/2vem7LItDUuEIqiVJc5D4i95wTjVSrvCdhO2yczPiQ5bDRYxIV+ksY6ZwKicPIVdL3fnH3WpDT7aGlusE8h1g8vtU+32niC3ttQWpUFUJpWELU2S5y9jjX81o85JxjeNnQ9Tqqnhm1v2ayohyHEqWlSj9BJGD71zerO/OkxJ0F1tmbEJKPFTlCgRtJxvdN2yyyhc5FxurrLkh5vwglgEIbTnOs/eqtXDN7TZn7O3Lh/BElSFKSrxDk5wcaq0+SyPnVpllTJbhsFpY3kkpxkUibA45erxIeWj4e4MoaSEZ5k4SBkg68qq5XDV/fsXyky4SozOPDOFc6gD0OtVsAMeeaWiigDNAG8Unnilo8zRRTMmLGlthMlhp9CTnlcQFCumI7MZoNsNNtNgjCUJCRTmMHpsetHTVFHlR6UUUdKKKK//Z",
+            "status": "unapproved",
+            "confidence": "Low",
+            "template_name": "demo",
+            "created_on": "2023-02-09T05:19:13.095378+00:00",
+            "changed_by": null,
+            "changed_on": null,
+            "created_by": "krishnapriyam@mareana.com",
+            "param_name": "t1",
+            "template_id": "P700",
+            "table_value": [
+                {
+                    "Column1": "",
+                    "Column2": "Instruction",
+                    "Column3": "Parameter",
+                    "Column4": "Actual"
+                },
+                {
+                    "Column1": "20.7",
+                    "Column2": "Add the calculated amount of 20% Triton X-100 to the centrate vessel (SOP BPP-58B-488).",
+                    "Column3": "Centrate Vessel Stop Volume (C)",
+                    "Column4": "4569"
+                },
+                {
+                    "Column1": "20.8",
+                    "Column2": "Once the addition is complete, close the centrate blocking valve by acknowledging the prompt (SOP BPP-58B-488).",
+                    "Column3": "",
+                    "Column4": ""
+                },
+                {
+                    "Column1": "20.9",
+                    "Column2": "Calculate the final 20% Triton X-100 concentration in the centrate vessel. Setpoint = 0.5%",
+                    "Column3": "Final Concentration 0.25 to 0.75% (Acceptable) (D) = ((C - A) / C) x 20",
+                    "Column4": "0.49%"
+                },
+                {
+                    "Column1": "20.10",
+                    "Column2": "Allow the product pool to mix for the specified time.",
+                    "Column3": "Agitation Rate 15 rpm (Target)",
+                    "Column4": "to rpm"
+                },
+                {
+                    "Column1": "",
+                    "Column2": "Setpoint = 20 rpm",
+                    "Column3": "Mix Start Time",
+                    "Column4": "0437"
+                },
+                {
+                    "Column1": "",
+                    "Column2": "",
+                    "Column3": "Mix Stop Time 20 min",
+                    "Column4": "0457"
+                },
+                {
+                    "Column1": "20.11",
+                    "Column2": "With the agitation still on, perform incubation of the product pool in the centrate vessel as specified.",
+                    "Column3": "Incubation Start Time'",
+                    "Column4": "0458"
+                },
+                {
+                    "Column1": "",
+                    "Column2": "",
+                    "Column3": "Incubation Stop Time 60 min (Acceptable)",
+                    "Column4": "1600"
+                }
+            ],
+            "page_num": 9,
+            "page_name": "ALL",
+            "template_version": 1,
+            "key_bbox": null,
+            "value_bbox": null,
+            "esign_id": null
+        },
+        {
+            "id": 2139,
+            "cust_key": "1000",
+            "file_path": "multipage1_page-9.jpeg",
+            "site_code": "1338",
+            "product_num": "1089084",
+            "batch_num": "394154",
+            "anchor_key": null,
+            "snippet_value": null,
+            "uom": null,
+            "recorded_date": null,
+            "recorded_time": null,
+            "snippet_image": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAcFBQYFBAcGBgYIBwcICxILCwoKCxYPEA0SGhYbGhkWGRgcICgiHB4mHhgZIzAkJiorLS4tGyIyNTEsNSgsLSz/wAALCAAeAKsBAREA/8QAGwAAAQUBAQAAAAAAAAAAAAAAAAEDBAUGAgf/xAAxEAABAwQABAQFAwUBAAAAAAABAgMEAAURIQYSMVETQWFxFBUigZEjocEHFjNCUtH/2gAIAQEAAD8A90/Ydz0ppiVHkhZYfbdCFcqihQOD2NdNvsvLWht1C1Nq5VhKgSk+vauwQfOlx9vU6ppiSxJCiw8h0JUUKKFBQBHUHHnTmRg70OtLnqBg49aNnypDpWDo0dRkboBBOAR+aU6O9e+qr/n1o87rCHu+kfzUxl5uQyl5lxLrahkLQeYH7iu/4oyO4pfM+lGdZHSo0+fGtkVUmW74TKTgqwVbzjyqTRSfivP7A89aJb9z5lGG/LcjSEnYTscq/wAmrO0zW7eviabjmQ08XNf7f+1y5c7/AALTHvsiY27GcUhTkTwQAlCjjr36Vr0KDiElOgoZAFYa3S3oPCt+lx1BDrcxRSSAf+e9SZFw4ggP215U9iSLgQ2lsshIbJA3kYz+asLXNuUfid+0TpaJ36HjNuBsII+oDGO3vVFO4rmsPPui8RwtlzlRCQxzpWn1c6A+lXVwuk+TcLfbba8iG5JZ+IcdKeYpT2APrmm4V3uES6Xli4yUSm7eyHPpb5Ao4znXuKp2uMpeWJSroh5TrgC4AjnCUnsvGP3rfpIKQoaBGR7V57w1JgNWZKZPD8mc4Fqy8iIlwHfQk1ornOksv2y1WhtEN6YCoFbX+JI7Dv1pIFwuMS8ybTPfElSGC+zI8MIJGxse9RWL1cF/06XczIJmBKsOBI0Ocjp7CnZlwujt3tEOLKSz8XHKlqU0Fb5eu6LfeZsN+8RLlIRLctzYdS6GwnmBGeg+3XvVJfHLxL4PFwmTW3GJJSoRw0MoBPevQumRRRjOv5xVLaLEYtsmQp3huNyn1rIRk4Sffz1USx8LOQYNxhzHUOtSjgKRnmxjXXtTJ4cvEmGzaZc2MbYyUgrSFeKtI2AfKtUBhICRgAADJ+28VmG+GpieHbrA8WP4s14uIIKsAa1066qZcbLJlfJwhxsfAuoW4ST9QGM416U6bS8ri1dzKkfDqjeDy5JUDkH8VS/2vem7LItDUuEIqiVJc5D4i95wTjVSrvCdhO2yczPiQ5bDRYxIV+ksY6ZwKicPIVdL3fnH3WpDT7aGlusE8h1g8vtU+32niC3ttQWpUFUJpWELU2S5y9jjX81o85JxjeNnQ9Tqqnhm1v2ayohyHEqWlSj9BJGD71zerO/OkxJ0F1tmbEJKPFTlCgRtJxvdN2yyyhc5FxurrLkh5vwglgEIbTnOs/eqtXDN7TZn7O3Lh/BElSFKSrxDk5wcaq0+SyPnVpllTJbhsFpY3kkpxkUibA45erxIeWj4e4MoaSEZ5k4SBkg68qq5XDV/fsXyky4SozOPDOFc6gD0OtVsAMeeaWiigDNAG8Unnilo8zRRTMmLGlthMlhp9CTnlcQFCumI7MZoNsNNtNgjCUJCRTmMHpsetHTVFHlR6UUUdKKKK//Z",
+            "status": "unapproved",
+            "confidence": "Low",
+            "template_name": "demo",
+            "created_on": "2023-02-09T05:19:13.095378+00:00",
+            "changed_by": null,
+            "changed_on": null,
+            "created_by": "krishnapriyam@mareana.com",
+            "param_name": "t1",
+            "template_id": "P700",
+            "table_value": [
+                {
+                    "Column1": "",
+                    "Column2": "Instruction",
+                    "Column3": "Parameter",
+                    "Column4": "Actual"
+                },
+                {
+                    "Column1": "13.2 Load",
+                    "Column2": "Confirmation",
+                    "Column3": "Volume Loaded (A)",
+                    "Column4": "2287 L"
+                },
+                {
+                    "Column1": "(A) Load (B)",
+                    "Column2": "Volume From Controller Belatacept Total Load",
+                    "Column3": "Belatacept Total Load (B)",
+                    "Column4": "10699 g"
+                },
+                {
+                    "Column1": "Step (C) After",
+                    "Column2": "5.14 (D). Centrate Vessel Stop Volume 20% from Step 5.15 (B) or",
+                    "Column3": "Centrate Vessel Stop Volume After 20% Triton (c)",
+                    "Column4": "4569"
+                },
+                {
+                    "Column1": "Step",
+                    "Column2": "5.16 (F).",
+                    "Column3": "Mass Loaded (D) = (A) x ((B)/ (C))",
+                    "Column4": "5355 g"
+                },
+                {
+                    "Column1": "",
+                    "Column2": "",
+                    "Column3": "Protein Load (F) = (D) / Step 5.14 (E) 13 to 25 g/Lrein (CPP)",
+                    "Column4": "24 g/L"
+                },
+                {
+                    "Column1": "STOP",
+                    "Column2": "If calculated protein load is < and notify area",
+                    "Column3": "13 g/Lresin or > 25 supervision, Manufacturing Assurance.",
+                    "Column4": "g/Lresin (CPP), Technology"
+                }
+            ],
+            "page_num": 10,
+            "page_name": "ALL",
+            "template_version": 1,
+            "key_bbox": null,
+            "value_bbox": null,
+            "esign_id": null
         }
     ],
     "Message": "Success",

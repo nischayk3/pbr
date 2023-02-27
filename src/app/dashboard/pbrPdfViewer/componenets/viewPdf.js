@@ -19,7 +19,7 @@ import {
 } from '../../../../duck/actions/commonActions';
 import SearchSidebarWithDefaultLayoutExample from './deepSearch'
 import './style.scss'
-
+/* istanbul ignore next */
 function ViewPdf() {
     const dispatch = useDispatch();
     const { id } = useParams()

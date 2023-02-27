@@ -1,12 +1,18 @@
 {
-    "Data": [
+    "status_data": [
         {
-            "count": 1,
-            "status": "unapproved"
+            "status": "unapproved",
+            "count": 15
+        }
+    ],
+    "confidence_data": [
+        {
+            "confidence": "High",
+            "count": 8
         },
         {
-            "count": 1,
-            "status": "approved"
+            "confidence": "Low",
+            "count": 10
         }
     ],
     "Message": "Success",
