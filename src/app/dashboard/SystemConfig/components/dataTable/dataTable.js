@@ -158,19 +158,13 @@ const DataTable = ({ tableData }) => {
 			use_type: "",
 			key: uuid(),
 		};
-		//const checkEmptyRow = data?.slice(-1)
-		// if (checkEmptyRow && checkEmptyRow[0]?.email_id !== '') {
+
 		setEditingKey(newData.key);
-
 		setData([...data, newData]);
-
-		console.log("dataa", data, newData);
 		setIsEdit(false);
-		// } else {
-		// 	console.log("error");
-		// }
+
 	};
-	console.log("newData", data,);
+
 	const updateTableConfig = async (_req) => {
 		delete _req['key'];
 		let payload = {
@@ -269,7 +263,6 @@ const DataTable = ({ tableData }) => {
 	const defaultColumns = tableColumns(data)
 
 	const mergedColumns = defaultColumns.map((col) => {
-		console.log('collllll', col);
 		if (!col.editable) {
 			return col;
 		}
@@ -285,7 +278,6 @@ const DataTable = ({ tableData }) => {
 		};
 	});
 
-	console.log("data ", data);
 	return (
 		<Form form={form} component={false}>
 			<div className="table-head">
