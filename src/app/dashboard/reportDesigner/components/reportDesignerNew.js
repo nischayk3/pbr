@@ -486,7 +486,6 @@ const ReportDesignerNew = () => {
 	const reloadUrl = async (reload_id) => {
 		try {
 			dispatch(showLoader())
-			setParams(true);
 			let req = { report_displ_id: reload_id }
 			let data = await loadReport(req)
 			data = data.report_designer
@@ -520,6 +519,7 @@ const ReportDesignerNew = () => {
 		getViewsList();
 	}, []
 	);
+	console.log(params)
 
 	return (
 		<div className="custom-wrapper">

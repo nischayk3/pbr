@@ -63,7 +63,7 @@ function Hierarchy() {
 
 	const LoadView = async (param) => {
 		dispatch(showLoader())
-		if (param.length > 0 && param != 'untitled_view') {
+		if (param.length > 0 && param[param.length - 1] != 'untitled_view') {
 			param = param[param.length - 1]
 			let name = param.replace(/%20/g, " ");
 			dispatch(sendDrugSub(name))
