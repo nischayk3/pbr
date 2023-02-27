@@ -12,8 +12,6 @@ const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
 	const [uploadFileRes, setUploadFileRes] = useState([]);
 	const [isDisable, setIsDisable] = useState(true);
 	const [fileList, setFileList] = useState([]);
-
-
 	const dispatch = useDispatch();
 	const match = useRouteMatch();
 	const history = useHistory();
@@ -68,12 +66,12 @@ const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
 				dispatch(sendViewsetRes({}))
 				setIsDisable(false);
 				dispatch(showNotification('success', "File Upload Successfully"));
-			} else if (dssFileRes?.data?.statuscode === 400) {
+			} else if (dssFileRes?.data?.statuscode === 400 || dssFileRes?.data?.statuscode === 402 || dssFileRes?.data?.statuscode === 404) {
 				/* istanbul ignore next */
 				dispatch(showNotification("error", dssFileRes.data.message));
-			} else {
+			} else if (dssFileRes?.Status === 403) {
 				/* istanbul ignore next */
-				dispatch(showNotification("error", "File Upload error"));
+				dispatch(showNotification("error", dssFileRes.Message));
 			}
 		} catch (err) {
 			/* istanbul ignore next */
@@ -110,6 +108,8 @@ const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
 				history.push({
 					pathname: `${match.url}/target_variable`,
 				});
+			} else if (loadDssRes?.Status === 403) {
+				dispatch(showNotification("error", loadDssRes.Message));
 			}
 		} catch (err) {
 			/* istanbul ignore next */

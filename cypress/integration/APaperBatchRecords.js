@@ -9,14 +9,44 @@ describe('PBR', () => {
 		cy.loginWithAD()
 	});
 	beforeEach(() => {
-		cy.intercept('GET', '/pbr/udh/get_data_view?actionType=get_product&productNum=1091460', { fixture: 'paperBatchFileList' })
-		cy.intercept('GET', '/pbr/udh/get_data_view?actionType=get_product_num&productNum=', { fixture: 'productNum' })
-		cy.intercept('GET', '/pbr/udh/pbr_template', { fixture: 'paperBatchLanding' })
-		cy.intercept('GET', '/pbr/udh/pbr_template?limit=8', { fixture: 'paperBatchLmitList' }).as("limitlist")
-		cy.intercept('POST', '/pbr/udh/ocr-json-extraction', { fixture: 'pbrBoundingBox' })
-		cy.intercept('GET', '/pbr/udh/pbr_template?template_displ_id=P258&version=1', { fixture: 'pbrLoadData' })
+		// cy.intercept('GET', '/pbr/udh/get_data_view?actionType=get_product&productNum=1091460', { fixture: 'paperBatchFileList' })
+		// cy.intercept('GET', '/pbr/udh/get_data_view?actionType=get_product_num&productNum=', { fixture: 'productNum' })
+		// cy.intercept('GET', '/pbr/udh/pbr_template', { fixture: 'paperBatchLanding' })
+		// cy.intercept('GET', '/pbr/udh/pbr_template?limit=8', { fixture: 'paperBatchLmitList' }).as("limitlist")
+		// cy.intercept('POST', '/pbr/udh/ocr-json-extraction', { fixture: 'pbrBoundingBox' })
+		// cy.intercept('GET', '/pbr/udh/pbr_template?template_displ_id=P258&version=1', { fixture: 'pbrLoadData' })
 		cy.viewport(1366, 768);
 		cy.loginWithAD()
+		cy.intercept('GET', '**/pbr/udh/get_data_view?actionType=get_product&productNum=1043299', (req) => {
+			req.reply({
+				["status-code"]: 200, fixture: 'paperBatchFileList.json'
+			})
+		}).as("productNum")
+		cy.intercept('GET', '**/pbr/udh/get_data_view?actionType=get_product_num&productNum=', (req) => {
+			req.reply({
+				["status-code"]: 200, fixture: 'productNum.json'
+			})
+		}).as("get_product_num")
+		cy.intercept('GET', '**/pbr/udh/pbr_template', (req) => {
+			req.reply({
+				["status-code"]: 200, fixture: 'paperBatchLanding.json'
+			})
+		}).as("pbr_template")
+		cy.intercept('GET', '**/pbr/udh/pbr_template?limit=8', (req) => {
+			req.reply({
+				["status-code"]: 200, fixture: 'paperBatchLmitList.json'
+			})
+		}).as("limitlist")
+		cy.intercept('POST', '**/pbr/udh/ocr-json-extraction', (req) => {
+			req.reply({
+				["status-code"]: 202, fixture: 'pbrBoundingBox.json'
+			})
+		})
+		cy.intercept('GET', '**/pbr/udh/pbr_template?template_displ_id=P718&version=1', (req) => {
+			req.reply({
+				["status-code"]: 200, fixture: 'pbrLoadData.json'
+			})
+		})
 	})
 
 	it("go back to landing page", () => {
@@ -171,11 +201,16 @@ describe('PBR', () => {
 		// cy.get('#basic_templateName').type('test');
 		// cy.get('.ant-modal-footer > .ant-btn > span').click({ force: true });
 		cy.visit(url + '/#/dashboard/paper_batch_records/Untitled?file=Batch%20Record%20Example%201.pdf&tempalteName=dasdas&fromScreen=Workspace')
-
+		cy.wait(6000);
 	})
 
 	it("click of parameter pannel", () => {
 		cy.wait(6000);
+		cy.intercept('POST', '**/pbr/udh/ocr-json-extraction', (req) => {
+			req.reply({
+				["status-code"]: 202, fixture: 'pbrBoundingBox.json'
+			})
+		})
 		cy.get('#parameter-panel > .ant-collapse-header').click({ force: true });
 
 	})

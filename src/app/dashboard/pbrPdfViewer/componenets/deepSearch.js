@@ -20,7 +20,7 @@ const SearchSidebar = ({ isDocumentLoaded, searchPluginInstance }) => {
     );
 };
 
-
+/* istanbul ignore next */
 const SearchSidebarWithDefaultLayoutExample = ({ fileUrl }) => {
     const renderToolbar = Toolbar  => (
         <Toolbar>

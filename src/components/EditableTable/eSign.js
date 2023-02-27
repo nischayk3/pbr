@@ -7,19 +7,17 @@ import {
 	hideLoader, showLoader, showNotification
 } from "../../duck/actions/commonActions";
 import {
-	eSign
+	eSign, eSignReason
 } from "../../services/electronicSignatureService";
 import { consumerSamlLogin, getAuthenticate, getAuthenticateWithoutAD } from '../../services/loginService';
 import { createUsers } from '../../services/userRolesAndAccessService';
 import { currentTimeStamp, latestDate } from "../../utils/dateHelper";
 import './importUser.scss';
 
-const { Option } = Select;
-
 function Esign(props) {
 	const location = useLocation();
 
-	let { showEsign, userType, screenName, fileID, handleEsignCancle, handlePopUpClose, appType } = props
+	let { showEsign, userType, screenName, fileID, esignResponse, handleEsignCancle, handlePopUpClose, appType } = props
 	const dispatch = useDispatch();
 	const [password, setPassword] = useState("");
 	const [username, setUsername] = useState("");
@@ -181,6 +179,7 @@ function Esign(props) {
 					handleEsignCancle()
 					handlePopUpClose()
 					dispatch(hideLoader());
+					esignResponse(res.Status)
 				} else {
 					dispatch(hideLoader());
 					dispatch(showNotification("error", res.message));

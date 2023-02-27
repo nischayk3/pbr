@@ -3,12 +3,12 @@ import { BMS_APP_PYTHON_SERVICE } from "../constants/apiBaseUrl";
 import Service from "./AjaxService";
 
 let login_response = JSON.parse(localStorage.getItem('login_details'));
-const request_headers = {
+const _request_headers = {
 	'x-access-token': login_response?.token ? login_response?.token : '',
 	'resource-name': 'CONFIGURATION',
 	"content-type": "application/json",
 };
-
+console.log("login_response", login_response, _request_headers);
 export const getRoleConfiguartions = () => {
 	let login_response = JSON.parse(localStorage.getItem('login_details'));
 	return axios.get('/services/v1/role-config', {
@@ -77,7 +77,7 @@ export const uploadUsers = (_queryParam) => {
 	return Service.post(
 		BMS_APP_PYTHON_SERVICE + "/upload-users",
 		_queryParam,
-		request_headers
+		_request_headers
 	).then(
 		(response) => {
 			return response.data;
@@ -92,7 +92,7 @@ export const createUsers = (_queryParam) => {
 	return Service.put(
 		BMS_APP_PYTHON_SERVICE + "/create-users",
 		_queryParam,
-		request_headers
+		_request_headers
 	).then(
 		(response) => {
 			return response.data;
@@ -108,7 +108,7 @@ export const getResource = (_queryParam) => {
 	return Service.get(
 		BMS_APP_PYTHON_SERVICE + "/role-auth-dataaccess",
 		_queryParam,
-		request_headers
+		_request_headers
 	).then(
 		(response) => {
 			return response.data;
@@ -123,7 +123,7 @@ export const resourceAuth = (_queryParam) => {
 	return Service.get(
 		BMS_APP_PYTHON_SERVICE + "/role-dep-privilege",
 		_queryParam,
-		request_headers
+		_request_headers
 	).then(
 		(response) => {
 			return response.data;
@@ -134,13 +134,11 @@ export const resourceAuth = (_queryParam) => {
 	);
 };
 
-
-
 export const resourceActions = (_queryParam) => {
 	return Service.get(
 		BMS_APP_PYTHON_SERVICE + "/resource-action-details",
 		_queryParam,
-		request_headers
+		_request_headers
 	).then(
 		(response) => {
 			return response.data;
@@ -155,7 +153,7 @@ export const roleConfig = (_queryParam) => {
 	return Service.put(
 		BMS_APP_PYTHON_SERVICE + "/role-config-v2",
 		_queryParam,
-		request_headers
+		_request_headers
 	).then(
 		(response) => {
 			return response.data;
@@ -170,7 +168,7 @@ export const resourceActionUpdated = (_queryParam) => {
 	return Service.put(
 		BMS_APP_PYTHON_SERVICE + "/resource-action-details",
 		_queryParam,
-		request_headers
+		_request_headers
 	).then(
 		(response) => {
 			return response.data;
@@ -185,7 +183,7 @@ export const dataAccessUpdate = (_queryParam) => {
 	return Service.put(
 		BMS_APP_PYTHON_SERVICE + "/role-auth-dataaccess",
 		_queryParam,
-		request_headers
+		_request_headers
 	).then(
 		(response) => {
 			return response.data;
@@ -200,7 +198,7 @@ export const resourceDelete = (_queryParam) => {
 	return Service.del(
 		BMS_APP_PYTHON_SERVICE + "/role-auth-dataaccess",
 		_queryParam,
-		request_headers
+		_request_headers
 	).then(
 		(response) => {
 			return response.data;

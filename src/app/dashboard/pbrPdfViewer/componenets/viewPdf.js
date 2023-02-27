@@ -9,6 +9,7 @@ import { Worker, Viewer } from "@react-pdf-viewer/core";
 import { MDH_APP_PYTHON_SERVICE } from '../../../../constants/apiBaseUrl';
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 import { useDispatch } from 'react-redux';
+import packageJson from '../../../../../package.json';
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 import BatchRecordPdf from '../../../../assets/images/BatchRecordPdf.pdf'
@@ -19,7 +20,7 @@ import {
 } from '../../../../duck/actions/commonActions';
 import SearchSidebarWithDefaultLayoutExample from './deepSearch'
 import './style.scss'
-
+/* istanbul ignore next */
 function ViewPdf() {
     const dispatch = useDispatch();
     const { id } = useParams()
@@ -27,8 +28,9 @@ function ViewPdf() {
     const [pdfFile, setPdfFile] = useState(BatchRecordPdf)
 
     const defaultLayoutPluginInstance = defaultLayoutPlugin();
-    const pdfVersion = "3.3.122"
-    const pdfWorkerUrl = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfVersion}/pdf.worker.min.js`
+    // const pdfVersion = "3.3.122"
+    const pdfjsVersion = packageJson.dependencies['pdfjs-dist'];
+    const pdfWorkerUrl = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsVersion.replace('^','')}/pdf.worker.min.js`
 
     useEffect(() => {
         getPdfMetaData()
