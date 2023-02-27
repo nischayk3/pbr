@@ -37,7 +37,7 @@ describe("Report", () => {
 		cy.get('.ant-table-tbody > :nth-child(2) > :nth-child(2) > div').click({ force: true })
 		cy.wait(2000)
 		cy.get('[style="background-color: rgb(9, 49, 133); color: white; border-radius: 4px; margin-left: 88%; margin-top: 70px;"] > span').click({ force: true });
-		cy.wait(1000)
+		cy.wait(5000)
 		cy.get(':nth-child(1) > .ant-collapse-item > .ant-collapse-header').click({ force: true });
 		// cy.get('.ant-input').click({force:true});
 		cy.get('.td > .ant-input').click({ force: true })
