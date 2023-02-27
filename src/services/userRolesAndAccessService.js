@@ -2,14 +2,6 @@ import axios from 'axios';
 import { BMS_APP_PYTHON_SERVICE } from "../constants/apiBaseUrl";
 import Service from "./AjaxService";
 
-let login_response = JSON.parse(localStorage.getItem('login_details'));
-const _request_headers = {
-	'x-access-token': login_response?.token ? login_response?.token : '',
-	'resource-name': 'CONFIGURATION',
-	"content-type": "application/json",
-};
-console.log("login_response", login_response);
-console.log("_request_headers", _request_headers);
 export const getRoleConfiguartions = () => {
 	let login_response = JSON.parse(localStorage.getItem('login_details'));
 	return axios.get('/services/v1/role-config', {
@@ -75,6 +67,12 @@ export const deleteUserConfiguartions = data => {
 }
 
 export const uploadUsers = (_queryParam) => {
+	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	let _request_headers = {
+		'x-access-token': login_response?.token ? login_response?.token : '',
+		'resource-name': 'CONFIGURATION',
+		"content-type": "application/json",
+	};
 	return Service.post(
 		BMS_APP_PYTHON_SERVICE + "/upload-users",
 		_queryParam,
@@ -90,6 +88,12 @@ export const uploadUsers = (_queryParam) => {
 };
 
 export const createUsers = (_queryParam) => {
+	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	let _request_headers = {
+		'x-access-token': login_response?.token ? login_response?.token : '',
+		'resource-name': 'CONFIGURATION',
+		"content-type": "application/json",
+	};
 	return Service.put(
 		BMS_APP_PYTHON_SERVICE + "/create-users",
 		_queryParam,
@@ -106,6 +110,12 @@ export const createUsers = (_queryParam) => {
 
 
 export const getResource = (_queryParam) => {
+	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	let _request_headers = {
+		'x-access-token': login_response?.token ? login_response?.token : '',
+		'resource-name': 'CONFIGURATION',
+		"content-type": "application/json",
+	};
 	return Service.get(
 		BMS_APP_PYTHON_SERVICE + "/role-auth-dataaccess",
 		_queryParam,
@@ -121,6 +131,12 @@ export const getResource = (_queryParam) => {
 };
 
 export const resourceAuth = (_queryParam) => {
+	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	let _request_headers = {
+		'x-access-token': login_response?.token ? login_response?.token : '',
+		'resource-name': 'CONFIGURATION',
+		"content-type": "application/json",
+	};
 	return Service.get(
 		BMS_APP_PYTHON_SERVICE + "/role-dep-privilege",
 		_queryParam,
@@ -136,6 +152,12 @@ export const resourceAuth = (_queryParam) => {
 };
 
 export const resourceActions = (_queryParam) => {
+	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	let _request_headers = {
+		'x-access-token': login_response?.token ? login_response?.token : '',
+		'resource-name': 'CONFIGURATION',
+		"content-type": "application/json",
+	};
 	return Service.get(
 		BMS_APP_PYTHON_SERVICE + "/resource-action-details",
 		_queryParam,
@@ -151,6 +173,12 @@ export const resourceActions = (_queryParam) => {
 };
 
 export const roleConfig = (_queryParam) => {
+	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	let _request_headers = {
+		'x-access-token': login_response?.token ? login_response?.token : '',
+		'resource-name': 'CONFIGURATION',
+		"content-type": "application/json",
+	};
 	return Service.put(
 		BMS_APP_PYTHON_SERVICE + "/role-config-v2",
 		_queryParam,
@@ -166,6 +194,12 @@ export const roleConfig = (_queryParam) => {
 };
 
 export const resourceActionUpdated = (_queryParam) => {
+	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	let _request_headers = {
+		'x-access-token': login_response?.token ? login_response?.token : '',
+		'resource-name': 'CONFIGURATION',
+		"content-type": "application/json",
+	};
 	return Service.put(
 		BMS_APP_PYTHON_SERVICE + "/resource-action-details",
 		_queryParam,
@@ -181,6 +215,12 @@ export const resourceActionUpdated = (_queryParam) => {
 };
 
 export const dataAccessUpdate = (_queryParam) => {
+	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	let _request_headers = {
+		'x-access-token': login_response?.token ? login_response?.token : '',
+		'resource-name': 'CONFIGURATION',
+		"content-type": "application/json",
+	};
 	return Service.put(
 		BMS_APP_PYTHON_SERVICE + "/role-auth-dataaccess",
 		_queryParam,
@@ -196,6 +236,12 @@ export const dataAccessUpdate = (_queryParam) => {
 };
 
 export const resourceDelete = (_queryParam) => {
+	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	let _request_headers = {
+		'x-access-token': login_response?.token ? login_response?.token : '',
+		'resource-name': 'CONFIGURATION',
+		"content-type": "application/json",
+	};
 	return Service.del(
 		BMS_APP_PYTHON_SERVICE + "/role-auth-dataaccess",
 		_queryParam,
