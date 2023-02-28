@@ -7,6 +7,7 @@ import { deleteLimitsApi, getLimitConfig, getMoleculeData, saveLimitConfigApi, u
 import { getMoleculeList } from '../../../../services/viewCreationPublishing';
 import './Limitconfig.scss';
 import LimitInputs from './LimitInputs';
+import moment from 'moment';
 
 const LimitTable = () => {
 
@@ -316,7 +317,7 @@ const LimitTable = () => {
 			limits.to_ = Number(limits?.to_);
 			limits.molecule = selectedMol.current
 			limits.view_version = Number(limits?.view_version)
-			limits.validity_date = limits.validity_date ? new Date(limits.validity_date).toISOString() : null
+			limits.validity_date = limits.validity_date ? moment(limits.validity_date).toISOString() : null
 		})
 		if (flag) {
 			return;
@@ -330,6 +331,7 @@ const LimitTable = () => {
 			if (apiResponse?.status === 200) {
 				getLimitConfigApi();
 				dispatch(hideLoader());
+				dispatch(showNotification("success", "Parameters added successfully"));
 			} else {
 				/* istanbul ignore next */
 				dispatch(showNotification("error", apiResponse?.detail));
