@@ -187,21 +187,23 @@ describe('PBR', () => {
 	it('Create New Template', () => {
 		const url = Cypress.config().baseUrl
 		cy.wait(6000);
-		cy.intercept(
-			{
-				method: 'POST',
-				path: 'pbr/udh/ocr-json-extraction',
-			},
-			{
-				fixture: 'pbrBoundingBox',
-			},
-		).as('saveDocument')
+		// cy.intercept(
+		// 	{
+		// 		method: 'POST',
+		// 		path: 'pbr/udh/ocr-json-extraction',
+		// 	},
+		// 	{
+		// 		fixture: 'pbrBoundingBox',
+		// 	},
+		// ).as('saveDocument')
 		// cy.get('.create-new').click({ force: true });
 		// cy.get('#basic_templateName').clear();
 		// cy.get('#basic_templateName').type('test');
 		// cy.get('.ant-modal-footer > .ant-btn > span').click({ force: true });
-		cy.visit(url + '/#/dashboard/paper_batch_records/Untitled?file=Batch%20Record%20Example%201.pdf&tempalteName=dasdas&fromScreen=Workspace')
-		cy.wait(6000);
+		// cy.visit(url + '/#/dashboard/paper_batch_records/Untitled?file=Batch%20Record%20Example%201.pdf&tempalteName=dasdas&fromScreen=Workspace')
+		// cy.wait(6000);
+		cy.visit(url + '/#/dashboard/paper_batch_records/P258?file=Batch%20Record%20Example%203.pdf&temp_disp_id=P258&tempalteName=test&fromScreen=Workspace&version=1')
+		cy.wait(10000);
 	})
 
 	it("click of parameter pannel", () => {
