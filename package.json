@@ -33,7 +33,7 @@
 		"lodash": "^4.17.21",
 		"node-sass": "^7.0.1",
 		"nyc": "^15.1.0",
-		"pdfjs-dist": "^3.3.122",
+		"pdfjs-dist": "3.3.122",
 		"plotly.js": "^2.9.0",
 		"query-string": "^6.14.1",
 		"react": "^18.2.0",
