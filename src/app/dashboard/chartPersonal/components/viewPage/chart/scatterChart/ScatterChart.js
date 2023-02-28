@@ -301,6 +301,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			newdataArr[0].limits = viewRes.data[0].limits;
 			newdataArr[0].violations = viewRes.data[0].violations;
 			newdataArr[0].ppk_cpk_data = viewRes.data[0].ppk_cpk_data;
+			newdataArr[0].first_y_param = viewRes.data[0]?.first_y_param
 			/* istanbul ignore next */
 			if (axisValues.transform !== "") {
 				if (viewRes?.data[0]?.ppk_cpk_data?.return_code === 200) {
