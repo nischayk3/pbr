@@ -2182,7 +2182,7 @@
 				"cust_key": "1000",
 				"email_id": "dinesh.jinjala@mareana.com",
 				"exp": 33213056715,
-				"mdh_role": "SYSTEM_ADMIN",
+				"mdh_role": "MI_CYPRESS_TESTCASE",
 				"timestamp": "22/02/2023 09:05:15",
 				"unix_timestamp": 1677056715.641893,
 				"username": "Dinesh  Jinjala"
