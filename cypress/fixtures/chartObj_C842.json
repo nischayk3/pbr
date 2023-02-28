@@ -1,0 +1,2199 @@
+{
+	"data": [
+		{
+			"alerts": [],
+			"auth_molecules": [
+				"POWERDRILL",
+				"DEMO-1234567",
+				"7-7",
+				"ED_COMPS",
+				"BELATACEPT",
+				"ED_COMPS",
+				"ED_COMPS",
+				"007-100-007-100",
+				"123456-O-Ring",
+				"115477001-Bi Directional Vernay Valve",
+				"115727804-VALVE CROSS SLIT LARGE BODY",
+				"123456789-SWV Recipe Test",
+				"155586801-Pusher",
+				"155885001-FLEX SHAFT",
+				"157398801-BALLOON COVER",
+				"157584023-SHAFT GW PAD PRNTD MKR BNDS",
+				"157937001-SLIDER MOLDED",
+				"158497819-SUPPORT_POLYESTER MODEL",
+				"193228319-COCR STIFFENER_ AORTIC",
+				"10017828020-PVL SKIRT_LASER CUT_ULTRA",
+				"10016866801-PROXIMAL PLATE",
+				"597571001-ASSY_CAP_GASKET_JAR_3.8 OZ"
+			],
+			"auth_sites": [
+				"US01",
+				"1747",
+				"1610",
+				"8515",
+				"2024",
+				"1656",
+				"1487",
+				"1269",
+				"8535",
+				"1493",
+				"1735",
+				"1037",
+				"1708",
+				"1749",
+				"1737",
+				"1608",
+				"1554",
+				"1748",
+				"1721",
+				"1563",
+				"1680",
+				"1513",
+				"1724",
+				"1386",
+				"1147",
+				"1333",
+				"1244",
+				"8536",
+				"1764",
+				"1574",
+				"2022",
+				"1322",
+				"1338",
+				"1148",
+				"2016",
+				"1007",
+				"1624",
+				"1671",
+				"1643",
+				"1557",
+				"1752",
+				"1641",
+				"1328",
+				"1728",
+				"1761",
+				"8549",
+				"2523",
+				"8559",
+				"1763",
+				"1725",
+				"1647",
+				"1393",
+				"1052",
+				"8511",
+				"1597",
+				"1508",
+				"1420",
+				"1549",
+				"1340",
+				"8528",
+				"8527",
+				"2017",
+				"1760",
+				"1726",
+				"8552",
+				"1762",
+				"1742",
+				"8531",
+				"1727",
+				"2021",
+				"1395",
+				"1720",
+				"1550",
+				"1745",
+				"8510",
+				"1746",
+				"1609",
+				"1744",
+				"1559",
+				"1754",
+				"8550",
+				"1731",
+				"1651",
+				"1238",
+				"1685",
+				"1681",
+				"1213",
+				"1736",
+				"2013",
+				"2019",
+				"8545",
+				"8529",
+				"2015",
+				"1553",
+				"8540",
+				"1738",
+				"1741",
+				"1657",
+				"1552",
+				"1396",
+				"8517",
+				"1551",
+				"2014",
+				"8516",
+				"1655",
+				"1255",
+				"2018",
+				"1722",
+				"1750",
+				"CA01",
+				"1718"
+			],
+			"chart_description": "NEW_CHART_DESCRIPTION",
+			"chart_id": "C842",
+			"chart_mapping": {
+				"x": {},
+				"y": {}
+			},
+			"chart_name": "NEW_CHART",
+			"chart_status": "DRFT",
+			"chart_type": "",
+			"chart_version": "1",
+			"data": [
+				{
+					"extras": {
+						"coverage": [
+							{
+								"batchstats": "44/45",
+								"coverage_metric_percent": "98.0%",
+								"function_id": "1",
+								"function_name": "CARB_NORMAL"
+							},
+							{
+								"batchstats": "44/45",
+								"coverage_metric_percent": "98.0%",
+								"function_id": "2",
+								"function_name": "NORMAL_MUL_HEAVY"
+							}
+						],
+						"functions": [
+							{
+								"approval_flag": true,
+								"batch_num": "ABL2257",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2020-01-16T10:53:04Z",
+								"site_code": "1255",
+								"value": 9.969999999999999
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABL2258",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2020-01-16T10:53:04Z",
+								"site_code": "1255",
+								"value": 9.969999999999999
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABL2259",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2020-01-16T10:53:04Z",
+								"site_code": "1255",
+								"value": 9.969999999999999
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABL2260",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2020-01-16T10:53:04Z",
+								"site_code": "1255",
+								"value": 9.969999999999999
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABL2261",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2020-02-18T11:03:16Z",
+								"site_code": "1255",
+								"value": 9.983333333333333
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABL2262",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2020-03-02T11:09:18Z",
+								"site_code": "1255",
+								"value": 9.979999999999999
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABL2263",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2020-03-02T11:09:18Z",
+								"site_code": "1255",
+								"value": 9.983333333333333
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABL2264",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2020-03-02T11:09:18Z",
+								"site_code": "1255",
+								"value": 9.979999999999999
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABR9486",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2020-09-30T13:43:14Z",
+								"site_code": "1255",
+								"value": 10.0725
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABR9487",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2020-09-30T13:43:14Z",
+								"site_code": "1255",
+								"value": 10.036666666666665
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABR9488",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2020-09-30T13:43:14Z",
+								"site_code": "1255",
+								"value": 10.0725
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABR9489",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2020-09-30T13:43:14Z",
+								"site_code": "1255",
+								"value": 10.036666666666665
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABR9490",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2020-10-13T09:15:31Z",
+								"site_code": "1255",
+								"value": 10.227500000000001
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABR9491",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2020-10-13T09:15:31Z",
+								"site_code": "1255",
+								"value": 10.227500000000001
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABR9492",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2020-10-27T08:10:18Z",
+								"site_code": "1255",
+								"value": 10.135000000000002
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABR9493",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2020-10-27T08:10:18Z",
+								"site_code": "1255",
+								"value": 10.135000000000002
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABT9558",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2020-10-27T08:10:18Z",
+								"site_code": "1255",
+								"value": 10.135000000000002
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABT9559",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2020-11-18T15:10:00Z",
+								"site_code": "1255",
+								"value": 10.0075
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABT9562",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2021-01-04T15:09:18Z",
+								"site_code": "1255",
+								"value": 10.212
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABT9563",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2021-01-04T15:09:18Z",
+								"site_code": "1255",
+								"value": 10.212
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABT9564",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2021-01-04T15:09:18Z",
+								"site_code": "1255",
+								"value": 10.192499999999999
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABT9565",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2021-01-04T15:09:18Z",
+								"site_code": "1255",
+								"value": 10.159999999999998
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABT9566",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2021-01-22T14:10:13Z",
+								"site_code": "1255",
+								"value": 10.07
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABT9567",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2021-02-03T08:21:19Z",
+								"site_code": "1255",
+								"value": 10.06
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABV4289",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2021-02-03T08:21:19Z",
+								"site_code": "1255",
+								"value": 10.003333333333334
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABV4290",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2021-04-15T10:18:09Z",
+								"site_code": "1255",
+								"value": 10.032499999999999
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABV4292",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2021-04-19T10:26:45Z",
+								"site_code": "1255",
+								"value": 10.049999999999999
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABV4293",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2021-04-19T10:26:45Z",
+								"site_code": "1255",
+								"value": 10.049999999999999
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABV4294",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2021-04-26T07:59:48Z",
+								"site_code": "1255",
+								"value": 10.078333333333333
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABV4295",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2021-04-26T07:59:48Z",
+								"site_code": "1255",
+								"value": 10.088
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABV4296",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2021-04-26T07:59:48Z",
+								"site_code": "1255",
+								"value": 10.088
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABV4297",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2021-04-26T07:59:48Z",
+								"site_code": "1255",
+								"value": 10.088
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABV4298",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2021-05-13T10:15:54Z",
+								"site_code": "1255",
+								"value": 10.09
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABV4299",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2021-05-17T08:40:20Z",
+								"site_code": "1255",
+								"value": 10.09142857142857
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABY0079",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2021-05-17T08:40:20Z",
+								"site_code": "1255",
+								"value": 10.07
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABY0080",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2021-05-17T08:40:20Z",
+								"site_code": "1255",
+								"value": 10.07
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABY0081",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2021-06-15T09:42:17Z",
+								"site_code": "1255",
+								"value": 10.2175935
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABY0082",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2021-06-15T09:42:17Z",
+								"site_code": "1255",
+								"value": 10.2175935
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABY0083",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2021-06-15T09:42:17Z",
+								"site_code": "1255",
+								"value": 10.2175935
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABY0084",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2021-06-09T10:18:11Z",
+								"site_code": "1255",
+								"value": 10.071428571428571
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABY0086",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2021-07-12T11:17:07Z",
+								"site_code": "1255",
+								"value": 10.1075
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABY0088",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2021-07-12T11:17:07Z",
+								"site_code": "1255",
+								"value": 10.135555555555555
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABY0089",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2021-08-18T10:48:42Z",
+								"site_code": "1255",
+								"value": 10.17
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ACB4375",
+								"function_index": "1",
+								"parameter": "CARB_NORMAL",
+								"recorded_date": "2021-07-08T06:49:19Z",
+								"site_code": "1255",
+								"value": 10.360000000000001
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABL2257",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2020-01-16T10:53:04Z",
+								"site_code": "1255",
+								"value": 15.885152195724569
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABL2258",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2020-01-16T10:53:04Z",
+								"site_code": "1255",
+								"value": 15.885152195724569
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABL2259",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2020-01-16T10:53:04Z",
+								"site_code": "1255",
+								"value": 15.885152195724569
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABL2260",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2020-01-16T10:53:04Z",
+								"site_code": "1255",
+								"value": 15.885152195724569
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABL2261",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2020-02-18T11:03:16Z",
+								"site_code": "1255",
+								"value": 15.906611367890356
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABL2262",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2020-03-02T11:09:18Z",
+								"site_code": "1255",
+								"value": 15.901246574848908
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABL2263",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2020-03-02T11:09:18Z",
+								"site_code": "1255",
+								"value": 15.906611367890356
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABL2264",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2020-03-02T11:09:18Z",
+								"site_code": "1255",
+								"value": 15.901246574848908
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABR9486",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2020-09-30T13:43:14Z",
+								"site_code": "1255",
+								"value": 16.009883633938212
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABR9487",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2020-09-30T13:43:14Z",
+								"site_code": "1255",
+								"value": 15.992448056553508
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABR9488",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2020-09-30T13:43:14Z",
+								"site_code": "1255",
+								"value": 16.009883633938212
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABR9489",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2020-09-30T13:43:14Z",
+								"site_code": "1255",
+								"value": 15.992448056553508
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABR9490",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2020-10-13T09:15:31Z",
+								"site_code": "1255",
+								"value": 15.977694875689531
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABR9491",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2020-10-13T09:15:31Z",
+								"site_code": "1255",
+								"value": 15.977694875689531
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABR9492",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2020-10-27T08:10:18Z",
+								"site_code": "1255",
+								"value": 15.828821868789378
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABR9493",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2020-10-27T08:10:18Z",
+								"site_code": "1255",
+								"value": 15.828821868789378
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABT9558",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2020-10-27T08:10:18Z",
+								"site_code": "1255",
+								"value": 15.828821868789378
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABT9559",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2020-11-18T15:10:00Z",
+								"site_code": "1255",
+								"value": 15.824798274008291
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABT9562",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2021-01-04T15:09:18Z",
+								"site_code": "1255",
+								"value": 16.049314862792848
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABT9563",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2021-01-04T15:09:18Z",
+								"site_code": "1255",
+								"value": 16.049314862792848
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABT9564",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2021-01-04T15:09:18Z",
+								"site_code": "1255",
+								"value": 16.082308339997745
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABT9565",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2021-01-04T15:09:18Z",
+								"site_code": "1255",
+								"value": 16.13729746867258
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABT9566",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2021-01-22T14:10:13Z",
+								"site_code": "1255",
+								"value": 15.938800126139041
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABT9567",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2021-02-03T08:21:19Z",
+								"site_code": "1255",
+								"value": 15.949529712221935
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABV4289",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2021-02-03T08:21:19Z",
+								"site_code": "1255",
+								"value": 15.938800126139041
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABV4290",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2021-04-15T10:18:09Z",
+								"site_code": "1255",
+								"value": 15.9857420652517
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABV4292",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2021-04-19T10:26:45Z",
+								"site_code": "1255",
+								"value": 16.013907228719297
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABV4293",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2021-04-19T10:26:45Z",
+								"site_code": "1255",
+								"value": 16.013907228719297
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABV4294",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2021-04-26T07:59:48Z",
+								"site_code": "1255",
+								"value": 16.032684004364363
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABV4295",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2021-04-26T07:59:48Z",
+								"site_code": "1255",
+								"value": 16.042877111143113
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABV4296",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2021-04-26T07:59:48Z",
+								"site_code": "1255",
+								"value": 16.042877111143113
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABV4297",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2021-04-26T07:59:48Z",
+								"site_code": "1255",
+								"value": 16.042877111143113
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABV4298",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2021-05-13T10:15:54Z",
+								"site_code": "1255",
+								"value": 16.051460780009425
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABV4299",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2021-05-17T08:40:20Z",
+								"site_code": "1255",
+								"value": 16.057591972056795
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABY0079",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2021-05-17T08:40:20Z",
+								"site_code": "1255",
+								"value": 16.04609598696798
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABY0080",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2021-05-17T08:40:20Z",
+								"site_code": "1255",
+								"value": 16.04609598696798
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABY0081",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2021-06-15T09:42:17Z",
+								"site_code": "1255",
+								"value": 16.048111807953305
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABY0082",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2021-06-15T09:42:17Z",
+								"site_code": "1255",
+								"value": 16.048111807953305
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABY0083",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2021-06-15T09:42:17Z",
+								"site_code": "1255",
+								"value": 16.048111807953305
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABY0084",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2021-06-09T10:18:11Z",
+								"site_code": "1255",
+								"value": 16.048395183985743
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABY0086",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2021-07-12T11:17:07Z",
+								"site_code": "1255",
+								"value": 16.04609598696798
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABY0088",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2021-07-12T11:17:07Z",
+								"site_code": "1255",
+								"value": 16.044307722620832
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ABY0089",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2021-08-18T10:48:42Z",
+								"site_code": "1255",
+								"value": 16.04609598696798
+							},
+							{
+								"approval_flag": true,
+								"batch_num": "ACB4375",
+								"function_index": "2",
+								"parameter": "NORMAL_MUL_HEAVY",
+								"recorded_date": "2021-07-08T06:49:19Z",
+								"site_code": "1255",
+								"value": 16.03000160784364
+							}
+						]
+					},
+					"marker": {
+						"color": "#376dd4",
+						"size": 15
+					},
+					"mode": "markers",
+					"name": "Normal",
+					"text": [
+						"ABL2258",
+						"ABL2259",
+						"ABL2261",
+						"ABL2264",
+						"ABR9486",
+						"ABR9487",
+						"ABR9491",
+						"ABR9492",
+						"ABT9563",
+						"ABT9564",
+						"ABT9565",
+						"ABT9566",
+						"ABT9567",
+						"ABV4289",
+						"ABV4290",
+						"ABV4292",
+						"ABV4293",
+						"ABV4294",
+						"ABV4295",
+						"ABV4296",
+						"ABV4297",
+						"ABV4298",
+						"ABV4299",
+						"ABY0079",
+						"ABY0080",
+						"ABY0081",
+						"ABY0082",
+						"ABY0083",
+						"ABY0084",
+						"ABY0086",
+						"ABY0088",
+						"ABY0089",
+						"ACB4375"
+					],
+					"type": "scatter",
+					"view_status": "APRD",
+					"x": [
+						"ABL2258",
+						"ABL2259",
+						"ABL2261",
+						"ABL2264",
+						"ABR9486",
+						"ABR9487",
+						"ABR9491",
+						"ABR9492",
+						"ABT9563",
+						"ABT9564",
+						"ABT9565",
+						"ABT9566",
+						"ABT9567",
+						"ABV4289",
+						"ABV4290",
+						"ABV4292",
+						"ABV4293",
+						"ABV4294",
+						"ABV4295",
+						"ABV4296",
+						"ABV4297",
+						"ABV4298",
+						"ABV4299",
+						"ABY0079",
+						"ABY0080",
+						"ABY0081",
+						"ABY0082",
+						"ABY0083",
+						"ABY0084",
+						"ABY0086",
+						"ABY0088",
+						"ABY0089",
+						"ACB4375"
+					],
+					"y": [
+						9.969999999999999,
+						9.969999999999999,
+						9.983333333333333,
+						9.979999999999999,
+						10.0725,
+						10.036666666666665,
+						10.227500000000001,
+						10.135000000000002,
+						10.212,
+						10.192499999999999,
+						10.159999999999998,
+						10.07,
+						10.06,
+						10.003333333333334,
+						10.032499999999999,
+						10.049999999999999,
+						10.049999999999999,
+						10.078333333333333,
+						10.088,
+						10.088,
+						10.088,
+						10.09,
+						10.09142857142857,
+						10.07,
+						10.07,
+						10.2175935,
+						10.2175935,
+						10.2175935,
+						10.071428571428571,
+						10.1075,
+						10.135555555555555,
+						10.17,
+						10.360000000000001
+					]
+				},
+				{
+					"line": {
+						"color": "rgb(0, 0, 0)"
+					},
+					"mode": "lines",
+					"name": "mean",
+					"type": "scatter",
+					"x": [
+						"ABL2258",
+						"ABL2259",
+						"ABL2261",
+						"ABL2264",
+						"ABR9486",
+						"ABR9487",
+						"ABR9491",
+						"ABR9492",
+						"ABT9563",
+						"ABT9564",
+						"ABT9565",
+						"ABT9566",
+						"ABT9567",
+						"ABV4289",
+						"ABV4290",
+						"ABV4293",
+						"ABV4292",
+						"ABV4294",
+						"ABV4295",
+						"ABV4296",
+						"ABV4297",
+						"ABV4298",
+						"ABY0080",
+						"ABV4299",
+						"ABY0079",
+						"ABY0084",
+						"ABY0081",
+						"ABY0082",
+						"ABY0083",
+						"ACB4375",
+						"ABY0088",
+						"ABY0086",
+						"ABY0089"
+					],
+					"y": [
+						10.102010905002404,
+						10.102010905002404,
+						10.102010905002404,
+						10.102010905002404,
+						10.102010905002404,
+						10.102010905002404,
+						10.102010905002404,
+						10.102010905002404,
+						10.102010905002404,
+						10.102010905002404,
+						10.102010905002404,
+						10.102010905002404,
+						10.102010905002404,
+						10.102010905002404,
+						10.102010905002404,
+						10.102010905002404,
+						10.102010905002404,
+						10.102010905002404,
+						10.102010905002404,
+						10.102010905002404,
+						10.102010905002404,
+						10.102010905002404,
+						10.102010905002404,
+						10.102010905002404,
+						10.102010905002404,
+						10.102010905002404,
+						10.102010905002404,
+						10.102010905002404,
+						10.102010905002404,
+						10.102010905002404,
+						10.102010905002404,
+						10.102010905002404,
+						10.102010905002404
+					]
+				}
+			],
+			"data_filter": {
+				"date_range": "",
+				"site": "",
+				"unapproved_data": 1
+			},
+			"data_visibility": {
+				"MOLECULE": [
+					"POWERDRILL",
+					"DEMO-1234567",
+					"7-7",
+					"ED_COMPS",
+					"BELATACEPT",
+					"ED_COMPS",
+					"ED_COMPS",
+					"007-100-007-100",
+					"123456-O-Ring",
+					"115477001-Bi Directional Vernay Valve",
+					"115727804-VALVE CROSS SLIT LARGE BODY",
+					"123456789-SWV Recipe Test",
+					"155586801-Pusher",
+					"155885001-FLEX SHAFT",
+					"157398801-BALLOON COVER",
+					"157584023-SHAFT GW PAD PRNTD MKR BNDS",
+					"157937001-SLIDER MOLDED",
+					"158497819-SUPPORT_POLYESTER MODEL",
+					"193228319-COCR STIFFENER_ AORTIC",
+					"10017828020-PVL SKIRT_LASER CUT_ULTRA",
+					"10016866801-PROXIMAL PLATE",
+					"597571001-ASSY_CAP_GASKET_JAR_3.8 OZ"
+				],
+				"SITE": [
+					"US01",
+					"1747",
+					"1610",
+					"8515",
+					"2024",
+					"1656",
+					"1487",
+					"1269",
+					"8535",
+					"1493",
+					"1735",
+					"1037",
+					"1708",
+					"1749",
+					"1737",
+					"1608",
+					"1554",
+					"1748",
+					"1721",
+					"1563",
+					"1680",
+					"1513",
+					"1724",
+					"1386",
+					"1147",
+					"1333",
+					"1244",
+					"8536",
+					"1764",
+					"1574",
+					"2022",
+					"1322",
+					"1338",
+					"1148",
+					"2016",
+					"1007",
+					"1624",
+					"1671",
+					"1643",
+					"1557",
+					"1752",
+					"1641",
+					"1328",
+					"1728",
+					"1761",
+					"8549",
+					"2523",
+					"8559",
+					"1763",
+					"1725",
+					"1647",
+					"1393",
+					"1052",
+					"8511",
+					"1597",
+					"1508",
+					"1420",
+					"1549",
+					"1340",
+					"8528",
+					"8527",
+					"2017",
+					"1760",
+					"1726",
+					"8552",
+					"1762",
+					"1742",
+					"8531",
+					"1727",
+					"2021",
+					"1395",
+					"1720",
+					"1550",
+					"1745",
+					"8510",
+					"1746",
+					"1609",
+					"1744",
+					"1559",
+					"1754",
+					"8550",
+					"1731",
+					"1651",
+					"1238",
+					"1685",
+					"1681",
+					"1213",
+					"1736",
+					"2013",
+					"2019",
+					"8545",
+					"8529",
+					"2015",
+					"1553",
+					"8540",
+					"1738",
+					"1741",
+					"1657",
+					"1552",
+					"1396",
+					"8517",
+					"1551",
+					"2014",
+					"8516",
+					"1655",
+					"1255",
+					"2018",
+					"1722",
+					"1750",
+					"CA01",
+					"1718"
+				],
+				"unapproved": true
+			},
+			"date": null,
+			"end_date": null,
+			"exclusions": [],
+			"extras": {
+				"coverage": [
+					{
+						"batchstats": "44/45",
+						"coverage_metric_percent": "98.0%",
+						"function_id": "1",
+						"function_name": "CARB_NORMAL"
+					},
+					{
+						"batchstats": "44/45",
+						"coverage_metric_percent": "98.0%",
+						"function_id": "2",
+						"function_name": "NORMAL_MUL_HEAVY"
+					}
+				],
+				"functions": [
+					{
+						"approval_flag": true,
+						"batch_num": "ABL2257",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2020-01-16T10:53:04Z",
+						"site_code": "1255",
+						"value": 9.969999999999999
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABL2258",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2020-01-16T10:53:04Z",
+						"site_code": "1255",
+						"value": 9.969999999999999
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABL2259",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2020-01-16T10:53:04Z",
+						"site_code": "1255",
+						"value": 9.969999999999999
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABL2260",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2020-01-16T10:53:04Z",
+						"site_code": "1255",
+						"value": 9.969999999999999
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABL2261",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2020-02-18T11:03:16Z",
+						"site_code": "1255",
+						"value": 9.983333333333333
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABL2262",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2020-03-02T11:09:18Z",
+						"site_code": "1255",
+						"value": 9.979999999999999
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABL2263",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2020-03-02T11:09:18Z",
+						"site_code": "1255",
+						"value": 9.983333333333333
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABL2264",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2020-03-02T11:09:18Z",
+						"site_code": "1255",
+						"value": 9.979999999999999
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABR9486",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2020-09-30T13:43:14Z",
+						"site_code": "1255",
+						"value": 10.0725
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABR9487",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2020-09-30T13:43:14Z",
+						"site_code": "1255",
+						"value": 10.036666666666665
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABR9488",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2020-09-30T13:43:14Z",
+						"site_code": "1255",
+						"value": 10.0725
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABR9489",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2020-09-30T13:43:14Z",
+						"site_code": "1255",
+						"value": 10.036666666666665
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABR9490",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2020-10-13T09:15:31Z",
+						"site_code": "1255",
+						"value": 10.227500000000001
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABR9491",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2020-10-13T09:15:31Z",
+						"site_code": "1255",
+						"value": 10.227500000000001
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABR9492",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2020-10-27T08:10:18Z",
+						"site_code": "1255",
+						"value": 10.135000000000002
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABR9493",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2020-10-27T08:10:18Z",
+						"site_code": "1255",
+						"value": 10.135000000000002
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABT9558",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2020-10-27T08:10:18Z",
+						"site_code": "1255",
+						"value": 10.135000000000002
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABT9559",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2020-11-18T15:10:00Z",
+						"site_code": "1255",
+						"value": 10.0075
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABT9562",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2021-01-04T15:09:18Z",
+						"site_code": "1255",
+						"value": 10.212
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABT9563",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2021-01-04T15:09:18Z",
+						"site_code": "1255",
+						"value": 10.212
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABT9564",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2021-01-04T15:09:18Z",
+						"site_code": "1255",
+						"value": 10.192499999999999
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABT9565",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2021-01-04T15:09:18Z",
+						"site_code": "1255",
+						"value": 10.159999999999998
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABT9566",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2021-01-22T14:10:13Z",
+						"site_code": "1255",
+						"value": 10.07
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABT9567",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2021-02-03T08:21:19Z",
+						"site_code": "1255",
+						"value": 10.06
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABV4289",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2021-02-03T08:21:19Z",
+						"site_code": "1255",
+						"value": 10.003333333333334
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABV4290",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2021-04-15T10:18:09Z",
+						"site_code": "1255",
+						"value": 10.032499999999999
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABV4292",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2021-04-19T10:26:45Z",
+						"site_code": "1255",
+						"value": 10.049999999999999
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABV4293",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2021-04-19T10:26:45Z",
+						"site_code": "1255",
+						"value": 10.049999999999999
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABV4294",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2021-04-26T07:59:48Z",
+						"site_code": "1255",
+						"value": 10.078333333333333
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABV4295",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2021-04-26T07:59:48Z",
+						"site_code": "1255",
+						"value": 10.088
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABV4296",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2021-04-26T07:59:48Z",
+						"site_code": "1255",
+						"value": 10.088
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABV4297",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2021-04-26T07:59:48Z",
+						"site_code": "1255",
+						"value": 10.088
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABV4298",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2021-05-13T10:15:54Z",
+						"site_code": "1255",
+						"value": 10.09
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABV4299",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2021-05-17T08:40:20Z",
+						"site_code": "1255",
+						"value": 10.09142857142857
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABY0079",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2021-05-17T08:40:20Z",
+						"site_code": "1255",
+						"value": 10.07
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABY0080",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2021-05-17T08:40:20Z",
+						"site_code": "1255",
+						"value": 10.07
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABY0081",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2021-06-15T09:42:17Z",
+						"site_code": "1255",
+						"value": 10.2175935
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABY0082",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2021-06-15T09:42:17Z",
+						"site_code": "1255",
+						"value": 10.2175935
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABY0083",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2021-06-15T09:42:17Z",
+						"site_code": "1255",
+						"value": 10.2175935
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABY0084",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2021-06-09T10:18:11Z",
+						"site_code": "1255",
+						"value": 10.071428571428571
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABY0086",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2021-07-12T11:17:07Z",
+						"site_code": "1255",
+						"value": 10.1075
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABY0088",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2021-07-12T11:17:07Z",
+						"site_code": "1255",
+						"value": 10.135555555555555
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABY0089",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2021-08-18T10:48:42Z",
+						"site_code": "1255",
+						"value": 10.17
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ACB4375",
+						"function_index": "1",
+						"parameter": "CARB_NORMAL",
+						"recorded_date": "2021-07-08T06:49:19Z",
+						"site_code": "1255",
+						"value": 10.360000000000001
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABL2257",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2020-01-16T10:53:04Z",
+						"site_code": "1255",
+						"value": 15.885152195724569
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABL2258",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2020-01-16T10:53:04Z",
+						"site_code": "1255",
+						"value": 15.885152195724569
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABL2259",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2020-01-16T10:53:04Z",
+						"site_code": "1255",
+						"value": 15.885152195724569
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABL2260",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2020-01-16T10:53:04Z",
+						"site_code": "1255",
+						"value": 15.885152195724569
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABL2261",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2020-02-18T11:03:16Z",
+						"site_code": "1255",
+						"value": 15.906611367890356
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABL2262",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2020-03-02T11:09:18Z",
+						"site_code": "1255",
+						"value": 15.901246574848908
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABL2263",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2020-03-02T11:09:18Z",
+						"site_code": "1255",
+						"value": 15.906611367890356
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABL2264",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2020-03-02T11:09:18Z",
+						"site_code": "1255",
+						"value": 15.901246574848908
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABR9486",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2020-09-30T13:43:14Z",
+						"site_code": "1255",
+						"value": 16.009883633938212
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABR9487",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2020-09-30T13:43:14Z",
+						"site_code": "1255",
+						"value": 15.992448056553508
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABR9488",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2020-09-30T13:43:14Z",
+						"site_code": "1255",
+						"value": 16.009883633938212
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABR9489",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2020-09-30T13:43:14Z",
+						"site_code": "1255",
+						"value": 15.992448056553508
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABR9490",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2020-10-13T09:15:31Z",
+						"site_code": "1255",
+						"value": 15.977694875689531
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABR9491",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2020-10-13T09:15:31Z",
+						"site_code": "1255",
+						"value": 15.977694875689531
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABR9492",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2020-10-27T08:10:18Z",
+						"site_code": "1255",
+						"value": 15.828821868789378
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABR9493",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2020-10-27T08:10:18Z",
+						"site_code": "1255",
+						"value": 15.828821868789378
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABT9558",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2020-10-27T08:10:18Z",
+						"site_code": "1255",
+						"value": 15.828821868789378
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABT9559",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2020-11-18T15:10:00Z",
+						"site_code": "1255",
+						"value": 15.824798274008291
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABT9562",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2021-01-04T15:09:18Z",
+						"site_code": "1255",
+						"value": 16.049314862792848
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABT9563",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2021-01-04T15:09:18Z",
+						"site_code": "1255",
+						"value": 16.049314862792848
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABT9564",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2021-01-04T15:09:18Z",
+						"site_code": "1255",
+						"value": 16.082308339997745
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABT9565",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2021-01-04T15:09:18Z",
+						"site_code": "1255",
+						"value": 16.13729746867258
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABT9566",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2021-01-22T14:10:13Z",
+						"site_code": "1255",
+						"value": 15.938800126139041
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABT9567",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2021-02-03T08:21:19Z",
+						"site_code": "1255",
+						"value": 15.949529712221935
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABV4289",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2021-02-03T08:21:19Z",
+						"site_code": "1255",
+						"value": 15.938800126139041
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABV4290",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2021-04-15T10:18:09Z",
+						"site_code": "1255",
+						"value": 15.9857420652517
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABV4292",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2021-04-19T10:26:45Z",
+						"site_code": "1255",
+						"value": 16.013907228719297
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABV4293",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2021-04-19T10:26:45Z",
+						"site_code": "1255",
+						"value": 16.013907228719297
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABV4294",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2021-04-26T07:59:48Z",
+						"site_code": "1255",
+						"value": 16.032684004364363
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABV4295",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2021-04-26T07:59:48Z",
+						"site_code": "1255",
+						"value": 16.042877111143113
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABV4296",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2021-04-26T07:59:48Z",
+						"site_code": "1255",
+						"value": 16.042877111143113
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABV4297",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2021-04-26T07:59:48Z",
+						"site_code": "1255",
+						"value": 16.042877111143113
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABV4298",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2021-05-13T10:15:54Z",
+						"site_code": "1255",
+						"value": 16.051460780009425
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABV4299",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2021-05-17T08:40:20Z",
+						"site_code": "1255",
+						"value": 16.057591972056795
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABY0079",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2021-05-17T08:40:20Z",
+						"site_code": "1255",
+						"value": 16.04609598696798
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABY0080",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2021-05-17T08:40:20Z",
+						"site_code": "1255",
+						"value": 16.04609598696798
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABY0081",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2021-06-15T09:42:17Z",
+						"site_code": "1255",
+						"value": 16.048111807953305
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABY0082",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2021-06-15T09:42:17Z",
+						"site_code": "1255",
+						"value": 16.048111807953305
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABY0083",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2021-06-15T09:42:17Z",
+						"site_code": "1255",
+						"value": 16.048111807953305
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABY0084",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2021-06-09T10:18:11Z",
+						"site_code": "1255",
+						"value": 16.048395183985743
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABY0086",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2021-07-12T11:17:07Z",
+						"site_code": "1255",
+						"value": 16.04609598696798
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABY0088",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2021-07-12T11:17:07Z",
+						"site_code": "1255",
+						"value": 16.044307722620832
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ABY0089",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2021-08-18T10:48:42Z",
+						"site_code": "1255",
+						"value": 16.04609598696798
+					},
+					{
+						"approval_flag": true,
+						"batch_num": "ACB4375",
+						"function_index": "2",
+						"parameter": "NORMAL_MUL_HEAVY",
+						"recorded_date": "2021-07-08T06:49:19Z",
+						"site_code": "1255",
+						"value": 16.03000160784364
+					}
+				]
+			},
+			"layout": {
+				"annotations": [],
+				"height": "500",
+				"legend": {
+					"bgcolor": "#F2F2F2",
+					"bordercolor": "#F2F2F2",
+					"borderwidth": 2,
+					"orientation": "v",
+					"title": {
+						"font": {
+							"color": "#F2F2F2",
+							"size": "10"
+						},
+						"text": "Legend!"
+					}
+				},
+				"plot_bgcolor": "#EEEEEE",
+				"showlegend": false,
+				"title": {
+					"text": "24"
+				},
+				"width": "1200",
+				"xaxis": {
+					"gridcolor": "#d9d9d9",
+					"showgrid": true,
+					"showline": true,
+					"showticklabels": true,
+					"title": {
+						"font": {
+							"color": "#000000",
+							"size": 15
+						},
+						"text": ""
+					},
+					"visible": true
+				},
+				"yaxis": {
+					"gridcolor": "#d9d9d9",
+					"showgrid": true,
+					"showline": true,
+					"showticklabels": true,
+					"title": {
+						"font": {
+							"color": "#000000",
+							"size": 15
+						},
+						"text": ""
+					},
+					"visible": true
+				}
+			},
+			"limits": {
+				"control": [
+					{
+						"lower": 10.1,
+						"upper": 10.2,
+						"valid_timestamp": "2022-01-04T18:30:00Z"
+					}
+				],
+				"specification": [],
+				"warning": []
+			},
+			"site": null,
+			"start_date": null,
+			"thresholds": [],
+			"token_data": {
+				"ad_role": false,
+				"cust_key": "1000",
+				"email_id": "dinesh.jinjala@mareana.com",
+				"exp": 33213056715,
+				"mdh_role": "SYSTEM_ADMIN",
+				"timestamp": "22/02/2023 09:05:15",
+				"unix_timestamp": 1677056715.641893,
+				"username": "Dinesh  Jinjala"
+			},
+			"unapprove_data": true,
+			"view_disp_id": "V238",
+			"view_id": "V238",
+			"view_name": "CARB_NORMAL_HEAVY_2_FUNCTION",
+			"view_status": "APRD",
+			"view_version": "1",
+			"violations": []
+		}
+	]
+}

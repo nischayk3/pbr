@@ -3,9 +3,7 @@ import {
 	Avatar,
 	Button,
 	Card,
-	Col,
-	Divider,
-	Input,
+	Col, Input,
 	Modal,
 	Row,
 	Table
@@ -16,6 +14,7 @@ import { useHistory } from "react-router-dom";
 import illustrations from "../../../../../assets/images/Dashboard-Banner.svg";
 import Banner from "../../../../../assets/images/Popup-Side.svg";
 import ScreenHeader from "../../../../../components/ScreenHeader/screenHeader";
+import StatusBlock from "../../../../../components/StatusBlock/statusBlock";
 import {
 	hideLoader,
 	showLoader,
@@ -30,7 +29,6 @@ export default function landingPage(props) {
 	const [resultDate, setResultDate] = useState("");
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [chartSearch, setChartSearch] = useState(false);
-	const [searchTableData, setSearchTableData] = useState([]);
 	const [dashboardData, setDashboardData] = useState([]);
 	const [dashboardTilesData, setDashboardTilesData] = useState([
 		// {
@@ -330,45 +328,44 @@ export default function landingPage(props) {
 									<PlusOutlined />
 									<p>Create new configuration</p>
 								</div>
-							</Col>
-							<Col span={6} />
-						</Row>
-						<Row className="dashboard-recent-charts">
-							<Col span={6} />
-							<Col span={12} className="p36">
-								<h3>Recently configured charts</h3>
-								<Divider />
-								<Row gutter={24}>
-									{dashboardTilesData &&
-										dashboardTilesData.length > 0 &&
-										dashboardTilesData.map((el, index) => {
-											return (
-												<Col
-													className="gutter-row"
-													//span={6}
-													style={{ marginTop: "10px" }}
-													key={index}
+								<>
+									<div className="card-legends">
+										<h3 className="recent">Recently configured charts</h3>
+									</div>
+
+									<div className="tile">
+										{dashboardTilesData.length > 0 ? (
+											dashboardTilesData.map((el, index) => (
+												<div
+													onClick={() =>
+														onClickTile(
+															el.static,
+															el.dashboard_disp_id,
+															el.dashboard_version
+														)
+													}
 												>
-													<div
-														className="chart-tiles"
-														onClick={() =>
-															onClickTile(
-																el.static,
-																el.dashboard_disp_id,
-																el.dashboard_version
-															)
-														}
-													>
-														<p className="cid">{el.dashboard_disp_id}</p>
-														<p className="chartName">{el.dashboard_name}</p>
-													</div>
-												</Col>
-											);
-										})}
-								</Row>
+													<StatusBlock
+														key={index}
+														id={el.dashboard_disp_id}
+														// status={el.view_status}
+														name={el.dashboard_name}
+													// handleClickTiles={e => handleClickView(e, i)}
+													/>
+												</div>
+											))
+										) : (
+											<></>
+										)}
+									</div>
+								</>
 							</Col>
+
 							<Col span={6} />
 						</Row>
+
+
+
 					</Card>
 				</Col>
 			</Row>
@@ -381,6 +378,7 @@ export default function landingPage(props) {
 					onCancel={handleCancel}
 					footer={[
 						<Button
+							id='create_config'
 							style={{
 								backgroundColor: "#093185",
 								color: "white",
@@ -401,6 +399,7 @@ export default function landingPage(props) {
 								<Row>
 									<p>Let's give your configurator a name</p>
 									<Input
+										id="config_name"
 										placeholder="Enter Configurator Name"
 										onChange={handleDashboardName}
 										value={props.dashboardName}
@@ -411,6 +410,7 @@ export default function landingPage(props) {
 										Add a chart to get started
 									</p>
 									<Search
+										id="chart_key"
 										placeholder="Search"
 										onFocus={onFocus}
 										value={props.viewData.searchValue}

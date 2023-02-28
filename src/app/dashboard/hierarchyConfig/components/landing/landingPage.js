@@ -213,28 +213,28 @@ export default function LandingPage() {
 						<h3 className="recent">Recently created views</h3>
 					</div>
 
-					<div>
-						<div className="tile">
-							{lastEightView.length > 0 ? (
-								lastEightView.map((i, index) => (
-									<div
-										onClick={() => {
-											loadHier(i.ds_name);
-										}}
-									>
-										<StatusBlock
-											key={index}
-											id={i.ds_name}
-											status={i.view_status}
-										// handleClickTiles={e => handleClickView(e, i)}
-										/>
-									</div>
-								))
-							) : (
-								<></>
-							)}
-						</div>
+
+					<div className="tile">
+						{lastEightView.length > 0 ? (
+							lastEightView.map((i, index) => (
+								<div
+									onClick={() => {
+										loadHier(i.ds_name);
+									}}
+								>
+									<StatusBlock
+										key={index}
+										id={i.ds_name}
+										status={i.view_status}
+									// handleClickTiles={e => handleClickView(e, i)}
+									/>
+								</div>
+							))
+						) : (
+							<></>
+						)}
 					</div>
+
 				</div>
 			</div>
 			<div>

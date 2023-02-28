@@ -633,6 +633,8 @@ const ViewChart = (props, ref) => {
 					<div className="dashboard-filters">
 						<div>
 							<Select
+								showSearch
+								id='site'
 								style={{ width: 120 }}
 								value={dashboardInfo?.data_filter?.site || undefined}
 								onChange={(value) => handleGlobalDropdownChange(value, "Site")}
@@ -654,6 +656,7 @@ const ViewChart = (props, ref) => {
 						<div className="show-data">
 							<p style={{ paddingTop: "4px" }}>Show Unapproved data</p>
 							<Switch
+								id='show_unapproved'
 								type="primary"
 								checked={dashboardInfo?.data_filter?.unapproved_data}
 								onChange={(value) =>
@@ -665,6 +668,7 @@ const ViewChart = (props, ref) => {
 					</div>
 					<div className="dashboard-filters">
 						<DatePicker
+							id='start_date'
 							style={{ height: "34px" }}
 							className="global-filters-params"
 							onChange={onChangeStart}
@@ -681,6 +685,7 @@ const ViewChart = (props, ref) => {
 						/>
 
 						<DatePicker
+							id='end_date'
 							className="global-filters-params"
 							onChange={onChangeEnd}
 							disabled={params["share"]}
@@ -697,6 +702,7 @@ const ViewChart = (props, ref) => {
 						/>
 
 						<Select
+							id='exploration_control'
 							placeholder="Exploration controls"
 							className="global-filters-params"
 							style={{ height: "34px" }}
@@ -720,6 +726,7 @@ const ViewChart = (props, ref) => {
 						</Select>
 
 						<Button
+							id='apply'
 							type="primary"
 							className="custom-secondary-btn"
 							onClick={() => appliedGlobalFilters()}
@@ -813,37 +820,38 @@ const ViewChart = (props, ref) => {
 												) : (
 													<>
 														<span
+															id='edit_chart'
 															className={params["share"] ? "disable-event" : ""}
 															style={{
 																marginLeft: "20px",
 																marginRight: "20px",
 															}}
+															onClick={() => {
+																let panels = [...tempPanels];
+																if (isEditable != null) {
+																	panels[isEditable] = {
+																		...tempPanels[isEditable],
+																	};
+																	panels[isEditable].chartLayout = {
+																		...tempPanels[isEditable].chartLayout,
+																	};
+																	panels[isEditable].chartLayout.height = 300;
+																}
+																panels[index] = { ...tempPanels[index] };
+																panels[index].chartLayout = {
+																	...tempPanels[index].chartLayout,
+																};
+																panels[index].chartLayout.height = 250;
+																setIsEditable(index);
+																setTempPanels(panels);
+															}}
 														>
-															Edit{" "}
+															Edit
 															<EditOutlined
 																className={
 																	params["share"] ? "disable-event" : ""
 																}
 																style={{ color: "#486BC9" }}
-																onClick={() => {
-																	let panels = [...tempPanels];
-																	if (isEditable != null) {
-																		panels[isEditable] = {
-																			...tempPanels[isEditable],
-																		};
-																		panels[isEditable].chartLayout = {
-																			...tempPanels[isEditable].chartLayout,
-																		};
-																		panels[isEditable].chartLayout.height = 300;
-																	}
-																	panels[index] = { ...tempPanels[index] };
-																	panels[index].chartLayout = {
-																		...tempPanels[index].chartLayout,
-																	};
-																	panels[index].chartLayout.height = 250;
-																	setIsEditable(index);
-																	setTempPanels(panels);
-																}}
 															/>
 														</span>
 														<span style={{ marginLeft: "10px" }}>
@@ -923,6 +931,7 @@ const ViewChart = (props, ref) => {
 											: "before-new-card"
 									}
 									onClick={() => addNewCard()}
+									id='new_chart'
 								>
 									<PlusOutlined
 										className={params["share"] ? "disable-event" : ""}
