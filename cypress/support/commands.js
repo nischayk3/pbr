@@ -54,7 +54,7 @@ Cypress.Commands.add('loginWithAD', () => {
 				user_id: "dinesh.jinjala@mareana.com",
 				firstname: "Dinesh",
 				lastname: "Jinjala",
-				mdh_role: ['SYSTEM_ADMIN'],
+				mdh_role: ['MI_CYPRESS_TESTCASE'],
 				screen_set: "1000_USER",
 				resource_action: {
 					"AUDIT_REPORT": {
@@ -272,7 +272,7 @@ Cypress.Commands.add('loginWithoutAD', () => {
 				user_id: "dinesh.jinjala@mareana.com",
 				firstname: "Dinesh",
 				lastname: "Jinjala",
-				mdh_role: ['SYSTEM_ADMIN'],
+				mdh_role: ['MI_CYPRESS_TESTCASE'],
 				screen_set: "1000_USER",
 				resource_action: {
 					"AUDIT_REPORT": {

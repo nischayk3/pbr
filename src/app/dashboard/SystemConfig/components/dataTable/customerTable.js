@@ -41,7 +41,7 @@ const EditableCell = ({
 	);
 };
 
-const CustomerTable = ({ tableData }) => {
+const CustomerTable = ({ tableData, customerDataLoading }) => {
 	const [form] = Form.useForm();
 	const dispatch = useDispatch();
 	const [data, setData] = useState([]);
@@ -55,7 +55,7 @@ const CustomerTable = ({ tableData }) => {
 			});
 			setData(tableData)
 		}
-	}, [])
+	}, [customerDataLoading])
 
 	const tableColumns = (item) => {
 		let objkeys =
@@ -270,6 +270,7 @@ const CustomerTable = ({ tableData }) => {
 					onChange: cancel,
 				}}
 				rowKey={(record) => record.email_id}
+				loading={customerDataLoading}
 			/>
 		</Form>
 	);

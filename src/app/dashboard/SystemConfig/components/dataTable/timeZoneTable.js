@@ -41,7 +41,7 @@ const EditableCell = ({
 	);
 };
 
-const TimeZoneTable = ({ tableData }) => {
+const TimeZoneTable = ({ tableData, timeZoneDataLoading }) => {
 	const [form] = Form.useForm();
 	const dispatch = useDispatch();
 	const [data, setData] = useState([]);
@@ -55,7 +55,7 @@ const TimeZoneTable = ({ tableData }) => {
 			});
 			setData(tableData)
 		}
-	}, [])
+	}, [timeZoneDataLoading])
 
 	// const defaultColumns = tableColumns(tableData)
 	const tableColumns = (item) => {
@@ -278,6 +278,7 @@ const TimeZoneTable = ({ tableData }) => {
 					onChange: cancel,
 				}}
 				rowKey={(record) => record.email_id}
+				loading={timeZoneDataLoading}
 			/>
 		</Form>
 	);
