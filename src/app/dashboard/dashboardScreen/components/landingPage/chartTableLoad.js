@@ -34,13 +34,15 @@ const ChartSearchTable = (props) => {
 				pagination={false}
 				style={{ width: '100%', maxHeight: '150px', overflow: 'scroll' }}
 				rowKey='key'
-				onRow={(record) => ({
-					onClick: () => {
-						props.setViewData?.({ ...props.viewData, chartName: record.chart_name, chartDispId: record.chart_disp_id, status: record.chart_status, searchValue: record.chart_disp_id, chartVersion: record.chart_version, createdBy: record.created_by, viewId: record.chart_info.view_id });
-						props.parentCallback?.({ ...props.viewData, chartName: record.chart_name, chartDispId: record.chart_disp_id, status: record.chart_status, searchValue: record.chart_disp_id, chartVersion: record.chart_version, createdBy: record.created_by, viewId: record.chart_info.view_id });
-						props.setChartSearch(false);
-					},
-				})}
+				onRow={(record) => (
+					console.log("record", record),
+					{
+						onClick: () => {
+							props.setViewData?.({ ...props.viewData, chartName: record.chart_name, chartDispId: record.chart_disp_id, status: record.chart_status, searchValue: record.chart_disp_id, chartVersion: record.chart_version, createdBy: record.created_by, viewId: record.view_disp_id });
+							props.parentCallback?.({ ...props.viewData, chartName: record.chart_name, chartDispId: record.chart_disp_id, status: record.chart_status, searchValue: record.chart_disp_id, chartVersion: record.chart_version, createdBy: record.created_by, viewId: record.view_disp_id });
+							props.setChartSearch(false);
+						},
+					})}
 			/>
 		</div>
 	);

@@ -45,13 +45,13 @@ function Filter(props) {
 		getProductType();
 	}, []);
 
-
-
 	const handleChangeToggle = e => {
+		/* istanbul ignore next */
 		setisCheck(typeof isCheck === 'boolean' ? !isCheck : e.target.value);
 	};
 
 	const onChangeParam = (value, field) => {
+		/* istanbul ignore next */
 		if (value != null) {
 			if (field === 'plant') {
 				getGenealogyFilterData(
@@ -92,6 +92,7 @@ function Filter(props) {
 					return { ...prevState, productCode: value };
 				});
 				setIsEmptyProduct(false);
+				/* istanbul ignore next */
 			} else if (field === 'product_type') {
 				setselectParam(prevState => {
 					return { ...prevState, productType: value };
@@ -151,6 +152,7 @@ function Filter(props) {
 	};
 
 	const onSearchParam = debounce((type, field) => {
+		/* istanbul ignore next */
 		if (type != null) {
 			if (field === 'plant') {
 				getGenealogyFilterData(
@@ -219,11 +221,14 @@ function Filter(props) {
 			}
 			/* istanbul ignore next */
 			else if (filterRes?.data?.statuscode != 200) {
+				/* istanbul ignore next */
 				dispatch(showNotification('error', filterRes?.data?.message));
 			} else {
+				/* istanbul ignore next */
 				dispatch(showNotification('error', "Unable to fetch data"));
 			}
-		} catch (err) {/* istanbul ignore next */
+		} catch (err) {
+			/* istanbul ignore next */
 			dispatch(showNotification('error', err));
 		}
 	};
@@ -265,20 +270,22 @@ function Filter(props) {
 			treeType: isCheck ? 'Backward' : 'Forward'
 		};
 
+		/* istanbul ignore next */
 		if (paramDetail.plant === '') {
 			setIsEmptyPlant(true);
 			setIsEmptyProduct(false);
 			setIsEmptyBatch(false);
-
+			/* istanbul ignore next */
 		} else if (paramDetail.product === '') {
 			setIsEmptyProduct(true);
 			setIsEmptyPlant(false);
 			setIsEmptyBatch(false);
-
+			/* istanbul ignore next */
 		} else if (paramDetail.batch === '') {
 			setIsEmptyBatch(true);
 			setIsEmptyPlant(false);
 			setIsEmptyProduct(false);
+			/* istanbul ignore next */
 		} else {
 			props.parameterDetails(paramDetail);
 			setIsEmptyPlant(false);

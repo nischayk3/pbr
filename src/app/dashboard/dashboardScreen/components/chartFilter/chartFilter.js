@@ -54,6 +54,7 @@ export default function chartFilter(props) {
 			<Row gutter={[16, 24]}>
 				<Col className="gutter-row" span={8}>
 					<SelectField
+						id='chart_types'
 						label='Type of Charts'
 						placeholder='Select Charts'
 						selectedValue={props.typeChartValue}
@@ -66,6 +67,7 @@ export default function chartFilter(props) {
 				<Col className="gutter-row" span={16} ref={ref}>
 					<p className='import-chart'>Import chart</p>
 					<Search placeholder="Search"
+						id='import_chart'
 						onFocus={focus}
 						value={viewData.searchValue}
 						onChange={onSearchChange}
@@ -86,7 +88,7 @@ export default function chartFilter(props) {
 				<Col className="gutter-row" span={8}>
 					<div className='show-data'>
 						<p style={{ color: '#777777' }}>Show Unapproved data</p>
-						<Switch type='primary' size='small' checked={props.checked} onChange={props.checkboxChange} disabled={params['share']}
+						<Switch id='show_unapproved' type='primary' size='small' checked={props.checked} onChange={props.checkboxChange} disabled={params['share']}
 						/>
 
 					</div>
@@ -94,6 +96,7 @@ export default function chartFilter(props) {
 				<Col className="gutter-row" span={6}>
 
 					<Select
+						id='site'
 						placeholder="Site"
 						value={props.siteValue}
 						onChange={props.onSiteChange}
@@ -114,6 +117,7 @@ export default function chartFilter(props) {
 				</Col>
 				<Col className="gutter-row" span={5}>
 					<DatePicker
+						id='start_date_1'
 						value={props.dateRange.split("/")[0] ? moment(props.dateRange.split("/")[0], "YYYY-MM-DD") : ''}
 						onChange={props.onInnerStart}
 						disabled={params['share']}
@@ -121,6 +125,7 @@ export default function chartFilter(props) {
 				</Col>
 				<Col className="gutter-row" span={5}>
 					<DatePicker
+						id='end_date_1'
 						value={props.dateRange.split("/")[1] ? moment(props.dateRange.split("/")[1], "YYYY-MM-DD") : ''}
 						onChange={props.onInnerEnd}
 						disabled={params['share']}
