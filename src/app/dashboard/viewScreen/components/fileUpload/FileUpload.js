@@ -351,7 +351,7 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 					setUploadBtnDisabled(true);
 				}
 				/* istanbul ignore next  */
-				if (res.Status === 401) {
+				if (res.Status === 403) {
 					dispatch(hideLoader());
 					dispatch(showNotification("error", "UnAuthorized User"));
 					setUploadBtnDisabled(true);

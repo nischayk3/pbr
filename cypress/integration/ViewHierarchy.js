@@ -7,14 +7,14 @@ describe("Renders the view Hierarachy page", () => {
 		cy.viewport(1360, 720)
 		localStorage.setItem("loginwith", "WITH_AD");
 		localStorage.setItem("test_enabled", true);
-		localStorage.setItem("user", "dinesh.jinjala@mareana.com");
+		localStorage.setItem("user", "dinesh.kumar@mareana.com ");
 		localStorage.setItem("username", "Dinesh");
 		localStorage.setItem(
 			"login_details", JSON.stringify({
 				ad_role: false,
-				email_id: "dinesh.jinjala@mareana.com",
+				email_id: "dinesh.kumar@mareana.com ",
 				firstname: "Dinesh",
-				lastname: "Jinjala",
+				lastname: "Kumar",
 				mdh_role: "USER",
 				screen_set: "1000_USER",
 				token:
@@ -27,14 +27,14 @@ describe("Renders the view Hierarachy page", () => {
 		cy.viewport(1366, 720)
 		localStorage.setItem("loginwith", "WITH_AD");
 		localStorage.setItem("test_enabled", true);
-		localStorage.setItem("user", "dinesh.jinjala@mareana.com");
+		localStorage.setItem("user", "dinesh.kumar@mareana.com ");
 		localStorage.setItem("username", "Dinesh");
 		localStorage.setItem(
 			"login_details", JSON.stringify({
 				ad_role: false,
-				email_id: "dinesh.jinjala@mareana.com",
+				email_id: "dinesh.kumar@mareana.com ",
 				firstname: "Dinesh",
-				lastname: "Jinjala",
+				lastname: "Kumar",
 				mdh_role: "USER",
 				screen_set: "1000_USER",
 				token:

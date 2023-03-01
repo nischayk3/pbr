@@ -1,66 +1,26 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add("login", (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add("dismiss", { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-// Cypress.Commands.add("login", () => {
-//   const auth = Cypress.env("apiAuthenticationURL") + "/signin";
-//   cy.request({
-//     method: "POST",
-//     url: auth,
-//     body: {
-//       username: atob(Cypress.env("username")),
-//       password: atob(Cypress.env("password")),
-//     },
-//   })
-//     .its("body")
-//     .then((body) => {
-//       cy.setLocalStorage("user", "demo");
-//       cy.setLocalStorage("user_token", body.accessToken);
-//       cy.setLocalStorage("user_refresh_token", body.refreshToken);
-//     });
-// });
 Cypress.Commands.add('loginWithAD', () => {
 	cy.window().then((window) => {
 		window.localStorage.setItem("test_enabled", true);
 		localStorage.setItem("loginwith", "WITH_AD");
-		window.localStorage.setItem("user", "dinesh.jinjala@mareana.com");
+		window.localStorage.setItem("user", "dinesh.kumar@mareana.com");
 		window.localStorage.setItem("username", "Dinesh");
 		window.localStorage.setItem(
 			"login_details", JSON.stringify({
-				ad_role: false,
-				email_id: "dinesh.jinjala@mareana.com",
-				user_id: "dinesh.jinjala@mareana.com",
-				firstname: "Dinesh",
-				lastname: "Jinjala",
-				mdh_role: ['MI_CYPRESS_TESTCASE'],
-				screen_set: "1000_USER",
-				resource_action: {
+				"Session_Type": "Manual",
+				"ad_role": false,
+				"email_id": "dinesh.kumar@mareana.com",
+				"firstname": "Dinesh",
+				"lastname": "Kumar",
+				"mdh_role": [
+					"MI_CYPRESS_TESTCASE"
+				],
+				"resource_action": {
 					"AUDIT_REPORT": {
 						"actions": [
 							"READ",
-							"MAINT"
+							"MAINT",
+							"DOWNLOAD"
 						],
 						"resource_id": 10
 					},
@@ -68,14 +28,19 @@ Cypress.Commands.add('loginWithAD', () => {
 						"actions": [
 							"READ",
 							"MAINT",
-							"APPR"
+							"UPLOAD",
+							"APPR",
+							"DOWNLOAD"
 						],
 						"resource_id": 14
 					},
 					"CHART": {
 						"actions": [
 							"READ",
-							"MAINT"
+							"MAINT",
+							"APPR",
+							"DOWNLOAD",
+							"SHARE"
 						],
 						"resource_id": 2
 					},
@@ -89,7 +54,8 @@ Cypress.Commands.add('loginWithAD', () => {
 					"DASHBOARD": {
 						"actions": [
 							"READ",
-							"MAINT"
+							"MAINT",
+							"DOWNLOAD"
 						],
 						"resource_id": 4
 					},
@@ -103,30 +69,37 @@ Cypress.Commands.add('loginWithAD', () => {
 					"DSS": {
 						"actions": [
 							"READ",
-							"MAINT"
+							"MAINT",
+							"UPLOAD"
 						],
 						"resource_id": 12
 					},
 					"ELOG_BOOK_DATA_ENTRY": {
 						"actions": [
-							"APPR",
 							"READ",
-							"MAINT"
+							"MAINT",
+							"UPLOAD",
+							"APPR",
+							"DOWNLOAD"
 						],
 						"resource_id": 21
 					},
 					"ELOG_BOOK_TEMPLATE_CREATION": {
 						"actions": [
 							"READ",
-							"MAINT"
+							"MAINT",
+							"UPLOAD",
+							"APPR",
+							"DOWNLOAD"
 						],
 						"resource_id": 22
 					},
 					"GENEALOGY": {
 						"actions": [
 							"READ",
+							"MAINT",
 							"UPLOAD",
-							"MAINT"
+							"DOWNLOAD"
 						],
 						"resource_id": 3
 					},
@@ -167,9 +140,10 @@ Cypress.Commands.add('loginWithAD', () => {
 					},
 					"PBR_FILE_UPLOAD": {
 						"actions": [
-							"MAINT",
 							"READ",
-							"UPLOAD"
+							"MAINT",
+							"UPLOAD",
+							"APPR"
 						],
 						"resource_id": 18
 					},
@@ -185,7 +159,8 @@ Cypress.Commands.add('loginWithAD', () => {
 						"actions": [
 							"READ",
 							"MAINT",
-							"APPR"
+							"APPR",
+							"DOWNLOAD"
 						],
 						"resource_id": 8
 					},
@@ -193,7 +168,8 @@ Cypress.Commands.add('loginWithAD', () => {
 						"actions": [
 							"READ",
 							"MAINT",
-							"APPR"
+							"APPR",
+							"DOWNLOAD"
 						],
 						"resource_id": 6
 					},
@@ -221,10 +197,10 @@ Cypress.Commands.add('loginWithAD', () => {
 					"USER_CONFIG": {
 						"actions": [
 							"READ",
-							"DOWNLOAD",
-							"APPR",
+							"MAINT",
 							"UPLOAD",
-							"MAINT"
+							"APPR",
+							"DOWNLOAD"
 						],
 						"resource_id": 19
 					},
@@ -238,6 +214,7 @@ Cypress.Commands.add('loginWithAD', () => {
 						"actions": [
 							"READ",
 							"MAINT",
+							"UPLOAD",
 							"APPR"
 						],
 						"resource_id": 1
@@ -251,8 +228,9 @@ Cypress.Commands.add('loginWithAD', () => {
 						"resource_id": 7
 					}
 				},
-				token:
-					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkRpbmVzaCAgSmluamFsYSIsInVuaXhfdGltZXN0YW1wIjoxNjc3MDU2NzE1LjY0MTg5MywidGltZXN0YW1wIjoiMjIvMDIvMjAyMyAwOTowNToxNSIsImV4cCI6MzMyMTMwNTY3MTUsImFkX3JvbGUiOmZhbHNlLCJtZGhfcm9sZSI6IlNZU1RFTV9BRE1JTiIsImVtYWlsX2lkIjoiZGluZXNoLmppbmphbGFAbWFyZWFuYS5jb20iLCJjdXN0X2tleSI6IjEwMDAifQ.j5ZwCYeiIBFHregUuKeA_MLfGZ7U0_qBCBkwsUWnKOk"
+				"screen_set": null,
+				"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImN5cHJlc3NfdXNlciIsInVuaXhfdGltZXN0YW1wIjoxNjc3NjY2NDUxLjA3OTk2LCJ0aW1lc3RhbXAiOiIwMS8wMy8yMDIzIDEwOjI3OjMxIiwiZXhwIjoxMTEzODQ2NjQ1MSwiYWRfcm9sZSI6ZmFsc2UsIm1kaF9yb2xlIjpbIk1JX0NZUFJFU1NfVEVTVENBU0UiXSwiZW1haWxfaWQiOiJjeXByZXNzX3VzZXIiLCJjdXN0X2tleSI6IjEwMDAifQ.MkjbxTltCU4tVTKsN2JufjMRSN4p0wOTitUtN-Gvn3g",
+				"user_id": "dinesh.kumar@mareana.com"
 			})
 		);
 
@@ -263,22 +241,24 @@ Cypress.Commands.add('loginWithoutAD', () => {
 	cy.window().then((window) => {
 		window.localStorage.setItem("test_enabled", true);
 		localStorage.setItem("loginwith", "WITHOUT_AD");
-		window.localStorage.setItem("user", "dinesh.jinjala@mareana.com");
+		window.localStorage.setItem("user", "dinesh.kumar@mareana.com");
 		window.localStorage.setItem("username", "Dinesh");
 		window.localStorage.setItem(
 			"login_details", JSON.stringify({
-				ad_role: false,
-				email_id: "dinesh.jinjala@mareana.com",
-				user_id: "dinesh.jinjala@mareana.com",
-				firstname: "Dinesh",
-				lastname: "Jinjala",
-				mdh_role: ['MI_CYPRESS_TESTCASE'],
-				screen_set: "1000_USER",
-				resource_action: {
+				"Session_Type": "Manual",
+				"ad_role": false,
+				"email_id": "dinesh.kumar@mareana.com",
+				"firstname": "Dinesh",
+				"lastname": "Kumar",
+				"mdh_role": [
+					"MI_CYPRESS_TESTCASE"
+				],
+				"resource_action": {
 					"AUDIT_REPORT": {
 						"actions": [
 							"READ",
-							"MAINT"
+							"MAINT",
+							"DOWNLOAD"
 						],
 						"resource_id": 10
 					},
@@ -286,14 +266,19 @@ Cypress.Commands.add('loginWithoutAD', () => {
 						"actions": [
 							"READ",
 							"MAINT",
-							"APPR"
+							"UPLOAD",
+							"APPR",
+							"DOWNLOAD"
 						],
 						"resource_id": 14
 					},
 					"CHART": {
 						"actions": [
 							"READ",
-							"MAINT"
+							"MAINT",
+							"APPR",
+							"DOWNLOAD",
+							"SHARE"
 						],
 						"resource_id": 2
 					},
@@ -307,7 +292,8 @@ Cypress.Commands.add('loginWithoutAD', () => {
 					"DASHBOARD": {
 						"actions": [
 							"READ",
-							"MAINT"
+							"MAINT",
+							"DOWNLOAD"
 						],
 						"resource_id": 4
 					},
@@ -321,30 +307,37 @@ Cypress.Commands.add('loginWithoutAD', () => {
 					"DSS": {
 						"actions": [
 							"READ",
-							"MAINT"
+							"MAINT",
+							"UPLOAD"
 						],
 						"resource_id": 12
 					},
 					"ELOG_BOOK_DATA_ENTRY": {
 						"actions": [
-							"APPR",
 							"READ",
-							"MAINT"
+							"MAINT",
+							"UPLOAD",
+							"APPR",
+							"DOWNLOAD"
 						],
 						"resource_id": 21
 					},
 					"ELOG_BOOK_TEMPLATE_CREATION": {
 						"actions": [
 							"READ",
-							"MAINT"
+							"MAINT",
+							"UPLOAD",
+							"APPR",
+							"DOWNLOAD"
 						],
 						"resource_id": 22
 					},
 					"GENEALOGY": {
 						"actions": [
 							"READ",
+							"MAINT",
 							"UPLOAD",
-							"MAINT"
+							"DOWNLOAD"
 						],
 						"resource_id": 3
 					},
@@ -385,9 +378,10 @@ Cypress.Commands.add('loginWithoutAD', () => {
 					},
 					"PBR_FILE_UPLOAD": {
 						"actions": [
-							"MAINT",
 							"READ",
-							"UPLOAD"
+							"MAINT",
+							"UPLOAD",
+							"APPR"
 						],
 						"resource_id": 18
 					},
@@ -403,7 +397,8 @@ Cypress.Commands.add('loginWithoutAD', () => {
 						"actions": [
 							"READ",
 							"MAINT",
-							"APPR"
+							"APPR",
+							"DOWNLOAD"
 						],
 						"resource_id": 8
 					},
@@ -411,7 +406,8 @@ Cypress.Commands.add('loginWithoutAD', () => {
 						"actions": [
 							"READ",
 							"MAINT",
-							"APPR"
+							"APPR",
+							"DOWNLOAD"
 						],
 						"resource_id": 6
 					},
@@ -439,10 +435,10 @@ Cypress.Commands.add('loginWithoutAD', () => {
 					"USER_CONFIG": {
 						"actions": [
 							"READ",
-							"DOWNLOAD",
-							"APPR",
+							"MAINT",
 							"UPLOAD",
-							"MAINT"
+							"APPR",
+							"DOWNLOAD"
 						],
 						"resource_id": 19
 					},
@@ -456,6 +452,7 @@ Cypress.Commands.add('loginWithoutAD', () => {
 						"actions": [
 							"READ",
 							"MAINT",
+							"UPLOAD",
 							"APPR"
 						],
 						"resource_id": 1
@@ -469,8 +466,9 @@ Cypress.Commands.add('loginWithoutAD', () => {
 						"resource_id": 7
 					}
 				},
-				token:
-					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkRpbmVzaCAgSmluamFsYSIsInVuaXhfdGltZXN0YW1wIjoxNjc3MDU2NzE1LjY0MTg5MywidGltZXN0YW1wIjoiMjIvMDIvMjAyMyAwOTowNToxNSIsImV4cCI6MzMyMTMwNTY3MTUsImFkX3JvbGUiOmZhbHNlLCJtZGhfcm9sZSI6IlNZU1RFTV9BRE1JTiIsImVtYWlsX2lkIjoiZGluZXNoLmppbmphbGFAbWFyZWFuYS5jb20iLCJjdXN0X2tleSI6IjEwMDAifQ.j5ZwCYeiIBFHregUuKeA_MLfGZ7U0_qBCBkwsUWnKOk"
+				"screen_set": null,
+				"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImN5cHJlc3NfdXNlciIsInVuaXhfdGltZXN0YW1wIjoxNjc3NjY2NDUxLjA3OTk2LCJ0aW1lc3RhbXAiOiIwMS8wMy8yMDIzIDEwOjI3OjMxIiwiZXhwIjoxMTEzODQ2NjQ1MSwiYWRfcm9sZSI6ZmFsc2UsIm1kaF9yb2xlIjpbIk1JX0NZUFJFU1NfVEVTVENBU0UiXSwiZW1haWxfaWQiOiJjeXByZXNzX3VzZXIiLCJjdXN0X2tleSI6IjEwMDAifQ.MkjbxTltCU4tVTKsN2JufjMRSN4p0wOTitUtN-Gvn3g",
+				"user_id": "dinesh.kumar@mareana.com"
 			})
 		);
 

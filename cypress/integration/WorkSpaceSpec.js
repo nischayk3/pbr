@@ -20,7 +20,7 @@ describe("workspace", () => {
 		cy.url().should('eq', url + '/#/dashboard/workspace')
 
 		cy.intercept('GET', '/services/v1/workflow-count', { fixture: 'workflowCountWorkspace.json' })
-		cy.intercept('GET', '/services/v1/chart-exceptions?limit=5&username=dinesh.jinjala%40mareana.com', { fixture: 'chartExceptionLitmt.json' })
+		cy.intercept('GET', '/services/v1/chart-exceptions?limit=5&username=dinesh.kumar%40mareana.com', { fixture: 'chartExceptionLitmt.json' })
 		cy.intercept('GET', '/services/v1/last-views-and-charts?limit=5', { fixture: 'lastViewandChart.json' })
 		cy.intercept('GET', '/services/v1/chart-object?chartId=C252', { fixture: 'chartObjectWorkspace.json' })
 

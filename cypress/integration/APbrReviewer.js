@@ -11,11 +11,11 @@ describe('PBR', () => {
 		// cy.intercept('GET', '/pbr/udh/get_tran_pbr_template_id', { fixture: 'pbrTemplateList' })
 		// cy.intercept('POST', '/pbr/udh/get_cpv_pbr', { fixture: 'pbrUpdate' })
 		//cy.intercept('POST', '/pbr/udh/get_cpv_pbr_count', { fixture: 'pbrConfidenceCount.json' }).as("cofidenceCount")
-		
+
 		// cy.intercept('GET', '/pbr/udh/get_cpv_pbr?id=27', { fixture: 'pbrUpdate' })
 		// cy.intercept('GET', '/pbr/udh/get_cpv_pbr_count?key=status', { fixture: 'pbrStatusCount' })
 		// cy.intercept('GET', '/pbr/udh/get_cpv_pbr_count?key=confidence', { fixture: 'pbrConfidenceCount' })
-		
+
 		cy.intercept('POST', '**/pbr/udh/get_cpv_pbr_count', (req) => {
 			req.reply({
 				["status-code"]: 200, fixture: 'pbrStatusCount.json'
@@ -31,7 +31,7 @@ describe('PBR', () => {
 				["status-code"]: 200, fixture: 'pbrTemplateList.json'
 			})
 		}).as("pbrTemplateList")
-		
+
 		cy.viewport(1366, 768);
 		cy.loginWithAD()
 	})
@@ -98,15 +98,15 @@ describe('PBR', () => {
 // describe("PbrFileUpload", () => {
 // 	afterEach(() => {
 // 		localStorage.setItem("test_enabled", true);
-// 		localStorage.setItem("user", "dinesh.jinjala@mareana.com");
+// 		localStorage.setItem("user", "dinesh.kumar@mareana.com ");
 // 		localStorage.setItem("username", "Dinesh");
 // 		localStorage.setItem("loginwith", "WITH_AD");
 // 		localStorage.setItem(
 // 			"login_details", JSON.stringify({
 // 				ad_role: false,
-// 				email_id: "dinesh.jinjala@mareana.com",
+// 				email_id: "dinesh.kumar@mareana.com ",
 // 				firstname: "Dinesh",
-// 				lastname: "Jinjala",
+// 				lastname: "Kumar",
 // 				mdh_role: "USER",
 // 				screen_set: "1000_USER",
 // 				token:
@@ -119,14 +119,14 @@ describe('PBR', () => {
 // 	beforeEach(() => {
 // 		localStorage.setItem("username", "Dinesh");
 // 		localStorage.setItem("test_enabled", true);
-// 		localStorage.setItem("user", "dinesh.jinjala@mareana.com");
+// 		localStorage.setItem("user", "dinesh.kumar@mareana.com ");
 // 		localStorage.setItem("loginwith", "WITH_AD");
 // 		localStorage.setItem(
 // 			"login_details", JSON.stringify({
 // 				ad_role: false,
-// 				email_id: "dinesh.jinjala@mareana.com",
+// 				email_id: "dinesh.kumar@mareana.com ",
 // 				firstname: "Dinesh",
-// 				lastname: "Jinjala",
+// 				lastname: "Kumar",
 // 				mdh_role: "USER",
 // 				screen_set: "1000_USER",
 // 				token:
