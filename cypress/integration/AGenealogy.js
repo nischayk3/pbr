@@ -3,10 +3,38 @@ Cypress.on("uncaught:exception", (err, runnable) => {
 });
 describe("Genealogy", () => {
 	beforeEach(() => {
-		cy.intercept('POST', '/services/v1//genealogy-filter', { fixture: 'genealogyFilter.json' })
-		cy.intercept('GET', '/services/v1/product-type-genealogy', { fixture: 'genealogyFilterProductType.json' })
-		cy.intercept('GET', 'v1/genealogy?levels=*', { fixture: 'backward.json' })
 		cy.loginWithAD()
+		cy.intercept('POST', '/services/v1/genealogy-filter', { fixture: 'genealogyFilter.json' })
+		cy.intercept('GET', '/services/v1/product-type-genealogy', { fixture: 'genealogyFilterProductType.json' })
+		cy.intercept('GET', '/mdhgenealogy/v1/genealogy?levels=5&batch_id=1338%7C1089084%7C394154&backward=true&mat_type=%27RAW%27', (req) => {
+			req.reply({
+				statusCode: 200, // default
+				fixture: 'backward.json'
+			})
+		})
+		cy.intercept('GET', '/mdhgenealogy/v1/genealogy?levels=5&batch_id=1338%7C1089084%7C394154&backward=true', (req) => {
+			req.reply({
+				statusCode: 200, // default
+				fixture: 'backward.json'
+			})
+		})
+	});
+	afterEach(() => {
+		cy.loginWithAD()
+		cy.intercept('POST', '/services/v1/genealogy-filter', { fixture: 'genealogyFilter.json' })
+		cy.intercept('GET', '/services/v1/product-type-genealogy', { fixture: 'genealogyFilterProductType.json' })
+		cy.intercept('GET', '/mdhgenealogy/v1/genealogy?levels=5&batch_id=1338%7C1089084%7C394154&backward=true&mat_type=%27RAW%27', (req) => {
+			req.reply({
+				statusCode: 200, // default
+				fixture: 'backward.json'
+			})
+		})
+		cy.intercept('GET', '/mdhgenealogy/v1/genealogy?levels=5&batch_id=1338%7C1089084%7C394154&backward=true', (req) => {
+			req.reply({
+				statusCode: 200, // default
+				fixture: 'backward.json'
+			})
+		})
 	});
 
 	it("Render genealogy screen", () => {

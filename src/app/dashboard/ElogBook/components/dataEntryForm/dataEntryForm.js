@@ -49,6 +49,9 @@ const DataEntryForm = () => {
 	const [disableScreen, setDisableScreen] = useState(false);
 	const [publishScreen, setPublishScreen] = useState(false);
 	const [templateId, setTemplateId] = useState('');
+	const [currentPage, setCurrentPage] = useState(0)
+	const [minIndex, setMinIndex] = useState(0)
+	const [maxIndex, setMaxIndex] = useState(1)
 
 
 	let template_Data = useSelector((state) => state.elogReducer.templateData);
@@ -126,6 +129,7 @@ const DataEntryForm = () => {
 	};
 
 	const addForm = async (x, index_) => {
+		setCurrentPage(index_);
 		dispatch(showLoader());
 		let dummy_req = {
 			name: x ? x.form_name : "",
@@ -172,7 +176,7 @@ const DataEntryForm = () => {
 				if (template_response.Data && template_response) {
 					let data_dispatch = [...template_response.Data];
 					data_dispatch.forEach((v) => {
-						(v.minIndex = 0), (v.maxIndex = 1);
+						(v.minIndex = v?.form_data?.length - 1), (v.maxIndex = v?.form_data?.length);
 					});
 					setTemplateData(data_dispatch);
 				}
@@ -181,6 +185,8 @@ const DataEntryForm = () => {
 			dispatch(showNotification("error", "Error in reloading data"));
 		} finally {
 			dispatch(hideLoader());
+			// setTimeout(() => { handleChange(1, currentPage) }, 2000)
+
 		}
 	};
 
@@ -308,6 +314,7 @@ const DataEntryForm = () => {
 															index >= i.minIndex &&
 															index < i.maxIndex && (
 																<DataFormFirst
+																	i={i}
 																	getTableData={idx.readings}
 																	title={i.form_name}
 																	name="Batch 11081204X- Assay individual values"

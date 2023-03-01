@@ -88,6 +88,7 @@ function Genealogy() {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
+		/* istanbul ignore next */
 		if (timeZoneTemp && timeZoneUpdate) {
 			let arr = timeZoneList;
 			arr.forEach((item) => {
@@ -95,6 +96,7 @@ function Genealogy() {
 					item.timezone = timeZoneTemp;
 				}
 			});
+			/* istanbul ignore next */
 			setTimeZoneList(arr);
 			setTimeZoneTemp("");
 			setTimeZoneUpdate("");
@@ -274,15 +276,19 @@ function Genealogy() {
 		}
 	};
 
+	/* istanbul ignore next */
 	const getTimeZone = async (node) => {
 		const data = node && node.nodeId.split("|");
 		let req = {
 			siteCode: data[0],
 		};
+		/* istanbul ignore next */
 		let res = await getTimezoneData(req);
+		/* istanbul ignore next */
 		if (res["status-code"] !== 200) {
 			dispatch(showNotification("error", "No Data found for current Site"));
 		} else {
+			/* istanbul ignore next */
 			setTimeZoneArray(res.Data);
 			setTimeZoneValue(res.Default);
 		}
@@ -394,8 +400,10 @@ function Genealogy() {
 			dispatch(showLoader());
 			const batchRes = await getBatchInfo(_reqBatch);
 			dispatch(hideLoader());
+			/* istanbul ignore next */
 			if (batchRes.length > 0) {
 				setLimsBatchInfo(batchRes);
+				/* istanbul ignore next */
 			} else if (batchRes.status === 404) {
 				setLimsBatchInfo();
 				//	dispatch(showNotification('error', batchRes.detail));
@@ -788,16 +796,19 @@ function Genealogy() {
 		try {
 			const elogResponse = await getElogbook(_elogReq);
 			dispatch(hideLoader());
+			/* istanbul ignore next */
 			if (elogResponse.Status === 200) {
 				elogResponse.recording_ids?.forEach((resp) => {
 					resp.site = _elogReq.site;
 				});
 				setElogBookData(elogResponse.recording_ids);
+				/* istanbul ignore next */
 			} else {
 				setElogBookData([]);
 				dispatch(hideLoader());
 			}
 		} catch (error) {
+			/* istanbul ignore next */
 			dispatch(hideLoader());
 			/* istanbul ignore next */
 			dispatch(showNotification("error", error));

@@ -7,7 +7,7 @@
 		"firstname": "Dinesh",
 		"lastname": "Jinjala",
 		"mdh_role": [
-			"SYSTEM_ADMIN"
+			"MI_CYPRESS_TESTCASE"
 		],
 		"resource_action": {
 			"AUDIT_REPORT": {

@@ -40,7 +40,7 @@ const EditableCell = ({
 	);
 };
 
-const EsignTable = ({ tableData }) => {
+const EsignTable = ({ tableData, esignDataLoading }) => {
 	const [form] = Form.useForm();
 	const dispatch = useDispatch();
 	const [data, setData] = useState([]);
@@ -55,7 +55,7 @@ const EsignTable = ({ tableData }) => {
 			});
 			setData(tableData)
 		}
-	}, [])
+	}, [esignDataLoading])
 
 	// const defaultColumns = tableColumns(tableData)
 	const tableColumns = (item) => {
@@ -276,6 +276,7 @@ const EsignTable = ({ tableData }) => {
 					onChange: cancel,
 				}}
 				rowKey={(record) => record.email_id}
+				loading={esignDataLoading}
 			/>
 		</Form>
 	);

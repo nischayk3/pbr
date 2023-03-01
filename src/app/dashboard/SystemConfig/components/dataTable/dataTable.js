@@ -42,7 +42,7 @@ const EditableCell = ({
 	);
 };
 
-const DataTable = ({ tableData }) => {
+const DataTable = ({ tableData, emailDataLoading }) => {
 	const [form] = Form.useForm();
 	const dispatch = useDispatch();
 	const [data, setData] = useState([]);
@@ -57,7 +57,7 @@ const DataTable = ({ tableData }) => {
 			});
 			setData(tableData)
 		}
-	}, [])
+	}, [emailDataLoading])
 
 	const onChange = (e, record, rowIndex) => {
 		const rowData = [...data];
@@ -307,6 +307,7 @@ const DataTable = ({ tableData }) => {
 				}}
 				rowKey={(record) => record.key}
 				bordered={false} className="config-table"
+				emailDataLoading={emailDataLoading}
 			/>
 		</Form>
 	);

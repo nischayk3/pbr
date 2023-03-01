@@ -138,6 +138,7 @@ const Sidebar = () => {
 
 				{permissions &&
 					permissions['HIERARCHY_CONFIG'] ||
+					permissions['SYSTEM_CONFIG'] ||
 					permissions['LIMIT_CONFIG'] ? (
 					<SubMenu
 						key="sub3"
@@ -175,7 +176,7 @@ const Sidebar = () => {
 							<Menu.Item
 								key="system-config"
 								icon={<DeploymentUnitOutlined className="menu-icons" />}
-								id="limit-config"
+								id="system-config"
 								className={path === "/dashboard/system-config" ? 'ant-menu-item-selected' : 'remove-selected'}
 							>
 								<Link to="/dashboard/system-config">

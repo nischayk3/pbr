@@ -10,8 +10,6 @@ Cypress.on('uncaught:exception', (err) => {
 	}
 })
 
-
-
 describe("Render Workflow", () => {
 	afterEach(() => {
 		cy.viewport(1280, 920)
@@ -349,5 +347,26 @@ describe("Workflow Chart Personalization", () => {
 		cy.wait(500)
 		cy.log('Click on Confirm')
 		cy.get('#confirm').click()
+	})
+
+	it('Filter table data', () => {
+		cy.wait(2000)
+		cy.log('Click on search Icon in Table')
+		cy.get(':nth-child(2) > .ant-table-filter-column > .ant-dropdown-trigger > #filter_icon > svg').click()
+
+		cy.wait(2000)
+		cy.log('Click on search Button')
+		cy.get('#table_search_input').type('102')
+		cy.get('#search_data').click()
+
+		cy.wait(2000)
+		cy.get(':nth-child(2) > .ant-table-filter-column > .ant-dropdown-trigger > #filter_icon > svg').click()
+		cy.log('Click on Reset Button')
+		cy.get('#reset_data').click()
+
+		cy.wait(2000)
+		cy.log('Click on Filter Button')
+		cy.get('#filter_data').click()
+
 	})
 });

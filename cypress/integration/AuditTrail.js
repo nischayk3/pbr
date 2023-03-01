@@ -33,8 +33,8 @@ describe('Audit Trail', () => {
 	});
 	it("selecting user", () => {
 		cy.log("selecting user")
-		cy.get('.ant-select-selection-item').first().click()
-		cy.get('.ant-select-item-option').first().click()
+		cy.get('#select_user').click({ force: true })
+		cy.get('.ant-select-item-option').contains('fahad.siddiqui@mareana.com').click({ force: true })
 		cy.wait(1000)
 	});
 	it("selecting type", () => {

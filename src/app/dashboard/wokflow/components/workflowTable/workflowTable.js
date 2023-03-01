@@ -34,6 +34,7 @@ const WorkflowTable = (props) => {
 		}) => (
 			<div style={{ padding: 8 }}>
 				<Input
+					id="table_search_input"
 					ref={(node) => (searchInput = node)}
 					placeholder={`Search ${dataIndex}`}
 					value={selectedKeys[0]}
@@ -66,6 +67,7 @@ const WorkflowTable = (props) => {
 						icon={<SearchOutlined />}
 						size="small"
 						style={{ width: 90 }}
+						id="search_data"
 					>
 						Search
 					</Button>
@@ -73,12 +75,14 @@ const WorkflowTable = (props) => {
 						onClick={() => handleReset(clearFilters, setSearchText)}
 						size="small"
 						style={{ width: 90 }}
+						id="reset_data"
 					>
 						Reset
 					</Button>
 					<Button
 						type="link"
 						size="small"
+						id="filter_data"
 						onClick={() => {
 							/* istanbul ignore next */
 							confirm({ closeDropdown: false });
@@ -94,7 +98,7 @@ const WorkflowTable = (props) => {
 			</div>
 		),
 		filterIcon: (filtered) => (
-			<SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+			<SearchOutlined id='filter_icon' style={{ color: filtered ? "#1890ff" : undefined }} />
 		),
 		/* istanbul ignore next */
 		onFilter: (value, record) =>
