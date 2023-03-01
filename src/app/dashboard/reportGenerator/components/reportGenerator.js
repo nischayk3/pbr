@@ -29,6 +29,7 @@ import {
 } from '../../../../services/reportGeneratorServices';
 import Chart from '../../reportDesigner/components/reportChart/chartComponent/chartComponent';
 import ReportGeneratorForm from '../components/reportGeneratorForm';
+import { sendReport } from '../../../../duck/actions/reportDesignerAction';
 
 const { Panel } = Collapse;
 
@@ -291,6 +292,7 @@ function ReportGenerator(props) {
 			data = data.data
 			if (data) {
 				unloadTest(data)
+				dispatch(sendReport(data))
 			}
 			else {
 				dispatch(hideLoader())
