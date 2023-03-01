@@ -182,12 +182,12 @@ describe("Analysis", () => {
 		cy.get('[data-row-key="2"] > :nth-child(4) > .ant-input').type(10)
 		cy.get('[data-row-key="3"] > :nth-child(4) > .ant-input').type(2.0)
 		cy.get('.ant-modal-footer > .ant-btn').click();
-		cy.get('.button-save').click();
+		cy.get('#save_changes').click();
 	});
 
 	it("Modal Simple Imputer Node", () => {
 		// cy.wait(10000);
-		cy.get('[data-testid="rf__node-imp-5"] > [style="text-align: center;"] > [style="display: flex; flex-direction: column; align-items: center;"] > button').click();
+		cy.get('[data-id="imp-5"] > [style="text-align: center;"] > [style="display: flex; flex-direction: column; align-items: center;"] > button').click();
 		cy.get(':nth-child(3) > .ant-select > .ant-select-selector').click();
 		cy.get(
 			".ant-select-item-option-active > .ant-select-item-option-content"
