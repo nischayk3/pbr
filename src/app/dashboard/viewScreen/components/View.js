@@ -150,7 +150,7 @@ const View = () => {
 				}
 				dispatch(hideLoader());
 				/* istanbul ignore else  */
-			} else if (moleculeRes.Status === 401 && moleculeRes.Status === 400) {
+			} else if (moleculeRes.Status === 400) {
 				dispatch(hideLoader());
 				dispatch(showNotification("error", "No Data Found"));
 			} else {

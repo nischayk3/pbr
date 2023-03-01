@@ -25,6 +25,8 @@ class Service {
 				console.log("service error", error);
 				if (error.response.status === 401) {
 					Store.dispatch(checkAuth(false));
+				} else if (error.response.status === 403) {
+					Store.dispatch(showNotification("error", 'You are not authorized', "It seems like you don't have permission to use this service."));
 				} else if (error.response.status === 500) {
 					Store.dispatch(checkNetworkError(true));
 					Store.dispatch(showNotification("error", '500 error, Internal Server Error', 'Please try again later'));

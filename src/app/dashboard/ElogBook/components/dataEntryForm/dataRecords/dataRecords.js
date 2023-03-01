@@ -419,7 +419,8 @@ class DataFormFirst extends Component {
 			if (err.message.includes("403")) {
 				this.props.showNotification(
 					"error",
-					"ACCESS DENIED ! User is not having valid email_address"
+					'You are not authorized',
+					"It seems like you don't have permission to use this service."
 				);
 			}
 			if (err.message.includes("500")) {
