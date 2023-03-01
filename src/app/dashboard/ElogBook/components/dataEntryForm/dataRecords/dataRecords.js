@@ -71,6 +71,7 @@ class DataFormFirst extends Component {
 		isPublish: false,
 		status: this.props.status,
 		publishStatus: "P",
+		loaded: true
 	};
 
 	componentDidMount() {
@@ -428,6 +429,7 @@ class DataFormFirst extends Component {
 		} finally {
 			this.props.hideLoader();
 			this.props.reloadData();
+			this.setState({ loaded: true });
 		}
 	};
 
@@ -444,7 +446,6 @@ class DataFormFirst extends Component {
 			return null;
 		}
 		const { dataSource, formDetails, status } = this.state;
-		console.log(this.props.template_disp_id)
 		const components = {
 			body: {
 				row: EditableRow,
@@ -544,7 +545,7 @@ class DataFormFirst extends Component {
 					)}
 					<div className="content_area_scroll">
 						<div className="dynamic-form-wrapper">
-							{formDetails &&
+							{this.state.loaded && formDetails &&
 								formDetails.length > 0 &&
 								formDetails.map((item, i) => (
 									<div key={i} className="dynamic-form-input">
@@ -559,7 +560,7 @@ class DataFormFirst extends Component {
 									</div>
 								))}
 						</div>
-						{columns && columns.length > 0 && (
+						{this.state.loaded && columns && columns.length > 0 && (
 							<div className="table-wrapper">
 								<div className="table-head">
 									<div style={{ display: "inline-block" }}>
