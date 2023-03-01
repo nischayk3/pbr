@@ -65,7 +65,7 @@ const ParamLookup = ({ callbackMoleculeId, callbackFilter, moleculeId, setMolecu
 				setMoleculeList(moleculeRes.Data.hierarchy);
 				dispatch(hideLoader());
 				/* istanbul ignore else  */
-			} else if (moleculeRes.Status === 401 && moleculeRes.Status === 400) {
+			} else if (moleculeRes.Status === 400) {
 				dispatch(hideLoader());
 				dispatch(showNotification("error", "No Data Found"));
 			} else {
@@ -94,7 +94,7 @@ const ParamLookup = ({ callbackMoleculeId, callbackFilter, moleculeId, setMolecu
 					dispatch(showNotification("error", "No Data Found"));
 				}
 				/* istanbul ignore else  */
-			} else if (filterMolRes.Status === 401 && filterMolRes.Status === 400) {
+			} else if (filterMolRes.Status === 400) {
 				dispatch(hideLoader());
 				dispatch(showNotification("error", "No Data Found"));
 			} else {

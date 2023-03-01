@@ -211,16 +211,6 @@ class ManualDataUpload extends Component {
 							nextStepDisabled: true,
 						});
 						this.props.hideLoader()
-					} else if (res.data && res.data.statuscode === 401) {
-						this.setState({
-							toastOpen: false,
-							showLoader: false,
-							onChangeRes: res.data.message,
-							onChangeStatus: res.data.statuscode,
-							toastVariant: 'error',
-							nextStepDisabled: true,
-						});
-						this.props.hideLoader()
 					} else if (res.data && res.data.status === 300) {
 						this.setState({
 							toastOpen: false,
