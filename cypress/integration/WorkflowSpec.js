@@ -10,8 +10,6 @@ Cypress.on('uncaught:exception', (err) => {
 	}
 })
 
-
-
 describe("Render Workflow", () => {
 	afterEach(() => {
 		cy.viewport(1280, 920)

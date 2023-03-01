@@ -312,7 +312,7 @@ const Estimator = (props) => {
 				</Row>
 
 				<div className="button-save">
-					<Button onClick={onClickSave}>Save Changes</Button>
+					<Button id='save_changes' onClick={onClickSave}>Save Changes</Button>
 					<Button disabled>
 						<PlusOutlined /> Add another estimator
 					</Button>
