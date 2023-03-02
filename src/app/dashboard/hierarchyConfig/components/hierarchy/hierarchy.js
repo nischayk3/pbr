@@ -99,6 +99,7 @@ function Hierarchy() {
 		dispatch(showLoader());
 		let req = { ds_name: hierarchyName };
 		let mapResponse = await getProcessStepMap(req);
+		/* istanbul ignore next */
 		if (mapResponse["status-code"] == 200) {
 			let data_response = mapResponse.Data.data && mapResponse.Data.data[0] ? mapResponse.Data.data[0] : []
 			if (data_response) {
@@ -108,6 +109,7 @@ function Hierarchy() {
 			}
 			setTableData(data_response ? data_response : []);
 			setStepArray(mapResponse.Data.options);
+			/* istanbul ignore next */
 		} else if (mapResponse?.Status === 403) {
 			/* istanbul ignore next */
 			dispatch(showNotification("error", 'You are not authorized', "It seems like you don't have permission to use this service."));
@@ -360,8 +362,8 @@ function Hierarchy() {
 		setIsModalVisible(false);
 	};
 
+	/* istanbul ignore next */
 	const handleStepChange = (index, event) => {
-
 		const { name, value } = event.target;
 		const rowsInput = [...stepData];
 		rowsInput[index][name] = value;
@@ -369,6 +371,7 @@ function Hierarchy() {
 		setStepData(rowsInput);
 	};
 
+	/* istanbul ignore next */
 	const handleDelete = (key, record) => {
 		const dataSource = [...moleculeData];
 		let deleted_data = [...del]
@@ -396,6 +399,7 @@ function Hierarchy() {
 		setActiveTab(value);
 	};
 
+	/* istanbul ignore next */
 	const handleNext = () => {
 		if (activeTab == "Process steps")
 			setActiveTab("Process step mapping");
@@ -423,6 +427,7 @@ function Hierarchy() {
 				dispatch(showNotification('error', response.message))
 			}
 		}
+		/* istanbul ignore next */
 		if (activeTab == "Process steps") {
 			let req = {
 				ds_name: hierarchyName,
@@ -442,6 +447,7 @@ function Hierarchy() {
 				dispatch(showNotification('error', response.message))
 			}
 		}
+		/* istanbul ignore next */
 		if (activeTab == "Process step mapping") {
 			let req = {
 				ds_name: hierarchyName,

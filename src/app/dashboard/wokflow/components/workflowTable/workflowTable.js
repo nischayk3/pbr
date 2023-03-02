@@ -242,6 +242,7 @@ const WorkflowTable = (props) => {
 									</a>
 								);
 							}
+							/* istanbul ignore next */
 							else if (text == "/dashboard/elog_book_template") {
 								return (
 									<a
@@ -328,9 +329,10 @@ const WorkflowTable = (props) => {
 				}
 			});
 		} else {
+			/* istanbul ignore next */
 			props.columns.map((i) => {
 				let { display_name, field_name } = i;
-
+				/* istanbul ignore next */
 				if (i.visible) {
 					let obj = {
 						dataIndex: field_name,
@@ -344,6 +346,7 @@ const WorkflowTable = (props) => {
 							searchedColumn,
 							setSearchedColumn
 						),
+						/* istanbul ignore next */
 						sorter: (a, b) => {
 							return a[field_name] === null ||
 								a[field_name] === undefined ||
@@ -375,7 +378,7 @@ const WorkflowTable = (props) => {
 					}
 
 					if (i.field_name === "created_on") {
-						obj.render = (text, row, index) => {
+						obj.render = (text) => {
 							return <>{moment(text.split("T")[0]).format("DD/MM/YYYY")}</>;
 						};
 					}

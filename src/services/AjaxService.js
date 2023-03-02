@@ -24,19 +24,26 @@ class Service {
 			function (error) {
 				console.log("service error", error);
 				if (error.response.status === 401) {
+					Store.dispatch(hideLoader(true))
 					Store.dispatch(checkAuth(false));
 				} else if (error.response.status === 403) {
+					Store.dispatch(hideLoader(true))
 					Store.dispatch(showNotification("error", 'You are not authorized', "It seems like you don't have permission to use this service."));
 				} else if (error.response.status === 500) {
+					Store.dispatch(hideLoader(true))
 					Store.dispatch(checkNetworkError(true));
 					Store.dispatch(showNotification("error", '500 error, Internal Server Error', 'Please try again later'));
 				} else if (error.response.status === 501) {
+					Store.dispatch(hideLoader(true))
 					Store.dispatch(showNotification("error", '501 error, Not Implemented', 'Please try again later'));
 				} else if (error.response.status === 502) {
+					Store.dispatch(hideLoader(true))
 					Store.dispatch(showNotification("error", '502 error, Bad Gateway', 'Please try again later'));
 				} else if (error.response.status === 503) {
+					Store.dispatch(hideLoader(true))
 					Store.dispatch(showNotification("error", '503 error, Service Unavailable', 'Please try again later'));
 				} else if (error.response.status === 504) {
+					Store.dispatch(hideLoader(true))
 					Store.dispatch(showNotification("error", '504 error, Gateway Timeout', 'Please try again later'));
 				}
 				return Promise.reject(error);
