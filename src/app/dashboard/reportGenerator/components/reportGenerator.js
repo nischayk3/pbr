@@ -223,7 +223,7 @@ function ReportGenerator(props) {
 		let data = { rjson: rjson };
 
 		let json_response = await latexBuilder(data);
-		if (json_response.statuscode == 200) {
+		if (json_response?.statuscode == 200) {
 			dispatch(showNotification('success', 'Downloading Report'));
 
 			axios

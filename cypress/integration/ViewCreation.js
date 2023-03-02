@@ -149,7 +149,7 @@ describe("Render View Creation Page", () => {
 		cy.get('.ant-table-row > :nth-child(1) > div').should("have.text", "V348-1")
 		cy.get('.ant-table-row > :nth-child(3) > div').should("have.text", "APRD")
 		cy.get('.ant-table-row > :nth-child(4) > div').should("have.text", "1")
-		cy.get('.ant-table-row > :nth-child(5) > div').should("have.text", "D dinesh.kumar@mareana.com")
+		cy.get('.ant-table-row > :nth-child(5) > div').should("have.text", "D dinesh.jinjala@mareana.com")
 	})
 
 	it('Recently Created View', () => {

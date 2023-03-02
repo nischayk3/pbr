@@ -72,9 +72,9 @@ const Profile = () => {
 			/* istanbul ignore next */
 			const res = await passwordChange(_req);
 			dispatch(hideLoader());
-			if (res.statuscode === 200) {
+			if (res?.statuscode === 200) {
 				dispatch(showNotification('success', "Password updated successfully"));
-			} else if (res.statuscode === 400) {
+			} else if (res?.statuscode === 400) {
 				setErrorMsg(res.message)
 			}
 		} else if (newPassword !== confirmPassword) {
@@ -146,10 +146,10 @@ const Profile = () => {
 			formData.append("timezone", timeZoneValue);
 			const saveRes = await sendUserProfile(formData);
 
-			if (saveRes.statuscode === 200) {
+			if (saveRes?.statuscode === 200) {
 				dispatch(hideLoader());
 				dispatch(showNotification('success', "Updated Successfully"));
-			} else if (saveRes.statuscode === 400) {
+			} else if (saveRes?.statuscode === 400) {
 				dispatch(hideLoader());
 				dispatch(showNotification('error', saveRes.message));
 			} else {
@@ -222,7 +222,7 @@ const Profile = () => {
 			}
 			const getRes = await getUserProfile(_getReq)
 
-			if (getRes.statuscode === 200) {
+			if (getRes?.statuscode === 200) {
 				/* istanbul ignore next */
 				setImagePrev(true)
 				setImgRes(`${'data:image/png;base64,' + getRes.message}`)
@@ -245,7 +245,7 @@ const Profile = () => {
 			}
 			const getRes = await getUserProfile(_getReq)
 			dispatch(hideLoader())
-			if (getRes.statuscode === 200) {
+			if (getRes?.statuscode === 200) {
 				setTimeZoneValue(getRes.message[0].time_zone);
 				setDateFormatValue(getRes.message[0].date_format);
 				setLanguageValue(getRes.message[0].language)

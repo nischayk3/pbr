@@ -20,7 +20,7 @@ const Transformation = ({ finalModelJson, editFinalJson, tableKey }) => {
 		}
 		dispatch(showLoader());
 		const apiResponse = await getAnalyticsTransformation(req);
-		if (apiResponse.statuscode === 200) {
+		if (apiResponse?.statuscode === 200) {
 			setTransformationData(apiResponse.message)
 			dispatch(hideLoader());
 		} else {

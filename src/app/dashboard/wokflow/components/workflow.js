@@ -223,7 +223,7 @@ const Workflow = () => {
 			dispatch(showLoader());
 			/* istanbul ignore next */
 			const dataRes = await getUnapprovedData(_reqData);
-			if (dataRes.statuscode === 200) {
+			if (dataRes?.statuscode === 200) {
 				setDataSource(dataRes.Data);
 				setColumns(dataColumns);
 			} else {

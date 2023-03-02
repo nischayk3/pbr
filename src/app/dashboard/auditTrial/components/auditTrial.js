@@ -246,7 +246,7 @@ class AuditTrials extends React.Component {
 
 		let res = await auditFilter(req, headers);
 		/* istanbul ignore next */
-		if (res.statuscode != 200) {
+		if (res?.statuscode != 200) {
 			/* istanbul ignore next */
 			this.props.showNotification("error", res.Message);
 		} else {
@@ -341,7 +341,7 @@ class AuditTrials extends React.Component {
 		}
 		let esign_details_data = await eSignDetails(req, headers)
 		/* istanbul ignore next */
-		if (esign_details_data.statuscode == 200) {
+		if (esign_details_data?.statuscode == 200) {
 			/* istanbul ignore next */
 			this.setState({ esignDetailsData: [esign_details_data.message] })
 		}

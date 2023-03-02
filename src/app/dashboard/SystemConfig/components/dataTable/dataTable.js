@@ -174,7 +174,7 @@ const DataTable = ({ tableData, emailDataLoading }) => {
 		try {
 			dispatch(showLoader())
 			const updateRes = await updateConfig(payload)
-			if (updateRes.statuscode === 200) {
+			if (updateRes?.statuscode === 200) {
 				dispatch(hideLoader());
 				dispatch(showNotification("success", updateRes.message));
 			} else {
@@ -198,7 +198,7 @@ const DataTable = ({ tableData, emailDataLoading }) => {
 		try {
 			dispatch(showLoader())
 			const updateRes = await deleteConfig(payload)
-			if (updateRes.statuscode === 200) {
+			if (updateRes?.statuscode === 200) {
 				dispatch(hideLoader());
 				dispatch(showNotification("success", updateRes.message));
 			} else {

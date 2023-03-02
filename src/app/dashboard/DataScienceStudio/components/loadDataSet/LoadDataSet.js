@@ -97,7 +97,7 @@ const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
 			const loadDssRes = await loadDssView(_reqLoad);
 			let param = []
 			dispatch(hideLoader());
-			if (loadDssRes.statuscode === 200) {
+			if (loadDssRes?.statuscode === 200) {
 				loadDssRes.data.forEach((item, key) => {
 					let obj = {}
 					obj['parameter_name'] = item.parameter_name;

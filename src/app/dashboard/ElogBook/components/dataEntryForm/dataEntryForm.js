@@ -77,7 +77,7 @@ const DataEntryForm = () => {
 		dispatch(sendProductSite(params.site));
 		try {
 			let template_response = await getTemplateData(template_req);
-			if (template_response.statuscode == 200) {
+			if (template_response?.statuscode == 200) {
 				dispatch(showNotification("success", "Loaded"));
 				if (template_response.Data && template_response) {
 					let data_dispatch = [...template_response.Data];
@@ -136,7 +136,7 @@ const DataEntryForm = () => {
 		};
 		try {
 			let dummyresult = await getDummyTemplate(dummy_req);
-			if (dummyresult.statuscode == 200) {
+			if (dummyresult?.statuscode == 200) {
 				let template_Data = [...templateData];
 				if (
 					dummyresult.Data &&
@@ -167,7 +167,7 @@ const DataEntryForm = () => {
 		dispatch(showLoader());
 		try {
 			let template_response = await getTemplateData(templateReq);
-			if (template_response.statuscode == 200) {
+			if (template_response?.statuscode == 200) {
 				dispatch(showNotification("success", "Loading"));
 				if (template_response.Data && template_response) {
 					let data_dispatch = [...template_response.Data];
