@@ -28,7 +28,7 @@ describe("Render User Profile With AD", () => {
 		cy.wait(2000)
 		cy.get('.user-name > .anticon').click({ force: true })
 		cy.get('.username').should("have.text", "Dinesh Kumar")
-		cy.get('.email').should("have.text", "dinesh.kumar@mareana.com ")
+		cy.get('.email').should("have.text", "dinesh.kumar@mareana.com")
 
 		cy.get('.submenu > :nth-child(1)').click()
 		cy.wait(2000)
