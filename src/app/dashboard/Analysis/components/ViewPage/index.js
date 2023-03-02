@@ -120,7 +120,7 @@ const ViewPageAnalysis = () => {
 		};
 		dispatch(showLoader());
 		const apiResponse = await putPipelineObj(req);
-		if (apiResponse.statuscode === 200) {
+		if (apiResponse?.statuscode === 200) {
 			dispatch(hideLoader());
 			setExectStart(true);
 			dispatch(showNotification("success", "Model saved successfully"));
@@ -160,7 +160,7 @@ const ViewPageAnalysis = () => {
 		};
 		dispatch(showLoader());
 		const apiResponse = await putJob(reqBody, request_headers);
-		if (apiResponse.Status === 200) {
+		if (apiResponse?.Status === 200) {
 			dispatch(hideLoader());
 			setEXecuted(true);
 			jobId.current = apiResponse?.job_id
@@ -186,7 +186,7 @@ const ViewPageAnalysis = () => {
 		};
 		dispatch(showLoader());
 		const data = await getPipeline(req)
-		if (data.Status === 200) {
+		if (data?.Status === 200) {
 			const viewDetails = {
 				pipeline_name: data?.data?.pipeline_name,
 				savetype: "saveas",
@@ -229,7 +229,7 @@ const ViewPageAnalysis = () => {
 			pipelineid: id,
 		};
 		const apiResponse = await getResults(reqBody);
-		if (apiResponse.statuscode === 200) {
+		if (apiResponse?.statuscode === 200) {
 			dispatch(hideLoader());
 			if (checkStatus(apiResponse.data.run_status)) {
 				setExecutedModal(false);

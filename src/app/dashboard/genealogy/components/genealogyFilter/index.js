@@ -236,7 +236,7 @@ function Filter(props) {
 	const getProductType = async () => {
 		try {
 			const getProductTypeRes = await getGenealogyProductType();
-			if (getProductTypeRes.statuscode == 200) {
+			if (getProductTypeRes?.statuscode == 200) {
 				let productList = [];
 				getProductTypeRes.Data.map(product => {
 					productList.push(product.prod_type_cd);

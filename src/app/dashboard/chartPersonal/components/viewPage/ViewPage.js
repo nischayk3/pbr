@@ -133,7 +133,7 @@ const ViewPage = () => {
 			dispatch(showLoader());
 			const viewRes = await saveChartPlotData(obj);
 			/* istanbul ignore next */
-			if (viewRes.statuscode === 200) {
+			if (viewRes?.statuscode === 200) {
 				/* istanbul ignore next */
 				if (Number(id) !== 0) {
 					/* istanbul ignore next */

@@ -37,7 +37,7 @@ const ConfigTable = () => {
 					type: type
 				}
 				const customerRes = await getSystemConfig(_reqCustomer)
-				if (customerRes.statuscode === 200) {
+				if (customerRes?.statuscode === 200) {
 					setCustomerDataLoading(false)
 					setCustomerData(customerRes.message)
 				} else {
@@ -52,7 +52,7 @@ const ConfigTable = () => {
 				}
 
 				const emailsRes = await getSystemConfig(_reqEmails)
-				if (emailsRes.statuscode === 200) {
+				if (emailsRes?.statuscode === 200) {
 					setEmailDataLoading(false)
 					setEmailData(emailsRes.message)
 				} else {
@@ -67,7 +67,7 @@ const ConfigTable = () => {
 				}
 
 				const esignRes = await getSystemConfig(_reqEsign)
-				if (esignRes.statuscode === 200) {
+				if (esignRes?.statuscode === 200) {
 					setEsignDataLoading(false)
 					setEsignData(esignRes.message)
 				} else {
@@ -82,7 +82,7 @@ const ConfigTable = () => {
 				}
 
 				const timeZoneRes = await getSystemConfig(_reqTimeZOne)
-				if (timeZoneRes.statuscode === 200) {
+				if (timeZoneRes?.statuscode === 200) {
 					setTimeZoneDataLoading(false)
 					setTimeZoneData(timeZoneRes.message)
 				} else {

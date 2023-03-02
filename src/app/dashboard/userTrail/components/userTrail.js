@@ -82,7 +82,7 @@ const UserTrail = () => {
 		};
 
 		let res = await auditFilter(req, headers);
-		if (res.statuscode != 200) {
+		if (res?.statuscode != 200) {
 			showNotification("error", res.Message);
 		} else {
 			setUserList(res.data[0].userid)

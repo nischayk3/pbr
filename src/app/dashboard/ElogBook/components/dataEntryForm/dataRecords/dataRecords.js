@@ -407,7 +407,7 @@ class DataFormFirst extends Component {
 		this.props.showLoader();
 		try {
 			const resp = await putFormData(save_req);
-			if (resp.Status === 200) {
+			if (resp?.Status === 200) {
 				this.setState({ tableDataChanged: false });
 				if (!boolean_value)
 					this.props.showNotification("success", "Form Data Saved");

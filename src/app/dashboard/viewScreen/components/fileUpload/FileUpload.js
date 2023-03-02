@@ -257,7 +257,7 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 		};
 		deleteAdHocFile(req).then((res) => {
 			/* istanbul ignore else  */
-			if (res.data.statuscode === 202) {
+			if (res.data?.statuscode === 202) {
 				dispatch(
 					showNotification("success", "adhoc-file deleted successfully")
 				);
@@ -267,16 +267,16 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 				setFilesListTree(updatedFileList);
 			}
 			/* istanbul ignore next  */
-			if (res.data.statuscode === 400) {
+			if (res.data?.statuscode === 400) {
 				dispatch(showNotification("error", res.data.message));
 			}
 
 			/* istanbul ignore next  */
-			if (res.data.statuscode === 403) {
+			if (res.data?.statuscode === 403) {
 				dispatch(showNotification("error", 'You are not authorized', "It seems like you don't have permission to use this service."));
 			}
 			/* istanbul ignore next  */
-			if (res.data.statuscode === 404) {
+			if (res.data?.statuscode === 404) {
 				dispatch(showNotification("error", res.data.message));
 			}
 		});
