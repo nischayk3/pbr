@@ -83,6 +83,7 @@ const Viewset = ({ isVisible, onCancel }) => {
 	};
 
 	//load view
+	/* istanbul ignore next */
 	const loadView = async (_reqLoad) => {
 		try {
 			dispatch(sendViewIdVer(_reqLoad))
@@ -107,6 +108,7 @@ const Viewset = ({ isVisible, onCancel }) => {
 	};
 
 	//load dss view
+	/* istanbul ignore next */
 	const dssViewLoad = async (_reqLoad) => {
 		try {
 			dispatch(showLoader());

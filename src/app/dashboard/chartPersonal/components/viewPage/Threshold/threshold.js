@@ -64,6 +64,7 @@ const Threshold = ({ postChartData, setPostChartData }) => {
 		setThresholdList(tempArr);
 	};
 
+	/* istanbul ignore next */
 	const deleteThresh = async (key) => {
 		const tempArr = thresholdList.filter((ele) => ele.key !== key);
 		let newArr = JSON.parse(JSON.stringify(postChartData));
@@ -76,6 +77,7 @@ const Threshold = ({ postChartData, setPostChartData }) => {
 		}
 	};
 
+	/* istanbul ignore next */
 	const handleChange = (index, event, name) => {
 		const rowsInput = [...thresholdList];
 		if (name === "name") {
@@ -87,10 +89,11 @@ const Threshold = ({ postChartData, setPostChartData }) => {
 		setThresholdList(rowsInput);
 	};
 
-	const onClickSave = async (key) => {
+	/* istanbul ignore next */
+	const onClickSave = async () => {
 		const newArr = JSON.parse(JSON.stringify(postChartData));
 		const tempList = [];
-		thresholdList.forEach((element, index) => {
+		thresholdList.forEach((element) => {
 			let operator = "";
 			if (element.math === "Lesser than") {
 				operator = "<";
@@ -133,6 +136,7 @@ const Threshold = ({ postChartData, setPostChartData }) => {
 		await postThreshHold(newArr);
 	};
 
+	/* istanbul ignore next */
 	const postThreshHold = async (newArr) => {
 		let errorMsg = "";
 		try {

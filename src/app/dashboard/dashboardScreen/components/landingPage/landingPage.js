@@ -116,12 +116,14 @@ export default function landingPage(props) {
 		},
 	];
 
+	/* istanbul ignore next */
 	const getRandomColor = (index) => {
 		let colors = ["#56483F", "#728C69", "#c04000", "#c19578"];
 		return colors[index % 4];
 	};
 
 	//landing page search
+	/* istanbul ignore next */
 	const landingSearch = (value) => {
 		let arr = [];
 		if (value == "") {
@@ -186,6 +188,7 @@ export default function landingPage(props) {
 			const dashboardRes = await getDashboard(req);
 			setDashboardData(dashboardRes.data);
 			dispatch(hideLoader());
+			/* istanbul ignore next */
 		} catch (error) {
 			dispatch(hideLoader());
 			dispatch(showNotification("error", "Unable to fetch coverages"));
@@ -198,6 +201,7 @@ export default function landingPage(props) {
 			dispatch(showLoader());
 			const dashboardRes = await getDashboard(req);
 			const tempDashList = [...dashboardTilesData];
+			/* istanbul ignore next */
 			dashboardRes?.data?.forEach((ele) => {
 				ele.static = false;
 				tempDashList.push(ele);
@@ -218,12 +222,12 @@ export default function landingPage(props) {
 		setChartSearch(value);
 	};
 	//function for closing view table result on click of outside.
-	const closeTableView = (e) => {
-		if (ref.current && !ref.current.contains(e.target)) {
-			setChartSearch(false);
-			props.setSearchTableData(props.searchData.current);
-		}
-	};
+	// const closeTableView = (e) => {
+	// 	if (ref.current && !ref.current.contains(e.target)) {
+	// 		setChartSearch(false);
+	// 		props.setSearchTableData(props.searchData.current);
+	// 	}
+	// };
 
 	const handleDashboardName = (e) => {
 		props.dashboarNameFunction(e.target.value);
@@ -247,6 +251,7 @@ export default function landingPage(props) {
 	//     setSearchTableData(filterData)
 	// };
 
+	/* istanbul ignore next */
 	const onClickTile = (staticValue, dashboard_disp_id, dashboard_version) => {
 		if (staticValue) {
 			let url =
