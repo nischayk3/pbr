@@ -23,6 +23,7 @@ describe("Render Data Science Studio", () => {
 	});
 
 	it('Load Data Science Studio', () => {
+		cy.wait(3000)
 		const url = Cypress.config().baseUrl
 
 		cy.visit(url + '/#/dashboard/data_science_studio')
@@ -37,7 +38,7 @@ describe("Render Data Science Studio", () => {
 	})
 
 	it('Upload File', () => {
-		cy.wait(2000)
+		cy.wait(4000)
 		cy.log('Upload CSV/JSON/Excel File ')
 		cy.get('input[type=file]').selectFile({ contents: 'cypress/filefortest/V348.csv' }, { force: true })
 		cy.wait(10000)

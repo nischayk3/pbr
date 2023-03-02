@@ -18,6 +18,7 @@ describe("Sharing", () => {
 	});
 
 	it('Load Chart Landing page Correctly', () => {
+		cy.wait(2000)
 		const url = Cypress.config().baseUrl
 		cy.visit(url + '/#/dashboard/chart_personalization')
 
@@ -30,10 +31,11 @@ describe("Sharing", () => {
 	})
 
 	it('Share Email', () => {
-		cy.wait(4000)
+		cy.wait(5000)
 		cy.get('.btns > div > :nth-child(1) > span').click({ force: true });
 		cy.wait(2000)
 		cy.get('.recepients-input > .ant-select > .ant-select-selector').click({ force: true });
+		cy.wait(2000)
 		cy.get('.ant-select-item-option-active > .ant-select-item-option-content').click({ multiple: true });
 		//cy.get('[title="dinesh@mareana.com"] > .ant-select-item-option-content').click({ multiple: true })
 		cy.get('.ant-modal-close-x').click({ force: true })
