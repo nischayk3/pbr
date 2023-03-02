@@ -77,6 +77,9 @@ function Hierarchy() {
 				data_molecule = data_molecule.map((v, index) => ({ ...v, key: index + 1 }))
 				setCount(Math.max(...data_molecule.map(o => o.key)) + 1)
 				setMoleculeData(data_molecule)
+			} else if (res?.Status === 403) {
+				/* istanbul ignore next */
+				dispatch(showNotification("error", 'You are not authorized', "It seems like you don't have permission to use this service."));
 			}
 			/* istanbul ignore next */
 			if (res_step['statuscode'] == 200) {
@@ -84,6 +87,9 @@ function Hierarchy() {
 				data_step = data_step.map((v, index) => ({ ...v, key: index + 1 }))
 				setStepCount(Math.max(...data_step.map(o => o.key)) + 1)
 				setStepData(data_step)
+			} else if (res_step?.Status === 403) {
+				/* istanbul ignore next */
+				dispatch(showNotification("error", 'You are not authorized', "It seems like you don't have permission to use this service."));
 			}
 		}
 		dispatch(hideLoader())
@@ -102,6 +108,9 @@ function Hierarchy() {
 			}
 			setTableData(data_response ? data_response : []);
 			setStepArray(mapResponse.Data.options);
+		} else if (mapResponse?.Status === 403) {
+			/* istanbul ignore next */
+			dispatch(showNotification("error", 'You are not authorized', "It seems like you don't have permission to use this service."));
 		}
 		dispatch(hideLoader());
 	};

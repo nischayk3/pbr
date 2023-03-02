@@ -204,7 +204,7 @@ const DashboardScreen = () => {
 			dispatch(showLoader());
 			let res = await saveDashboardData(req, headers);
 
-			if (res.statuscode == 200) {
+			if (res?.statuscode == 200) {
 				dispatch(hideLoader());
 				setIsSave(true)
 				history.push(

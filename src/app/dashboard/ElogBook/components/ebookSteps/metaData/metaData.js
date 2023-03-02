@@ -55,7 +55,7 @@ function metaData({ sendDataToParentTab, tempName }) {
 		try {
 			const metaDataupdate = await updatealldata(data);
 			dispatch(hideLoader());
-			if (metaDataupdate.Status === 200) {
+			if (metaDataupdate?.Status === 200) {
 				dispatch(showNotification('success', "updated succesfully"));
 			} else {
 				dispatch(showNotification('error', "Error"));

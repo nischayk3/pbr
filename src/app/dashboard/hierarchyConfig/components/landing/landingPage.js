@@ -47,14 +47,14 @@ export default function LandingPage() {
 			ds_name: hierarchyName
 		}
 		let check_unique = await getAuthorisedPermission(req, 'VIEW')
-		if (check_unique.data && check_unique.data.statuscode == 200) {
+		if (check_unique.data && check_unique.data?.statuscode == 200) {
 			history.push({
 				pathname:
 					"/dashboard/molecule_hierarchy_configuration/untitled_view",
 			});
 		}
 		/* istanbul ignore next */
-		else if (check_unique.response && check_unique.response.data && check_unique.response.data.statuscode == 400) {
+		else if (check_unique.response && check_unique.response.data && check_unique.response.data?.statuscode == 400) {
 			/* istanbul ignore next */
 			dispatch(showNotification('error', 'Drug substance name already present, please enter unique name'))
 		}
@@ -72,13 +72,18 @@ export default function LandingPage() {
 
 		if (response["status-code"] == 200) {
 			setLastEightView(response.Data);
+		} else if (response?.Status === 403) {
+			/* istanbul ignore next */
+			dispatch(showNotification("error", 'You are not authorized', "It seems like you don't have permission to use this service."));
 		}
 		if (response_two["status-code"] == 200) {
 			setViewList(response_two.Data);
+		} else if (response_two?.Status === 403) {
+			/* istanbul ignore next */
+			dispatch(showNotification("error", 'You are not authorized', "It seems like you don't have permission to use this service."));
 		}
 
-		console.log('response 1', response);
-		console.log('response 2', response_two);
+
 	};
 
 	const columns = [

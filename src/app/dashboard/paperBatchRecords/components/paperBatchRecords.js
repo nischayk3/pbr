@@ -162,6 +162,9 @@ function PaperBatchRecords() {
 			else if (res["status-code"] != 200) {
 				dispatch(showNotification('error', res?.Message));
 				dispatch(hideLoader());
+			} else if (res?.Status === 403) {
+				/* istanbul ignore next */
+				dispatch(showNotification("error", 'You are not authorized', "It seems like you don't have permission to use this service."));
 			} else {
 				dispatch(showNotification('error', "Unable to fetch data"));
 				dispatch(hideLoader());
@@ -243,6 +246,9 @@ function PaperBatchRecords() {
 				setLoadTiles(tilesData.Data)
 				dispatch(hideLoader());
 				dispatch(showNotification('error', tableResponse.Message));
+			} else if (tableResponse?.Status === 403) {
+				/* istanbul ignore next */
+				dispatch(showNotification("error", 'You are not authorized', "It seems like you don't have permission to use this service."));
 			}
 		}
 		catch (error) {/* istanbul ignore next */
@@ -656,7 +662,7 @@ function PaperBatchRecords() {
 													span={6}
 													style={{ marginTop: '10px' }}
 													key={index}>
-													<StatusBlock id={`${el.pbr_template_disp_id}-V${el.pbr_template_version}`} name={el.pbr_template_name.length>8?el.pbr_template_name.slice(0,8)+"...":el.pbr_template_name} status={el.pbr_template_status} handleClickTiles={() => handleClickTiles(el)} />
+													<StatusBlock id={`${el.pbr_template_disp_id}-V${el.pbr_template_version}`} name={el.pbr_template_name.length > 8 ? el.pbr_template_name.slice(0, 8) + "..." : el.pbr_template_name} status={el.pbr_template_status} handleClickTiles={() => handleClickTiles(el)} />
 												</Col>
 											);
 										})}

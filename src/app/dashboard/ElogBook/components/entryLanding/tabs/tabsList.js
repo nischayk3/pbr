@@ -32,7 +32,7 @@ export default function DataEntryFormTabs(props) {
 			limit: 100,
 		};
 		let templates_list = await getTemplatesList(req);
-		if (templates_list.statuscode == 200) {
+		if (templates_list?.statuscode == 200) {
 			dispatch(sendSelectedMolecule(mol));
 			if (templates_list.Data) {
 				dispatch(sendTemplateTiles(templates_list.Data));
