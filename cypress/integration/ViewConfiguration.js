@@ -15,6 +15,7 @@ describe('Renders the view config page', () => {
 	beforeEach(() => {
 		cy.viewport(1280, 720)
 		cy.loginWithAD()
+		cy.intercept('GET', '/services/v1/user-config', { fixture: 'userConfig.json' }).as('userConfigGet')
 	});
 
 	it('Renders use roles and access correctly', () => {
@@ -23,17 +24,14 @@ describe('Renders the view config page', () => {
 		// cy.wait(5000)
 		// cy.get('#user-roles-and-access > .ant-menu-title-content > a').click();
 		cy.wait(1000)
+		cy.intercept('GET', '/services/v1/user-config', { fixture: 'userConfig.json' }).as('userConfigGet')
 	})
 
 	it('Loads user configuration page correctly', () => {
-		cy.intercept('GET', '/services/v1/user-config', { fixture: 'userConfig.json' }).as('userConfigGet')
+		cy.wait(2500)
 		cy.log('Clicking on User Configuration')
 		cy.contains('User Configuration').click()
 		cy.wait('@userConfigGet').then(() => {
-			// cy.wait(500)
-			// cy.log('Adding new user')
-			// cy.get('#editable-table-button-add-new-user').click()
-
 			cy.wait(250)
 			cy.log('Editing editable text input')
 			cy.get('.editable-cell-value-wrap').first().click()

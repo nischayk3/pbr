@@ -71,7 +71,7 @@ const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
 				dispatch(showNotification("error", dssFileRes.data.message));
 			} else if (dssFileRes?.Status === 403) {
 				/* istanbul ignore next */
-				dispatch(showNotification("error", dssFileRes.Message));
+				dispatch(showNotification("error", 'You are not authorized', "It seems like you don't have permission to use this service."));
 			}
 		} catch (err) {
 			/* istanbul ignore next */
@@ -109,7 +109,7 @@ const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
 					pathname: `${match.url}/target_variable`,
 				});
 			} else if (loadDssRes?.Status === 403) {
-				dispatch(showNotification("error", loadDssRes.Message));
+				dispatch(showNotification("error", 'You are not authorized', "It seems like you don't have permission to use this service."));
 			}
 		} catch (err) {
 			/* istanbul ignore next */

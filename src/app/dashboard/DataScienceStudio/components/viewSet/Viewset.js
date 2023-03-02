@@ -74,11 +74,11 @@ const Viewset = ({ isVisible, onCancel }) => {
 				setSearchTableData(antdDataTable);
 			} else if (viewRes?.Status === 403) {
 				/* istanbul ignore next */
-				dispatch(showNotification("error", viewRes.Message));
+				dispatch(showNotification("error", 'You are not authorized', "It seems like you don't have permission to use this service."));
 			}
 		} catch (error) {
 			/* istanbul ignore next */
-			dispatch(showNotification("error", error.message));
+			dispatch(showNotification("error", error?.message));
 		}
 	};
 
@@ -96,7 +96,7 @@ const Viewset = ({ isVisible, onCancel }) => {
 				setViewConfigRes(loadViewRes)
 			} else if (loadViewRes?.Status === 403) {
 				/* istanbul ignore next */
-				dispatch(showNotification("error", loadViewRes.Message));
+				dispatch(showNotification("error", 'You are not authorized', "It seems like you don't have permission to use this service."));
 			}
 		} catch (err) {
 			/* istanbul ignore next */
@@ -126,7 +126,7 @@ const Viewset = ({ isVisible, onCancel }) => {
 				});
 			} else if (loadDssRes?.Status === 403) {
 				/* istanbul ignore next */
-				dispatch(showNotification("error", loadDssRes.Message));
+				dispatch(showNotification("error", 'You are not authorized', "It seems like you don't have permission to use this service."));
 			}
 		} catch (err) {
 			/* istanbul ignore next */

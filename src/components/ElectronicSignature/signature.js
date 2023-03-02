@@ -172,7 +172,7 @@ const Signature = (props) => {
 
 		req["date"] = latestDate();
 		req["timestamp"] = currentTimeStamp();
-		req["reason"] = reason === 'Reason for signature' ? otherReason : reason;
+		req["reason"] = reason === 'Reason for signature' ? otherReason : isauth === "R" ? otherReason : reason;
 		req["user_id"] = username;
 		// eslint-disable-next-line react/prop-types
 		req["screen"] = props.screenName;
@@ -284,7 +284,7 @@ const Signature = (props) => {
 
 		const _reqSaml = {
 			SignedInfoData: {
-				Reason: reason === 'Reason for signature' ? otherReason : reason,
+				Reason: reason === 'Reason for signature' ? otherReason : isauth === "R" ? otherReason : reason,
 				screenName: props.screenName,
 				appType: props.appType,
 				dispId: props.dispId,
@@ -303,9 +303,9 @@ const Signature = (props) => {
 			localStorage.setItem('redirectUrl', `${location.pathname}${location.search}`)
 		}
 	}
-
-
-
+	console.log("isauth", isauth);
+	console.log("otherreason", otherReason);
+	console.log("reason", reason);
 	return (
 		<div>
 			<Modal
@@ -334,7 +334,7 @@ const Signature = (props) => {
 							</Button>,
 							<Button
 								className="custom-secondary-btn"
-								disabled={!reason?.length}
+								disabled={!reason?.length && !otherReason?.length}
 								id="confirm"
 								key="1"
 								onClick={() => {

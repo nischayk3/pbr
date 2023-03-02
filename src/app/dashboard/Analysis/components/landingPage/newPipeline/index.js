@@ -71,7 +71,7 @@ const NewPipeline = (props) => {
 				setSearchTableData(antdDataTable);
 			} else if (viewRes?.Status === 403) {
 				/* istanbul ignore next */
-				dispatch(showNotification("error", viewRes.Message));
+				dispatch(showNotification("error", 'You are not authorized', "It seems like you don't have permission to use this service."));
 			}
 		} catch (error) {
 			/* istanbul ignore next */

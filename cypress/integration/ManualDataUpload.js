@@ -64,7 +64,7 @@ describe('Manual data upload', () => {
 			// cy.get(':nth-child(1) > .ant-input').clear();
 			// cy.get(':nth-child(1) > .ant-input').type('fahad.siddiqui@mareana.com');
 			cy.get(':nth-child(2) > .ant-input').clear();
-			cy.get(':nth-child(2) > .ant-input').type('Albert.Ramanujan.03');
+			cy.get(':nth-child(2) > .ant-input').type('Dkit@2011');
 			cy.get('#auth_with_ad').click();
 			cy.wait(3000)
 
@@ -110,7 +110,7 @@ describe('Manual data upload', () => {
 		// cy.get(':nth-child(1) > .ant-input').clear();
 		// cy.get(':nth-child(1) > .ant-input').type('fahad.siddiqui@mareana.com');
 		cy.get(':nth-child(2) > .ant-input').clear();
-		cy.get(':nth-child(2) > .ant-input').type('Albert.Ramanujan.03');
+		cy.get(':nth-child(2) > .ant-input').type('Dkit@2011');
 		cy.get('.signature-modal > #auth_with_ad').click();
 		cy.wait(2000)
 
@@ -128,7 +128,7 @@ describe('Manual data upload', () => {
 		// cy.get(':nth-child(1) > .ant-input').clear();
 		// cy.get(':nth-child(1) > .ant-input').type('fahad.siddiqui@mareana.com');
 		cy.get(':nth-child(2) > .ant-input').clear();
-		cy.get(':nth-child(2) > .ant-input').type('Albert.Ramanujan.03');
+		cy.get(':nth-child(2) > .ant-input').type('Dkit@2011');
 		cy.get('.signature-modal > #auth_with_ad').click();
 		cy.wait(3000)
 
@@ -178,7 +178,7 @@ describe('Manual data upload', () => {
 		// cy.get(':nth-child(1) > .ant-input').clear();
 		// cy.get(':nth-child(1) > .ant-input').type('fahad.siddiqui@mareana.com');
 		cy.get(':nth-child(2) > .ant-input').clear();
-		cy.get(':nth-child(2) > .ant-input').type('Albert.Ramanujan.03');
+		cy.get(':nth-child(2) > .ant-input').type('Dkit@2011');
 		cy.get('.signature-modal > #auth_with_ad').click();
 		cy.wait(2000)
 
@@ -196,7 +196,7 @@ describe('Manual data upload', () => {
 		// cy.get(':nth-child(1) > .ant-input').clear();
 		// cy.get(':nth-child(1) > .ant-input').type('fahad.siddiqui@mareana.com');
 		cy.get(':nth-child(2) > .ant-input').clear();
-		cy.get(':nth-child(2) > .ant-input').type('Albert.Ramanujan.03');
+		cy.get(':nth-child(2) > .ant-input').type('Dkit@2011');
 		cy.get('.signature-modal > #auth_with_ad').click();
 		cy.wait(2000)
 
@@ -251,7 +251,7 @@ describe('Manual data upload', () => {
 		// cy.get(':nth-child(1) > .ant-input').clear();
 		// cy.get(':nth-child(1) > .ant-input').type('fahad.siddiqui@mareana.com');
 		cy.get(':nth-child(2) > .ant-input').clear();
-		cy.get(':nth-child(2) > .ant-input').type('Albert.Ramanujan.03');
+		cy.get(':nth-child(2) > .ant-input').type('Dkit@2011');
 		cy.get('.signature-modal > #auth_with_ad').click();
 		cy.wait(3000)
 
@@ -269,7 +269,7 @@ describe('Manual data upload', () => {
 		// cy.get(':nth-child(1) > .ant-input').clear();
 		// cy.get(':nth-child(1) > .ant-input').type('fahad.siddiqui@mareana.com');
 		cy.get(':nth-child(2) > .ant-input').clear();
-		cy.get(':nth-child(2) > .ant-input').type('Albert.Ramanujan.03');
+		cy.get(':nth-child(2) > .ant-input').type('Dkit@2011');
 		cy.get('.signature-modal > #auth_with_ad').click();
 		cy.wait(2000)
 
@@ -427,7 +427,7 @@ describe('Manual data upload', () => {
 		// cy.get(':nth-child(1) > .ant-input').clear();
 		// cy.get(':nth-child(1) > .ant-input').type('fahad.siddiqui@mareana.com');
 		cy.get(':nth-child(2) > .ant-input').clear();
-		cy.get(':nth-child(2) > .ant-input').type('Albert.Ramanujan.03');
+		cy.get(':nth-child(2) > .ant-input').type('Dkit@2011');
 		cy.get('.signature-modal > #auth_with_ad').click();
 		cy.wait(2000)
 	});
