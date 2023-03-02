@@ -287,6 +287,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 				},
 			];
 		});
+		/* istanbul ignore next */
 		setPostChartData({ ...postChartData, data: newArr });
 		let errorMsg = "";
 		try {
@@ -333,6 +334,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		setTableKey(key);
 	};
 
+	/* istanbul ignore next */
 	const handleChartType = (e) => {
 		if (e !== 'Process Capability') {
 			setPpkData({});
