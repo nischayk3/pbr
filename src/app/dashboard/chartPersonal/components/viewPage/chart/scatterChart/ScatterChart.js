@@ -198,7 +198,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		const newArr = [...postChartData.data];
 		const obj = {
 			function_name:
-				axisValues.xaxis === "Batch" ? "batch_num" : "recorded_date",
+				(axisValues.xaxis === "Batch" || axisValues.xaxis === "batch_num") ? "batch_num" : "recorded_date",
 			function_id: null,
 		};
 
