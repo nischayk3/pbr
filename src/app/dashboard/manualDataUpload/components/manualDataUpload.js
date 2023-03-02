@@ -201,22 +201,12 @@ class ManualDataUpload extends Component {
 					JSON.parse(localStorage.getItem('login_details')).email_id
 				);
 				uploadFileApi(formData).then(res => {
-					if (res.data && res.data.statuscode === 400) {
+					if (res.data && res.data?.statuscode === 400) {
 						this.setState({
 							toastOpen: false,
 							showLoader: false,
 							onChangeRes: res.data && res.data.message,
-							onChangeStatus: res.data && res.data.statuscode,
-							toastVariant: 'error',
-							nextStepDisabled: true,
-						});
-						this.props.hideLoader()
-					} else if (res.data && res.data.statuscode === 401) {
-						this.setState({
-							toastOpen: false,
-							showLoader: false,
-							onChangeRes: res.data.message,
-							onChangeStatus: res.data.statuscode,
+							onChangeStatus: res.data && res.data?.statuscode,
 							toastVariant: 'error',
 							nextStepDisabled: true,
 						});
@@ -234,26 +224,26 @@ class ManualDataUpload extends Component {
 							nextStepDisabled: true,
 						});
 						this.props.hideLoader()
-					} else if (res && res.statuscode === 200) {
+					} else if (res && res?.statuscode === 200) {
 						this.setState({
 							toastOpen: false,
 							showLoader: false,
 							onChangeRes: res.message,
-							onChangeStatus: res.statuscode,
+							onChangeStatus: res?.statuscode,
 							toastVariant: 'success',
 							uploadFilesResponse: res,
 							nextStepDisabled: false,
 							primaryFileId: res.file_pointer,
 						});
 						this.props.hideLoader()
-					} else if (res.data && res.data.statuscode === 201) {
+					} else if (res.data && res.data?.statuscode === 201) {
 						this.setState({
 							toastOpen: false,
 							showLoader: false,
 							onChangeRes: res.data.message,
 							toastVariant: 'success',
 							uploadFilesResponse: res,
-							onChangeStatus: res.data.statuscode,
+							onChangeStatus: res.data?.statuscode,
 							primaryFileId: res.data.file_pointer,
 							nextStepDisabled: false,
 						});
@@ -290,11 +280,11 @@ class ManualDataUpload extends Component {
 			sourcename: 'file_upload',
 		};
 		cancelFileUpload(reqCancelParam).then(response => {
-			if (response && response.statuscode === 200) {
+			if (response && response?.statuscode === 200) {
 				this.setState(
 					{
 						cancelFileRes: response.message,
-						cancelFileStatus: response.statuscode,
+						cancelFileStatus: response?.statuscode,
 						toastMessage: response.message,
 						nextStepDisabled: false,
 						currentStep: 0,
@@ -348,7 +338,7 @@ class ManualDataUpload extends Component {
 		};
 
 		updateApprovedData(reqUpdateData).then(response => {
-			if (response && response.statuscode === 200) {
+			if (response && response?.statuscode === 200) {
 				this.setState(
 					{
 						toastOpen: false,
@@ -358,7 +348,7 @@ class ManualDataUpload extends Component {
 						isModalVisible: false,
 						nextStepDisabled: false,
 						primaryFileId: response.primary_id,
-						updateApproveSatus: response.statuscode,
+						updateApproveSatus: response?.statuscode,
 						primaryFileRes: response.message,
 						onChangeStatus: '',
 						signatureStatus: '',
@@ -397,29 +387,29 @@ class ManualDataUpload extends Component {
 		};
 
 		approvedData(reqUpdateData).then(response => {
-			if (response.data.statuscode === 200) {
+			if (response.data?.statuscode === 200) {
 				this.setState({
 					toastOpen: false,
 					showLoader: false,
 					toastMessage: response.data.message,
 					toastVariant: 'success',
 					approvedDataRes: response.data.message,
-					approvedDataStatus: response.data.statuscode,
+					approvedDataStatus: response.data?.statuscode,
 					onChangeStatus: '',
 				});
 				this.props.hideLoader()
-			} else if (response.data.statuscode === 206) {
+			} else if (response.data?.statuscode === 206) {
 				this.setState({
 					toastOpen: false,
 					showLoader: false,
 					toastMessage: response.data.message,
 					toastVariant: 'success',
 					approvedDataRes: response.data.message,
-					approvedDataStatus: response.data.statuscode,
+					approvedDataStatus: response.data?.statuscode,
 					onChangeStatus: '',
 				});
 				this.props.hideLoader()
-			} else if (response.data.statuscode === 400) {
+			} else if (response.data?.statuscode === 400) {
 				this.setState({
 					toastOpen: true,
 					showLoader: false,
@@ -447,7 +437,7 @@ class ManualDataUpload extends Component {
 		};
 
 		finalFileUpload(reqFile).then(response => {
-			if (response.data.statuscode === 200) {
+			if (response.data?.statuscode === 200) {
 				this.setState(
 					{
 						toastOpen: true,
@@ -468,7 +458,7 @@ class ManualDataUpload extends Component {
 				);
 				this.props.hideLoader()
 				this.props.showNotification('success', response.data.message);
-			} else if (response.data.statuscode === 400) {
+			} else if (response.data?.statuscode === 400) {
 				this.setState(
 					{
 						toastOpen: true,

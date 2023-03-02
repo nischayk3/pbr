@@ -29,6 +29,7 @@ import {
 } from '../../../../services/reportGeneratorServices';
 import Chart from '../../reportDesigner/components/reportChart/chartComponent/chartComponent';
 import ReportGeneratorForm from '../components/reportGeneratorForm';
+import { sendReport } from '../../../../duck/actions/reportDesignerAction';
 
 const { Panel } = Collapse;
 
@@ -223,7 +224,7 @@ function ReportGenerator(props) {
 		let data = { rjson: rjson };
 
 		let json_response = await latexBuilder(data);
-		if (json_response.statuscode == 200) {
+		if (json_response?.statuscode == 200) {
 			dispatch(showNotification('success', 'Downloading Report'));
 
 			axios
@@ -291,6 +292,7 @@ function ReportGenerator(props) {
 			data = data.data
 			if (data) {
 				unloadTest(data)
+				dispatch(sendReport(data))
 			}
 			else {
 				dispatch(hideLoader())

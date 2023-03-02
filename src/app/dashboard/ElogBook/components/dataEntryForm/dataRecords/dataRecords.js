@@ -407,7 +407,7 @@ class DataFormFirst extends Component {
 		this.props.showLoader();
 		try {
 			const resp = await putFormData(save_req);
-			if (resp.Status === 200) {
+			if (resp?.Status === 200) {
 				this.setState({ tableDataChanged: false });
 				if (!boolean_value)
 					this.props.showNotification("success", "Form Data Saved");
@@ -420,7 +420,8 @@ class DataFormFirst extends Component {
 			if (err.message.includes("403")) {
 				this.props.showNotification(
 					"error",
-					"ACCESS DENIED ! User is not having valid email_address"
+					'You are not authorized',
+					"It seems like you don't have permission to use this service."
 				);
 			}
 			if (err.message.includes("500")) {

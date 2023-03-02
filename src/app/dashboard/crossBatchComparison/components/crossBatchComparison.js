@@ -154,7 +154,7 @@ const CrossBatchComparison = () => {
 
 		try {
 			const filterRes = await getGeanealogyFilter(reqFilter);
-			if (filterRes.statuscode === 200) {
+			if (filterRes?.statuscode === 200) {
 				setParamList(prevState => {
 					return {
 						...prevState,
@@ -165,7 +165,7 @@ const CrossBatchComparison = () => {
 				});
 			}
 			/* istanbul ignore next */
-			else if (filterRes.data.statuscode === 400) {
+			else if (filterRes.data?.statuscode === 400) {
 				dispatch(showNotification('error', filterRes.data.message));
 			}
 		} catch (err) {/* istanbul ignore next */

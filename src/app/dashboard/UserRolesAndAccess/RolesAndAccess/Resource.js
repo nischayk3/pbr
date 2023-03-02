@@ -111,7 +111,7 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 			dispatch(showLoader());
 			const auth = await resourceActionUpdated(_resourceAuth)
 			dispatch(hideLoader());
-			if (auth.statuscode === 200) {
+			if (auth?.statuscode === 200) {
 				setIsVisible(false)
 				setResList([])
 				setSelectedResource('')
@@ -130,7 +130,7 @@ const Resource = ({ isVisible, setIsVisible, roleName, resourceList, callbackRes
 	const rolePriviledge = async (_resourceAuth) => {
 		try {
 			const privilege = await resourceAuth(_resourceAuth)
-			if (privilege.statuscode === 200) {
+			if (privilege?.statuscode === 200) {
 				if (privilege.message.length > 0) {
 					const text = privilege.message.toString()
 					console.log("text", text);

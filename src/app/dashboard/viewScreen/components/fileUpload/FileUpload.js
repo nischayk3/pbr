@@ -139,11 +139,7 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 							dispatch(hideLoader());
 							dispatch(showNotification("error", "Unable to Load Files"));
 						}
-						/* istanbul ignore next  */
-						if (res.Status === 401) {
-							dispatch(hideLoader());
-							dispatch(showNotification("error", "UnAuthorized User"));
-						}
+
 					})
 				})
 			}
@@ -261,7 +257,7 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 		};
 		deleteAdHocFile(req).then((res) => {
 			/* istanbul ignore else  */
-			if (res.data.statuscode === 202) {
+			if (res.data?.statuscode === 202) {
 				dispatch(
 					showNotification("success", "adhoc-file deleted successfully")
 				);
@@ -271,19 +267,16 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 				setFilesListTree(updatedFileList);
 			}
 			/* istanbul ignore next  */
-			if (res.data.statuscode === 400) {
+			if (res.data?.statuscode === 400) {
 				dispatch(showNotification("error", res.data.message));
 			}
+
 			/* istanbul ignore next  */
-			if (res.data.statuscode === 401) {
-				dispatch(showNotification("error", "UnAuthorized User"));
+			if (res.data?.statuscode === 403) {
+				dispatch(showNotification("error", 'You are not authorized', "It seems like you don't have permission to use this service."));
 			}
 			/* istanbul ignore next  */
-			if (res.data.statuscode === 403) {
-				dispatch(showNotification("error", res.data.message));
-			}
-			/* istanbul ignore next  */
-			if (res.data.statuscode === 404) {
+			if (res.data?.statuscode === 404) {
 				dispatch(showNotification("error", res.data.message));
 			}
 		});
@@ -351,9 +344,9 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 					setUploadBtnDisabled(true);
 				}
 				/* istanbul ignore next  */
-				if (res.Status === 401) {
+				if (res.Status === 403) {
 					dispatch(hideLoader());
-					dispatch(showNotification("error", "UnAuthorized User"));
+					// dispatch(showNotification("error", res.Message));
 					setUploadBtnDisabled(true);
 				}
 			});
@@ -397,10 +390,7 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 			if (res.Status === 404) {
 				dispatch(showNotification("error", res.Message));
 			}
-			/* istanbul ignore next  */
-			if (res.Status === 401) {
-				dispatch(showNotification("error", "UnAuthorized User"));
-			}
+
 		});
 	};
 

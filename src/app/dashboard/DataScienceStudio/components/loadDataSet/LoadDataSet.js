@@ -7,7 +7,7 @@ import { hideLoader, showLoader, showNotification } from "../../../../../duck/ac
 import { loadViewTableData, sendFileUploadRes, sendViewsetRes } from "../../../../../duck/actions/dataScienceAction";
 import { dssFileUpload, loadDssView } from "../../../../../services/dataScienceStudioService";
 import "./style.scss";
-
+/* istanbul ignore next */
 const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
 	const [uploadFileRes, setUploadFileRes] = useState([]);
 	const [isDisable, setIsDisable] = useState(true);
@@ -71,7 +71,7 @@ const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
 				dispatch(showNotification("error", dssFileRes.data.message));
 			} else if (dssFileRes?.Status === 403) {
 				/* istanbul ignore next */
-				dispatch(showNotification("error", dssFileRes.Message));
+				dispatch(showNotification("error", 'You are not authorized', "It seems like you don't have permission to use this service."));
 			}
 		} catch (err) {
 			/* istanbul ignore next */
@@ -97,7 +97,7 @@ const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
 			const loadDssRes = await loadDssView(_reqLoad);
 			let param = []
 			dispatch(hideLoader());
-			if (loadDssRes.statuscode === 200) {
+			if (loadDssRes?.statuscode === 200) {
 				loadDssRes.data.forEach((item, key) => {
 					let obj = {}
 					obj['parameter_name'] = item.parameter_name;
@@ -109,7 +109,7 @@ const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
 					pathname: `${match.url}/target_variable`,
 				});
 			} else if (loadDssRes?.Status === 403) {
-				dispatch(showNotification("error", loadDssRes.Message));
+				dispatch(showNotification("error", 'You are not authorized', "It seems like you don't have permission to use this service."));
 			}
 		} catch (err) {
 			/* istanbul ignore next */

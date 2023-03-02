@@ -426,7 +426,7 @@ const Roles = () => {
 			dispatch(showLoader());
 			const resCard = await resourceDelete(_resCard);
 			dispatch(hideLoader());
-			if (resCard.statuscode === 200) {
+			if (resCard?.statuscode === 200) {
 				dispatch(showNotification("success", resCard.message));
 				getResourceData(_dltReqRecord)
 			} else {
@@ -443,7 +443,7 @@ const Roles = () => {
 			setLoading(true)
 			const resource = await getResource(_resourceQuery);
 			setLoading(false)
-			if (resource.statuscode === 200) {
+			if (resource?.statuscode === 200) {
 				setAllRoles(resource.message)
 			} else {
 				dispatch(showNotification("error", resource.message));
@@ -458,7 +458,7 @@ const Roles = () => {
 	const roleDataAccessUpdate = async (_resourceQuery) => {
 		try {
 			const dataAccess = await dataAccessUpdate(_resourceQuery)
-			if (dataAccess.statuscode === 200) {
+			if (dataAccess?.statuscode === 200) {
 				dispatch(showNotification("success", dataAccess.message));
 			} else {
 				dispatch(showNotification("error", dataAccess.message));
@@ -473,7 +473,7 @@ const Roles = () => {
 		try {
 			dispatch(showLoader());
 			const res = await getResource(_resourceQuery)
-			if (res.statuscode === 200) {
+			if (res?.statuscode === 200) {
 				setRoleDesc(res?.message?.role_description)
 				setResourceCount(res?.message?.role_resource_details?.length)
 				setResourceDetails(res?.message?.role_resource_details)
@@ -498,7 +498,7 @@ const Roles = () => {
 			const dataType = await getResource(_dataType)
 			setLoading(false)
 			let data1 = []
-			if (dataType.statuscode === 200) {
+			if (dataType?.statuscode === 200) {
 				if (_dataType.field_name === 'Molecule') {
 					setExpandedData(dataType.message.molecule_total_list)
 					data1 = [
@@ -602,7 +602,7 @@ const Roles = () => {
 			dispatch(showLoader());
 			const config = await roleConfig(_reqRole);
 			dispatch(hideLoader());
-			if (config.statuscode === 200) {
+			if (config?.statuscode === 200) {
 				dispatch(showNotification("success", config.message));
 				setisEditRole(true)
 				setisRoleToggle(true)
@@ -625,7 +625,7 @@ const Roles = () => {
 			dispatch(showLoader());
 			const resourceAction = await resourceActions(_resourceQuery)
 			dispatch(hideLoader());
-			if (resourceAction.statuscode === 200) {
+			if (resourceAction?.statuscode === 200) {
 				setResourceList(resourceAction.message)
 			} else {
 				dispatch(showNotification("error", resDatatable.message));
@@ -643,7 +643,7 @@ const Roles = () => {
 			dispatch(showLoader());
 			const resDatatable = await resourceActions(_resourceQuery)
 			dispatch(hideLoader());
-			if (resDatatable.statuscode === 200) {
+			if (resDatatable?.statuscode === 200) {
 				setResourceDataTable(resDatatable.message)
 			} else {
 				dispatch(showNotification("error", resDatatable.message));

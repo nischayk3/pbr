@@ -153,7 +153,7 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
 		};
 		dispatch(showLoader());
 		const apiResponse = await getAnalyticsNodes(reqBody);
-		if (apiResponse.Status === 200) {
+		if (apiResponse?.Status === 200) {
 			let finalJson;
 			if (editFinalJson?.pipeline_data[0].variable_mapping?.length) {
 				finalJson = JSON.parse(JSON.stringify(editFinalJson?.pipeline_data[0]))
@@ -558,7 +558,7 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
 		};
 		dispatch(showLoader());
 		const apiResponse = await getAnalyticsModel(reqBody);
-		if (apiResponse.Status === 200) {
+		if (apiResponse?.Status === 200) {
 			data?.all_estimator?.forEach((regression) => {
 				if (apiResponse?.data?.estimator?.model_name === regression?.model_name) {
 					setEstimatorPopupDataValues({ ...estimatorPopupDataValues, algoValue: regression.display_name, typeListValue: regression.estimator_type })

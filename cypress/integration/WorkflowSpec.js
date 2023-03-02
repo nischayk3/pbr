@@ -335,7 +335,7 @@ describe("Workflow Chart Personalization", () => {
 
 		cy.wait(500)
 		cy.log("Enter Password")
-		cy.get('#password').type('Dkit@2011')
+		cy.get('#password').type('Dkit@2023')
 
 		cy.get('#auth_without_ad').click()
 

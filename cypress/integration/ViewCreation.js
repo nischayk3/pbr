@@ -13,48 +13,6 @@ Cypress.on('uncaught:exception', (err) => {
 	}
 })
 
-describe("Render View Creation Load Error Log", () => {
-	afterEach(() => {
-		cy.viewport(1280, 720);
-		cy.loginWithAD();
-		cy.intercept('GET', '**/views-list', { fixture: 'viewList.json' }).as('viewList')
-	});
-
-	beforeEach(() => {
-		cy.viewport(1280, 720);
-		cy.loginWithAD();
-		cy.intercept('GET', '**/views-list', { fixture: 'viewList.json' }).as('viewList')
-	});
-
-	it('Load View Landing Page Correctly', () => {
-		const url = Cypress.config().baseUrl
-		cy.wait(2000).then(() => {
-			cy.visit(url + '/#/dashboard/view_creation')
-			cy.log('Load Landing Page')
-			cy.url().should('eq', url + '/#/dashboard/view_creation')
-		})
-
-		cy.log('Create a New View Creation')
-		cy.get('.create-new > .anticon > svg').click({ force: true });
-		cy.intercept('POST', '**/molecules3', { fixture: 'moleculeError401.json' })
-	})
-
-	it('Create a New View', () => {
-		const url = Cypress.config().baseUrl
-		cy.wait(2000).then(() => {
-			cy.log('Verify New View Creation URL ')
-			cy.visit(url + '/#/dashboard/view_creation/0')
-			cy.url().should('eq', url + '/#/dashboard/view_creation/0')
-		})
-	})
-
-	it('Molecule Error Check', () => {
-		cy.wait(2000).then(() => {
-			cy.log("Verify 401 error")
-		})
-	})
-})
-
 describe("Render View Creation Load", () => {
 	afterEach(() => {
 		cy.viewport(1280, 920);

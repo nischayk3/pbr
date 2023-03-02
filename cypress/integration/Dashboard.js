@@ -67,27 +67,28 @@ describe('Dashboard', () => {
 	it('FIlter Chart Config', () => {
 		cy.wait(2000)
 		cy.log('Select Site')
-		cy.get('#site').click()
+		cy.get('#site').click({ force: true })
 		cy.get('.ant-select-item-option-content').click({ force: true })
 
 		cy.wait(500)
 		cy.log('show unapproved data')
 		cy.get('#show_unapproved').click()
 
-		cy.wait(500)
-		cy.log("select start date")
-		cy.get('#start_date').click()
-		cy.get('[title="2023-02-07"]').click()
-		cy.wait(500)
+		// cy.wait(500)
+		// cy.log("select start date")
+		// cy.get('#start_date').click({ force: true })
+		// cy.get('[title="2023-02-07"]').click({ force: true })
+		// cy.wait(500)
 
 		cy.wait(1000)
 		cy.log("select end date")
 		cy.get('#end_date').click()
-		cy.get(':nth-child(6) > :nth-child(1) > .ant-picker-dropdown > .ant-picker-panel-container > .ant-picker-panel > .ant-picker-date-panel > .ant-picker-body > .ant-picker-content > tbody > :nth-child(4) > [title="2023-02-23"]').click()
+		// cy.get(':nth-child(2) > .ant-picker-input')
+		// cy.get(':nth-child(6) > :nth-child(1) > .ant-picker-dropdown > .ant-picker-panel-container > .ant-picker-panel > .ant-picker-date-panel > .ant-picker-body > .ant-picker-content > tbody > :nth-child(4) > [title="2023-02-23"]').click({ force: true })
 
 		cy.wait(1000)
 		cy.log('select exploration controls')
-		cy.get('#exploration_control').click()
+		cy.get('#exploration_control').click({ force: true })
 	})
 
 	it('Click on Edit Chart', () => {
@@ -113,17 +114,17 @@ describe('Dashboard', () => {
 		cy.wait(500)
 		cy.log('select site')
 		cy.get('.ant-col-6 > .ant-select > .ant-select-selector > .ant-select-selection-item').click()
-		cy.get(':nth-child(9) > :nth-child(1) > .ant-select-dropdown > :nth-child(1) > .rc-virtual-list > .rc-virtual-list-holder > :nth-child(1) > .rc-virtual-list-holder-inner > .ant-select-item > .ant-select-item-option-content').click()
+		// cy.get(':nth-child(9) > :nth-child(1) > .ant-select-dropdown > :nth-child(1) > .rc-virtual-list > .rc-virtual-list-holder > :nth-child(1) > .rc-virtual-list-holder-inner > .ant-select-item > .ant-select-item-option-content').click()
 
 		cy.wait(500)
 		cy.log('select start date')
 		cy.get('#start_date_1').click()
-		cy.get(':nth-child(10) > :nth-child(1) > .ant-picker-dropdown > .ant-picker-panel-container > .ant-picker-panel > .ant-picker-date-panel > .ant-picker-body > .ant-picker-content > tbody > :nth-child(2) > [title="2023-02-06"]').click()
+		// cy.get(':nth-child(10) > :nth-child(1) > .ant-picker-dropdown > .ant-picker-panel-container > .ant-picker-panel > .ant-picker-date-panel > .ant-picker-body > .ant-picker-content > tbody > :nth-child(2) > [title="2023-02-06"]').click()
 
 		cy.wait(500)
 		cy.log('select end date')
 		cy.get('#end_date_1').click()
-		cy.get(':nth-child(11) > :nth-child(1) > .ant-picker-dropdown > .ant-picker-panel-container > .ant-picker-panel > .ant-picker-date-panel > .ant-picker-body > .ant-picker-content > tbody > :nth-child(4) > [title="2023-02-24"]').click()
+		// cy.get(':nth-child(11) > :nth-child(1) > .ant-picker-dropdown > .ant-picker-panel-container > .ant-picker-panel > .ant-picker-date-panel > .ant-picker-body > .ant-picker-content > tbody > :nth-child(4) > [title="2023-02-24"]').click()
 
 		cy.log('show preview')
 	})

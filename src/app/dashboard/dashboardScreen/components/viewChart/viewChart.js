@@ -107,10 +107,10 @@ const ViewChart = (props, ref) => {
 		let reqSite = { view_id: id };
 		return getSiteId(reqSite).then((res) => {
 			/* istanbul ignore next */
-			if (res.Status === 200) {
+			if (res?.Status === 200) {
 				return res.Data;
 				/* istanbul ignore next */
-			} else if (res.Status === 400) {
+			} else if (res?.Status === 400) {
 				dispatch(showNotification("error", "Site Error - " + res.Message));
 				return [];
 				/* istanbul ignore next */

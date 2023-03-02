@@ -71,13 +71,16 @@ export const saveFunction = (request, resourceName) => {
 };
 
 export const adHocFileUpload = (_queryParam) => {
+	let login_response = JSON.parse(localStorage.getItem("login_details"));
 	return Service.post(
 		BMS_APP_PYTHON_SERVICE + "/adhoc-files",
 		_queryParam,
-		_reqheader('VIEW'),
+		// _reqheader('VIEW'),
 		{
+			"resource-name": "VIEW",
 			"Content-Type": "multipart/form-data",
-			Accept: "*/*",
+			"Accept": "*/*",
+			"x-access-token": login_response.token ? login_response.token : "",
 		}
 	).then(
 		(response) => {

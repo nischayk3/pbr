@@ -100,7 +100,7 @@ const ReportDesignerNew = () => {
 	useEffect(() => {
 		const params = queryString.parse(location.search);
 		if (Object.keys(params).length > 0) {
-			dispatch(showLoader());
+
 			unloadUrl(params);
 		}
 		getViewsList();
@@ -350,7 +350,11 @@ const ReportDesignerNew = () => {
 						history.push({
 							pathname: `/dashboard/report_designer/${res["rep_disp_id"]}`,
 						});
-					} else dispatch(showNotification("error", "Error While Saving"));
+					} else if (res?.Status === 403) {
+						dispatch(showNotification("error", 'You are not authorized', "It seems like you don't have permission to use this service."));
+					} else {
+						dispatch(showNotification("error", "Error While Saving"))
+					}
 				});
 				dispatch(sendReport(req["data"]));
 			} else {
@@ -512,7 +516,7 @@ const ReportDesignerNew = () => {
 	useEffect(() => {
 		const report_param_id = location.pathname.split("/").filter((i) => i);
 		if (report_param_id.length > 2) {
-			dispatch(showLoader())
+
 			if (report_param_id[2] != 'untitled')
 				reloadUrl(report_param_id[2])
 		}
