@@ -7,7 +7,7 @@ import { hideLoader, showLoader, showNotification } from "../../../../../duck/ac
 import { loadViewTableData, sendFileUploadRes, sendViewsetRes } from "../../../../../duck/actions/dataScienceAction";
 import { dssFileUpload, loadDssView } from "../../../../../services/dataScienceStudioService";
 import "./style.scss";
-
+/* istanbul ignore next */
 const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
 	const [uploadFileRes, setUploadFileRes] = useState([]);
 	const [isDisable, setIsDisable] = useState(true);

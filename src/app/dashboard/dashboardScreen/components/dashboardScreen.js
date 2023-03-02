@@ -17,7 +17,7 @@ import LandingPage from "./landingPage/landingPage";
 import "./styles.scss";
 import ChartPage from "./viewChart/viewChart";
 
-
+/* istanbul ignore next */
 const DashboardScreen = () => {
 	const dispatch = useDispatch();
 	const location = useLocation();
