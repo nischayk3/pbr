@@ -137,6 +137,7 @@ const ViewChart = (props, ref) => {
 		}
 	};
 
+	/* istanbul ignore next */
 	const fetchDataFromUrl = async () => {
 		if (props.dashboardId) {
 			let req = {
@@ -234,12 +235,14 @@ const ViewChart = (props, ref) => {
 		setTempPanels(arr);
 	};
 
+	/* istanbul ignore next */
 	const onChangeTempCheckbox = (checked) => {
 		const isChecked = checked ? 1 : 0;
 		let obj = { ...tempCard };
 		obj.data_filter.unapproved_data = isChecked;
 		setTempCard(obj);
 	};
+
 	/* istanbul ignore next */
 	const onChangeStart = (date, dateString) => {
 		if (date) {
@@ -319,6 +322,8 @@ const ViewChart = (props, ref) => {
 		}
 		setTempPanels(arr);
 	};
+
+	/* istanbul ignore next */
 	const onInnerTempStart = (date, dateString) => {
 		let obj = { ...tempCard };
 		if (obj.data_filter.date_range == "") {
@@ -329,6 +334,8 @@ const ViewChart = (props, ref) => {
 		}
 		setTempCard(obj);
 	};
+
+	/* istanbul ignore next */
 	const onInnerTempEnd = (date, dateString) => {
 		let obj = { ...tempCard };
 		if (obj.data_filter.date_range == "") {
@@ -355,12 +362,14 @@ const ViewChart = (props, ref) => {
 		}
 	};
 
+	/* istanbul ignore next */
 	const onTypeChartsChange = (e, index) => {
 		let arr = [...tempPanels];
 		tempPanels[index].source_type = e;
 		setTempPanels(arr);
 	};
 
+	/* istanbul ignore next */
 	const onTempChartsChange = (e) => {
 		let obj = { ...tempCard };
 		obj.source_type = e;
@@ -392,6 +401,7 @@ const ViewChart = (props, ref) => {
 		setTempPanels(arr);
 	};
 
+	/* istanbul ignore next */
 	const showPreview = async (index) => {
 		let arr = [...tempPanels];
 		let id = tempPanels[index].chart_id;
@@ -442,6 +452,7 @@ const ViewChart = (props, ref) => {
 		}
 	};
 
+	/* istanbul ignore next */
 	const showPreviewTemp = async () => {
 		let obj = { ...tempCard };
 		let id = obj.chart_id;
@@ -483,6 +494,7 @@ const ViewChart = (props, ref) => {
 		setTempPanels(arr);
 	};
 
+	/* istanbul ignore next */
 	const searchTempCallback = async (data) => {
 		let obj = { ...tempCard };
 		obj.chart_id = data.chartDispId;

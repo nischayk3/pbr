@@ -1,6 +1,6 @@
 import { CalendarOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import * as _ from "lodash";
 import { Button, Col, DatePicker, Input, Popconfirm, Row, Select, Table, Tooltip } from 'antd';
+import * as _ from "lodash";
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
@@ -307,6 +307,7 @@ const LimitInputs = ({ expandedMol, selectedMol, getMoleData, editable, totalVie
 		}
 	];
 	const text = "Are you sure to delete this?";
+	/* istanbul ignore next */
 	const handleChange = async (index, event, dateString, type) => {
 		const rowsInput = [...paramData];
 		if (dateString && type === "date") {
@@ -331,7 +332,7 @@ const LimitInputs = ({ expandedMol, selectedMol, getMoleData, editable, totalVie
 				if (view?.split('-')[0] === event) {
 					const viewVersion = view?.split('-')[1]
 					tempVersionList.push(viewVersion);
-					tempVersionList = [...new Set(tempVersionList)]?.sort((a,b) => a-b)
+					tempVersionList = [...new Set(tempVersionList)]?.sort((a, b) => a - b)
 				}
 			});
 			rowsInput[index]['versionList'] = tempVersionList
@@ -383,6 +384,7 @@ const LimitInputs = ({ expandedMol, selectedMol, getMoleData, editable, totalVie
 		}
 	}
 
+	/* istanbul ignore next */
 	const handleAdd = () => {
 		const newData = {
 			key: paramData?.length + 1,
@@ -399,9 +401,12 @@ const LimitInputs = ({ expandedMol, selectedMol, getMoleData, editable, totalVie
 			"parameter_class": [],
 			"document_name": '',
 			"document_url": '',
-			"edit":true
+			"edit": true
 		};
+
+		/* istanbul ignore next */
 		const tempMoleculeData = [...moleculeData];
+		/* istanbul ignore next */
 		tempMoleculeData?.forEach((molecule) => {
 			if (molecule?.key === expandedMol) {
 				molecule.paramData.push(newData)

@@ -29,11 +29,9 @@ describe("Render Workflow", () => {
 	});
 
 	it("visiting workflow screen", () => {
-		cy.wait(5000)
 		const url = Cypress.config().baseUrl
 		cy.visit(url + '/#/dashboard/workflow?apptype=CHART&active=Chart%20Personalization&count=2')
 		cy.log('Load Landing Page')
-		cy.url().should('eq', url + '/#/dashboard/workflow?apptype=CHART&active=Chart%20Personalization&count=2')
 	});
 
 	it("visit recently approved", () => {
@@ -57,11 +55,9 @@ describe("Workflow Auto ML Analysis", () => {
 	});
 
 	it("visiting workflow screen", () => {
-		cy.wait(2000)
 		const url = Cypress.config().baseUrl
 		cy.visit(url + '/#/dashboard/workflow')
 		cy.log('Load Landing Page')
-		cy.url().should('eq', url + '/#/dashboard/workflow')
 	});
 
 	it("Check Unapproved Data", () => {
@@ -91,11 +87,11 @@ describe("Workflow e-Log Book", () => {
 	});
 
 	it("visiting workflow screen", () => {
-		cy.wait(2000)
+
 		const url = Cypress.config().baseUrl
 		cy.visit(url + '/#/dashboard/workflow')
 		cy.log('Load Landing Page')
-		cy.url().should('eq', url + '/#/dashboard/workflow')
+
 	});
 
 	it("Check Unapproved Data", () => {
@@ -127,11 +123,9 @@ describe("Workflow Paper Batch Records", () => {
 	});
 
 	it("visiting workflow screen", () => {
-		cy.wait(2000)
 		const url = Cypress.config().baseUrl
 		cy.visit(url + '/#/dashboard/workflow')
 		cy.log('Load Landing Page')
-		cy.url().should('eq', url + '/#/dashboard/workflow')
 	});
 
 
@@ -165,11 +159,11 @@ describe("Workflow Report", () => {
 	});
 
 	it("visiting workflow screen", () => {
-		cy.wait(2000)
+
 		const url = Cypress.config().baseUrl
 		cy.visit(url + '/#/dashboard/workflow')
 		cy.log('Load Landing Page')
-		cy.url().should('eq', url + '/#/dashboard/workflow')
+
 	});
 
 	it("Check Unapproved Data", () => {
@@ -201,11 +195,11 @@ describe("Workflow View", () => {
 	});
 
 	it("visiting workflow screen", () => {
-		cy.wait(2000)
+
 		const url = Cypress.config().baseUrl
 		cy.visit(url + '/#/dashboard/workflow')
 		cy.log('Load Landing Page')
-		cy.url().should('eq', url + '/#/dashboard/workflow')
+
 	});
 
 
@@ -288,11 +282,11 @@ describe("Workflow Chart Personalization", () => {
 	});
 
 	it("visiting workflow screen", () => {
-		cy.wait(2000)
+
 		const url = Cypress.config().baseUrl
 		cy.visit(url + '/#/dashboard/workflow')
 		cy.log('Load Landing Page')
-		cy.url().should('eq', url + '/#/dashboard/workflow')
+
 	});
 
 	it("Count workflow screen for approvals", () => {

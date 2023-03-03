@@ -3,10 +3,10 @@
 //platform auth & platform resultset
 export const API_AUTHENTICATION_URL = `${process.env.REACT_APP_PLATFORM_API_URL + "/prismmicro-authentication"}`;
 
-export const API_RESULTSET_URL = `${process.env.REACT_APP_PLATFORM_API_URL + "/prismmicro-resultset"}`;
+//export const API_RESULTSET_URL = `${process.env.REACT_APP_PLATFORM_API_URL + "/prismmicro-resultset"}`;
 
 //grafana dashboard
-export const GRAFANA_DASHBOARD = `${process.env.REACT_APP_GRAFANA_APP_URL + "/grafana/"}`;
+// export const GRAFANA_DASHBOARD = `${process.env.REACT_APP_GRAFANA_APP_URL + "/grafana/"}`;
 
 //bms login-pass url
 export const BMS_APP_LOGIN_PASS = "/auth";

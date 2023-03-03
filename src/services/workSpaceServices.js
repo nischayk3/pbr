@@ -83,7 +83,7 @@ export const getUpdatedChartsViewsData = (_queryParam) => {
 	const headers = {
 		"content-type": "application/json",
 		"x-access-token": login_response.token ? login_response.token : "",
-		"resource-name": "VIEW",
+		"resource-name": "WORKITEMS",
 		username: localStorage.getItem("user"),
 	};
 	return Service.get(
