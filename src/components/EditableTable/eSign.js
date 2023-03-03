@@ -36,7 +36,8 @@ function Esign(props) {
 			setLoginStatus(status);
 		}
 		if (loginDetails) {
-			setUsername(loginDetails.email_id)
+			const userId = status == "WITHOUT_AD" ? loginDetails?.user_id : loginDetails?.email_id
+			setUsername(userId);
 		}
 	}, []);
 
