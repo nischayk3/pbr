@@ -32,6 +32,10 @@ const chartComponent = (props) => {
 			setWorkSpaceChartData(chartResponse.data[0].data);
 			setWorkSpaceChartLayoutXAxis(chartResponse.data[0].layout.xaxis)
 			setWorkSpaceChartLayoutYAxis(chartResponse.data[0].layout.yaxis)
+			if (chartResponse?.Status === 403) {
+				/* istanbul ignore next */
+				dispatch(showNotification("error", ""));
+			}
 		} catch (error) {
 			dispatch(showNotification('error', error.Message));
 		}

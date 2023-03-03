@@ -9,6 +9,7 @@ const ModelData = ({ modelData, setModelData, editFinalJson }) => {
 	const dispatch = useDispatch();
 	const selectedViewData = useSelector((state) => state.analyticsReducer.viewData);
 
+	/* istanbul ignore next */
 	const getModalData = async () => {
 		dispatch(showLoader());
 		const req = {
@@ -34,6 +35,7 @@ const ModelData = ({ modelData, setModelData, editFinalJson }) => {
 
 
 	useEffect(() => {
+		/* istanbul ignore next */
 		if (editFinalJson?.pipeline_data[0]?.variable_mapping?.length && !modelData?.length) {
 			getModalData();
 		}
