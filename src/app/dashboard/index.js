@@ -41,6 +41,7 @@ const View = lazy(() => import("./viewScreen/components/View"));
 const ReportDesigner = lazy(() => import("./reportDesigner"));
 const AuditTrial = lazy(() => import("./auditTrial"));
 const PbrUpdate = lazy(() => import("./pbrUpdate"));
+const DigitalTwin = lazy(() => import("./digitalTwin"));
 const PaperBatchRecords = lazy(() => import("./paperBatchRecords"));
 const ReportGenerator = lazy(() => import("./reportGenerator"));
 const Workflow = lazy(() => import("./wokflow"));
@@ -532,6 +533,13 @@ const Dashboard = () => {
 											/>
 										</>
 									)}
+								/>
+								<PrivateRoute
+									key="digitalTwin"
+									path={`${match.url}/digitalTwin`}
+									exact
+									component={DigitalTwin}
+									authorised={authorised}
 								/>
 							</Switch>
 						</SuspenseWrapper>
