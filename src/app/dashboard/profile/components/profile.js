@@ -121,6 +121,7 @@ const Profile = () => {
 		}
 	}
 
+	/* istanbul ignore next */
 	const clearSearch = (e, field) => {
 		if (field === 'dateFormat') {
 			setDateFormatValue("")

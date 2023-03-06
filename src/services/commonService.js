@@ -7,7 +7,7 @@ export const getViewTable = (_queryParam) => {
 	const headers = {
 		"content-type": "application/json",
 		"x-access-token": login_response.token ? login_response.token : "",
-		"resource-name": "view",
+		"resource-name": "VIEW",
 	};
 	return Service.get(
 		BMS_APP_PYTHON_SERVICE + "/views-list",

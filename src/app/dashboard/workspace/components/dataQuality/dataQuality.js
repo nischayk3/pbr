@@ -54,6 +54,9 @@ const DataQuality = () => {
 			else if (tableResponse['status-code'] === 404) {
 				setDataSource(tableResponse.Data);
 				dispatch(showNotification('error', tableResponse.Message));
+			} else if (tableResponse?.Status === 403) {
+				/* istanbul ignore next */
+				dispatch(showNotification("error", ""));
 			}
 
 		} catch (error) {

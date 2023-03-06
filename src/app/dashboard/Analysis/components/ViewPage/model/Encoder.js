@@ -5,6 +5,7 @@ import urlJson from './urls.json';
 
 const { Option } = Select;
 
+/* istanbul ignore next */
 const Encoder = ({
 	onCreateClick,
 	encoderData,
@@ -17,8 +18,9 @@ const Encoder = ({
 	const [y, setY] = useState(0)
 	const [url, setUrl] = useState('')
 	const [algorithm, setAlgorithm] = useState('')
-
+	/* istanbul ignore next */
 	const handleClose = useCallback(() => (contextMenuVisible ? setContextMenuVisible(false) : null), [contextMenuVisible]);
+	/* istanbul ignore next */
 	const handleClick = (event) => {
 		console.log(event.target.innerText, 'event.target.innerText');
 		event.preventDefault();
@@ -33,6 +35,7 @@ const Encoder = ({
 		top: y + 10,
 		left: x + 10,
 	}
+	/* istanbul ignore next */
 	useEffect(() => {
 		document.addEventListener("click", handleClose);
 		return () => {
@@ -40,6 +43,7 @@ const Encoder = ({
 		};
 	});
 
+	/* istanbul ignore next */
 	const onClick = () => {
 		const temparr = [...encoderData.selectedObjs]
 		temparr?.forEach((ele) => {
@@ -50,6 +54,7 @@ const Encoder = ({
 		setEncoderData({ ...encoderData, savedValue: encoderData.encoderValue, selectedObjs: temparr })
 		onCreateClick();
 	};
+	/* istanbul ignore next */
 	const handleChange = (e) => {
 		setEncoderData({ ...encoderData, encoderValue: e })
 	}

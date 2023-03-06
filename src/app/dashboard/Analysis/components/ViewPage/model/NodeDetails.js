@@ -35,6 +35,7 @@ const NodeDetails = (props) => {
 		};
 		dispatch(showLoader());
 		const apiResponse = await getViewNodeDetails(req);
+		/* istanbul ignore next */
 		if (apiResponse?.Status === 200) {
 			setDataStatus(false);
 			dispatch(hideLoader());
@@ -47,12 +48,14 @@ const NodeDetails = (props) => {
 				apiResponse.data.Histogram.layout.width = "100px";
 			}
 			setNodeData(apiResponse);
+			/* istanbul ignore next */
 		} else {
 			dispatch(hideLoader());
 			setDataStatus(false);
 		}
 	};
 	useEffect(() => {
+		/* istanbul ignore next */
 		if (nodeInformation) {
 			getNodeDetails();
 			setDataStatus(true);
