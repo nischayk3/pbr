@@ -205,7 +205,7 @@ const Estimator = (props) => {
 		}
 		dispatch(showLoader());
 		const apiResponse = await getHyperParameters(reqBody)
-		if (apiResponse.Status === 200) {
+		if (apiResponse?.Status === 200) {
 			setShowParameter(true)
 			apiResponse.data.forEach((ele, index) => {
 				ele.key = index + 1;

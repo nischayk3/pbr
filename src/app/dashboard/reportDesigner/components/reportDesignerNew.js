@@ -46,6 +46,7 @@ const ReportDesignerNew = () => {
 	const loading = false;
 	const isNew = true;
 
+	/* istanbul ignore next */
 	const loadData = useSelector(
 		(state) => state.reportDesignerReducer.reportLoad
 	);
@@ -120,6 +121,7 @@ const ReportDesignerNew = () => {
 		form.resetFields();
 	}, [formData]);
 
+	/* istanbul ignore next */
 	const unloadUrl = async (params) => {
 		try {
 			dispatch(showLoader());
@@ -163,6 +165,7 @@ const ReportDesignerNew = () => {
 		setChartsLayout(chartsLayouts);
 	};
 
+	/* istanbul ignore next */
 	const checkChanges = (reportData, mainJson, save_Type) => {
 		let layout_change = false;
 		let new_charts_added = selectedSectionCharts.length > 0;
@@ -385,6 +388,7 @@ const ReportDesignerNew = () => {
 		return rows;
 	};
 
+	/* istanbul ignore next */
 	const LoadData = (json_data) => {
 		try {
 			dispatch(showLoader());

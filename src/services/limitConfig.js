@@ -73,7 +73,7 @@ export const uploadLimitConfig = (_queryParam) => {
 	const headers = {
 		"content-type": "application/json",
 		"x-access-token": login_response.token ? login_response.token : "",
-		"resource-name": "chart"
+		"resource-name": "CHART"
 	};
 	return Service.post(
 		BMS_APP_PYTHON_SERVICE + "/chart-limit-populate",
@@ -98,15 +98,14 @@ export const deleteLimitsApi = (_queryParam) => {
 	};
 	return Service.del(
 		BMS_APP_PYTHON_SERVICE + "/chart-limit",
-        _queryParam,
+		_queryParam,
 		headers
 	).then(
 		(response) => {
 			return response.data;
 		},
 		(error) => {
-			return error.response.data; 
+			return error.response.data;
 		}
 	);
 };
-

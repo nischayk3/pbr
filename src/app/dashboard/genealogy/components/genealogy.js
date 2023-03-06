@@ -287,6 +287,9 @@ function Genealogy() {
 		/* istanbul ignore next */
 		if (res["status-code"] !== 200) {
 			dispatch(showNotification("error", "No Data found for current Site"));
+		} else if (res?.Status === 403) {
+			/* istanbul ignore next */
+			dispatch(showNotification("error", 'You are not authorized', "It seems like you don't have permission to use this service."));
 		} else {
 			/* istanbul ignore next */
 			setTimeZoneArray(res.Data);
@@ -339,7 +342,7 @@ function Genealogy() {
 			dispatch(showLoader());
 			const backwardRes = await getBackwardData(_reqBack);
 
-			if (backwardRes.statuscode === 200) {
+			if (backwardRes?.statuscode === 200) {
 				setGenealogyData(backwardRes.data);
 				setisBackward(true);
 				setisForward(false);
@@ -370,7 +373,7 @@ function Genealogy() {
 		try {
 			dispatch(showLoader());
 			const forwardRes = await getForwardData(_reqFor);
-			if (forwardRes.statuscode === 200) {
+			if (forwardRes?.statuscode === 200) {
 				setGenealogyData(forwardRes.data);
 				setisBackward(false);
 				setisForward(true);
@@ -463,7 +466,7 @@ function Genealogy() {
 			dispatch(showLoader());
 			const process = await getSubProcess(_reqProcessInfo);
 			dispatch(hideLoader());
-			if (process.statuscode == 200) {
+			if (process?.statuscode == 200) {
 				setSubProcess(process.message);
 			}
 		} catch (error) {
@@ -483,9 +486,9 @@ function Genealogy() {
 			dispatch(showLoader());
 			const pbrRes = await pbrApproval(_reqPbrBatch);
 			dispatch(hideLoader());
-			if (pbrRes.Status === 200) {
+			if (pbrRes?.Status === 200) {
 				setPbrBatchData(pbrRes.Data);
-			} else if (pbrRes.Status === 400 && pbrRes.Status === 401) {
+			} else if (pbrRes?.Status === 400 && pbrRes?.Status === 401) {
 				setPbrBatchData();
 				//	dispatch(showNotification('error', batchRes.detail));
 			}
@@ -545,7 +548,7 @@ function Genealogy() {
 		try {
 			setUploading(true);
 			const fileResponse = await pbrFileUpload(_fileRequest);
-			if (fileResponse.Status === 202) {
+			if (fileResponse?.Status === 202) {
 				const fileName = [];
 				const fileSize = [];
 				const timezone = [];

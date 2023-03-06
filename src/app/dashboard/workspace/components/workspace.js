@@ -66,6 +66,9 @@ const Workspace = () => {
 				setTilesData(tilesResponse["Data"]);
 				setUserApproval(tilesResponse["counts"]);
 				setPbrCount(filterPbrCount[0] && filterPbrCount[0].item_count);
+			} else if (tilesResponse?.Status === 403) {
+				/* istanbul ignore next */
+				dispatch(showNotification("error", ""));
 			}
 		} catch (error) {
 			dispatch(showNotification("error", error.message));
@@ -86,6 +89,10 @@ const Workspace = () => {
 		try {
 			const alertResponse = await getJob(req, headers);
 			setScheduleChartAlerts(alertResponse.Data);
+			if (alertResponse?.Status === 403) {
+				/* istanbul ignore next */
+				dispatch(showNotification("error", ""));
+			}
 		} catch (error) {
 			dispatch(showNotification("error", error.message));
 		}
@@ -122,6 +129,9 @@ const Workspace = () => {
 					"_" +
 					chartIdResponse?.Data[0]?.chart_version
 				);
+			} else if (chartIdResponse?.Status === 403) {
+				/* istanbul ignore next */
+				dispatch(showNotification("error", ""));
 			} else {
 				console.log("error",);
 			}
@@ -138,6 +148,10 @@ const Workspace = () => {
 			const chartResponse = await getUpdatedChartsViewsData(req);
 			setLastUpdatedCharts(chartResponse.last_created_or_changed_charts);
 			setLastUpdatedViews(chartResponse.last_created_or_changed_views);
+			if (chartResponse?.Status === 403) {
+				/* istanbul ignore next */
+				dispatch(showNotification("error", ""));
+			}
 		} catch (error) {
 			dispatch(showNotification("error", error.Message));
 		}

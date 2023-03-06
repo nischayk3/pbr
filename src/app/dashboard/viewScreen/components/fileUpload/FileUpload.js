@@ -257,7 +257,7 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 		};
 		deleteAdHocFile(req).then((res) => {
 			/* istanbul ignore else  */
-			if (res.data.statuscode === 202) {
+			if (res.data?.statuscode === 202) {
 				dispatch(
 					showNotification("success", "adhoc-file deleted successfully")
 				);
@@ -267,16 +267,16 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 				setFilesListTree(updatedFileList);
 			}
 			/* istanbul ignore next  */
-			if (res.data.statuscode === 400) {
+			if (res.data?.statuscode === 400) {
 				dispatch(showNotification("error", res.data.message));
 			}
 
 			/* istanbul ignore next  */
-			if (res.data.statuscode === 403) {
+			if (res.data?.statuscode === 403) {
 				dispatch(showNotification("error", 'You are not authorized', "It seems like you don't have permission to use this service."));
 			}
 			/* istanbul ignore next  */
-			if (res.data.statuscode === 404) {
+			if (res.data?.statuscode === 404) {
 				dispatch(showNotification("error", res.data.message));
 			}
 		});
@@ -326,31 +326,27 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 			formData.append("upload_reason", "test_reason");
 			formData.append("username", localStorage.getItem("username"));
 			adHocFileUpload(formData).then((res) => {
+				dispatch(hideLoader());
 				/* istanbul ignore else  */
 				if (res.Status === 202) {
-					dispatch(hideLoader());
 					dispatch(showNotification("success", res.Message));
-
 					setUploadBtnDisabled(false);
 					setSelectedFileId(res.File_id);
 					selectedFiles[`${res.File_id}`] = true;
 					setSelectedFiles(selectedFiles);
-
 				}
 				/* istanbul ignore next  */
 				if (res.Status === 400) {
-					dispatch(hideLoader());
 					dispatch(showNotification("error", res.Message));
 					setUploadBtnDisabled(true);
 				}
 				/* istanbul ignore next  */
 				if (res.Status === 403) {
-					dispatch(hideLoader());
-					// dispatch(showNotification("error", res.Message));
 					setUploadBtnDisabled(true);
 				}
 			});
 		} else if (info.file.status === "removed") {
+			dispatch(hideLoader());
 			setSelectedAdHocFileList([]);
 			setUploadBtnDisabled(true);
 		}

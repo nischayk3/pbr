@@ -28,7 +28,7 @@ export const getChartList = (request) => {
 	return Service.get(
 		BMS_APP_PYTHON_SERVICE + "/chart-list",
 		request,
-		_reqheader('VIEW')
+		_reqheader('chart')
 	).then(
 		(response) => {
 			return response.data;

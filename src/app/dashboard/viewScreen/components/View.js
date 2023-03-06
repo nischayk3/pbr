@@ -322,7 +322,7 @@ const View = () => {
 		/* istanbul ignore next */
 		try {
 			const response = await saveFunction(_reqView, _resourceName);
-			if (response.statuscode === 200) {
+			if (response?.statuscode === 200) {
 				setIsSaveVisible(false);
 				setViewDisplayId(response.view_disp_id);
 				setViewStatus(response.view_status);
@@ -338,7 +338,7 @@ const View = () => {
 				history.push({
 					pathname: `/dashboard/view_creation/${response.view_disp_id}&1`,
 				})
-			} else if (response.data.statuscode === 400) {
+			} else if (response?.data?.statuscode === 400) {
 				dispatch(showNotification("error", response.data.message));
 			}
 		} catch (err) {

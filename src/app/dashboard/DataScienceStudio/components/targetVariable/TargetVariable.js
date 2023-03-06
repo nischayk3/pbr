@@ -137,10 +137,10 @@ const TargetVariable = () => {
 			dispatch(showLoader());
 			const loadDssRes = await loadDssView(_reqLoad);
 			dispatch(hideLoader());
-			if (loadDssRes.statuscode === 200) {
+			if (loadDssRes?.statuscode === 200) {
 				setExpandData(loadDssRes.data)
 				/* istanbul ignore next */
-			} else if (loadDssRes.statuscode === 400) {
+			} else if (loadDssRes?.statuscode === 400) {
 				/* istanbul ignore next */
 				setExpandData([])
 				/* istanbul ignore next */
@@ -168,12 +168,12 @@ const TargetVariable = () => {
 			dispatch(showLoader());
 			const loadDssRes = await dssSave(_reqSave);
 			dispatch(hideLoader());
-			if (loadDssRes.Status === 200) {
+			if (loadDssRes?.Status === 200) {
 				/* istanbul ignore next */
 				dispatch(showNotification("success", loadDssRes.Message));
 				const JUPYTER_APP_URL = `${JUPYTER_APP}/hub/login?next=%2Fjupyterhub/hub%2F&auth_token=${login_response.token}`;
 				window.open(`${JUPYTER_APP_URL}`, "_blank")
-			} else if (loadDssRes.Status === 400) {
+			} else if (loadDssRes?.Status === 400) {
 				/* istanbul ignore next */
 				dispatch(showNotification("error", loadDssRes.Message));
 			}

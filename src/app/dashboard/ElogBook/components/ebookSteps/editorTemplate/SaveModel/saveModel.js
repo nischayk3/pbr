@@ -17,7 +17,7 @@ function SaveModel({ saveModel, layout }) {
 		try {
 			const templateDataupdate = await updateformtemplate(data);
 			dispatch(hideLoader());
-			if (templateDataupdate.Status === 200) {
+			if (templateDataupdate?.Status === 200) {
 				setIsModalOpen(false);
 				dispatch(showNotification('success', "updated succesfully"));
 			} else {

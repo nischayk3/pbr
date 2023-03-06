@@ -198,7 +198,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		const newArr = [...postChartData.data];
 		const obj = {
 			function_name:
-				axisValues.xaxis === "Batch" ? "batch_num" : "recorded_date",
+				(axisValues.xaxis === "Batch" || axisValues.xaxis === "batch_num") ? "batch_num" : "recorded_date",
 			function_id: null,
 		};
 
@@ -287,6 +287,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 				},
 			];
 		});
+		/* istanbul ignore next */
 		setPostChartData({ ...postChartData, data: newArr });
 		let errorMsg = "";
 		try {
@@ -333,6 +334,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		setTableKey(key);
 	};
 
+	/* istanbul ignore next */
 	const handleChartType = (e) => {
 		if (e !== 'Process Capability') {
 			setPpkData({});

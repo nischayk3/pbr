@@ -17,7 +17,12 @@ describe("Render View Creation Load", () => {
 	afterEach(() => {
 		cy.viewport(1280, 920);
 		cy.loginWithAD();
-		cy.intercept('GET', '**/views-list', { fixture: 'viewList.json' }).as('viewList')
+		cy.intercept('GET', '**/views-list', (req) => {
+			req.reply({
+				statusCode: 200, // default
+				fixture: 'viewList.json'
+			})
+		}).as('viewList')
 		cy.intercept('GET', '**/view-config?view_disp_id=V348&view_version=1', (req) => {
 			req.reply({
 				statusCode: 200, // default
@@ -30,7 +35,12 @@ describe("Render View Creation Load", () => {
 	beforeEach(() => {
 		cy.viewport(1280, 920);
 		cy.loginWithAD();
-		cy.intercept('GET', '**/views-list', { fixture: 'viewList.json' }).as('viewList')
+		cy.intercept('GET', '**/views-list', (req) => {
+			req.reply({
+				statusCode: 200, // default
+				fixture: 'viewList.json'
+			})
+		}).as('viewList')
 		cy.intercept('GET', '**/view-config?view_disp_id=V348&view_version=1', (req) => {
 			req.reply({
 				statusCode: 200, // default
@@ -103,14 +113,24 @@ describe("Render View Creation Page", () => {
 		cy.viewport(1280, 720);
 		cy.loginWithAD();
 		cy.intercept('POST', '**/molecules3', { fixture: 'secondNodeMol.json' }).as('secondNodeMol')
-		cy.intercept('GET', '**/views-list', { fixture: 'viewList.json' }).as('viewList')
+		cy.intercept('GET', '**/views-list', (req) => {
+			req.reply({
+				statusCode: 200, // default
+				fixture: 'viewList.json'
+			})
+		}).as('viewList')
 	});
 
 	beforeEach(() => {
 		cy.viewport(1280, 720);
 		cy.loginWithAD();
 		cy.intercept('POST', '**/molecules3', { fixture: 'secondNodeMol.json' }).as('secondNodeMol')
-		cy.intercept('GET', '**/views-list', { fixture: 'viewList.json' }).as('viewList')
+		cy.intercept('GET', '**/views-list', (req) => {
+			req.reply({
+				statusCode: 200, // default
+				fixture: 'viewList.json'
+			})
+		}).as('viewList')
 	});
 
 	it('Load View Landing Page Correctly', () => {
@@ -149,7 +169,7 @@ describe("Render View Creation Page", () => {
 		cy.get('.ant-table-row > :nth-child(1) > div').should("have.text", "V348-1")
 		cy.get('.ant-table-row > :nth-child(3) > div').should("have.text", "APRD")
 		cy.get('.ant-table-row > :nth-child(4) > div').should("have.text", "1")
-		cy.get('.ant-table-row > :nth-child(5) > div').should("have.text", "D dinesh.kumar@mareana.com")
+		cy.get('.ant-table-row > :nth-child(5) > div').should("have.text", "D dinesh.jinjala@mareana.com")
 	})
 
 	it('Recently Created View', () => {
@@ -216,7 +236,13 @@ describe("Render View Creation Page", () => {
 	})
 
 	it('Filter Paramter lookup ', () => {
-		cy.intercept('GET', '**/molecules_filter?molecule_name=BELATACEPT&search_text=ARSENIC', { fixture: 'filterMolList.json' }).as('filterMolList')
+		cy.intercept('GET', '**/molecules_filter?molecule_name=BELATACEPT&search_text=ARSENIC', (req) => {
+			req.reply({
+				statusCode: 200, // default
+				fixture: 'filterMolList.json'
+			})
+		}).as('filterMolList')
+
 		cy.log('Filter Molecule')
 		cy.get('#filter-molecule').click({ force: true });
 		cy.get('#filter-molecule').clear();

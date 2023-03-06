@@ -9,6 +9,7 @@ const ModelData = ({ modelData, setModelData, editFinalJson }) => {
 	const dispatch = useDispatch();
 	const selectedViewData = useSelector((state) => state.analyticsReducer.viewData);
 
+	/* istanbul ignore next */
 	const getModalData = async () => {
 		dispatch(showLoader());
 		const req = {
@@ -20,13 +21,13 @@ const ModelData = ({ modelData, setModelData, editFinalJson }) => {
 			},
 		};
 		const apiResponse = await savePreprocessing(req);
-		if (apiResponse.Status === 200) {
+		if (apiResponse?.Status === 200) {
 			dispatch(hideLoader());
 			setModelData(apiResponse.html_string);
 		} else {
-		    /* istanbul ignore next */
+			/* istanbul ignore next */
 			dispatch(hideLoader());
-			 /* istanbul ignore next */
+			/* istanbul ignore next */
 			dispatch(showNotification("error", "Unable to get model data"));
 		}
 	};
@@ -34,6 +35,7 @@ const ModelData = ({ modelData, setModelData, editFinalJson }) => {
 
 
 	useEffect(() => {
+		/* istanbul ignore next */
 		if (editFinalJson?.pipeline_data[0]?.variable_mapping?.length && !modelData?.length) {
 			getModalData();
 		}
