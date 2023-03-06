@@ -150,7 +150,7 @@ function Esign(props) {
 			let req = {};
 			req["date"] = latestDate();
 			req["timestamp"] = currentTimeStamp();
-			req["reason"] = reason === 'Reason for signature' ? otherReason : isauth === "R" ? otherReason : reason;
+			req["reason"] = reason === 'Reason for signature' ? otherReason : isAuth === "R" ? otherReason : reason;
 			req["user_id"] = username;
 			// eslint-disable-next-line react/prop-types
 			req["screen"] = screenName ? screenName : "CONFIGURATION";
@@ -169,7 +169,7 @@ function Esign(props) {
 					esign_id: esign_response?.primary_id,
 					file_id: fileID,
 					flag: userType,
-					reason: reason === 'Reason for signature' ? otherReason : isauth === "R" ? otherReason : reason
+					reason: reason === 'Reason for signature' ? otherReason : isAuth === "R" ? otherReason : reason
 				}
 				let res = await createUsers(req);
 				if (res.Status == 200) {
@@ -191,6 +191,8 @@ function Esign(props) {
 			}
 		}
 		catch (err) {
+			console.log(err, 'error')
+			dispatch(hideLoader());
 			dispatch(showNotification("error", "Error Occured"));
 		}
 	};
@@ -201,7 +203,7 @@ function Esign(props) {
 
 		const _reqSaml = {
 			SignedInfoData: {
-				Reason: reason === 'Reason for signature' ? otherReason : isauth === "R" ? otherReason : reason,
+				Reason: reason === 'Reason for signature' ? otherReason : isAuth === "R" ? otherReason : reason,
 				screenName: screenName,
 				appType: appType,
 				fileID: fileID,
