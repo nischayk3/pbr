@@ -361,7 +361,7 @@ const Login = () => {
 										<Input
 											type='email'
 											className="input-prefix"
-											placeholder="Enter email ID:john@gmail.com"
+											placeholder="Enter username: admin or user"
 											prefix={<UserOutlined />}
 											value={username}
 											onChange={(e) => setUsername(e.target.value)}
