@@ -31,7 +31,7 @@ export const getDataQualityData = (_queryParam) => {
 		_queryParam,
 		{
 			"content-type": "application/json",
-			username: localStorage.getItem("user"),
+			username: localStorage.getItem("username"),
 		}
 	).then(
 		(response) => {
