@@ -61,17 +61,17 @@ const SearchSidebarWithDefaultLayoutExample = ({ fileUrl }) => {
                             </div>
                         </div>
                         <div className="rpv-toolbar__center">
-                            <div className="rpv-toolbar__item">
+                            {/* <div className="rpv-toolbar__item">
                                 <ZoomOut />
-                            </div>
+                            </div> */}
                             <div className="rpv-core__display--hidden rpv-core__display--block-small">
                                 <div className="rpv-toolbar__item">
                                     <Zoom />
                                 </div>
                             </div>
-                            <div className="rpv-toolbar__item">
+                            {/* <div className="rpv-toolbar__item">
                                 <ZoomIn />
-                            </div>
+                            </div> */}
                         </div>
                         <div className="rpv-toolbar__right">
                             {/* <div className="rpv-core__display--hidden rpv-core__display--block-medium">
