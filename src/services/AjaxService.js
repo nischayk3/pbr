@@ -22,13 +22,15 @@ class Service {
 				return response;
 			},
 			function (error) {
-				console.log("service error", error);
 				if (error.response.status === 401) {
 					Store.dispatch(hideLoader(true))
 					Store.dispatch(checkAuth(false));
 				} else if (error.response.status === 403) {
-					Store.dispatch(hideLoader(true))
-					Store.dispatch(showNotification("error", 'You are not authorized', "It seems like you don't have permission to use this service."));
+					console.log("error service", error.response);
+					if (error.response?.config?.headers['resource-name'] !== 'WORKITEMS') {
+						Store.dispatch(hideLoader(true))
+						Store.dispatch(showNotification("error", 'You are not authorized', "It seems like you don't have permission to use this service."));
+					}
 				} else if (error.response.status === 500) {
 					Store.dispatch(hideLoader(true))
 					Store.dispatch(checkNetworkError(true));
@@ -45,6 +47,8 @@ class Service {
 				} else if (error.response.status === 504) {
 					Store.dispatch(hideLoader(true))
 					Store.dispatch(showNotification("error", '504 error, Gateway Timeout', 'Please try again later'));
+				} else {
+					Store.dispatch(hideLoader(true))
 				}
 				return Promise.reject(error);
 			}
