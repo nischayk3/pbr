@@ -32,12 +32,12 @@ const chartComponent = (props) => {
 			setWorkSpaceChartData(chartResponse.data[0].data);
 			setWorkSpaceChartLayoutXAxis(chartResponse.data[0].layout.xaxis)
 			setWorkSpaceChartLayoutYAxis(chartResponse.data[0].layout.yaxis)
-			if (chartResponse?.Status === 403) {
-				/* istanbul ignore next */
-				dispatch(showNotification("error", ""));
-			}
+			// if (chartResponse?.Status === 403) {
+			// 	/* istanbul ignore next */
+			// 	dispatch(showNotification("error", 'You are not authorized for chart', "It seems like you don't have permission to use this service."));
+			// }
 		} catch (error) {
-			dispatch(showNotification('error', error.Message));
+			dispatch(showNotification('error', error));
 		}
 	}
 	const layout = {
