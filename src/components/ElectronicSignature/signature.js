@@ -266,9 +266,10 @@ const Signature = (props) => {
 					if (location?.state?.path) {
 						history.push(`${location.state.path}`)
 					}
-				} else {
-					dispatch(showNotification("error", publish_response.msg));
-				}
+				} 
+				// else {
+				// 	dispatch(showNotification("error", publish_response.msg));
+				// }
 			} else if (esign_response.Status == 403) {
 				dispatch(showNotification("error", esign_response.Message));
 			} else {
