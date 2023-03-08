@@ -61,7 +61,7 @@ const Workspace = () => {
 			const tilesResponse = await getCountData(req);
 			if (tilesResponse["status-code"] == 200) {
 				let filterPbrCount = tilesResponse["Data"].filter(
-					(el) => el.application_type === "PBR"
+					(el) => el.application_type === "PBR_TEMPLATE"
 				);
 				setTilesData(tilesResponse["Data"]);
 				setUserApproval(tilesResponse["counts"]);

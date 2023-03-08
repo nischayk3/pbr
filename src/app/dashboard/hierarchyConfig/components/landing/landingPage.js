@@ -252,7 +252,7 @@ export default function LandingPage() {
 						<Button
 							disabled={!hierarchyName.length > 0}
 							className="custom-primary-button"
-							onClick={() => checkUnique(hierarchyName)}
+							// onClick={() => checkUnique(hierarchyName)}
 						>
 							Let's Go!
 						</Button>,
