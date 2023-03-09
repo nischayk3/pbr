@@ -5,7 +5,7 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
 import SelectField from "../../../../components/SelectField/SelectField";
-import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
+import { hideLoader, showLoader } from '../../../../duck/actions/commonActions';
 import { deleteLimitsApi } from '../../../../services/limitConfig';
 import './Limitconfig.scss';
 
@@ -363,24 +363,26 @@ const LimitInputs = ({ expandedMol, selectedMol, getMoleData, editable, totalVie
 				const apiResponse = await deleteLimitsApi(obj);
 				if (apiResponse?.status === 200) {
 					tempParamData = paramData.filter((limit) => limit?.int_id !== record?.int_id)
+					const tempMoleculeData = [...moleculeData];
+					tempMoleculeData?.forEach((molecule) => {
+						if (molecule?.key === expandedMol) {
+							molecule.paramData = JSON.parse(JSON.stringify(tempParamData))
+						}
+					})
+					setMoleculeData(tempMoleculeData)
 				}
 			} else {
 				tempParamData = paramData.filter((limit) => limit?.key !== record?.key)
 			}
-			const tempMoleculeData = [...moleculeData];
-			tempMoleculeData?.forEach((molecule) => {
-				if (molecule?.key === expandedMol) {
-					molecule.paramData = JSON.parse(JSON.stringify(tempParamData))
-				}
-			})
-			setMoleculeData(tempMoleculeData)
+
 			// setLimitsData(tempParamData)
 			dispatch(hideLoader());
 		} catch (error) {
+			console.log("error", error);
 			/* istanbul ignore next */
 			dispatch(hideLoader());
 			/* istanbul ignore next */
-			dispatch(showNotification("error", error));
+			// dispatch(showNotification("error", error));
 		}
 	}
 
