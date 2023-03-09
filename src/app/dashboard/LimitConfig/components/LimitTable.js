@@ -168,7 +168,7 @@ const LimitTable = () => {
 			/* istanbul ignore next */
 			dispatch(hideLoader());
 			/* istanbul ignore next */
-			dispatch(showNotification("error", error));
+			dispatch(showNotification("error", "Unable to get molecule list"));
 		}
 	}
 
@@ -232,15 +232,18 @@ const LimitTable = () => {
 		try {
 			dispatch(showLoader());
 			const apiResponse = await deleteLimitsApi(obj);
-			if (apiResponse.status === 200) {
+			if (apiResponse?.status === 200) {
 				getLimitConfigApi();
+			}
+			else if (apiResponse?.Status == 403) {
+				dispatch(showNotification("error", "User is not authorised"));
 			}
 			dispatch(hideLoader());
 		} catch (error) {
 			/* istanbul ignore next */
 			dispatch(hideLoader());
 			/* istanbul ignore next */
-			dispatch(showNotification("error", error));
+			dispatch(showNotification("error", "Unable to delete"));
 		}
 	}
 
