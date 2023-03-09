@@ -23,6 +23,8 @@ export default function RedirectSign() {
 				localStorage.setItem('login_details', JSON.stringify(data))
 				localStorage.setItem('user', data.user_id);
 				localStorage.setItem('username', data.firstname ? data.firstname.replaceAll('^"|"$', '') : data.email_id.replaceAll('^"|"$', ''));
+				localStorage.setItem("user_id", data?.user_id)
+				
 				dispatch(showNotification('success', `Logined As ${data.email_id}`))
 				setIsPublish(true)
 				let url = localStorage.getItem('redirectUrl')

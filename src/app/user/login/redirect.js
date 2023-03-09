@@ -22,6 +22,8 @@ export default function Redirect() {
 				localStorage.setItem('login_details', JSON.stringify(data));
 				localStorage.setItem('user', data?.user_id);
 				localStorage.setItem('username', data?.firstname ? data?.firstname.replaceAll('^"|"$', '') : data?.email_id.replaceAll('^"|"$', ''));
+				localStorage.setItem("user_id", data?.user_id)
+				
 				dispatch(showNotification('success', `Logged in as ${data?.email_id}`));
 				if (data?.token != '') {
 					dispatch(sendLoginDetails(data));
