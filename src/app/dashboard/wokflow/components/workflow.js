@@ -66,13 +66,13 @@ const Workflow = () => {
 	}, []);
 
 	useEffect(() => {
-		if (cardTitle != "" && cardTitle !== "Param Data Approval") {
+		if (cardTitle != "" && cardTitle !== "Param Data") {
 			cardTableData(applicationType);
 		}
 	}, [cardTitle, activeTab]);
 
 	useEffect(() => {
-		if (cardTitle === "Param Data Approval") {
+		if (cardTitle === "Param Data") {
 			/* istanbul ignore next */
 			getUnApprovedParamData();
 		}
@@ -155,9 +155,7 @@ const Workflow = () => {
 
 	/* istanbul ignore next */
 	const getUnApprovedParamData = async () => {
-		let _reqData = {
-			limit: 10,
-		};
+		let _reqData = {};
 		/* istanbul ignore next */
 		const dataColumns = [
 			{
@@ -344,7 +342,7 @@ const Workflow = () => {
 									</div>
 								}
 							>
-								{cardTitle === "Param Data Approval" ? (
+								{cardTitle === "Param Data" ? (
 									<>
 										<div style={{ margin: "12px 0px 12px 0px" }}>
 											<Button
