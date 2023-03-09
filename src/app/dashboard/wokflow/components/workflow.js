@@ -155,9 +155,7 @@ const Workflow = () => {
 
 	/* istanbul ignore next */
 	const getUnApprovedParamData = async () => {
-		let _reqData = {
-			limit: 10,
-		};
+		let _reqData = {};
 		/* istanbul ignore next */
 		const dataColumns = [
 			{
