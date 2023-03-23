@@ -18,6 +18,7 @@ import RedirectSign from "../user/login/redirectSign";
 import RedirectSAMLSign from "../user/login/samlRedirectSign";
 import "./dashboard.scss";
 import PrivateRoute from "./ProtectedRoute";
+import ReactGA from 'react-ga4';
 // DASHBOARD ROUTE COMPONENTS
 // const HeaderBar = lazy(() => import("../../components/Header"))
 //const Sidebar = lazy(() => import("../../components/Sidebar"))
@@ -87,12 +88,14 @@ const Dashboard = () => {
 	const [authorised, setAuthorised] = useState(true);
 
 	useEffect(() => {
+		ReactGA.send({ hitType: "pageview", page:location.pathname, title:"Page visited" });
 		if (JSON.parse(localStorage.getItem('login_details')) == null && !window.location.href.includes('user/login') && !window.location.href.includes('/redirect')) {
 			dispatch(showNotification('error', 'Please login first to proceed'))
 			setTimeout(() => {
 				history.push('/user/login');
 				window.location.reload()
 			}, 3000)
+
 		}
 		if (PRODUCT_FOR == 'BMS') {
 			localStorage.setItem("loginwith", 'WITH_SAML')

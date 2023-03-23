@@ -1,5 +1,4 @@
-import React, { lazy } from "react";
-
+import React, { lazy, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch, useRouteMatch } from "react-router-dom";
 import Loading from "../components/Loading";
@@ -9,6 +8,7 @@ import { MDH_APP_PYTHON_SERVICE, PRODUCT_FOR } from "../constants/apiBaseUrl";
 import ErrorPage from "./errorPage";
 import ProctectedRoute from "./PrivateRoute";
 import TokenExpired from "./tokenexpired";
+import ReactGA from 'react-ga4';
 
 // APP ROUTE COMPONENTS
 const Dashboard = lazy(() => import("./dashboard"));
@@ -25,6 +25,10 @@ const App = () => {
 	const error = useSelector(
 		(state) => state.commonReducer.isError
 	);
+
+	useEffect(()=>{
+		ReactGA.initialize('G-1WM83NDTY2');
+	},[])
 
 	return (
 		<>
