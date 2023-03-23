@@ -100,7 +100,7 @@ const Dashboard = () => {
 		if (PRODUCT_FOR == 'BMS') {
 			localStorage.setItem("loginwith", 'WITH_SAML')
 		}
-	}, []);
+	}, [location.pathname]);
 
 	// const requiredAuth = async (resource) => {
 	// 	let authResponse = {};
