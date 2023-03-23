@@ -9,8 +9,6 @@ import "./tabContent.scss";
 export default function ContentRenderComponent(props) {
 
 	let request_props = props.request[0]
-
-
 	const [request, setRequest] = useState(JSON.stringify(request_props));
 	const dispatch = useDispatch()
 	const [statusCode, setStatusCode] = useState(0);
@@ -49,12 +47,14 @@ export default function ContentRenderComponent(props) {
 	const getResult = async () => {
 		if (request.length > 0) {
 			let result = await props.getData(JSON.parse(request));
-			if (result?.Status > 200 || result?.statuscode > 200) {
-				setStatusCode(result?.Status || result?.statuscode);
+			console.log(result);
+
+			if (result.Status > 200 || result.statuscode > 200 || result['status-code'] > 200) {
+				setStatusCode(result.Status || result.statuscode || result['status-code']);
 				setResult(JSON.stringify(result));
 			}
 			else if (result) {
-				if (result?.status || result?.statuscode > 200) {
+				if (result.status || result.statuscode > 200) {
 					setStatusCode(result.status);
 					setResult('');
 				}
@@ -64,7 +64,7 @@ export default function ContentRenderComponent(props) {
 					const url = window.URL.createObjectURL(new Blob([result]));
 					const a = document.createElement("a");
 					a.href = url;
-					a.download = `${props.selectedTab}-response.csv`;
+					a.download = `${props.selectedTab || props.selectedSubTabKey}-response.csv`;
 					document.body.appendChild(a);
 					a.click();
 					window.URL.revokeObjectURL(url);
@@ -99,7 +99,7 @@ export default function ContentRenderComponent(props) {
 		setRequest(JSON.stringify(props.request[0]))
 		setStatusCode(0)
 		setResult('')
-	}, [props.selectedTab])
+	}, [props.selectedTab, props.selectedSubTabKey])
 
 	return (
 		<div>

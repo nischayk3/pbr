@@ -20,6 +20,11 @@ export default function DataAccessTabs(props) {
       icon: <BarChartOutlined style={{ color: "#162154" }} />,
       selected: false,
     },
+    {
+      title: "PBR",
+      icon: <BarChartOutlined style={{ color: "#162154" }} />,
+      selected: false,
+    },
   ]);
 
   const handleClick = (tab_name) => {
