@@ -27,7 +27,10 @@ const App = () => {
 	);
 
 	useEffect(()=>{
-		ReactGA.initialize('G-1WM83NDTY2');
+		// google analytis initialize 
+		if(window.location.host == 'merck-mi-dev.mareana.com' || window.location.host == 'mi-devv3-7.mareana.com'){
+			ReactGA.initialize('G-1WM83NDTY2');
+		}
 	},[])
 
 	return (

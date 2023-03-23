@@ -88,7 +88,12 @@ const Dashboard = () => {
 	const [authorised, setAuthorised] = useState(true);
 
 	useEffect(() => {
-		ReactGA.send({ hitType: "pageview", page:location.pathname, title:"Page visited" });
+		
+		if(window.location.host == 'merck-mi-dev.mareana.com' || window.location.host == 'mi-devv3-7.mareana.com'){
+			ReactGA.send({ hitType: "pageview", page:location.pathname, title:"Page visited" });
+
+		}
+
 		if (JSON.parse(localStorage.getItem('login_details')) == null && !window.location.href.includes('user/login') && !window.location.href.includes('/redirect')) {
 			dispatch(showNotification('error', 'Please login first to proceed'))
 			setTimeout(() => {
