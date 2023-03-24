@@ -339,3 +339,16 @@
 	border-color: var(--primary-color);
 	background: var(--primary-color);
 }
+
+.custom__btn--dashed {
+	border-color: var(--primary-color);
+
+	.anticon {
+		color: #CBCBCB;
+		vertical-align: text-top;
+	}
+
+	span:nth-child(2) {
+		vertical-align: baseline;
+	}
+}
