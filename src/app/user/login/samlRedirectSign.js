@@ -1,7 +1,7 @@
 import { Button, Card, Result } from 'antd';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory,useLocation } from 'react-router-dom';
 import {
 	hideLoader, pushPublishResponse, showNotification
 } from '../../../duck/actions/commonActions';
@@ -13,7 +13,7 @@ import { currentTimeStamp, latestDate } from '../../../utils/dateHelper';
 export default function RedirectSAMLSign() {
 	const dispatch = useDispatch();
 	const history = useHistory();
-
+	const location = useLocation();
 	useEffect(() => {
 		getSessionDetail()
 	}, [])
@@ -88,8 +88,22 @@ export default function RedirectSAMLSign() {
 					// }
 
 					let publish_response = {};
-					if (appType == "ELOGBOOK-READING") {
-						publish_response = await publishEvent(reqs, headers);
+					if (appType == "ELOG_BOOK_DATA_ENTRY") {
+						console.log(req1)
+						publish_response = Object.keys(parameter).length > 0 && parameter.fromScreen !== "Workflow"
+							? await publishEvent(reqs, headers) : await approveRecord(req1)
+
+					} else if (appType == "PBR_TEMPLATE") {
+						if (parameter.fromScreen == "Workflow" || parameter.fromScreen == "Workspace") {
+							publish_response =
+								Object.keys(parameter).length > 0 && parameter.fromScreen !== "Workspace"
+									? await approveRecord(req1)
+									: await publishEvent(reqs, headers);
+						} else {
+							publish_response =
+								Object.keys(parameter).length > 0 && await approveRecord(req1)
+						}
+
 					} else {
 						publish_response =
 							Object.keys(parameter).length > 0 && parameter.fromScreen !== "Workspace"
@@ -99,13 +113,21 @@ export default function RedirectSAMLSign() {
 
 					if (publish_response.status_code == 200) {
 						dispatch(showNotification("success", publish_response.msg));
-						dispatch(pushPublishResponse(publish_response));
+						pushPublishResponse(publish_response);
+						if (location?.state?.path) {
+							history.push(`${location.state.path}`)
+						}
+
 					} else if (publish_response.Status == 200) {
 						dispatch(showNotification("success", publish_response.Message));
-						dispatch(pushPublishResponse(publish_response));
-					} else {
-						dispatch(showNotification("error", publish_response.msg));
+						pushPublishResponse(publish_response);
+						if (location?.state?.path) {
+							history.push(`${location.state.path}`)
+						}
 					}
+					// else {
+					// 	dispatch(showNotification("error", publish_response.msg));
+					// }
 				}
 			} else if (esign_response.Status == 403) {
 				dispatch(showNotification("error", esign_response.Message));
