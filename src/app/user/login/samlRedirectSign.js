@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory,useLocation } from 'react-router-dom';
 import {
-	hideLoader, pushPublishResponse, showNotification
+	hideLoader, pushPublishResponse, showNotification,pushEsignResponse
 } from '../../../duck/actions/commonActions';
 import { approveRecord, eSign, publishEvent } from '../../../services/electronicSignatureService';
 import { getSession } from '../../../services/loginService';
@@ -83,10 +83,10 @@ export default function RedirectSAMLSign() {
 					req1["status"] = status;
 
 					// //callback esign id
-					// if (props.eSignId) {
-					// 	props.eSignId(esign_response.primary_id);
-					// }
-
+					if (esign_response?.primary_id) {
+						dispatch(pushEsignResponse(esign_response.primary_id))
+						// props.eSignId(esign_response.primary_id);
+					}
 					let publish_response = {};
 					if (appType == "ELOG_BOOK_DATA_ENTRY") {
 						console.log(req1)
