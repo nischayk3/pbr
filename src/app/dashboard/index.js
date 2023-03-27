@@ -1,5 +1,6 @@
 import { Layout } from "antd";
 import React, { lazy, useEffect, useState } from "react";
+import ReactGA from 'react-ga4';
 import { useDispatch } from "react-redux";
 import {
 	Route,
@@ -18,7 +19,6 @@ import RedirectSign from "../user/login/redirectSign";
 import RedirectSAMLSign from "../user/login/samlRedirectSign";
 import "./dashboard.scss";
 import PrivateRoute from "./ProtectedRoute";
-import ReactGA from 'react-ga4';
 // DASHBOARD ROUTE COMPONENTS
 // const HeaderBar = lazy(() => import("../../components/Header"))
 //const Sidebar = lazy(() => import("../../components/Sidebar"))
@@ -88,9 +88,9 @@ const Dashboard = () => {
 	const [authorised, setAuthorised] = useState(true);
 
 	useEffect(() => {
-		
-		if(window.location.host == 'merck-mi-dev.mareana.com' || window.location.host == 'mi-devv3-7.mareana.com'){
-			ReactGA.send({ hitType: "pageview", page:location.pathname, title:"Page visited" });
+		const status = localStorage.getItem("loginwith")
+		if (window.location.host == 'merck-mi-dev.mareana.com' || window.location.host == 'mi-devv3-7.mareana.com') {
+			ReactGA.send({ hitType: "pageview", page: location.pathname, title: "Page visited" });
 
 		}
 
@@ -103,7 +103,9 @@ const Dashboard = () => {
 
 		}
 		if (PRODUCT_FOR == 'BMS') {
-			localStorage.setItem("loginwith", 'WITH_SAML')
+			if (status !== "WITHOUT_AD" || status == "") {
+				localStorage.setItem("loginwith", 'WITH_SAML')
+			}
 		}
 	}, [location.pathname]);
 

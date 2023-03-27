@@ -107,7 +107,7 @@ function PbrReviewer() {
 	}, []);
 
 	useEffect(() => {
-		if (esignPublishRes && typeof(esignPublishRes) === 'string') {
+		if (esignPublishRes) {
 			// setPublishResponse(esignPublishRes);
 			eSignId(esignPublishRes)
 		}
