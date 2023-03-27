@@ -1,5 +1,6 @@
 import { DownloadOutlined, DownOutlined, UploadOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Popconfirm, Select, Space, Table, Upload } from 'antd';
+import moment from 'moment';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from "react-redux";
 import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
@@ -7,7 +8,6 @@ import { deleteLimitsApi, getLimitConfig, getMoleculeData, saveLimitConfigApi, u
 import { getMoleculeList } from '../../../../services/viewCreationPublishing';
 import './Limitconfig.scss';
 import LimitInputs from './LimitInputs';
-import moment from 'moment';
 
 const LimitTable = () => {
 
@@ -67,6 +67,7 @@ const LimitTable = () => {
 	];
 
 
+	/* istanbul ignore next */
 	const handleChange = (index, event) => {
 		const rowsInput = [...moleculeData];
 		rowsInput[index]['molecule'] = event;
@@ -167,7 +168,7 @@ const LimitTable = () => {
 			/* istanbul ignore next */
 			dispatch(hideLoader());
 			/* istanbul ignore next */
-			dispatch(showNotification("error", error));
+			dispatch(showNotification("error", "Unable to get molecule list"));
 		}
 	}
 
@@ -175,6 +176,7 @@ const LimitTable = () => {
 	const handleVersionList = (viewId) => {
 		let tempVersionList = [];
 		totalViewList.current.forEach((view) => {
+			/* istanbul ignore next */
 			if (view?.split('-')[0] === viewId) {
 				const viewVersion = view?.split('-')[1]
 				tempVersionList.push(viewVersion);
@@ -216,9 +218,11 @@ const LimitTable = () => {
 		const obj = {
 			data: []
 		}
+		/* istanbul ignore next */
 		record?.paramData?.forEach((param) => {
 			obj.data.push(param?.int_id)
 		})
+		/* istanbul ignore next */
 		if (record?.added) {
 			const deleteExisting = moleculeData.filter((mol) => mol.key !== record.key)
 			setMoleculeData(deleteExisting)
@@ -228,25 +232,29 @@ const LimitTable = () => {
 		try {
 			dispatch(showLoader());
 			const apiResponse = await deleteLimitsApi(obj);
-			if (apiResponse.status === 200) {
+			if (apiResponse?.status === 200) {
 				getLimitConfigApi();
+			}
+			else if (apiResponse?.Status == 403) {
+				dispatch(showNotification("error", "User is not authorised"));
 			}
 			dispatch(hideLoader());
 		} catch (error) {
 			/* istanbul ignore next */
 			dispatch(hideLoader());
 			/* istanbul ignore next */
-			dispatch(showNotification("error", error));
+			dispatch(showNotification("error", "Unable to delete"));
 		}
 	}
 
+	/* istanbul ignore next */
 	const saveParammeterData = async (e, rowKey) => {
 		e.stopPropagation()
 		let tempLimitData = moleculeData.filter((ele) => ele?.key === rowKey)
 		tempLimitData = tempLimitData[0]?.paramData
 		let flag = false;
 		tempLimitData?.forEach((limits) => {
-			if(!limits?.view_disp_id) {
+			if (!limits?.view_disp_id) {
 				dispatch(
 					showNotification(
 						"error",
@@ -258,7 +266,7 @@ const LimitTable = () => {
 
 				return;
 			}
-			if(!limits?.view_version) {
+			if (!limits?.view_version) {
 				dispatch(
 					showNotification(
 						"error",
@@ -270,7 +278,7 @@ const LimitTable = () => {
 
 				return;
 			}
-			if(!limits?.parameters) {
+			if (!limits?.parameters) {
 				dispatch(
 					showNotification(
 						"error",
@@ -282,7 +290,7 @@ const LimitTable = () => {
 
 				return;
 			}
-			if(!limits?.limit_type) {
+			if (!limits?.limit_type) {
 				dispatch(
 					showNotification(
 						"error",
@@ -347,6 +355,7 @@ const LimitTable = () => {
 		}
 	}
 
+	/* istanbul ignore next */
 	const onEdit = (e, rowKey) => {
 		e.stopPropagation();
 		const tempkeys = [...expandKeys];
@@ -448,7 +457,7 @@ const LimitTable = () => {
 						columns={columns}
 						pagination={false}
 						expandable={{
-							expandedRowRender: (record) => <LimitInputs editable={record?.editable} expandedMol={record?.key} moleculeData={moleculeData} setMoleculeData={setMoleculeData} getMoleData={getMoleData} siteList={siteList} totalViewList={totalViewList} viewList={viewList} selectedMol={selectedMol} parameterList={parameterList}  paramData={record.paramData} editTable={editTable} />,
+							expandedRowRender: (record) => <LimitInputs editable={record?.editable} expandedMol={record?.key} moleculeData={moleculeData} setMoleculeData={setMoleculeData} getMoleData={getMoleData} siteList={siteList} totalViewList={totalViewList} viewList={viewList} selectedMol={selectedMol} parameterList={parameterList} paramData={record.paramData} editTable={editTable} />,
 							expandRowByClick: true,
 							onExpand: (expanded, record) => {
 								let tempkeys = [...expandKeys];

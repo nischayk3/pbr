@@ -50,12 +50,10 @@ const DeviationTable = () => {
 			const tableResponse = await getDeviationData(req);
 			if (tableResponse['status-code'] === 200) {
 				setDataSource(tableResponse.Data);
-			}
-			else if (tableResponse['status-code'] === 404) {
+			} else if (tableResponse['status-code'] === 404) {
 				setDataSource(tableResponse.Data);
 				dispatch(showNotification('error', tableResponse.Message));
 			}
-
 		} catch (error) {
 			dispatch(showNotification('error', error.Message));
 		}

@@ -2,7 +2,7 @@ import {
 	AUTHENTICATED,
 	HIDE_LOADING,
 	HIDE_NOTIFICATION, LOGOUT_APP, NETWORK_ERROR, PUBLISH_RESPONSE, SHOW_LOADING,
-	SHOW_NOTIFICATION
+	SHOW_NOTIFICATION,PUBLISH_ESIGN_ID
 } from "../types/types";
 
 export const showLoader = () => (dispatch) => {
@@ -33,6 +33,11 @@ export const pushPublishResponse = (payload) => ({
 	type: PUBLISH_RESPONSE,
 	payload,
 })
+export const pushEsignResponse = (payload) => ({
+	type: PUBLISH_ESIGN_ID,
+	payload,
+})
+
 
 export const showNotification = (type, message, description) => (dispatch) => {
 	dispatch({

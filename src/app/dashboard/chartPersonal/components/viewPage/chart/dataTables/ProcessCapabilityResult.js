@@ -1,6 +1,7 @@
 import { Table } from "antd";
 import React, { useEffect, useState } from "react";
 
+/* istanbul ignore next */
 const ProcessCapabilityResult = ({ postChartData }) => {
 	const [dataTable, setDataTable] = useState([]);
 

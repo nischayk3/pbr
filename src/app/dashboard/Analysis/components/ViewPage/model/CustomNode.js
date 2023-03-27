@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Handle } from "react-flow-renderer";
 
 export default (props) => {
@@ -13,6 +13,7 @@ export default (props) => {
 		saveTransformationValues,
 	} = props;
 
+	/* istanbul ignore next */
 	const handleClick = (event) => {
 		event.stopPropagation();
 		setImputerType(

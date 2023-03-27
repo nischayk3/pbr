@@ -61,7 +61,7 @@ const Workspace = () => {
 			const tilesResponse = await getCountData(req);
 			if (tilesResponse["status-code"] == 200) {
 				let filterPbrCount = tilesResponse["Data"].filter(
-					(el) => el.application_type === "PBR"
+					(el) => el.application_type === "PBR_TEMPLATE"
 				);
 				setTilesData(tilesResponse["Data"]);
 				setUserApproval(tilesResponse["counts"]);
@@ -86,6 +86,7 @@ const Workspace = () => {
 		try {
 			const alertResponse = await getJob(req, headers);
 			setScheduleChartAlerts(alertResponse.Data);
+
 		} catch (error) {
 			dispatch(showNotification("error", error.message));
 		}
@@ -138,8 +139,9 @@ const Workspace = () => {
 			const chartResponse = await getUpdatedChartsViewsData(req);
 			setLastUpdatedCharts(chartResponse.last_created_or_changed_charts);
 			setLastUpdatedViews(chartResponse.last_created_or_changed_views);
+
 		} catch (error) {
-			dispatch(showNotification("error", error.Message));
+			dispatch(showNotification("error", error));
 		}
 	};
 

@@ -229,7 +229,7 @@ Cypress.Commands.add('loginWithAD', () => {
 					}
 				},
 				"screen_set": null,
-				"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImN5cHJlc3NfdXNlciIsInVuaXhfdGltZXN0YW1wIjoxNjc3NjY2NDUxLjA3OTk2LCJ0aW1lc3RhbXAiOiIwMS8wMy8yMDIzIDEwOjI3OjMxIiwiZXhwIjoxMTEzODQ2NjQ1MSwiYWRfcm9sZSI6ZmFsc2UsIm1kaF9yb2xlIjpbIk1JX0NZUFJFU1NfVEVTVENBU0UiXSwiZW1haWxfaWQiOiJjeXByZXNzX3VzZXIiLCJjdXN0X2tleSI6IjEwMDAifQ.MkjbxTltCU4tVTKsN2JufjMRSN4p0wOTitUtN-Gvn3g",
+				"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkRpbmVzaCAgS3VtYXIiLCJ1bml4X3RpbWVzdGFtcCI6MTY3NzgwMTU2Mi44MDY0LCJ0aW1lc3RhbXAiOiIwMy8wMy8yMDIzIDA1OjI5OjIyIiwiZXhwIjoxMTEzODYyMTM2MiwiYWRfcm9sZSI6ZmFsc2UsIm1kaF9yb2xlIjpbIk1JX0NZUFJFU1NfVEVTVENBU0UiXSwiZW1haWxfaWQiOiJkaW5lc2gua3VtYXJAbWFyZWFuYS5jb20iLCJjdXN0X2tleSI6IjEwMDAifQ.QucHgVUD4M6EpxDa5dNGXx2khGExDpoqHiHArbeYnrw",
 				"user_id": "dinesh.kumar@mareana.com"
 			})
 		);
@@ -467,7 +467,7 @@ Cypress.Commands.add('loginWithoutAD', () => {
 					}
 				},
 				"screen_set": null,
-				"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImN5cHJlc3NfdXNlciIsInVuaXhfdGltZXN0YW1wIjoxNjc3NjY2NDUxLjA3OTk2LCJ0aW1lc3RhbXAiOiIwMS8wMy8yMDIzIDEwOjI3OjMxIiwiZXhwIjoxMTEzODQ2NjQ1MSwiYWRfcm9sZSI6ZmFsc2UsIm1kaF9yb2xlIjpbIk1JX0NZUFJFU1NfVEVTVENBU0UiXSwiZW1haWxfaWQiOiJjeXByZXNzX3VzZXIiLCJjdXN0X2tleSI6IjEwMDAifQ.MkjbxTltCU4tVTKsN2JufjMRSN4p0wOTitUtN-Gvn3g",
+				"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkRpbmVzaCAgS3VtYXIiLCJ1bml4X3RpbWVzdGFtcCI6MTY3NzgwMTU2Mi44MDY0LCJ0aW1lc3RhbXAiOiIwMy8wMy8yMDIzIDA1OjI5OjIyIiwiZXhwIjoxMTEzODYyMTM2MiwiYWRfcm9sZSI6ZmFsc2UsIm1kaF9yb2xlIjpbIk1JX0NZUFJFU1NfVEVTVENBU0UiXSwiZW1haWxfaWQiOiJkaW5lc2gua3VtYXJAbWFyZWFuYS5jb20iLCJjdXN0X2tleSI6IjEwMDAifQ.QucHgVUD4M6EpxDa5dNGXx2khGExDpoqHiHArbeYnrw",
 				"user_id": "dinesh.kumar@mareana.com"
 			})
 		);

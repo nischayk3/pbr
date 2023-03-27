@@ -6,7 +6,7 @@ import {
 	SET_THEME,
 	SHOW_LOADING,
 	SHOW_NOTIFICATION,
-	TOGGLE_MENU
+	TOGGLE_MENU, PUBLISH_ESIGN_ID
 } from "../types/types";
 
 const initialState = {
@@ -22,6 +22,7 @@ const initialState = {
 	isMenuCollapsed: true,
 	isAuthenticated: true,
 	isError: false,
+	esignRes:'',
 	publishRes: {}
 };
 
@@ -81,6 +82,11 @@ export default (state = initialState, action) => {
 			return {
 				...state,
 				publishRes: action.payload,
+			}
+		case PUBLISH_ESIGN_ID:
+			return {
+				...state,
+				esignRes: action.payload,
 			}
 		case LOGOUT_APP:
 			return initialState;

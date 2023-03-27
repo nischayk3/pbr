@@ -106,6 +106,7 @@ const Login = () => {
 				localStorage.setItem("user", data.email_id.replaceAll("^\"|\"$", ""));
 				localStorage.setItem("username", data?.firstname ? data.firstname.replaceAll("^\"|\"$", "") : data.email_id.replaceAll("^\"|\"$", ""));
 				localStorage.setItem("loginwith", 'WITHOUT_AD')
+				localStorage.setItem("user_id", data?.user_id)
 
 				dispatch(showNotification("success", `Logged in as ${data.email_id}`));
 				if (isChecked) {
@@ -148,6 +149,8 @@ const Login = () => {
 				localStorage.setItem("user", data.email_id.replaceAll("^\"|\"$", ""));
 				localStorage.setItem("username", data?.firstname ? data.firstname.replaceAll("^\"|\"$", "") : data.email_id.replaceAll("^\"|\"$", ""));
 				localStorage.setItem("loginwith", 'WITH_LDAP')
+				localStorage.setItem("user_id", data?.user_id)
+				
 				dispatch(showNotification("success", `Logged in as ${data.email_id}`));
 				if (isChecked) {
 					localStorage.setItem("isRemember", isChecked);
@@ -361,7 +364,7 @@ const Login = () => {
 										<Input
 											type='email'
 											className="input-prefix"
-											placeholder="Enter email ID:john@gmail.com"
+											placeholder="Enter username: admin or user"
 											prefix={<UserOutlined />}
 											value={username}
 											onChange={(e) => setUsername(e.target.value)}

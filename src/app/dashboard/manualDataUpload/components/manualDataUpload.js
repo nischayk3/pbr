@@ -92,8 +92,9 @@ class ManualDataUpload extends Component {
 			});
 		}
 		if (loginDetails) {
+			const userId = loginWith == "WITHOUT_AD" ? loginDetails?.user_id : loginDetails?.email_id
 			this.setState({
-				username: loginDetails.email_id,
+				username: userId,
 			});
 		}
 	};
@@ -197,8 +198,7 @@ class ManualDataUpload extends Component {
 				formData.append('file', info.file.originFileObj);
 				formData.append('sourcename', 'fileupload/UIupdate/pbr');
 				formData.append(
-					'username',
-					JSON.parse(localStorage.getItem('login_details')).email_id
+					'username', this.state.username
 				);
 				uploadFileApi(formData).then(res => {
 					if (res.data && res.data?.statuscode === 400) {
@@ -670,6 +670,7 @@ class ManualDataUpload extends Component {
 
 
 	render() {
+
 		const {
 			approvedDataRes,
 			approvedDataStatus,
@@ -1621,7 +1622,9 @@ class ManualDataUpload extends Component {
 									}}
 									id="previousButton"
 									type='primary'
-									onClick={() => this.prevStep()}>
+									onClick={() => this.prevStep()}
+									disabled={this.state.currentStep === 3 || this.state.currentStep === 4}
+								>
 									<ArrowLeftOutlined /> Previous
 								</Button>
 							)}
@@ -1646,7 +1649,7 @@ class ManualDataUpload extends Component {
 									float: 'right',
 								}}
 								onClick={() => this.clearData()}>
-								Cancel
+								Finish
 							</Button>
 
 						</div>

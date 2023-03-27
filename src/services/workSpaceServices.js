@@ -3,12 +3,17 @@ import Service from "./AjaxService";
 
 //get deviation data
 export const getDeviationData = (_queryParam) => {
+	const login_response = JSON.parse(localStorage.getItem("login_details"));
+	const headers = {
+		"content-type": "application/json",
+		"x-access-token": login_response.token ? login_response.token : "",
+		"resource-name": "WORKITEMS",
+		username: localStorage.getItem("user"),
+	};
 	return Service.get(
 		BMS_APP_PYTHON_SERVICE + "/recent-deviations",
 		_queryParam,
-		{
-			"content-type": "application/json",
-		}
+		headers
 	).then(
 		(response) => {
 			return response.data;
@@ -26,7 +31,7 @@ export const getDataQualityData = (_queryParam) => {
 		_queryParam,
 		{
 			"content-type": "application/json",
-			username: localStorage.getItem("user"),
+			username: localStorage.getItem("user_id"),
 		}
 	).then(
 		(response) => {
@@ -83,7 +88,7 @@ export const getUpdatedChartsViewsData = (_queryParam) => {
 	const headers = {
 		"content-type": "application/json",
 		"x-access-token": login_response.token ? login_response.token : "",
-		"resource-name": "VIEW",
+		"resource-name": "WORKITEMS",
 		username: localStorage.getItem("user"),
 	};
 	return Service.get(

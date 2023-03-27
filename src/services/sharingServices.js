@@ -1,9 +1,6 @@
 import { BMS_APP_PYTHON_SERVICE } from '../constants/apiBaseUrl';
 import Service from './AjaxService';
 
-
-
-
 export const getShare = request => {
 	let login_response = JSON.parse(localStorage.getItem('login_details'));
 

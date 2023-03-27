@@ -326,31 +326,27 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 			formData.append("upload_reason", "test_reason");
 			formData.append("username", localStorage.getItem("username"));
 			adHocFileUpload(formData).then((res) => {
+				dispatch(hideLoader());
 				/* istanbul ignore else  */
 				if (res.Status === 202) {
-					dispatch(hideLoader());
 					dispatch(showNotification("success", res.Message));
-
 					setUploadBtnDisabled(false);
 					setSelectedFileId(res.File_id);
 					selectedFiles[`${res.File_id}`] = true;
 					setSelectedFiles(selectedFiles);
-
 				}
 				/* istanbul ignore next  */
 				if (res.Status === 400) {
-					dispatch(hideLoader());
 					dispatch(showNotification("error", res.Message));
 					setUploadBtnDisabled(true);
 				}
 				/* istanbul ignore next  */
 				if (res.Status === 403) {
-					dispatch(hideLoader());
-					// dispatch(showNotification("error", res.Message));
 					setUploadBtnDisabled(true);
 				}
 			});
 		} else if (info.file.status === "removed") {
+			dispatch(hideLoader());
 			setSelectedAdHocFileList([]);
 			setUploadBtnDisabled(true);
 		}

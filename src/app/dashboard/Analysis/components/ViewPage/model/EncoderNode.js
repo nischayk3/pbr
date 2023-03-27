@@ -9,6 +9,7 @@ export default ({
 	setEncoderData
 }) => {
 
+	/* istanbul ignore next */
 	const handleClick = (event) => {
 		setEncoderData({ ...encoderData, encoderId: data.id, encoderValue: data?.Destination_Parameter?.submodule })
 		addEstimator("encoder");

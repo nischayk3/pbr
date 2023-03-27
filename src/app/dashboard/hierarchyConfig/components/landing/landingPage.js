@@ -46,22 +46,22 @@ export default function LandingPage() {
 		let req = {
 			ds_name: hierarchyName
 		}
-		let check_unique = await getAuthorisedPermission(req, 'VIEW')
-		if (check_unique.data && check_unique.data?.statuscode == 200) {
-			history.push({
-				pathname:
-					"/dashboard/molecule_hierarchy_configuration/untitled_view",
-			});
-		}
+		// let check_unique = await getAuthorisedPermission(req, 'VIEW')
+		// if (check_unique.data && check_unique.data?.statuscode == 200) {
+		history.push({
+			pathname:
+				"/dashboard/molecule_hierarchy_configuration/untitled_view",
+		});
+		// }
 		/* istanbul ignore next */
-		else if (check_unique.response && check_unique.response.data && check_unique.response.data?.statuscode == 400) {
-			/* istanbul ignore next */
-			dispatch(showNotification('error', 'Drug substance name already present, please enter unique name'))
-		}
-		else {
-			/* istanbul ignore next */
-			dispatch(showNotification('error', 'Error while creating drug substance'))
-		}
+		// 	else if (check_unique.response && check_unique.response.data && check_unique.response.data?.statuscode == 400) {
+		// 	/* istanbul ignore next */
+		// 	dispatch(showNotification('error', 'Drug substance name already present, please enter unique name'))
+		// }
+		// else {
+		// 	/* istanbul ignore next */
+		// 	dispatch(showNotification('error', 'Error while creating drug substance'))
+		// }
 	}
 
 	const getViews = async () => {

@@ -4,7 +4,7 @@ import moment from "moment";
 import React, { useEffect, useState } from 'react';
 import Highlighter from 'react-highlight-words';
 import Plot from 'react-plotly.js';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import Signature from "../../../../components/ElectronicSignature/signature";
@@ -20,6 +20,7 @@ const { Search } = Input;
 const { RangePicker } = DatePicker;
 /* istanbul ignore next */
 function PbrReviewer() {
+	const esignPublishRes = useSelector((state) => state.commonReducer.esignRes);
 	const dispatch = useDispatch();
 	const [templateData, setTemplateData] = useState([])
 	const [tableLoading, setTableLoading] = useState(false)
@@ -104,6 +105,13 @@ function PbrReviewer() {
 		cardTableData()
 		getTemplateID()
 	}, []);
+
+	useEffect(() => {
+		if (esignPublishRes && typeof(esignPublishRes) === 'string') {
+			// setPublishResponse(esignPublishRes);
+			eSignId(esignPublishRes)
+		}
+	}, [esignPublishRes]);
 
 	const cardTableData = async (val) => {
 		try {

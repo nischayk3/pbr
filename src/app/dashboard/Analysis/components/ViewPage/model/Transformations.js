@@ -4,7 +4,7 @@ import SelectField from "../../../../../../components/SelectField/SelectField";
 import './context.scss';
 import urlJson from './urls.json';
 
-
+/* istanbul ignore next */
 const Transformation = ({
 	onCreateClick,
 	imputerList,

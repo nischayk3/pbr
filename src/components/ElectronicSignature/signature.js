@@ -50,7 +50,8 @@ const Signature = (props) => {
 			setLoginStatus(status);
 		}
 		if (login_response) {
-			setUsername(login_response.email_id);
+			const userId = status == "WITHOUT_AD" ? login_response?.user_id : login_response?.email_id
+			setUsername(userId);
 		}
 	}, []);
 
@@ -265,9 +266,10 @@ const Signature = (props) => {
 					if (location?.state?.path) {
 						history.push(`${location.state.path}`)
 					}
-				} else {
-					dispatch(showNotification("error", publish_response.msg));
-				}
+				} 
+				// else {
+				// 	dispatch(showNotification("error", publish_response.msg));
+				// }
 			} else if (esign_response.Status == 403) {
 				dispatch(showNotification("error", esign_response.Message));
 			} else {
@@ -379,8 +381,7 @@ const Signature = (props) => {
 								<Button
 									id="auth_without_saml"
 									className="custom-secondary-btn"
-									key="3"
-									// disabled={username == "" || password == ""}
+									key="4"
 									onClick={() => samlRedirect()}
 								>
 									Authenticate with SAML

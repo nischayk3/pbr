@@ -158,7 +158,7 @@ export const getPipeline = (_queryParam) => {
 	const headers = {
 		"content-type": "application/json",
 		"x-access-token": login_response.token ? login_response.token : "",
-		"resource-name": "VIEW",
+		"resource-name": "AUTO_ML",
 		username: localStorage.getItem("user"),
 	};
 	return Service.get(
@@ -263,7 +263,7 @@ export const getHyperParameters = (_queryParam) => {
 	const headers = {
 		"content-type": "application/json",
 		"x-access-token": login_response.token ? login_response.token : "",
-		"resource-name": "VIEW",
+		"resource-name": "AUTO_ML",
 		username: localStorage.getItem("user"),
 	};
 	return Service.get(

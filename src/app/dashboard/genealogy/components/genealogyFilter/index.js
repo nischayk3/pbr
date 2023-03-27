@@ -12,6 +12,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import SelectSearchField from '../../../../../components/SelectSearchField/SelectSearchField';
 import Toggle from '../../../../../components/Toggle';
+import { PRODUCT_FOR } from '../../../../../constants/apiBaseUrl';
 import { showNotification } from '../../../../../duck/actions/commonActions.js';
 import {
 	getGeanealogyFilter,
@@ -257,7 +258,13 @@ function Filter(props) {
 		const param = []
 		selectParam['productType'] && selectParam['productType'].forEach(element => {
 			const splitElement = element?.split(/[ -]+/)
-			param.push(splitElement[0])
+
+			if (PRODUCT_FOR === 'BMS') {
+				param.push(element)
+			} else {
+				param.push(splitElement[0])
+			}
+
 		});
 
 		let paramDetail = {

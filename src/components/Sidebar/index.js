@@ -1,7 +1,7 @@
 import {
 	AppstoreAddOutlined, AppstoreOutlined, AreaChartOutlined, BarChartOutlined, BlockOutlined,
 	CheckCircleOutlined, CloudUploadOutlined, ClusterOutlined, CodeOutlined, DeploymentUnitOutlined, DiffOutlined, FileDoneOutlined, FilePdfOutlined, FileProtectOutlined, FileSearchOutlined, FileSyncOutlined, FundOutlined, FundProjectionScreenOutlined,
-	NodeIndexOutlined, PartitionOutlined, SisternodeOutlined, TeamOutlined, UploadOutlined, UserOutlined
+	NodeIndexOutlined, PartitionOutlined, SisternodeOutlined, TeamOutlined, UploadOutlined, UserOutlined, TagsOutlined
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import React, { useEffect, useState } from "react";
@@ -409,6 +409,7 @@ const Sidebar = () => {
 					</SubMenu>
 				) : null}
 
+
 				{permissions &&
 					permissions['DATA_ACCESS'] && (
 						<Menu.Item
@@ -430,6 +431,18 @@ const Sidebar = () => {
 							className={path === "/dashboard/tableau-dashboard" ? 'ant-menu-item-selected' : 'remove-selected'}
 						>
 							<Link to="/dashboard/tableau-dashboard">Tableau Dashboard</Link>
+						</Menu.Item>
+					)}
+
+				{permissions &&
+					permissions['DIGITAL_TWIN'] && (
+						<Menu.Item
+							key="digitalTwin"
+							icon={<TagsOutlined className="menu-icons" />}
+							id="digitalTwin"
+							className={path === "/dashboard/digitalTwin" ? 'ant-menu-item-selected' : 'remove-selected'}
+						>
+							<Link to="/dashboard/digitalTwin">Digital Twin</Link>
 						</Menu.Item>
 					)}
 			</Menu>
