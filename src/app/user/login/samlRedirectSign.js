@@ -18,7 +18,7 @@ export default function RedirectSAMLSign() {
 		getSessionDetail()
 	}, [])
 
-	const handleConfirm = async (reason, parameter, screenName, appType, dispId, version, status, resourceDispId, resourceVersion, fileID, userType, pbrReviewerId) => {
+	const handleConfirm = async (reason, parameter, screenName, appType, dispId, version, status, resourceDispId, resourceVersion, fileID, userType) => {
 		let req = {};
 		let login_response = JSON.parse(localStorage.getItem("login_details"));
 		req["date"] = latestDate();;
@@ -84,7 +84,6 @@ export default function RedirectSAMLSign() {
 
 					// //callback esign id
 					if (esign_response?.primary_id) {
-						console.log('esign_response.primary_id', pbrReviewerId);
 						let redirectRes = {
 							eSignId: esign_response.primary_id,
 
@@ -150,13 +149,8 @@ export default function RedirectSAMLSign() {
 			if (res.Status === 200) {
 				let signedInfoData = res['SignedInfo'];
 				console.log("signedInfoData", signedInfoData);
-				handleConfirm(signedInfoData?.Reason, signedInfoData?.parameter, signedInfoData?.screenName, signedInfoData?.appType, signedInfoData?.dispId, signedInfoData?.version, signedInfoData?.status, signedInfoData?.resourceDispId, signedInfoData?.resourceVersion, signedInfoData?.fileID, signedInfoData?.userType, signedInfoData?.pbrReviewerId)
-				if (signedInfoData?.appType == "PBR_TEMPLATE") {
-					console.log("signedInfoData?.pbrReviewerId", signedInfoData?.pbrReviewerId);
-					history.push(`${url}?pbrReviewerId=${signedInfoData?.pbrReviewerId}`)
-				} else {
-					history.push(`${url}`)
-				}
+				handleConfirm(signedInfoData?.Reason, signedInfoData?.parameter, signedInfoData?.screenName, signedInfoData?.appType, signedInfoData?.dispId, signedInfoData?.version, signedInfoData?.status, signedInfoData?.resourceDispId, signedInfoData?.resourceVersion, signedInfoData?.fileID, signedInfoData?.userType)
+				history.push(`${url}`)
 			}
 			else {
 				dispatch(showNotification('error', 'Login Failed', 'Sorry, an unexpectede error occurred. Please try logging in again.'))
