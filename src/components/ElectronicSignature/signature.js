@@ -294,7 +294,8 @@ const Signature = (props) => {
 				resourceDispId: params.id,
 				resourceVersion: params.version,
 				status: props.status,
-				parameter: params
+				parameter: params,
+				pbrReviewerId: props?.pbrReviewerId
 			},
 			redirect_url: decodeURI(encoded)
 		}

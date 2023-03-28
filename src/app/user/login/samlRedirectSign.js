@@ -149,8 +149,10 @@ export default function RedirectSAMLSign() {
 			const url = localStorage.getItem('redirectUrl')
 			if (res.Status === 200) {
 				let signedInfoData = res['SignedInfo'];
+				console.log("signedInfoData", signedInfoData);
 				handleConfirm(signedInfoData?.Reason, signedInfoData?.parameter, signedInfoData?.screenName, signedInfoData?.appType, signedInfoData?.dispId, signedInfoData?.version, signedInfoData?.status, signedInfoData?.resourceDispId, signedInfoData?.resourceVersion, signedInfoData?.fileID, signedInfoData?.userType, signedInfoData?.pbrReviewerId)
 				if (signedInfoData?.appType == "PBR_TEMPLATE") {
+					console.log("signedInfoData?.pbrReviewerId", signedInfoData?.pbrReviewerId);
 					history.push(`${url}?pbrReviewerId=${signedInfoData?.pbrReviewerId}`)
 				} else {
 					history.push(`${url}`)
