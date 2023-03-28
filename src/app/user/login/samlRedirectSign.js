@@ -87,7 +87,7 @@ export default function RedirectSAMLSign() {
 						console.log('esign_response.primary_id', pbrReviewerId);
 						let redirectRes = {
 							eSignId: esign_response.primary_id,
-							pbrReviewerId: pbrReviewerId
+
 						}
 						dispatch(pushEsignResponse(redirectRes))
 					}
@@ -150,7 +150,11 @@ export default function RedirectSAMLSign() {
 			if (res.Status === 200) {
 				let signedInfoData = res['SignedInfo'];
 				handleConfirm(signedInfoData?.Reason, signedInfoData?.parameter, signedInfoData?.screenName, signedInfoData?.appType, signedInfoData?.dispId, signedInfoData?.version, signedInfoData?.status, signedInfoData?.resourceDispId, signedInfoData?.resourceVersion, signedInfoData?.fileID, signedInfoData?.userType, signedInfoData?.pbrReviewerId)
-				history.push(`${url}`)
+				if (signedInfoData?.appType == "PBR_TEMPLATE") {
+					history.push(`${url}?pbrReviewerId=${signedInfoData?.pbrReviewerId}`)
+				} else {
+					history.push(`${url}`)
+				}
 			}
 			else {
 				dispatch(showNotification('error', 'Login Failed', 'Sorry, an unexpectede error occurred. Please try logging in again.'))

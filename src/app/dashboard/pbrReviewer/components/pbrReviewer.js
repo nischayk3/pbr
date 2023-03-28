@@ -1,10 +1,12 @@
 import { FilterOutlined, SearchOutlined } from '@ant-design/icons';
 import { Button, Card, Col, DatePicker, Input, Popover, Row, Select, Space, Table, Tooltip } from 'antd';
 import moment from "moment";
+import queryString from "query-string";
 import React, { useEffect, useState } from 'react';
 import Highlighter from 'react-highlight-words';
 import Plot from 'react-plotly.js';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from "react-router-dom";
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import Signature from "../../../../components/ElectronicSignature/signature";
 import {
@@ -20,7 +22,9 @@ const { RangePicker } = DatePicker;
 /* istanbul ignore next */
 function PbrReviewer() {
 	const dispatch = useDispatch();
+	const location = useLocation();
 	const esignPublishRes = useSelector((state) => state.commonReducer.esignRes);
+	const params = queryString.parse(location.search);
 
 	const [templateData, setTemplateData] = useState([])
 	const [tableLoading, setTableLoading] = useState(false)
@@ -101,12 +105,18 @@ function PbrReviewer() {
 	useEffect(() => {
 		cardTableData()
 		getTemplateID()
+		if (Object.keys(params) &&
+			Object.keys(params).length > 0) {
+			console.log("param", params);
+			setArr(params?.pbrReviewerId);
+			// cardTableData(params?.apptype);
+		}
 	}, []);
 
 	useEffect(() => {
 		if (esignPublishRes) {
 			eSignId(esignPublishRes?.eSignId);
-			setArr(esignPublishRes?.pbrReviewerId);
+
 		}
 	}, [esignPublishRes]);
 
