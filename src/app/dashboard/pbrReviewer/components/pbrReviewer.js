@@ -113,7 +113,7 @@ function PbrReviewer() {
 			// cardTableData(params?.apptype);
 		}
 	}, []);
-
+	console.log("check arrr", arr);
 	useEffect(() => {
 		if (esignPublishRes) {
 			eSignId(esignPublishRes?.eSignId);
@@ -234,7 +234,7 @@ function PbrReviewer() {
 			table_value: null,
 			esign_id: `${esign}`
 		}
-		console.log("reqqqqq", req);
+		console.log("reqqqqq", req, arr);
 		if (esign) {
 			let res = await updateApprove(req)
 
