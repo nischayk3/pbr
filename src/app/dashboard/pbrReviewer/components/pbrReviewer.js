@@ -223,9 +223,10 @@ function PbrReviewer() {
 	const eSignId = async (esign) => {
 		dispatch(showLoader());
 		let login_response = JSON.parse(localStorage.getItem('login_details'));
+		const selectedId = params?.pbrReviewerId
 		let req = {
 			changed_by: login_response?.email_id,
-			id: arr.length > 0 ? arr : [params?.pbrReviewerId],
+			id: arr.length > 0 ? arr : [selectedId?.toString()],
 			recorded_date: null,
 			recorded_time: null,
 			snippet_value: null,
