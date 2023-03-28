@@ -109,7 +109,7 @@ function PbrReviewer() {
 		if (Object.keys(params) &&
 			Object.keys(params).length > 0) {
 			console.log("param", params);
-			setArr(params?.pbrReviewerId);
+			// setArr(params?.pbrReviewerId);
 			// cardTableData(params?.apptype);
 		}
 	}, []);
@@ -225,8 +225,7 @@ function PbrReviewer() {
 		let login_response = JSON.parse(localStorage.getItem('login_details'));
 		let req = {
 			changed_by: login_response?.email_id,
-			id: Object.keys(params) &&
-				Object.keys(params).length > 0 ? [params?.pbrReviewerId] : arr,
+			id: arr.length > 0 ? arr : [params?.pbrReviewerId],
 			recorded_date: null,
 			recorded_time: null,
 			snippet_value: null,
