@@ -231,7 +231,7 @@ const Signature = (props) => {
 
 				let publish_response = {};
 				if (props.appType == "ELOG_BOOK_DATA_ENTRY") {
-					console.log(req1)
+
 					publish_response = Object.keys(params).length > 0 && params.fromScreen !== "Workflow"
 						? await publishEvent(reqs, headers) : await approveRecord(req1)
 
