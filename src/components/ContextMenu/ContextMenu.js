@@ -17,8 +17,8 @@ const ContextMenu = (props) => {
 			className='context__menu'
 			style={{
 				position: 'absolute',
-				// left: `${x}px`,
-				// top: `${y}px`,
+				left: `${x}px`,
+				top: `${y}px`,
 				right: '-120px',
 				top: '4px',
 				display: show ? 'block' : 'none',
