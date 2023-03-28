@@ -8,7 +8,6 @@
  */
 import { DeleteTwoTone, InfoCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Card, Col, Input, Modal, Popconfirm, Popover, Row, Select, Table, Tabs } from "antd";
-import "editable-antd-tree/dist/esm/output.css"; // load style
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Banner from "../../../../../assets/images/Popup-Side.svg";

@@ -1,0 +1,44 @@
+.sortable-tree {
+	display: flex;
+
+	.sortable-tree__tree {
+		padding: 0 20px;
+
+		.rst__tree {
+			width: 600px;
+
+			.rst__virtualScrollOverride {
+				padding: 0 0 0 40px;
+
+				.rstcustom__expandButton {
+					background-image: url('../../assets/icons/folderFilled.svg');
+					background-size: contain;
+					background-repeat: no-repeat;
+				}
+
+				.rstcustom__collapseButton {
+					background-image: url('../../assets/icons/folderOpenFilled.svg');
+					background-size: contain;
+					background-repeat: no-repeat;
+				}
+
+				::after {
+					transform: translate3d(-300%, -35%, 0) rotateZ(-90deg) !important;
+					border-top-color: #262626;
+				}
+			}
+
+			.sortable-tree__tree--input {
+				width: 200px;
+				font-style: normal;
+				font-weight: 400;
+				font-size: 16px;
+				line-height: 22px;
+				color: #262626;
+				padding: 0px 6px;
+				margin: 6px 10px;
+			}
+
+		}
+	}
+}
