@@ -266,7 +266,7 @@ const Signature = (props) => {
 					if (location?.state?.path) {
 						history.push(`${location.state.path}`)
 					}
-				} 
+				}
 				// else {
 				// 	dispatch(showNotification("error", publish_response.msg));
 				// }
@@ -305,9 +305,7 @@ const Signature = (props) => {
 			localStorage.setItem('redirectUrl', `${location.pathname}${location.search}`)
 		}
 	}
-	console.log("isauth", isauth);
-	console.log("otherreason", otherReason);
-	console.log("reason", reason);
+
 	return (
 		<div>
 			<Modal
