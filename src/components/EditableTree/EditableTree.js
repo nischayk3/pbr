@@ -3,7 +3,6 @@ import {
 } from '@ant-design/icons';
 import SortableTree, { changeNodeAtPath, insertNode, removeNodeAtPath, toggleExpandedForAll } from '@nosferatu500/react-sortable-tree';
 import '@nosferatu500/react-sortable-tree/style.css';
-import { Button } from 'antd';
 import React, { Component } from 'react';
 import FileExplorerTheme from 'react-sortable-tree-theme-file-explorer';
 import ContextMenu from '../ContextMenu/ContextMenu';
@@ -22,8 +21,24 @@ export default class EditableTree extends Component {
 			menuPosition: { x: 0, y: 0 },
 			items: [
 				{
-					label: '1st menu item',
-
+					value: 'Add node',
+					icon: '',
+					eventName: 'addNode',
+				},
+				{
+					value: 'Delete node',
+					icon: '',
+					eventName: 'deleteNode',
+				},
+				{
+					value: 'Expand all',
+					icon: '',
+					eventName: 'expandAll',
+				},
+				{
+					value: 'Collapse all',
+					icon: '',
+					eventName: 'collapseAll',
 				}
 			],
 		};
@@ -91,10 +106,17 @@ export default class EditableTree extends Component {
 		this.setState({ showMenu: false })
 	};
 
+	handleMenuClick = (eventName) => {
+		console.log("eventName", eventName);
+	}
+
+
 
 	render() {
 		const { searchString, searchFocusIndex, treeData, isVisible, menuPosition, showMenu, items } = this.state;
 		const getNodeKey = ({ treeIndex }) => treeIndex;
+
+
 
 		console.log("showmenu", showMenu);
 		return (
@@ -110,40 +132,46 @@ export default class EditableTree extends Component {
 				<CustomButton className="custom__btn--dashed" icon={<PlusOutlined />} type="dashed" onClick={(e) => this.showTree()}>Create new process</CustomButton>
 				<div className="sortable-tree__tree">
 					{isVisible && (
-						<SortableTree
-							theme={FileExplorerTheme}
-							// searchQuery={searchString}
-							// searchFocusOffset={searchFocusIndex}
-							treeData={treeData}
-							onChange={treeData => {
-								this.setState({ treeData }),
-									this.updateTreeData
-							}}
-							generateNodeProps={({ node, path }) => ({
-								title: (
-									<form onContextMenu={this.handleContextMenu} onClick={(e) => { e.preventDefault(); e.stopPropagation(); this.selectThis(node, path); }}>
-										<input
-											className='sortable-tree__tree--input'
-											value={node.title}
-											onChange={event => {
-												const title = event.target.value;
-												this.setState(state => ({
-													treeData: changeNodeAtPath({
-														treeData: state.treeData,
-														path,
-														getNodeKey,
-														newNode: { ...node, title }
-													})
-												}));
-											}}
-										/>&nbsp;&nbsp;&nbsp;
-										<ContextMenu item={items} show={showMenu} x={menuPosition.x} y={menuPosition.y} onClose={this.handleMenuClose} />
-										<Button onClick={(e) => { e.preventDefault(); e.stopPropagation(); this.insertNewNode(path) }} >+</Button>
-										<Button onClick={(e) => { e.preventDefault(); e.stopPropagation(); this.removeNode(path) }} >-</Button>
-									</form>
-								)
-							})}
-						/>
+						<>
+							<SortableTree
+								theme={FileExplorerTheme}
+								// searchQuery={searchString}
+								// searchFocusOffset={searchFocusIndex}
+								treeData={treeData}
+								onChange={treeData => {
+									this.setState({ treeData }),
+										this.updateTreeData
+								}}
+								generateNodeProps={({ node, path }) => ({
+									title: (
+										<>
+											<form onContextMenu={this.handleContextMenu} onClick={(e) => { e.preventDefault(); e.stopPropagation(); this.selectThis(node, path); }}>
+												<input
+													className='sortable-tree__tree--input'
+													value={node.title}
+													onChange={event => {
+														const title = event.target.value;
+														this.setState(state => ({
+															treeData: changeNodeAtPath({
+																treeData: state.treeData,
+																path,
+																getNodeKey,
+																newNode: { ...node, title }
+															})
+														}));
+													}}
+												/>&nbsp;&nbsp;&nbsp;
+
+												{/* <Button onClick={(e) => { e.preventDefault(); e.stopPropagation(); this.insertNewNode(path) }} >+</Button>
+										<Button onClick={(e) => { e.preventDefault(); e.stopPropagation(); this.removeNode(path) }} >-</Button> */}
+											</form>
+
+										</>
+									)
+								})}
+							/>
+							<ContextMenu item={items} show={showMenu} x={menuPosition.x} y={menuPosition.y} onClose={this.handleMenuClose} handleClick={value => this.handleMenuClick(value)} />
+						</>
 					)}
 				</div>
 			</div>

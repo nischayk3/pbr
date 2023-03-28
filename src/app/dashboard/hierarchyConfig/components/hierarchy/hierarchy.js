@@ -319,7 +319,6 @@ function Hierarchy() {
 
 	];
 
-
 	const handleAdd = () => {
 		let is_add = count <= 1 ? true : validate(count - 2, moleculeData, 'product_num', 'mol')
 		if (is_add) {

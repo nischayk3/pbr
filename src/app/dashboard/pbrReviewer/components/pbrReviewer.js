@@ -5,7 +5,6 @@ import React, { useEffect, useState } from 'react';
 import Highlighter from 'react-highlight-words';
 import Plot from 'react-plotly.js';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import Signature from "../../../../components/ElectronicSignature/signature";
 import {
@@ -20,8 +19,9 @@ const { Search } = Input;
 const { RangePicker } = DatePicker;
 /* istanbul ignore next */
 function PbrReviewer() {
-	const esignPublishRes = useSelector((state) => state.commonReducer.esignRes);
 	const dispatch = useDispatch();
+	const esignPublishRes = useSelector((state) => state.commonReducer.esignRes);
+
 	const [templateData, setTemplateData] = useState([])
 	const [tableLoading, setTableLoading] = useState(false)
 	const [searchedColumn, setSearchedColumn] = useState('');
@@ -30,7 +30,6 @@ function PbrReviewer() {
 	const [approveReject, setApproveReject] = useState("");
 	const [filterTableLanding, setFilterTableLanding] = useState(null);
 	const [isPublish, setIsPublish] = useState(false);
-	const [statusreq, setStatusReq] = useState({});
 	const [pieChartData, setPieChartData] = useState([0, 0]);
 	const [pieChartData1, setPieChartData1] = useState([0, 0, 0]);
 	const [searchText, setSearchText] = useState("");
@@ -98,9 +97,7 @@ function PbrReviewer() {
 
 	}])
 	const dateFormat = "YYYY-MM-DD";
-	let [filteredData] = useState();
 
-	const history = useHistory();
 	useEffect(() => {
 		cardTableData()
 		getTemplateID()
@@ -108,8 +105,8 @@ function PbrReviewer() {
 
 	useEffect(() => {
 		if (esignPublishRes) {
-			// setPublishResponse(esignPublishRes);
-			eSignId(esignPublishRes)
+			eSignId(esignPublishRes?.eSignId);
+			setArr(esignPublishRes?.pbrReviewerId);
 		}
 	}, [esignPublishRes]);
 
@@ -168,6 +165,7 @@ function PbrReviewer() {
 			dispatch(showNotification('error', error.Message));
 		}
 	}
+
 	/* istanbul ignore next */
 	const showfilterData = async (value) => {
 		dispatch(showLoader());
@@ -187,6 +185,7 @@ function PbrReviewer() {
 		setReviewerReq(obj)
 		dispatch(hideLoader());
 	};
+
 	/* istanbul ignore next */
 	const showfilters = async (value) => {
 		dispatch(showLoader());
@@ -207,19 +206,8 @@ function PbrReviewer() {
 		dispatch(hideLoader());
 
 	};
-	/* istanbul ignore next */
-	const updateStatus = (e, record) => {
-		let resp = [...arr];
-		if (resp.includes(record.id)) {
-			const newArr = resp.filter(e => e !== record.id)
-			setArr(newArr);
-		} else {
-			resp.push(record.id);
-			setArr(resp);
-		}
 
 
-	};
 	/* istanbul ignore next */
 	const eSignId = async (esign) => {
 		dispatch(showLoader());
@@ -303,52 +291,10 @@ function PbrReviewer() {
 
 	};
 
-	// let appchart1 = [{
-	// 	values: pieChartData1,
-	// 	labels: ["High", "Medium", "Low"],
-	// 	marker: {
-	// 		colors: ['#2ca02c', '#ff7f0e', '#1f77b4'],
-	// 		line: {
-	// 			color: 'white',
-	// 			width: 2
-	// 		},
-	// 		layout: {
-
-	// 			x: 1,
-	// 			xanchor: 'right',
-	// 			y: 1
-
-	// 		}
-
-	// 	},
-	// 	hole: .7,
-	// 	type: 'pie',
-	// }]
-
-	// let appchart = [{
-	// 	values: pieChartData,
-	// 	labels: ["Approved", "Unapproved"],
-	// 	marker: {
-	// 		colors: ['#2ca02c', '#ff7f0e'],
-	// 		line: {
-	// 			color: 'white',
-	// 			width: 2
-	// 		},
-	// 		layout: {
-	// 			x: 1,
-	// 			xanchor: 'right',
-	// 			y: 1
-	// 		}
-	// 	},
-	// 	hole: .7,
-	// 	type: 'pie',
-
-	// }]
-
 	useEffect(() => {
 		chart();
-		// chart1();
 	}, []);
+
 	/* istanbul ignore next */
 	const columns2 = [
 		{
@@ -673,6 +619,7 @@ function PbrReviewer() {
 			}
 		},
 	]
+
 	/* istanbul ignore next */
 	function getColumnSearchProps(dataIndex) {
 		return {
@@ -923,13 +870,7 @@ function PbrReviewer() {
 			<BreadCrumbWrapper />
 			<div className='custom-wrapper'>
 				<div className='custom-content-layout' style={{ overflowY: "hidden" }}>
-					<div className="background"
-					// style={{
-					//   display: 'block', width: '100%',
-					//   padding: 30, height: 220,
-					//   scrollBehavior: 'auto'
-					// }}
-					>
+					<div className="background">
 						<Row gutter={16}>
 							<Col span={12}>
 								<Card className="review-card1" >
@@ -1082,9 +1023,6 @@ function PbrReviewer() {
 							</div>
 						</div>
 					</div>
-
-
-
 				</div>
 			</div>
 			<Signature
@@ -1094,6 +1032,7 @@ function PbrReviewer() {
 				eSignId={eSignId}
 				screenName="Pbr Creation"
 				appType="PBR_TEMPLATE"
+				pbrReviewerId={arr}
 			/>
 		</>
 	)

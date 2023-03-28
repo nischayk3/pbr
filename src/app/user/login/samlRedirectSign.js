@@ -1,9 +1,9 @@
 import { Button, Card, Result } from 'antd';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory,useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import {
-	hideLoader, pushPublishResponse, showNotification,pushEsignResponse
+	hideLoader, pushEsignResponse, pushPublishResponse, showNotification
 } from '../../../duck/actions/commonActions';
 import { approveRecord, eSign, publishEvent } from '../../../services/electronicSignatureService';
 import { getSession } from '../../../services/loginService';
@@ -18,7 +18,7 @@ export default function RedirectSAMLSign() {
 		getSessionDetail()
 	}, [])
 
-	const handleConfirm = async (reason, parameter, screenName, appType, dispId, version, status, resourceDispId, resourceVersion, fileID, userType) => {
+	const handleConfirm = async (reason, parameter, screenName, appType, dispId, version, status, resourceDispId, resourceVersion, fileID, userType, pbrReviewerId) => {
 		let req = {};
 		let login_response = JSON.parse(localStorage.getItem("login_details"));
 		req["date"] = latestDate();;
@@ -84,8 +84,12 @@ export default function RedirectSAMLSign() {
 
 					// //callback esign id
 					if (esign_response?.primary_id) {
-						dispatch(pushEsignResponse(esign_response.primary_id))
-						// props.eSignId(esign_response.primary_id);
+						console.log('esign_response.primary_id', pbrReviewerId);
+						let redirectRes = {
+							eSignId: esign_response.primary_id,
+							pbrReviewerId: pbrReviewerId
+						}
+						dispatch(pushEsignResponse(redirectRes))
 					}
 					let publish_response = {};
 					if (appType == "ELOG_BOOK_DATA_ENTRY") {
@@ -134,8 +138,6 @@ export default function RedirectSAMLSign() {
 			} else {
 				dispatch(showNotification("error", esign_response.Message));
 			}
-
-
 		} catch (err) {
 			dispatch(showNotification("error", err));
 		}
@@ -147,7 +149,7 @@ export default function RedirectSAMLSign() {
 			const url = localStorage.getItem('redirectUrl')
 			if (res.Status === 200) {
 				let signedInfoData = res['SignedInfo'];
-				handleConfirm(signedInfoData?.Reason, signedInfoData?.parameter, signedInfoData?.screenName, signedInfoData?.appType, signedInfoData?.dispId, signedInfoData?.version, signedInfoData?.status, signedInfoData?.resourceDispId, signedInfoData?.resourceVersion, signedInfoData?.fileID, signedInfoData?.userType)
+				handleConfirm(signedInfoData?.Reason, signedInfoData?.parameter, signedInfoData?.screenName, signedInfoData?.appType, signedInfoData?.dispId, signedInfoData?.version, signedInfoData?.status, signedInfoData?.resourceDispId, signedInfoData?.resourceVersion, signedInfoData?.fileID, signedInfoData?.userType, signedInfoData?.pbrReviewerId)
 				history.push(`${url}`)
 			}
 			else {
