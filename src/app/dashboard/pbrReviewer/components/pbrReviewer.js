@@ -225,7 +225,8 @@ function PbrReviewer() {
 		let login_response = JSON.parse(localStorage.getItem('login_details'));
 		let req = {
 			changed_by: login_response?.email_id,
-			id: arr,
+			id: Object.keys(params) &&
+				Object.keys(params).length > 0 ? [params?.pbrReviewerId] : arr,
 			recorded_date: null,
 			recorded_time: null,
 			snippet_value: null,
