@@ -106,18 +106,11 @@ function PbrReviewer() {
 	useEffect(() => {
 		cardTableData()
 		getTemplateID()
-		if (Object.keys(params) &&
-			Object.keys(params).length > 0) {
-			console.log("param", params);
-			// setArr(params?.pbrReviewerId);
-			// cardTableData(params?.apptype);
-		}
 	}, []);
-	console.log("check arrr", arr);
+
 	useEffect(() => {
 		if (esignPublishRes) {
 			eSignId(esignPublishRes?.eSignId);
-
 		}
 	}, [esignPublishRes]);
 
@@ -226,7 +219,7 @@ function PbrReviewer() {
 		const selectedId = params?.pbrReviewerId
 		let req = {
 			changed_by: login_response?.email_id,
-			id: arr.length > 0 ? arr : selectedId.split(",").map(Number),
+			id: arr.length > 0 ? arr : selectedId?.split(",")?.map(Number),
 			recorded_date: null,
 			recorded_time: null,
 			snippet_value: null,
@@ -235,7 +228,7 @@ function PbrReviewer() {
 			table_value: null,
 			esign_id: `${esign}`
 		}
-		console.log("reqqqqq", req, arr);
+
 		if (esign) {
 			let res = await updateApprove(req)
 
