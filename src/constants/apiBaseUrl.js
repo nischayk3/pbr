@@ -17,6 +17,8 @@ export const BMS_APP_PYTHON_SERVICE = `${process.env.REACT_APP_PYTHON_SERVICES +
 //MDH Genealogy python
 export const MDH_APP_PYTHON_SERVICE = `${process.env.REACT_APP_URL}`;
 
+export const PBR_APP_PYTHON_SERVICE = `${process.env.REACT_APP_BMS_PBR_URL + "/udh"}`;
+
 export const MDH_APP_GENEALOGY = `${process.env.REACT_APP_GENEALOGY}`;
 
 export const MDH_AIRFLOW = `${process.env.REACT_APP_URL}/airflow/login/?next=${process.env.REACT_APP_URL}/airflow/home`;

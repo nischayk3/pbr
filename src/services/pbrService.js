@@ -1,4 +1,4 @@
-import { MDH_APP_PYTHON_SERVICE } from "../constants/apiBaseUrl";
+import { MDH_APP_PYTHON_SERVICE, PBR_APP_PYTHON_SERVICE } from "../constants/apiBaseUrl";
 import Service from "./AjaxService";
 
 
@@ -50,7 +50,7 @@ export const getPbrReviewerData = (_queryParam) => {
 		'resource-name': 'PBR'
 	};
 	return Service.post(
-		MDH_APP_PYTHON_SERVICE + '/pbr/udh/get_cpv_pbr',
+		PBR_APP_PYTHON_SERVICE + '/get_cpv_pbr',
 		_queryParam,
 		request_headers
 	).then(
@@ -69,7 +69,7 @@ export const geTemplateDropdown = (_queryParam) => {
 		'resource-name': 'PBR'
 	};
 	return Service.get(
-		MDH_APP_PYTHON_SERVICE + '/pbr/udh/get_tran_pbr_template_id',
+		PBR_APP_PYTHON_SERVICE + '/get_tran_pbr_template_id',
 		_queryParam,
 		request_headers
 	).then(
@@ -88,7 +88,7 @@ export const getPieChartData = (_queryParam) => {
 		'resource-name': 'PBR'
 	};
 	return Service.post(
-		MDH_APP_PYTHON_SERVICE + '/pbr/udh/get_cpv_pbr_count',
+		PBR_APP_PYTHON_SERVICE + '/get_cpv_pbr_count',
 		_queryParam,
 		request_headers
 	).then(
@@ -127,7 +127,7 @@ export const updateApprove = (_queryParam) => {
 		'resource-name': 'PBR'
 	};
 	return Service.put(
-		MDH_APP_PYTHON_SERVICE + '/pbr/udh/get_cpv_pbr',
+		PBR_APP_PYTHON_SERVICE + '/get_cpv_pbr',
 		_queryParam,
 		request_headers
 	).then(
