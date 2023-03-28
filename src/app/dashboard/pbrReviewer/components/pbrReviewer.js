@@ -226,7 +226,7 @@ function PbrReviewer() {
 		const selectedId = params?.pbrReviewerId
 		let req = {
 			changed_by: login_response?.email_id,
-			id: arr.length > 0 ? arr : [selectedId?.toString()],
+			id: arr.length > 0 ? arr : selectedId.split(",").map(Number),
 			recorded_date: null,
 			recorded_time: null,
 			snippet_value: null,
