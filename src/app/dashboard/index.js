@@ -1,5 +1,6 @@
 import { Layout } from "antd";
 import React, { lazy, useEffect, useState } from "react";
+import ReactGA from 'react-ga4';
 import { useDispatch } from "react-redux";
 import {
 	Route,
@@ -87,17 +88,26 @@ const Dashboard = () => {
 	const [authorised, setAuthorised] = useState(true);
 
 	useEffect(() => {
+		const status = localStorage.getItem("loginwith")
+		if (window.location.host == 'merck-mi-dev.mareana.com' || window.location.host == 'mi-devv3-7.mareana.com') {
+			ReactGA.send({ hitType: "pageview", page: location.pathname, title: "Page visited" });
+
+		}
+
 		if (JSON.parse(localStorage.getItem('login_details')) == null && !window.location.href.includes('user/login') && !window.location.href.includes('/redirect')) {
 			dispatch(showNotification('error', 'Please login first to proceed'))
 			setTimeout(() => {
 				history.push('/user/login');
 				window.location.reload()
 			}, 3000)
+
 		}
 		if (PRODUCT_FOR == 'BMS') {
-			localStorage.setItem("loginwith", 'WITH_SAML')
+			if (status !== "WITHOUT_AD" || status == "") {
+				localStorage.setItem("loginwith", 'WITH_SAML')
+			}
 		}
-	}, []);
+	}, [location.pathname]);
 
 	// const requiredAuth = async (resource) => {
 	// 	let authResponse = {};

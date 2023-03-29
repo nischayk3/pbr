@@ -339,3 +339,25 @@
 	border-color: var(--primary-color);
 	background: var(--primary-color);
 }
+
+.custom__btn--dashed {
+	border-color: var(--primary-color);
+
+	.anticon {
+		color: #CBCBCB;
+		vertical-align: text-top;
+	}
+
+	span:nth-child(2) {
+		vertical-align: baseline;
+		font-style: normal;
+		font-weight: 400;
+		font-size: 16px;
+		line-height: 24px;
+
+		/* identical to box height, or 150% */
+
+		/* Gray / gray-9 */
+		color: #262626;
+	}
+}

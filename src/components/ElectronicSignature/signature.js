@@ -231,7 +231,7 @@ const Signature = (props) => {
 
 				let publish_response = {};
 				if (props.appType == "ELOG_BOOK_DATA_ENTRY") {
-					console.log(req1)
+
 					publish_response = Object.keys(params).length > 0 && params.fromScreen !== "Workflow"
 						? await publishEvent(reqs, headers) : await approveRecord(req1)
 
@@ -266,7 +266,7 @@ const Signature = (props) => {
 					if (location?.state?.path) {
 						history.push(`${location.state.path}`)
 					}
-				} 
+				}
 				// else {
 				// 	dispatch(showNotification("error", publish_response.msg));
 				// }
@@ -294,7 +294,7 @@ const Signature = (props) => {
 				resourceDispId: params.id,
 				resourceVersion: params.version,
 				status: props.status,
-				parameter: params
+				parameter: params,
 			},
 			redirect_url: decodeURI(encoded)
 		}
@@ -305,9 +305,7 @@ const Signature = (props) => {
 			localStorage.setItem('redirectUrl', `${location.pathname}${location.search}`)
 		}
 	}
-	console.log("isauth", isauth);
-	console.log("otherreason", otherReason);
-	console.log("reason", reason);
+
 	return (
 		<div>
 			<Modal
