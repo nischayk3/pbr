@@ -17,7 +17,7 @@ import ImageMapper from 'react-image-mapper';
 import { useLocation, useParams } from 'react-router-dom';
 
 import {
-	DeleteOutlined, LeftOutlined, MinusSquareTwoTone, MonitorOutlined, PlusSquareTwoTone, RightOutlined
+	DeleteOutlined, LeftOutlined, MinusSquareTwoTone, MonitorOutlined, PlusSquareTwoTone, RightOutlined, InfoCircleOutlined
 } from '@ant-design/icons';
 
 import Sider from 'antd/lib/layout/Sider';
@@ -46,6 +46,7 @@ import RejectModal from './rejectModal';
 import './styles.scss';
 import TableIdentifier from './tableIdentifier/tableIdentifier';
 import WorkflowPreviewModal from './workflowPreviewModal';
+import AdvanceSetting from "./advanceSetting/advanceSetting"
 const { Panel } = Collapse;
 const { Option } = Select;
 
@@ -229,6 +230,7 @@ const PaperBatchRecordsTemplate = () => {
 	const [showDate, setShowDate] = useState(false);
 	const [pageIdDropdownValues, setPageIdDropdownValues] = useState([])
 	const [fileTimezoneData, setFileTimezoneData] = useState('')
+	const [advancePopup, setAdvancePopup] = useState(false)
 	const toggleLeftCollapsed = () => {
 		setLeftPanelCollapsed(!leftPanelCollapsed);
 		setRightPanelCollapsed(!rightPanelCollapsed);
@@ -925,8 +927,8 @@ const PaperBatchRecordsTemplate = () => {
 			dispatch(loadTemplateInfo([]))
 		}
 
-	}, [areasMap, imageWidth, imageHeight])
-	
+	}, [imageWidth, imageHeight])
+
 	const getImage = async (val) => {
 		// dispatch(showLoader());
 		let login_response = JSON.parse(localStorage.getItem('login_details'));
@@ -1244,7 +1246,8 @@ const PaperBatchRecordsTemplate = () => {
 						name: ele.name,
 						page_name: ele?.pageIdValue,
 						param_value_direction: parameterFormData[index]?.AnchorDirection,
-						param_value_regex: parameterFormData[index]?.regex
+						param_value_regex: parameterFormData[index]?.regex,
+						settings: ele?.advance_setting ? ele?.advance_setting[0] : {}
 					}
 					if (ele.values) {
 						obj['color'] = "blue"
@@ -1537,7 +1540,8 @@ const PaperBatchRecordsTemplate = () => {
 				method: formValues[activeKey]?.method,
 				page_name: formValues[activeKey]?.pageIdValue,
 				param_value_direction: parameterFormData[activeKey]?.AnchorDirection,
-				param_value_regex: parameterFormData[activeKey]?.regex
+				param_value_regex: parameterFormData[activeKey]?.regex,
+				settings: formValues[activeKey]?.advance_setting ? formValues[activeKey]?.advance_setting[0] : {}
 			}
 			if (formValues[activeKey]?.values) {
 				obj['color'] = "blue",
@@ -1677,7 +1681,8 @@ const PaperBatchRecordsTemplate = () => {
 					page_name: ele?.pageIdValue,
 					method: ele.method,
 					param_value_direction: parameterFormData[index]?.AnchorDirection,
-					param_value_regex: parameterFormData[index]?.regex
+					param_value_regex: parameterFormData[index]?.regex,
+					settings: ele?.advance_setting ? ele?.advance_setting[0] : {}
 				}
 				if (ele.values) {
 					obj['color'] = "blue"
@@ -2232,30 +2237,37 @@ const PaperBatchRecordsTemplate = () => {
 
 																						/>
 																					</Form.Item>
-																					<Form.Item
-																						{...restField}
-																						name={[name, 'method']}
-																						label="Method"
-																						rules={[{ required: true, message: 'Select Method' }]}
-																					>
-																						<Select placeholder="Select Method" onChange={(e, value) => onChangeChart(e, 'method', name, value)} allowClear={true}>
-																							<Option value='absolute_coordinate'>
-																								Get By Absolute Coordinate
-																							</Option>
-																							<Option value='regex'>
-																								Get By Regex
-																							</Option>
-																							<Option value='key_value_form'>
-																								Get By Form Key Value
-																							</Option>
-																							<Option value='relative_direction'>
-																								Get By Relative Direction
-																							</Option>
-																							<Option value='absolute_distance'>
-																								Get By Absolute Distance
-																							</Option>
-																						</Select>
-																					</Form.Item>
+																					<div style={{ display: "flex",justifyContent:"space-between" }}>
+																						<Form.Item
+																							{...restField}
+																							name={[name, 'method']}
+																							label="Method"
+																							rules={[{ required: true, message: 'Select Method' }]}
+																						>
+
+																							<Select style={{ width:220 }} placeholder="Select Method" onChange={(e, value) => onChangeChart(e, 'method', name, value)} allowClear={true}>
+																								<Option value='absolute_coordinate'>
+																									Get By Absolute Coordinate
+																								</Option>
+																								{/* <Option value='regex'>
+																									Get By Regex
+																								</Option> */}
+																								<Option value='key_value_form'>
+																									Get By Form Key Value
+																								</Option>
+																								<Option value='relative_direction'>
+																									Get By Relative Direction
+																								</Option>
+																								<Option value='absolute_distance'>
+																									Get By Absolute Distance
+																								</Option>
+																							</Select>
+
+
+																						</Form.Item>
+																						<InfoCircleOutlined onClick={()=>formValues[name]?.method && setAdvancePopup(true)} style={{ marginTop:36,fontSize:19,cursor: formValues[name]?.method ? "pointer" :'not-allowed' }}/>
+																						<AdvanceSetting formValues={formValues} setFormValues={setFormValues} name={name} method={formValues[name]?.method} advancePopup={advancePopup} setAdvancePopup={setAdvancePopup} />
+																					</div>
 																					{formValues[name]?.method === "relative_direction" &&
 																						<Form.Item {...restField}
 																							name={[name, 'AnchorDirection']}
@@ -3025,6 +3037,7 @@ const PaperBatchRecordsTemplate = () => {
 					</div>
 				</div>
 			</div>
+			
 			<WorkflowPreviewModal templateVersion={templateVersion} params={params} isModalOpen={workflowPreviewModal} setIsModalOpen={setWorkflowPreviewModal} />
 			<Signature
 				isPublish={isPublish}
