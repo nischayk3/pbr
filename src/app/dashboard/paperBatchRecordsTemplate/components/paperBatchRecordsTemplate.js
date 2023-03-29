@@ -2249,9 +2249,9 @@ const PaperBatchRecordsTemplate = () => {
 																								<Option value='absolute_coordinate'>
 																									Get By Absolute Coordinate
 																								</Option>
-																								<Option value='regex'>
+																								{/* <Option value='regex'>
 																									Get By Regex
-																								</Option>
+																								</Option> */}
 																								<Option value='key_value_form'>
 																									Get By Form Key Value
 																								</Option>
