@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Row, Col, Checkbox, Input, Button, Select, Modal, Slider } from 'antd'
 import { loadAdvanceSetting, getAdvanceSetting, saveAdvanceSetting } from '../../../../../services/pbrService'
+import { InfoCircleOutlined } from '@ant-design/icons';
 import {
     hideLoader,
     showLoader,
@@ -45,6 +46,11 @@ function AbsoluteDistance(props) {
                 setAnchorThreashold(res.Data['anchor_loc_threshold'])
                 setValueThreashold(res.Data['value_loc_threshold'])
                 setFuzzyThreashold(res.Data['fuzz_threshold'])
+                if (val === 'default') {
+                    let obj = formValues
+                    obj[name] = { ...obj[name], advance_setting: res.Data }
+                    setFormValues(obj)
+                }
             } else {
                 dispatch(hideLoader());
                 setWord(false)
@@ -123,9 +129,9 @@ function AbsoluteDistance(props) {
                     let obj = formValues
                     obj[name] = { ...obj[name], advance_setting: res.Data }
                     setFormValues(obj)
-                    loadSetting()
-                    setAdvancePopup(false)
-                    
+                    // loadSetting()
+                    // setAdvancePopup(false)
+
                 } else {
                     dispatch(showNotification('error', res.Message));
                     dispatch(hideLoader());
@@ -191,7 +197,6 @@ function AbsoluteDistance(props) {
             console.log("err", err)
         }
     }
-
     return (
         <div>
             <div>
@@ -201,7 +206,7 @@ function AbsoluteDistance(props) {
                     </Col>
                     <Col span={12}>
                         <div style={{ display: "flex", justifyContent: "end" }}>
-                            <Button onClick={handleSave}>Save</Button>
+                            <Button onClick={() => loadValue === 'default' ? advanceSetting('default') : handleSave()}>Apply / Save</Button>
                             <Button onClick={() => setSaveAs(true)} className='custom-secondary-btn' style={{ marginLeft: 10 }}>Save As</Button>
                         </div>
                     </Col>
@@ -230,20 +235,35 @@ function AbsoluteDistance(props) {
                 </Row>
                 <Row style={{ marginTop: 30 }}>
                     <Col span={8}>
-                        Anchor Location Threashold
+                        Anchor Location Threshold
                     </Col>
                     <Col span={8}>
                         <Slider min={0}
                             max={1} step={0.1} value={anchorThreashold} onChange={(val) => setAnchorThreashold(val)} />
                     </Col>
+                    <Col span={6}>
+                        <div style={{ marginTop: 5, marginLeft: 10, fontWeight: 'bold' }}>
+                            {anchorThreashold}
+                        </div>
+                    </Col>
                 </Row>
                 <Row style={{ marginTop: 30 }}>
                     <Col span={8}>
-                        Value Location Threashold
+                        Value Location Threshold
                     </Col>
                     <Col span={8}>
                         <Slider min={0}
-                            max={1} step={0.01} value={valueThreashold} onChange={(val) => setValueThreashold(val)} />
+                            max={1} step={0.001} value={valueThreashold} onChange={(val) => {
+                                setValueThreashold(val)
+                                if (val > 0.1) {
+                                    dispatch(showNotification('warning', `You may get unexpected result above 0.1`));
+                                }
+                            }} />
+                    </Col>
+                    <Col span={6}>
+                        <div style={{ marginTop: 5, marginLeft: 10, fontWeight: 'bold' }}>
+                            {valueThreashold}
+                        </div>
                     </Col>
                 </Row>
                 <Row style={{ marginTop: 30 }}>
@@ -256,11 +276,16 @@ function AbsoluteDistance(props) {
                 </Row>
                 <Row style={{ marginTop: 30 }}>
                     <Col span={8}>
-                        Fuzzy Threashold
+                        Fuzzy Threshold
                     </Col>
                     <Col span={8}>
                         <Slider min={0}
                             max={100} value={fuzzyThreashold} onChange={(val) => setFuzzyThreashold(val)} />
+                    </Col>
+                    <Col span={6}>
+                        <div style={{ marginTop: 5, marginLeft: 10, fontWeight: 'bold' }}>
+                            {fuzzyThreashold}
+                        </div>
                     </Col>
                 </Row>
             </div>

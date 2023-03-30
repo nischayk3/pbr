@@ -30,6 +30,11 @@ function AbsoluteCoordinate(props) {
                 dispatch(hideLoader());
                 setWord(res.Data["box_type"]['word'])
                 setLine(res.Data["box_type"]['line'])
+                if(val === 'default'){
+                    let obj = formValues
+                    obj[name] = { ...obj[name], advance_setting: res.Data }
+                    setFormValues(obj)
+                }
             } else {
                 dispatch(hideLoader());
                 setWord(false)
@@ -92,7 +97,7 @@ function AbsoluteCoordinate(props) {
                     let obj = formValues
                     obj[name] = { ...obj[name], advance_setting: res.Data }
                     setFormValues(obj)
-                    setAdvancePopup(false)
+                    // setAdvancePopup(false)
                 } else {
                     dispatch(showNotification('error', res.Message));
                     dispatch(hideLoader());
@@ -126,7 +131,8 @@ function AbsoluteCoordinate(props) {
                     setFormValues(obj)
                     setSaveAsName('')
                     setSaveAs(false)
-                    setAdvancePopup(false)
+                    loadSetting()
+                    // setAdvancePopup(false)
                 } else {
                     dispatch(showNotification('error', res.Message));
                     dispatch(hideLoader());
@@ -154,7 +160,7 @@ function AbsoluteCoordinate(props) {
                     </Col>
                     <Col span={12}>
                         <div style={{ display: "flex", justifyContent: "end" }}>
-                            <Button onClick={handleSave}>Save</Button>
+                            <Button  onClick={()=> loadValue === 'default'? advanceSetting('default') :handleSave()}>Apply / Save</Button>
                             <Button onClick={() => setSaveAs(true)} className='custom-secondary-btn' style={{ marginLeft: 10 }}>Save As</Button>
                         </div>
                     </Col>
