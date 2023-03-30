@@ -2,9 +2,9 @@
 /**
  * @author Mihir Bagga <mihir.bagga@mareana.com>
  * @Mareana - CPV Product
- * @version 1
- * @Last Modified - 22 April, 2022
- * @Last Changed By - @Mihir
+ * @version 2
+ * @Last Modified - 29 March, 2023
+ * @Last Changed By - @Dinesh
  */
 import { DeleteTwoTone, InfoCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Card, Col, Input, Modal, Popconfirm, Popover, Row, Select, Table, Tabs } from "antd";
@@ -15,16 +15,15 @@ import BreadCrumbWrapper from "../../../../../components/BreadCrumbWrapper";
 import EditableTree from "../../../../../components/EditableTree/EditableTree";
 import { hideLoader, showLoader, showNotification } from "../../../../../duck/actions/commonActions";
 import { sendDrugSub } from '../../../../../duck/actions/viewHierarchyAction';
-import { getAllViews, getProcessStep, getProcessStepMap, putMolecule, putProcessStep, putProcessStepMap } from "../../../../../services/viewHierarchyServices";
+import { getDrugSubstence, getProcessStep, getProcessStepMap, putMolecule, putProcessStep, putProcessStepMap } from "../../../../../services/viewHierarchyServices";
 import "./hierStyle.scss";
 const { TabPane } = Tabs;
-const tree = [
 
-];
-
-function Hierarchy() {
-	const [hierarchyName, setHierarchyName] = useState("Untitled");
+const Hierarchy = () => {
+	const dispatch = useDispatch();
 	const { Option } = Select;
+
+	const [hierarchyName, setHierarchyName] = useState("Untitled");
 	const [moleculeData, setMoleculeData] = useState([]);
 	const [stepData, setStepData] = useState([]);
 	const [isModalVisible, setIsModalVisible] = useState(false);
@@ -40,8 +39,6 @@ function Hierarchy() {
 
 	const hier_name = useSelector((state) => state.viewHierarchy.drugName);
 	const load_drug = useSelector((state) => state.viewHierarchy.drugLoad);
-
-	const dispatch = useDispatch();
 
 	useEffect(() => {
 		handleAdd();
@@ -74,7 +71,7 @@ function Hierarchy() {
 			dispatch(sendDrugSub(name))
 			setHierarchyName(name)
 			let req = { ds_name: name }
-			let res = await getAllViews(req)
+			let res = await getDrugSubstence(req)
 			let res_step = await getProcessStep(req)
 			/* istanbul ignore next */
 			if (res['status-code'] == 200) {
@@ -489,19 +486,12 @@ function Hierarchy() {
 					title={<span><span>Molecule Hierarchy Configuration -</span> <span className="title-card">{hierarchyName}</span> <span className="title-button"> </span></span>}
 				>
 					<Tabs className="hier-tab" activeKey={activeTab} onChange={handleChangeTab} tabBarExtraContent={<Button className="tab-button-two" onClick={() => handleSave()} >Save</Button>}>
-						<TabPane tab="Process Step " key="Step_1">
-							<div className="hier-tab__head">
-								<p className="hier-tab__heading">The following processess and process steps can be right-clicked to create subsequent processess and to perform a bunch of other actions:</p>
-								<Button className="custom-primary-btn">
-									Next
-								</Button>
-							</div>
-							<EditableTree />
-						</TabPane>
+
 						<TabPane tab="Plant and molecules" key="Plant and molecules">
 							<p className="tab-title"> Enter the product and plant details for {hierarchyName} <Button className="data-button-one"> {activeTab == "Process step mapping" ? <span className="tab-button-text">Finish</span> : <span className="tab-button-text" onClick={() => handleNext()}>Next </span>} </Button><Popover className="popover-hier" content={<span className="popover-content">Please save the plant and molecules or process steps before moving to process step mapping</span>} title={false} trigger="hover">
 								<InfoCircleOutlined style={{ padding: "0 5px" }} />
-							</Popover> </p>
+							</Popover>
+							</p>
 							<Table className="hierarchy-table" columns={plantMoleculeColumns} dataSource={moleculeData} pagination={false} />
 							<div className="add-button">
 								<Button
@@ -527,6 +517,15 @@ function Hierarchy() {
 									Add new row
 								</Button>
 							</div>
+						</TabPane>
+						<TabPane tab="Process steps V2 " key="Step_1">
+							<div className="hier-tab__head">
+								<p className="hier-tab__heading">The following processess and process steps can be right-clicked to create subsequent processess and to perform a bunch of other actions:</p>
+								<Button className="custom-primary-btn">
+									Next
+								</Button>
+							</div>
+							<EditableTree drugName={hierarchyName} />
 						</TabPane>
 						<TabPane tab="Process step mapping" key="Process step mapping">
 							<p className="tab-title">Enter the process step for {hierarchyName}</p>

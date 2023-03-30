@@ -7,12 +7,10 @@ import Banner from "../../../../../assets/images/Popup-Side.svg";
 import illustrations from "../../../../../assets/images/ViewCreation_bannerillustration.png";
 import ScreenHeader from "../../../../../components/ScreenHeader/screenHeader";
 import StatusBlock from "../../../../../components/StatusBlock/statusBlock";
-import { showNotification } from "../../../../../duck/actions/commonActions";
 import {
 	loadDrug, sendDrugSub
 } from "../../../../../duck/actions/viewHierarchyAction";
-import { getAuthorisedPermission } from "../../../../../services/authProvider";
-import { getAllViews } from "../../../../../services/viewHierarchyServices";
+import { getDrugSubstence } from "../../../../../services/viewHierarchyServices";
 import "./landingStyle.scss";
 
 export default function LandingPage() {
@@ -43,47 +41,25 @@ export default function LandingPage() {
 	};
 
 	const checkUnique = async () => {
-		let req = {
-			ds_name: hierarchyName
-		}
-		// let check_unique = await getAuthorisedPermission(req, 'VIEW')
-		// if (check_unique.data && check_unique.data?.statuscode == 200) {
 		history.push({
 			pathname:
 				"/dashboard/molecule_hierarchy_configuration/untitled_view",
 		});
-		// }
-		/* istanbul ignore next */
-		// 	else if (check_unique.response && check_unique.response.data && check_unique.response.data?.statuscode == 400) {
-		// 	/* istanbul ignore next */
-		// 	dispatch(showNotification('error', 'Drug substance name already present, please enter unique name'))
-		// }
-		// else {
-		// 	/* istanbul ignore next */
-		// 	dispatch(showNotification('error', 'Error while creating drug substance'))
-		// }
 	}
 
 	const getViews = async () => {
 		let req = { limit: 8 };
 		let reqs = {};
-		let response = await getAllViews(req);
-		let response_two = await getAllViews(reqs);
+		let response = await getDrugSubstence(req);
+		let response_two = await getDrugSubstence(reqs);
 
-		if (response["status-code"] == 200) {
-			setLastEightView(response.Data);
-		} else if (response?.Status === 403) {
-			/* istanbul ignore next */
-			dispatch(showNotification("error", 'You are not authorized', "It seems like you don't have permission to use this service."));
-		}
-		if (response_two["status-code"] == 200) {
-			setViewList(response_two.Data);
-		} else if (response_two?.Status === 403) {
-			/* istanbul ignore next */
-			dispatch(showNotification("error", 'You are not authorized', "It seems like you don't have permission to use this service."));
+		if (response?.status == 200) {
+			setLastEightView(response?.data);
 		}
 
-
+		if (response_two?.status == 200) {
+			setViewList(response_two?.data);
+		}
 	};
 
 	const columns = [
@@ -134,8 +110,9 @@ export default function LandingPage() {
 				return (
 					<div>
 						<Avatar
+
 							className="avatar-icon"
-							style={{ backgroundColor: getRandomColor(index + 1) }}
+							style={{ backgroundColor: getRandomColor(index + 1), marginRight: '8px' }}
 						>
 							{text && text.split("")[0] && text.split("")[0].toUpperCase()}{" "}
 						</Avatar>
@@ -152,17 +129,40 @@ export default function LandingPage() {
 	};
 
 	const search = (value) => {
-		if (value == "") setSearched(false);
-		else {
-			setSearched(true);
-			const tableData = viewList;
-			const filterTableData = tableData.filter((o) =>
-				Object.keys(o).some((k) =>
-					String(o[k]).toLowerCase().includes(value.toLowerCase())
-				)
-			);
-			setFilterTable(filterTableData);
-		}
+		// if (value == "") setSearched(false);
+		// else {
+		// 	setSearched(true);
+		// 	const tableData = viewList;
+		// 	const filterTableData = tableData.filter((o) =>
+		// 		Object.keys(o).some((k) =>
+		// 			String(o[k]).toLowerCase().includes(value.toLowerCase())
+		// 		)
+		// 	);
+		// 	setFilterTable(filterTableData);
+		// }
+		let arr = [];
+		setSearched(true);
+		const tableData = [...viewList];
+
+		tableData.map((el) => {
+			let obj = {};
+			obj["created_by"] = el.created_by;
+			obj["created_on"] = el.created_on;
+			obj["view_name"] = el.view_name;
+			obj["ds_name"] = el.ds_name;
+			obj["product_num"] = el.product_num;
+			obj["site_code"] = el.site_code;
+			return arr.push(obj);
+		});
+
+		const filterTableSearch = arr.filter((o) =>
+			Object.keys(o).some((k) =>
+				String(o[k]).toLowerCase().includes(value.toLowerCase())
+			)
+		);
+		setFilterTable(filterTableSearch);
+
+
 	};
 
 	return (
@@ -200,6 +200,7 @@ export default function LandingPage() {
 									loadHier(record.ds_name);
 								},
 							})}
+							size="small"
 						/>
 					) : (
 						<></>
@@ -220,15 +221,16 @@ export default function LandingPage() {
 
 
 					<div className="tile">
-						{lastEightView.length > 0 ? (
-							lastEightView.map((i, index) => (
+						{lastEightView?.length > 0 ? (
+							lastEightView?.map((i, index) => (
 								<div
+									key={i.created_on}
 									onClick={() => {
 										loadHier(i.ds_name);
 									}}
 								>
 									<StatusBlock
-										key={index}
+										key={i.created_on}
 										id={i.ds_name}
 										status={i.view_status}
 									// handleClickTiles={e => handleClickView(e, i)}
@@ -250,6 +252,7 @@ export default function LandingPage() {
 					onCancel={handleCancel}
 					footer={[
 						<Button
+							key={hierarchyName}
 							disabled={!hierarchyName.length > 0}
 							className="custom-primary-button"
 							onClick={() => checkUnique(hierarchyName)}
