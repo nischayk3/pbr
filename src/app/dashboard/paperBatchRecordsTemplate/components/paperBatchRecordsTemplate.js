@@ -2266,7 +2266,7 @@ const PaperBatchRecordsTemplate = () => {
 
 																						</Form.Item>
 																						<InfoCircleOutlined onClick={()=>formValues[name]?.method && setAdvancePopup(true)} style={{ marginTop:36,fontSize:19,cursor: formValues[name]?.method ? "pointer" :'not-allowed' }}/>
-																						<AdvanceSetting formValues={formValues} setFormValues={setFormValues} name={name} method={formValues[name]?.method} advancePopup={advancePopup} setAdvancePopup={setAdvancePopup} />
+																						
 																					</div>
 																					{formValues[name]?.method === "relative_direction" &&
 																						<Form.Item {...restField}
@@ -3037,7 +3037,7 @@ const PaperBatchRecordsTemplate = () => {
 					</div>
 				</div>
 			</div>
-			
+			<AdvanceSetting formValues={formValues} setFormValues={setFormValues} name={activeKey} method={formValues[activeKey]?.method} advancePopup={advancePopup} setAdvancePopup={setAdvancePopup} />
 			<WorkflowPreviewModal templateVersion={templateVersion} params={params} isModalOpen={workflowPreviewModal} setIsModalOpen={setWorkflowPreviewModal} />
 			<Signature
 				isPublish={isPublish}

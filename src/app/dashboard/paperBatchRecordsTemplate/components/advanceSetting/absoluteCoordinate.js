@@ -45,7 +45,7 @@ function AbsoluteCoordinate(props) {
         }
     }
 
-    const loadSetting = async () => {
+    const loadSetting = async (val) => {
         try {
             dispatch(showLoader());
             let user = localStorage.getItem("user_id")
@@ -57,8 +57,8 @@ function AbsoluteCoordinate(props) {
             if (res.Status === 200) {
                 dispatch(hideLoader());
                 setLoadSettingOptions(res.Data)
-                setLoadValue(res.Data[0]?.value)
-                advanceSetting(res.Data[0]?.value)
+                setLoadValue(val ? val : res.Data[0]?.value)
+                advanceSetting(val ? val : res.Data[0]?.value)
             } else {
                 dispatch(hideLoader());
                 setLoadSettingOptions([])
@@ -131,7 +131,8 @@ function AbsoluteCoordinate(props) {
                     setFormValues(obj)
                     setSaveAsName('')
                     setSaveAs(false)
-                    loadSetting()
+                    setLoadValue(saveAsName)
+                    loadSetting(saveAsName)
                     // setAdvancePopup(false)
                 } else {
                     dispatch(showNotification('error', res.Message));
@@ -160,8 +161,8 @@ function AbsoluteCoordinate(props) {
                     </Col>
                     <Col span={12}>
                         <div style={{ display: "flex", justifyContent: "end" }}>
-                            <Button  onClick={()=> loadValue === 'default'? advanceSetting('default') :handleSave()}>Apply / Save</Button>
-                            <Button onClick={() => setSaveAs(true)} className='custom-secondary-btn' style={{ marginLeft: 10 }}>Save As</Button>
+                            <Button  onClick={()=> loadValue === 'default'? advanceSetting('default') :handleSave()}>{loadValue === 'default'?'Apply' :`Apply / Save`}</Button>
+                            <Button onClick={() => setSaveAs(true)} className='custom-secondary-btn' style={{ marginLeft: 10 }}>Create New</Button>
                         </div>
                     </Col>
                 </Row>
