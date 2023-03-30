@@ -61,7 +61,7 @@ function AbsoluteDistance(props) {
         }
     }
 
-    const loadSetting = async () => {
+    const loadSetting = async (val) => {
         try {
             dispatch(showLoader());
             let user = localStorage.getItem("user_id")
@@ -73,8 +73,8 @@ function AbsoluteDistance(props) {
             if (res.Status === 200) {
                 dispatch(hideLoader());
                 setLoadSettingOptions(res.Data)
-                setLoadValue(res.Data[0]?.value)
-                advanceSetting(res.Data[0]?.value)
+                setLoadValue(val ? val : res.Data[0]?.value)
+                advanceSetting(val ? val : res.Data[0]?.value)
             } else {
                 dispatch(hideLoader());
                 setLoadSettingOptions([])
@@ -93,9 +93,6 @@ function AbsoluteDistance(props) {
         loadSetting()
     }, [])
 
-    useEffect(() => {
-        loadSetting()
-    }, [advancePopup])
 
     const handleSave = async () => {
         try {
@@ -129,6 +126,7 @@ function AbsoluteDistance(props) {
                     let obj = formValues
                     obj[name] = { ...obj[name], advance_setting: res.Data }
                     setFormValues(obj)
+                    
                     // loadSetting()
                     // setAdvancePopup(false)
 
@@ -178,8 +176,9 @@ function AbsoluteDistance(props) {
                     setFormValues(obj)
                     setSaveAsName('')
                     setSaveAs(false)
-                    loadSetting()
-                    setAdvancePopup(false)
+                    setLoadValue(saveAsName)
+                    loadSetting(saveAsName)
+                    // setAdvancePopup(false)
                 } else {
                     dispatch(showNotification('error', res.Message));
                     dispatch(hideLoader());
@@ -206,8 +205,8 @@ function AbsoluteDistance(props) {
                     </Col>
                     <Col span={12}>
                         <div style={{ display: "flex", justifyContent: "end" }}>
-                            <Button onClick={() => loadValue === 'default' ? advanceSetting('default') : handleSave()}>Apply / Save</Button>
-                            <Button onClick={() => setSaveAs(true)} className='custom-secondary-btn' style={{ marginLeft: 10 }}>Save As</Button>
+                            <Button onClick={() => loadValue === 'default' ? advanceSetting('default') : handleSave()}>{loadValue === 'default'?'Apply' :`Apply / Save`}</Button>
+                            <Button onClick={() => setSaveAs(true)} className='custom-secondary-btn' style={{ marginLeft: 10 }}>Create New</Button>
                         </div>
                     </Col>
                 </Row>
@@ -239,7 +238,7 @@ function AbsoluteDistance(props) {
                     </Col>
                     <Col span={8}>
                         <Slider min={0}
-                            max={1} step={0.1} value={anchorThreashold} onChange={(val) => setAnchorThreashold(val)} />
+                            max={1} step={0.01} value={anchorThreashold} onChange={(val) => setAnchorThreashold(val)} />
                     </Col>
                     <Col span={6}>
                         <div style={{ marginTop: 5, marginLeft: 10, fontWeight: 'bold' }}>
@@ -253,7 +252,7 @@ function AbsoluteDistance(props) {
                     </Col>
                     <Col span={8}>
                         <Slider min={0}
-                            max={1} step={0.001} value={valueThreashold} onChange={(val) => {
+                            max={1} step={0.01} value={valueThreashold} onChange={(val) => {
                                 setValueThreashold(val)
                                 if (val > 0.1) {
                                     dispatch(showNotification('warning', `You may get unexpected result above 0.1`));
