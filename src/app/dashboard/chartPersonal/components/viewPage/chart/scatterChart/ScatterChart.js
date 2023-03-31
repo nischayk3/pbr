@@ -1,3 +1,10 @@
+/**
+ * @author Vinay Reddy <vinay.reddy@mareana.com>
+ * @Mareana - CPV Product
+ * @version 2
+ * @Last Modified - 28 March, 2023
+ * @Last Changed By - @Vinay
+ */
 import React, { useEffect, useRef, useState } from "react";
 import "./ScatterStyles.scss";
 //antd imports
