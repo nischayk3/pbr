@@ -305,6 +305,17 @@
 	text-shadow: none;
 }
 
+.ant-btn-link[disabled],
+.ant-btn-link[disabled]:active,
+.ant-btn-link[disabled]:focus,
+.ant-btn-link[disabled]:hover {
+	color: rgba(0, 0, 0, .25) !important;
+	border-color: transparent !important;
+	background: transparent !important;
+	text-shadow: none !important;
+	box-shadow: none !important;
+}
+
 .disable-event {
 	cursor: not-allowed;
 	pointer-events: none;
@@ -338,4 +349,28 @@
 .ant-btn-primary {
 	border-color: var(--primary-color);
 	background: var(--primary-color);
+}
+
+.custom__btn--dashed {
+	border-color: var(--primary-color) !important;
+	padding: 8px 14px;
+	height: 40px;
+
+	.anticon {
+		color: #CBCBCB;
+		vertical-align: text-top;
+	}
+
+	span:nth-child(2) {
+		vertical-align: baseline;
+		font-style: normal;
+		font-weight: 400;
+		font-size: 16px;
+		line-height: 24px;
+
+		/* identical to box height, or 150% */
+
+		/* Gray / gray-9 */
+		color: #262626;
+	}
 }

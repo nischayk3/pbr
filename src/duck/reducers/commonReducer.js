@@ -2,11 +2,11 @@ import { getTheme } from "../../utils/commonUtils";
 import {
 	AUTHENTICATED,
 	HIDE_LOADING,
-	HIDE_NOTIFICATION, LOGOUT_APP, NETWORK_ERROR, PUBLISH_RESPONSE, SET_NAVIGATION_DATA,
+	HIDE_NOTIFICATION, LOGOUT_APP, NETWORK_ERROR, PUBLISH_ESIGN_ID, PUBLISH_RESPONSE, SET_NAVIGATION_DATA,
 	SET_THEME,
 	SHOW_LOADING,
 	SHOW_NOTIFICATION,
-	TOGGLE_MENU, PUBLISH_ESIGN_ID
+	TOGGLE_MENU
 } from "../types/types";
 
 const initialState = {
@@ -22,7 +22,7 @@ const initialState = {
 	isMenuCollapsed: true,
 	isAuthenticated: true,
 	isError: false,
-	esignRes:'',
+	esignRes: {},
 	publishRes: {}
 };
 

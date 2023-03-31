@@ -46,7 +46,8 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		"2D-histogram",
 		"Process Capability",
 		"SMA",
-		"EWMA"
+		"EWMA",
+		"Pareto"
 	];
 	const [axisValues, setAxisValues] = useState({
 		xaxis: null,
@@ -147,6 +148,10 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		/* istanbul ignore next */
 		if (axisValues.xaxis === axisValues.yaxis) {
 			dispatch(showNotification("error", "X and Y axis cannot be same"));
+			return;
+		}
+		if (axisValues.window && axisValues.window < 2 ) {
+			dispatch(showNotification("error", "Window value should be equal or greater than 2"));
 			return;
 		}
 		/* istanbul ignore next */

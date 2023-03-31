@@ -1,4 +1,4 @@
-import { MDH_APP_PYTHON_SERVICE } from "../constants/apiBaseUrl";
+import { MDH_APP_PYTHON_SERVICE, PBR_APP_PYTHON_SERVICE } from "../constants/apiBaseUrl";
 import Service from "./AjaxService";
 
 
@@ -50,7 +50,7 @@ export const getPbrReviewerData = (_queryParam) => {
 		'resource-name': 'PBR'
 	};
 	return Service.post(
-		MDH_APP_PYTHON_SERVICE + '/pbr/udh/get_cpv_pbr',
+		PBR_APP_PYTHON_SERVICE + '/get_cpv_pbr',
 		_queryParam,
 		request_headers
 	).then(
@@ -69,7 +69,7 @@ export const geTemplateDropdown = (_queryParam) => {
 		'resource-name': 'PBR'
 	};
 	return Service.get(
-		MDH_APP_PYTHON_SERVICE + '/pbr/udh/get_tran_pbr_template_id',
+		PBR_APP_PYTHON_SERVICE + '/get_tran_pbr_template_id',
 		_queryParam,
 		request_headers
 	).then(
@@ -88,7 +88,7 @@ export const getPieChartData = (_queryParam) => {
 		'resource-name': 'PBR'
 	};
 	return Service.post(
-		MDH_APP_PYTHON_SERVICE + '/pbr/udh/get_cpv_pbr_count',
+		PBR_APP_PYTHON_SERVICE + '/get_cpv_pbr_count',
 		_queryParam,
 		request_headers
 	).then(
@@ -127,7 +127,7 @@ export const updateApprove = (_queryParam) => {
 		'resource-name': 'PBR'
 	};
 	return Service.put(
-		MDH_APP_PYTHON_SERVICE + '/pbr/udh/get_cpv_pbr',
+		PBR_APP_PYTHON_SERVICE + '/get_cpv_pbr',
 		_queryParam,
 		request_headers
 	).then(
@@ -447,6 +447,66 @@ export const getPdfData = (_queryParam) => {
 	};
 	return Service.get(
 		MDH_APP_PYTHON_SERVICE + "/pbr/udh/upload-gngl-data",
+		_queryParam,
+		request_headers
+	).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};
+
+export const getAdvanceSetting = (_queryParam) => {
+	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	const request_headers = {
+		'x-access-token': login_response?.token ? login_response?.token : '',
+		'resource-name': 'PBR'
+	};
+	return Service.get(
+		MDH_APP_PYTHON_SERVICE + "/pbr/udh/advance_setting",
+		_queryParam,
+		request_headers
+	).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};
+
+export const loadAdvanceSetting = (_queryParam) => {
+	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	const request_headers = {
+		'x-access-token': login_response?.token ? login_response?.token : '',
+		'resource-name': 'PBR'
+	};
+	return Service.get(
+		MDH_APP_PYTHON_SERVICE + "/pbr/udh/load_setting",
+		_queryParam,
+		request_headers
+	).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};
+
+export const saveAdvanceSetting = (_queryParam) => {
+	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	const request_headers = {
+		'x-access-token': login_response?.token ? login_response?.token : '',
+		'resource-name': 'PBR'
+	};
+	return Service.put(
+		MDH_APP_PYTHON_SERVICE + "/pbr/udh/advance_setting",
 		_queryParam,
 		request_headers
 	).then(

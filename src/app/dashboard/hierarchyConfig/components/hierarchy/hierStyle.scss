@@ -1,7 +1,11 @@
 .hierarchy-card {
 	min-height: 100px;
 	max-height: 750px;
-	overflow: scroll;
+	// overflow: scroll;
+
+	.ant-card-body {
+		padding: 0px;
+	}
 
 	.title-card {
 		font-family: 'Inter';
@@ -62,14 +66,27 @@
 	}
 
 	.hier-tab {
+		.ant-tabs-content {
+			padding: 12px 20px;
+
+			.hier-tab__head {
+				display: flex;
+				justify-content: space-between;
+
+				.hier-tab__heading {
+					font-weight: 300;
+					font-size: 16px;
+					line-height: 19px;
+					color: #000000;
+					padding-bottom: 30px;
+				}
+			}
+		}
+
 		.popover-hier {
 			left: 1050px;
 
 		}
-
-
-
-
 
 		.ant-tabs-nav-list {
 			margin-left: 1.2%;
