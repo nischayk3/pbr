@@ -1,3 +1,12 @@
+
+/**
+ * @author Mihir Bagga <mihir.bagga@mareana.com>
+ * @Mareana - CPV Product
+ * @version 2
+ * @Last Modified - 29 March, 2023
+ * @Last Changed By - @Dinesh
+ */
+
 import { PlusOutlined } from "@ant-design/icons";
 import { Avatar, Button, Col, Input, Modal, Row, Table } from "antd";
 import React, { useEffect, useState } from "react";
