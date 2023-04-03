@@ -2,7 +2,7 @@
  * @author Vinay Reddy <vinay.reddy@mareana.com>
  * @Mareana - CPV Product
  * @version 2
- * @Last Modified - 28 March, 2023
+ * @Last Modified - 03 April, 2023
  * @Last Changed By - @Vinay
  */
 import React, { useEffect, useRef, useState } from "react";
@@ -86,7 +86,8 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 	const [exclusionTable, setExclusionTable] = useState([]);
 	/* istanbul ignore next */
 	const chartNodeClicked = (data) => {
-		if (postChartData && postChartData.data && postChartData.data[0] && (postChartData.data[0].chart_type == "scatter" || postChartData.data[0].chart_type == "process control" || postChartData.data[0].chart_type == "bubble" || postChartData.data[0].chart_type == "error" || postChartData.data[0].chart_type == "line")) {
+		// added chart typesz
+		if (postChartData && postChartData.data && postChartData.data[0] && (postChartData.data[0].chart_type == "scatter" || postChartData.data[0].chart_type == "process control" || postChartData.data[0].chart_type == "bubble" || postChartData.data[0].chart_type == "error" || postChartData.data[0].chart_type == "line" || postChartData.data[0].chart_type == "process control" || postChartData.data[0].chart_type == "bubble" || postChartData.data[0].chart_type == "error" || postChartData.data[0].chart_type == "SMA" || postChartData.data[0].chart_type == "EWMA")) {
 			if (data && data.data && data.data.name !== "mean") {
 				postChartData.data.forEach((ele) => {
 					ele.extras.data_table.forEach((el) => {
