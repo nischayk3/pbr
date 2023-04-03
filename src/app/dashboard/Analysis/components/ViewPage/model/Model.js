@@ -29,7 +29,7 @@ import NodeDetails from "./NodeDetails";
 import Transformation from "./Transformations";
 
 
-const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, modelType, encoderData, setEncoderData }) => {
+const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, modelType, encoderData, setEncoderData, setNodeMapping, catMapping }) => {
 	const selectedViewData = useSelector(
 		(state) => state.analyticsReducer.viewData
 	);
@@ -682,18 +682,19 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
 					Show
 					<Select />
 				</Col> */}
-				<Col span="11" className="title-legends">
+				<Col span="7" className="title-legends">
 					<dl>
-						<dt className="pink"></dt>
-						<dd>Categorical</dd>
-						<dt className="green"></dt>
-						<dd>Numerical</dd>
 						<dt className="violet"></dt>
 						<dd>Transformations</dd>
 						<dt className="cream"></dt>
 						<dd>Feature union</dd>
 						<dt className="lightGreen"></dt>
 						<dd>Estimator</dd>
+						{/* <dt className="pink"></dt>
+						<dd>Categorical</dd>
+						<dt className="green"></dt>
+						<dd>Numerical</dd> */}
+
 					</dl>
 				</Col>
 			</Row>
@@ -717,7 +718,7 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
 						<ModalComponent
 							isModalVisible={detailsVisible}
 							width="800px"
-							title="Details"
+							title="Transformation"
 							centered={true}
 							handleCancel={() => {
 								setDetailsVisible(false);
@@ -731,6 +732,8 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
 								selectedTargetValue={selectedTargetValue}
 								editFinalJson={editFinalJson}
 								getNodes={getNodes}
+								setNodeMapping={setNodeMapping}
+								catMapping={catMapping}
 							/>
 						</ModalComponent>
 					</ReactFlow>
