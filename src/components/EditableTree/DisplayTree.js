@@ -94,7 +94,7 @@ export default class DisplayTree extends Component {
 	render() {
 		const { treeData, isVisible, menuPosition, showMenu, items, isEdit } = this.state;
 		const getNodeKey = ({ treeIndex }) => treeIndex;
-		console.log("tree data", this.state);
+
 		return (
 			<div className="display-tree">
 				<div className="sortable-tree__tree">

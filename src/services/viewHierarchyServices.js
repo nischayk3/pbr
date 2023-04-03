@@ -163,6 +163,25 @@ export const updateDrugSubstence = request => {
 }
 
 /**
+ * get process step folder structure
+*/
+
+export const getProcessStepFolder = request => {
+	return Service.get(
+		BMS_APP_PYTHON_SERVICE + '/process-step-folder',
+		request,
+		request_headers
+	).then(
+		response => {
+			return response.data;
+		},
+		error => {
+			return error.response.data;
+		}
+	);
+}
+
+/**
  * update process step folder structure
 */
 

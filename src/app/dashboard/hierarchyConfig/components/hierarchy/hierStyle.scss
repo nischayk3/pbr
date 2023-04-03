@@ -8,7 +8,6 @@
 	}
 
 	.title-card {
-		font-family: 'Inter';
 		font-style: normal;
 		font-weight: 300;
 		font-size: 16px;
@@ -24,7 +23,7 @@
 	}
 
 	.ant-tabs-tab-btn {
-		font-family: Roboto;
+		font-family: var(--primary-font-family);
 		font-style: normal;
 		font-weight: 400;
 		font-size: 16px;
@@ -37,7 +36,7 @@
 	}
 
 	.ant-tabs-tab-active .ant-tabs-tab-btn {
-		font-family: Roboto;
+		font-family: var(--primary-font-family);
 		font-style: normal;
 		font-weight: 500;
 		font-size: 16px;
@@ -66,8 +65,12 @@
 	}
 
 	.hier-tab {
+		.ant-tabs-nav {
+			padding: 20px 24px 0 24px;
+		}
+
 		.ant-tabs-content {
-			padding: 12px 20px;
+			padding: 12px 24px;
 
 			.hier-tab__head {
 				display: flex;
@@ -85,11 +88,6 @@
 
 		.popover-hier {
 			left: 1050px;
-
-		}
-
-		.ant-tabs-nav-list {
-			margin-left: 1.2%;
 		}
 
 		.ant-tabs-tab-btn[aria-selected='true'] {
@@ -97,25 +95,21 @@
 		}
 
 		.tab-title {
-			width: 393px;
-			height: 19px;
 			font-family: 'Inter';
 			font-style: normal;
 			font-weight: 300;
 			font-size: 16px;
 			line-height: 19px;
-			margin-left: 1.2%;
 			color: #000000;
 		}
 
 		.hierarchy-table {
-			margin-left: 1.2%;
 			width: 1240px;
 			margin-top: 30px;
 		}
 
 		.hierarchy-map-table {
-			margin-left: 1.2%;
+
 			width: 1240px;
 			margin-top: 10px;
 		}
@@ -183,7 +177,7 @@
 
 		.add-button {
 			width: 1240px;
-			margin-left: 1.2%;
+
 			height: 51px;
 			border: 1px dashed #d9d9d9;
 			// background-color: black;

@@ -8,22 +8,31 @@
  */
 import { DeleteTwoTone, InfoCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Card, Col, Input, Modal, Popconfirm, Popover, Row, Select, Table, Tabs } from "antd";
+import queryString from "query-string";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory, useLocation, useRouteMatch } from "react-router-dom";
 import Banner from "../../../../../assets/images/Popup-Side.svg";
 import BreadCrumbWrapper from "../../../../../components/BreadCrumbWrapper";
 import EditableTree from "../../../../../components/EditableTree/EditableTree";
 import { hideLoader, showLoader, showNotification } from "../../../../../duck/actions/commonActions";
-import { sendDrugSub } from '../../../../../duck/actions/viewHierarchyAction';
-import { getDrugSubstence, getProcessStep, getProcessStepMap, putMolecule, putProcessStep, putProcessStepMap } from "../../../../../services/viewHierarchyServices";
+import { getDrugSubstence, getProcessStep, getProcessStepFolder, getProcessStepMap, putMolecule, putProcessStep, putProcessStepMap } from "../../../../../services/viewHierarchyServices";
 import "./hierStyle.scss";
+import ProcessStepMap from "./processStepMap";
+
 const { TabPane } = Tabs;
 
 const Hierarchy = () => {
+	const match = useRouteMatch();
+	const history = useHistory();
+	const location = useLocation();
+	const params = queryString.parse(location.search);
 	const dispatch = useDispatch();
+	console.log("paramsssss", params);
+	console.log("location", location);
 	const { Option } = Select;
 
-	const [hierarchyName, setHierarchyName] = useState("Untitled");
+	const [hierarchyName, setHierarchyName] = useState("");
 	const [moleculeData, setMoleculeData] = useState([]);
 	const [stepData, setStepData] = useState([]);
 	const [isModalVisible, setIsModalVisible] = useState(false);
@@ -36,41 +45,76 @@ const Hierarchy = () => {
 	const [stepSaved, setStepSaved] = useState(false);
 	const [del, setDel] = useState([])
 	const [deleted, setDeleted] = useState([])
+	const [saveStructure, setSaveStructure] = useState(false);
+	const [initTreeData, setInitTreeData] = useState([]);
 
+
+	console.log("initTreeData", initTreeData);
 	const hier_name = useSelector((state) => state.viewHierarchy.drugName);
 	const load_drug = useSelector((state) => state.viewHierarchy.drugLoad);
 
 	useEffect(() => {
 		handleAdd();
-		handleStepAdd();
-		if (hier_name) {
-			let name = hier_name.replace(/%20/g, " ");
-			setHierarchyName(name);
+		// handleStepAdd();
+		if (Object.keys(params) && Object.keys(params).length > 0) {
+			console.log("params?.drugname", params?.drugname);
+			setHierarchyName(params?.drugname);
+			if (load_drug) {
+				LoadView(params?.drugname);
+			}
 		}
+		// if (hier_name) {
+		// 	let name = hier_name.replace(/%20/g, " ");
+		// 	setHierarchyName(name);
+		// }
+
+
 	}, []);
 
-	useEffect(() => {
-		const url = window.location.href
-		let param = url.split('/')
-		if (param.length > 0)
-			LoadView(param)
-	}, []
-	);
+	// useEffect(() => {
+	// 	const url = window.location.href
+	// 	let param = url.split('/')
+	// 	if (param.length > 0)
+	// 		LoadView(param)
+	// }, []
+	// );
 
 	useEffect(() => {
 		if (stepData && stepData.length > 0 && moleculeData && moleculeData.length > 0 && activeTab == "Process step mapping") {
 			getStepMapping();
+		} else if (stepData && stepData.length > 0 && moleculeData && moleculeData.length > 0 && activeTab == "Process steps") {
+			const activeHierarchyName = {
+				ds_name: hierarchyName
+			};
+			getTreeStructure(activeHierarchyName)
 		}
 	}, [activeTab]);
 
+	const getTreeStructure = async (_payload) => {
+		console.log("_payload", _payload);
+		const apiRes = await getProcessStepFolder(_payload)
+		if (apiRes.status === 200) {
+			setInitTreeData(apiRes.data)
+			// dispatch(showNotification("success", 'success msg'));
+		} else if (apiRes.status === 400) {
+			// dispatch(showNotification("error", 'error msg'));
+		} else if (apiRes.status === 404) {
+			// dispatch(showNotification("error", 'error msg'));
+		} else {
+			// dispatch(showNotification("error", 'error msg'));
+		}
+	}
+
 	const LoadView = async (param) => {
+		console.log("param", param);
 		dispatch(showLoader())
 		if (param.length > 0 && param[param.length - 1] != 'untitled_view') {
-			param = param[param.length - 1]
-			let name = param.replace(/%20/g, " ");
-			dispatch(sendDrugSub(name))
-			setHierarchyName(name)
-			let req = { ds_name: name }
+			// param = param[param.length - 1]
+			// let name = param.replace(/%20/g, " ");
+
+			// dispatch(sendDrugSub(name))
+			// setHierarchyName(name)
+			let req = { ds_name: param }
 			let res = await getDrugSubstence(req)
 			let res_step = await getProcessStep(req)
 			/* istanbul ignore next */
@@ -398,12 +442,22 @@ const Hierarchy = () => {
 
 	const handleChangeTab = (value) => {
 		setActiveTab(value);
+		console.log("tabe value", match);
+		if (value === 'Plant and molecules') {
+			history.push(`${match.url}/plant-molecule?drugname=${hierarchyName}`);
+		} else if (value === 'Process steps') {
+			history.push(`${match.url}/process-steps?drugname=${hierarchyName}`);
+		} else {
+			history.push(`${match.url}/process-steps-mapping?drugname=${hierarchyName}`);
+		}
 	};
 
 	/* istanbul ignore next */
 	const handleNext = () => {
 		if (activeTab == "Process steps")
 			setActiveTab("Process step mapping");
+
+
 		if (activeTab == "Plant and molecules")
 			setActiveTab("Process steps");
 	};
@@ -472,6 +526,7 @@ const Hierarchy = () => {
 		}
 	};
 
+
 	return (
 
 		<div className="custom-wrapper">
@@ -485,8 +540,7 @@ const Hierarchy = () => {
 					className="hierarchy-card"
 					title={<span><span>Molecule Hierarchy Configuration -</span> <span className="title-card">{hierarchyName}</span> <span className="title-button"> </span></span>}
 				>
-					<Tabs className="hier-tab" activeKey={activeTab} onChange={handleChangeTab} tabBarExtraContent={<Button className="tab-button-two" onClick={() => handleSave()} >Save</Button>}>
-
+					<Tabs className="hier-tab" activeKey={activeTab} onChange={handleChangeTab} tabBarExtraContent={<Button className="custom-secondary-btn" onClick={() => handleSave()} >Save hierarchy</Button>}>
 						<TabPane tab="Plant and molecules" key="Plant and molecules">
 							<p className="tab-title"> Enter the product and plant details for {hierarchyName} <Button className="data-button-one"> {activeTab == "Process step mapping" ? <span className="tab-button-text">Finish</span> : <span className="tab-button-text" onClick={() => handleNext()}>Next </span>} </Button><Popover className="popover-hier" content={<span className="popover-content">Please save the plant and molecules or process steps before moving to process step mapping</span>} title={false} trigger="hover">
 								<InfoCircleOutlined style={{ padding: "0 5px" }} />
@@ -503,7 +557,7 @@ const Hierarchy = () => {
 								</Button>
 							</div>
 						</TabPane>
-						<TabPane tab="Process steps" key="Process steps">
+						{/* <TabPane tab="Process steps" key="Process steps">
 							<p className="tab-title">Enter the process step for {hierarchyName} <Button className="data-button"> {activeTab == "Process step mapping" ? <span className="tab-button-text">Finish</span> : <span className="tab-button-text" onClick={() => handleNext()}>Next</span>}</Button><Popover className="popover-hier" content={<span className="popover-content">Please save the plant and molecules or process steps before moving to process step mapping</span>} title={false} trigger="hover">
 								<InfoCircleOutlined style={{ padding: "0 5px" }} />
 							</Popover></p>
@@ -517,20 +571,15 @@ const Hierarchy = () => {
 									Add new row
 								</Button>
 							</div>
-						</TabPane>
-						<TabPane tab="Process steps V2 " key="Step_1">
-							<div className="hier-tab__head">
-								<p className="hier-tab__heading">The following processess and process steps can be right-clicked to create subsequent processess and to perform a bunch of other actions:</p>
-								<Button className="custom-primary-btn">
-									Next
-								</Button>
-							</div>
-							<EditableTree drugName={hierarchyName} />
+						</TabPane> */}
+						<TabPane tab="Process steps" key="Process steps">
+							<EditableTree drugName={hierarchyName} saveStructure={saveStructure} treeData={initTreeData} />
 						</TabPane>
 						<TabPane tab="Process step mapping" key="Process step mapping">
 							<p className="tab-title">Enter the process step for {hierarchyName}</p>
 							<div className="map-grid">
-								<Table className="hierarchy-map-table" columns={mappingColumns} dataSource={tableData} />
+								{/* <Table className="hierarchy-map-table" columns={mappingColumns} dataSource={tableData} /> */}
+								<ProcessStepMap />
 							</div>
 						</TabPane>
 					</Tabs>
