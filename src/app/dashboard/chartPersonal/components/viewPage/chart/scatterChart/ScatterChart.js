@@ -47,7 +47,8 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		"Process Capability",
 		"SMA",
 		"EWMA",
-		"Pareto"
+		"Pareto",
+		"IMR"
 	];
 	const [axisValues, setAxisValues] = useState({
 		xaxis: null,
@@ -151,10 +152,6 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			dispatch(showNotification("error", "X and Y axis cannot be same"));
 			return;
 		}
-		if (axisValues.window && axisValues.window < 2 ) {
-			dispatch(showNotification("error", "Window value should be equal or greater than 2"));
-			return;
-		}
 		/* istanbul ignore next */
 		if (axisValues.zaxis) {
 			if (axisValues.xaxis === axisValues.zaxis) {
@@ -164,6 +161,29 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 				dispatch(showNotification("error", "Y and Z axis cannot be same"));
 				return;
 			}
+		}
+
+		//added chart error messages for SMA && EWMA
+		if(axisValues.chartType === "SMA" && !axisValues?.window) {
+			dispatch(showNotification("error", "Please enter window input value"));
+			return;
+		}
+
+		if(axisValues.chartType === "SMA" && axisValues?.window <= 2 ) {
+			dispatch(showNotification("error", "window value should be greater than or equal to 2"));
+			return;
+		}
+
+		if(axisValues.chartType === "EWMA" && !axisValues?.alpha) {
+			dispatch(showNotification("error", "Please enter alpha input value"));
+			return;
+		}
+
+
+		if(axisValues.chartType === "EWMA" && String(axisValues?.alpha) === "0") {
+			dispatch(showNotification("error", "alpha value must be greater than 0"));
+
+			return false;
 		}
 
 		const chartArr = [...postChartData.data];
@@ -264,6 +284,9 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			if (axisValues.chartType === 'SMA') {
 				ele.window = Number(axisValues?.window)
 				ele.chart_type = "SMA";
+			}
+			if ((axisValues.chartType)?.toUpperCase() === 'IMR') {
+				ele.chart_type = "IMR";
 			}
 			// setting up chart and alpha values 
 			if (axisValues.chartType === 'EWMA') {
@@ -612,6 +635,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 						<InputField
 							label="Window"
 							value={axisValues.window}
+							type="Number"
 							onChangeInput={(e) => setAxisValues({ ...axisValues, window: e.target.value })}
 						/>
 					</Col>
@@ -621,6 +645,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 						<InputField
 							label="Alpha"
 							value={axisValues.alpha}
+							type="Number"
 							onChangeInput={(e) => setAxisValues({ ...axisValues, alpha: e.target.value })}
 						/>
 					</Col>
