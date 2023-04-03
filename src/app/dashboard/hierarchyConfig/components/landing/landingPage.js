@@ -29,8 +29,8 @@ export default function LandingPage() {
 	const [lastEightView, setLastEightView] = useState([]);
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [hierarchyName, setHierarchyName] = useState("");
-	const dispatch = useDispatch();
 
+	const dispatch = useDispatch();
 	const history = useHistory();
 
 	const handleCancel = () => {
@@ -44,16 +44,12 @@ export default function LandingPage() {
 	const loadHier = async (ds_name) => {
 		dispatch(sendDrugSub(ds_name));
 		dispatch(loadDrug(true));
-		history.push({
-			pathname: `/dashboard/molecule_hierarchy_configuration/${ds_name}`,
-		});
+		history.push(`/dashboard/molecule_hierarchy_configuration/tabs/plant-molecule?drugname=${ds_name}`);
 	};
 
-	const checkUnique = async () => {
-		history.push({
-			pathname:
-				"/dashboard/molecule_hierarchy_configuration/untitled_view",
-		});
+
+	const checkUnique = (hierarchyName) => {
+		history.push(`/dashboard/molecule_hierarchy_configuration/tabs/plant-molecule?drugname=${hierarchyName}`);
 	}
 
 	const getViews = async () => {
@@ -209,6 +205,7 @@ export default function LandingPage() {
 									loadHier(record.ds_name);
 								},
 							})}
+
 							size="small"
 						/>
 					) : (
