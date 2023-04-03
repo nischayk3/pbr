@@ -368,7 +368,7 @@ const Dashboard = () => {
 												component={Hierarchy}
 											/>
 											<PrivateRoute
-												path={`${url}/:id`}
+												path={`${url}/tabs`}
 												authorised={authorised}
 												component={HierarchyMain}
 											/>

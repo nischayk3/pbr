@@ -374,3 +374,34 @@
 		color: #262626;
 	}
 }
+
+.expandable-table {
+	.ant-table {
+		.ant-table-container {
+			.ant-table-content {
+				.ant-table-thead>tr>th {
+					background: #E7E5FF;
+					border-bottom: 1px solid #E7E5FF;
+				}
+
+				.ant-table-tbody {
+					>.ant-table-row-level-0 {
+						>.ant-table-cell {
+							// background: rgba(255, 255, 255, 1e-05);
+							background: #FFF6F6;
+						}
+					}
+
+					>.ant-table-expanded-row {
+						>td {
+							background: #E7E5FF;
+						}
+					}
+
+				}
+
+			}
+
+		}
+	}
+}

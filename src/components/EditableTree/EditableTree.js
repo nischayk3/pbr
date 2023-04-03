@@ -12,6 +12,7 @@ import '@nosferatu500/react-sortable-tree/style.css';
 import { Button, Input } from 'antd';
 import React, { Component } from 'react';
 import FileExplorerTheme from 'react-sortable-tree-theme-file-explorer';
+import { updateProcessStepFolder } from '../../services/viewHierarchyServices';
 import ContextMenu from '../ContextMenu/ContextMenu';
 import CustomButton from '../CustomButton/CustomButton';
 import DisplayTree from './DisplayTree';
@@ -24,7 +25,7 @@ export default class EditableTree extends Component {
 			searchString: '',
 			searchFocusIndex: 0,
 			currentNode: {},
-			treeData: [],
+			treeData: this.props.treeData,
 			isVisible: false,
 			showMenu: false,
 			menuPosition: { x: 0, y: 0 },
@@ -86,7 +87,7 @@ export default class EditableTree extends Component {
 				treeData: state.treeData,
 				depth: 2,
 				minimumTreeIndex: state.treeData.length,
-				newNode: { title: "", children: [{ title: ' ' }] },
+				newNode: { title: "", expanded: false, children: [{ title: ' ' }] },
 				getNodeKey: ({ treeIndex }) => treeIndex
 			}).treeData
 		}));
@@ -97,8 +98,8 @@ export default class EditableTree extends Component {
 			isVisible: true, treeData: [
 				{
 					title: this.props.drugName,
+					expanded: true,
 					children: [
-						{ title: '' },
 					]
 				},
 			],
@@ -146,15 +147,46 @@ export default class EditableTree extends Component {
 		}
 	}
 
+	saveFolderStructure = () => {
+		const folderStructure = {
+			ds_name: this.props.drugName,
+			process_step: this.state.treeData[0]
+		}
+		this.saveTreeStructure(folderStructure)
+	}
+
+
+	/**
+	 * Folder Struture Save API CALL
+	 */
+
+	saveTreeStructure = async (_payload) => {
+		const apiRes = await updateProcessStepFolder(_payload)
+		if (apiRes.status === 200) {
+			// dispatch(showNotification("success", 'success msg'));
+		} else if (apiRes.status === 400) {
+			// dispatch(showNotification("error", 'error msg'));
+		} else if (apiRes.status === 404) {
+			// dispatch(showNotification("error", 'error msg'));
+		} else {
+			// dispatch(showNotification("error", 'error msg'));
+		}
+	}
 
 	render() {
 		const { searchString, searchFocusIndex, treeData, isVisible, menuPosition, showMenu, items, isEdit } = this.state;
 		const { drugName } = this.props;
 		const getNodeKey = ({ treeIndex }) => treeIndex;
-
+		console.log("{treeData}", treeData);
 		return (
 			<>
-				<div className="sortable-tree" style={{ height: 'calc(100vh - 400px)', overflowY: 'auto' }}>
+				<div className="hier-tab__head">
+					<p className="hier-tab__heading">The following processess and process steps can be left-clicked to create subsequent processess and to perform a bunch of other actions:</p>
+					<Button className="custom-primary-btn" onClick={this.saveFolderStructure} disabled={!isVisible}>
+						Next
+					</Button>
+				</div>
+				<div className="sortable-tree" style={{ height: 'calc(100vh - 350px)', overflowY: 'auto' }}>
 					{/* <div style={{ flex: '0 0 auto', padding: '0 15px' }}>
 					<h2>React Sortable Tree</h2>
 					<Button onClick={() => { this.expandAndCollapse(true); }}>Expand all</Button>
@@ -198,7 +230,7 @@ export default class EditableTree extends Component {
 															}));
 														}} />
 
-													<Button classname='context__menu--icon' type="link" icon={<HolderOutlined />} onClick={(e) => this.handleContextMenu(e, path, node.title)}></Button>
+													<Button className='context__menu--icon' type="link" icon={<HolderOutlined />} onClick={(e) => this.handleContextMenu(e, path, node.title)}></Button>
 													{/* <Button onClick={(e) => { e.preventDefault(); e.stopPropagation(); this.insertNewNode(path) }} >+</Button>
 										<Button onClick={(e) => { e.preventDefault(); e.stopPropagation(); this.removeNode(path) }} >-</Button> */}
 												</form>
@@ -211,6 +243,7 @@ export default class EditableTree extends Component {
 							</>
 						)}
 					</div>
+
 				</div>
 				{!isVisible && (
 					<DisplayTree />
