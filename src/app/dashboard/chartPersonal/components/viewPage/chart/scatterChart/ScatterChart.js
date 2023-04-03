@@ -47,7 +47,8 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		"Process Capability",
 		"SMA",
 		"EWMA",
-		"Pareto"
+		"Pareto",
+		"IMR"
 	];
 	const [axisValues, setAxisValues] = useState({
 		xaxis: null,
@@ -263,6 +264,9 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			if (axisValues.chartType === 'SMA') {
 				ele.window = Number(axisValues?.window)
 				ele.chart_type = "SMA";
+			}
+			if ((axisValues.chartType)?.toUpperCase() === 'IMR') {
+				ele.chart_type = "IMR";
 			}
 			// setting up chart and alpha values 
 			if (axisValues.chartType === 'EWMA') {
