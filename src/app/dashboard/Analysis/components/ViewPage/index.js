@@ -38,6 +38,8 @@ const ViewPageAnalysis = () => {
 	const [executed, setEXecuted] = useState(false);
 	const [exectLaterDate, setExectLaterDate] = useState("");
 	const [finalModelJson, setFinalModelJson] = useState({});
+	const [outlierMapping, setOutlierMapping] = useState({});
+	const [catMapping, setCatMapping] = useState({});
 	const [editFinalJson, setEditFinalModelJson] = useState();
 	const [resultsData, setResultsData] = useState([]);
 	const [executedModel, setExecutedModal] = useState(false);
@@ -117,7 +119,10 @@ const ViewPageAnalysis = () => {
 			data: [{ ...tempObj }],
 			savetype: save,
 			pipeline_disp_id: selectedViewData.viewData.pipeline_id,
+			outlier_mapping: outlierMapping,
+			categorical_mapping: catMapping
 		};
+
 		dispatch(showLoader());
 		const apiResponse = await putPipelineObj(req);
 		if (apiResponse?.statuscode === 200) {
@@ -269,7 +274,6 @@ const ViewPageAnalysis = () => {
 		)
 	}
 
-
 	return (
 		<div className="custom-wrapper bread-wrapper view-analysis-container">
 			<div className="sub-header">
@@ -351,6 +355,8 @@ const ViewPageAnalysis = () => {
 							modelType={modelType}
 							encoderData={encoderData}
 							setEncoderData={setEncoderData}
+							setNodeMapping={setOutlierMapping}
+							catMapping={setCatMapping}
 						/>
 					</TabPane>
 					{/* {exectStart && <TabPane tab="Transformation" key="4">
