@@ -97,7 +97,7 @@ const Dashboard = () => {
 		if (JSON.parse(localStorage.getItem('login_details')) == null && !window.location.href.includes('user/login') && !window.location.href.includes('/redirect')) {
 			dispatch(showNotification('error', 'Please login first to proceed'))
 			setTimeout(() => {
-				history.push('/user/login');
+				// history.push('/user/login');
 				window.location.reload()
 			}, 3000)
 
