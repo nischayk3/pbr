@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from 'react'
-import { Row, Col, Checkbox, Input, Button, Select, Modal } from 'antd'
+import { Row, Col, Checkbox, Input, Button, Select, Modal, Slider } from 'antd'
 import { loadAdvanceSetting, getAdvanceSetting, saveAdvanceSetting } from '../../../../../services/pbrService'
+import { InfoCircleOutlined } from '@ant-design/icons';
 import {
     hideLoader,
     showLoader,
     showNotification
 } from '../../../../../duck/actions/commonActions';
 import { useDispatch } from 'react-redux';
-function AbsoluteCoordinate(props) {
+function KeyValue(props) {
     let { method, formValues, setFormValues, name, setAdvancePopup, advancePopup } = props
     const dispatch = useDispatch();
     const [loadSettingOptions, setLoadSettingOptions] = useState([]);
     const [loadValue, setLoadValue] = useState('');
-    const [word, setWord] = useState(false);
-    const [line, setLine] = useState(false);
+    const [fuzzyThreashold, setFuzzyThreashold] = useState();
+    const [fuzzyValue, setFuzzyValue] = useState();
     const [saveAs, setSaveAs] = useState(false);
     const [saveAsName, setSaveAsName] = useState('');
+
+    const fuzzyOptions = [{ lable: 'ratio', value: 'ratio' }, { lable: 'partial_ratio', value: 'partial_ratio' }, { lable: 'wratio', value: 'wratio' }, { lable: 'token_sort_ratio', value: 'token_sort_ratio' },
+    { lable: 'token_set_ratio', value: 'token_set_ratio' }, { lable: 'partial_token_sort_ratio', value: 'partial_token_sort_ratio' }, { lable: 'partial_token_set_ratio', value: 'partial_token_set_ratio' }]
 
     const advanceSetting = async (val) => {
         try {
@@ -28,8 +32,8 @@ function AbsoluteCoordinate(props) {
             let res = await getAdvanceSetting(req)
             if (res.Status === 200) {
                 dispatch(hideLoader());
-                setWord(res.Data["box_type"]['word'])
-                setLine(res.Data["box_type"]['line'])
+                setFuzzyValue(res.Data['fuzz_method'])
+                setFuzzyThreashold(res.Data['fuzz_threshold'])
                 if (val === 'default') {
                     let obj = formValues
                     obj[name] = { ...obj[name], advance_setting: res.Data }
@@ -84,15 +88,19 @@ function AbsoluteCoordinate(props) {
         }
     }, [advancePopup])
 
+
     const handleSave = async () => {
         try {
-            if (word || line) {
                 dispatch(showLoader());
                 let user = localStorage.getItem("user_id")
                 let req = {
                     name: loadValue,
                     method: method,
-                    settings: { "box_type": { "word": word, "line": line },setting_name:loadValue },
+                    settings: {
+                        fuzz_method: fuzzyValue,
+                        fuzz_threshold: fuzzyThreashold,
+                        setting_name:loadValue
+                    },
                     changed_by: user,
                     action_type: "save",
                     created_by: null
@@ -103,14 +111,14 @@ function AbsoluteCoordinate(props) {
                     let obj = formValues
                     obj[name] = { ...obj[name], advance_setting: res.Data }
                     setFormValues(obj)
+
+                    // loadSetting()
                     // setAdvancePopup(false)
+
                 } else {
                     dispatch(showNotification('error', res.Message));
                     dispatch(hideLoader());
                 }
-            } else {
-                dispatch(showNotification('error', "Select WORD or Line"));
-            }
         } catch (err) {
             console.log("err", err)
         }
@@ -118,13 +126,17 @@ function AbsoluteCoordinate(props) {
 
     const handleSaveAs = async () => {
         try {
-            if ((word || line) && saveAsName.length > 0) {
+            if (saveAsName.length > 0) {
                 dispatch(showLoader());
                 let user = localStorage.getItem("user_id")
                 let req = {
                     name: saveAsName,
                     method: method,
-                    settings: {"box_type": { "word": word, "line": line },setting_name:loadValue},
+                    settings: {
+                        fuzz_method: fuzzyValue,
+                        fuzz_threshold: fuzzyThreashold,
+                        setting_name:loadValue
+                    },
                     changed_by: null,
                     action_type: "save_as",
                     created_by: user
@@ -145,19 +157,14 @@ function AbsoluteCoordinate(props) {
                     dispatch(hideLoader());
                 }
             } else {
-                let str = ''
-                if (saveAsName.length > 0) {
-                    str = "Select WORD or Line"
-                } else {
-                    str = "Enter Name"
-                }
+                let str = "Enter Name"
                 dispatch(showNotification('error', str));
             }
         } catch (err) {
             console.log("err", err)
         }
     }
-
+    
     return (
         <div>
             <div>
@@ -172,28 +179,28 @@ function AbsoluteCoordinate(props) {
                         </div>
                     </Col>
                 </Row>
-                <Row style={{ marginTop: 40 }}>
-                    <Col span={4}>
-                        BoxType
+                <Row style={{ marginTop: 30 }}>
+                    <Col span={8}>
+                        Fuzzy Method
                     </Col>
-                    <Col span={4}>
-                        <div style={{ display: "flex" }}>
-                            <Checkbox onChange={(e) => setWord(e.target.checked)} checked={word}>Word</Checkbox>
-                            <Checkbox onChange={(e) => setLine(e.target.checked)} checked={line}>Line</Checkbox>
-                        </div>
+                    <Col span={8}>
+                        <Select options={fuzzyOptions} onChange={(val) => setFuzzyValue(val)} value={fuzzyValue} placeholder="Fuzzy Method" style={{ width: 150 }} />
                     </Col>
                 </Row>
-                {/* <Row style={{ marginTop: 50 }}>
+                <Row style={{ marginTop: 30 }}>
                     <Col span={8}>
-                        Location Threashold
+                        Fuzzy Threshold
                     </Col>
                     <Col span={8}>
                         <Slider min={0}
-                            max={1} defaultValue={[0, 1]} />
+                            max={100} value={fuzzyThreashold} onChange={(val) => setFuzzyThreashold(val)} />
                     </Col>
-
-
-                </Row> */}
+                    <Col span={6}>
+                        <div style={{ marginTop: 5, marginLeft: 10, fontWeight: 'bold' }}>
+                            {fuzzyThreashold}
+                        </div>
+                    </Col>
+                </Row>
             </div>
             <Modal title="Enter Name" visible={saveAs} onOk={() => handleSaveAs()} onCancel={() => setSaveAs(false)}>
                 <Input style={{ marginBottom: 20 }} value={saveAsName} placeholder="Enter Name" onChange={(e) => setSaveAsName(e.target.value)} />
@@ -202,4 +209,4 @@ function AbsoluteCoordinate(props) {
     )
 }
 
-export default AbsoluteCoordinate
+export default KeyValue
