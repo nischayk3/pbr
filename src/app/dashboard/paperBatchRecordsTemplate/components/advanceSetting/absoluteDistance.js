@@ -90,8 +90,15 @@ function AbsoluteDistance(props) {
     }
 
     useEffect(() => {
-        loadSetting()
-    }, [])
+        if (advancePopup) {
+            if(formValues[name]?.advance_setting){
+                loadSetting(formValues[name]?.advance_setting[0]?.setting_name)
+            }
+            else{
+                loadSetting()
+            }
+        }
+    }, [advancePopup])
 
 
     const handleSave = async () => {
@@ -114,7 +121,8 @@ function AbsoluteDistance(props) {
                         anchor_loc_threshold: anchorThreashold,
                         value_loc_threshold: valueThreashold,
                         fuzz_method: fuzzyValue,
-                        fuzz_threshold: fuzzyThreashold
+                        fuzz_threshold: fuzzyThreashold,
+                        setting_name:loadValue
                     },
                     changed_by: user,
                     action_type: "save",
@@ -162,7 +170,8 @@ function AbsoluteDistance(props) {
                         anchor_loc_threshold: anchorThreashold,
                         value_loc_threshold: valueThreashold,
                         fuzz_method: fuzzyValue,
-                        fuzz_threshold: fuzzyThreashold
+                        fuzz_threshold: fuzzyThreashold,
+                        setting_name:loadValue
                     },
                     changed_by: null,
                     action_type: "save_as",
@@ -177,7 +186,7 @@ function AbsoluteDistance(props) {
                     setSaveAsName('')
                     setSaveAs(false)
                     setLoadValue(saveAsName)
-                    loadSetting(saveAsName)
+                    // loadSetting(saveAsName)
                     // setAdvancePopup(false)
                 } else {
                     dispatch(showNotification('error', res.Message));
