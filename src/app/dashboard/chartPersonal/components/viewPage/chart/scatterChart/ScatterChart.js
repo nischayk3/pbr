@@ -2,7 +2,7 @@
  * @author Vinay Reddy <vinay.reddy@mareana.com>
  * @Mareana - CPV Product
  * @version 2
- * @Last Modified - 03 April, 2023
+ * @Last Modified - 04 April, 2023
  * @Last Changed By - @Vinay
  */
 import React, { useEffect, useRef, useState } from "react";
@@ -89,7 +89,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 	const chartNodeClicked = (data) => {
 		// added chart typesz
 		if (postChartData && postChartData.data && postChartData.data[0] && (postChartData.data[0].chart_type == "scatter" || postChartData.data[0].chart_type == "process control" || postChartData.data[0].chart_type == "bubble" || postChartData.data[0].chart_type == "error" || postChartData.data[0].chart_type == "line" || postChartData.data[0].chart_type == "process control" || postChartData.data[0].chart_type == "bubble" || postChartData.data[0].chart_type == "error" || postChartData.data[0].chart_type == "SMA" || postChartData.data[0].chart_type == "EWMA")) {
-			if (data && data.data && data.data.name !== "mean") {
+			if (data && data.data && data.data.mode === "markers") {
 				postChartData.data.forEach((ele) => {
 					ele.extras.data_table.forEach((el) => {
 						if (el.batch_num === data.text) {
@@ -146,6 +146,12 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 	const handleCloseModal = () => {
 		setIsModalVisible(false);
 	};
+
+	// checking integer value
+	const isInt = (n) =>  {
+		return Number(n) % 1 === 0;
+	 }
+
 	const onApply = async () => {
 		/* istanbul ignore next */
 		if (axisValues.xaxis === axisValues.yaxis) {
@@ -169,8 +175,13 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			return;
 		}
 
-		if(axisValues.chartType === "SMA" && axisValues?.window <= 2 ) {
+		if(axisValues.chartType === "SMA" && axisValues?.window < 2 ) {
 			dispatch(showNotification("error", "window value should be greater than or equal to 2"));
+			return;
+		}
+
+		if(axisValues.chartType === "SMA" && !isInt(axisValues?.window) ) {
+			dispatch(showNotification("error", "window value should be integer"));
 			return;
 		}
 
@@ -182,6 +193,12 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 
 		if(axisValues.chartType === "EWMA" && String(axisValues?.alpha) === "0") {
 			dispatch(showNotification("error", "alpha value must be greater than 0"));
+
+			return false;
+		}
+
+		if(axisValues.chartType === "EWMA" && Number(axisValues?.alpha) > 1) {
+			dispatch(showNotification("error", "alpha value must be between 0 to 1"));
 
 			return false;
 		}
@@ -447,6 +464,10 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 				let alphaValue = '';
 				if (chart === 'Sma') {
 					chart = "SMA"
+					windowValue = ele?.window;
+				}
+				if (chart === 'Imr') {
+					chart = "IMR"
 					windowValue = ele?.window;
 				}
 				if (chart === 'Ewma') {

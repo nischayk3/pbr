@@ -72,6 +72,9 @@ const chartComponent = (props) => {
 			const chartResponse = await getChartPlotData(req, headers);
 			if (chartResponse.data[0]) {
 				setWorkSpaceChartData(chartResponse.data[0].data);
+				chartResponse.data[0].layout.width = 550;
+				chartResponse.data[0].layout.height = 410;
+				setWorkSpaceChartLayout(chartResponse.data[0].layout)
 				if (chartResponse.data[0].violations) {
 					setViolation(chartResponse.data[0].violations)
 					setViolationColumns(getColumns(chartResponse.data[0].violations))
@@ -88,22 +91,6 @@ const chartComponent = (props) => {
 					setExclusion(chartResponse.data[0].exclusions)
 					setExclusionColumns(getColumns(chartResponse.data[0].exclusions))
 				}
-				const layout = {
-					xaxis: chartResponse.data[0].layout.xaxis,
-					yaxis: chartResponse.data[0].layout.yaxis,
-					autosize: false,
-					width: 550,
-					height: 410,
-					margin: {
-						l: 60,
-						r: 50,
-						b: 75,
-						t: 30,
-						pad: 4
-					},
-				};
-				setWorkSpaceChartLayout(layout)
-
 			}
 			if (chartResponse.data[0].extras.data_table) {
 				setDataTable(chartResponse.data[0].extras.data_table)

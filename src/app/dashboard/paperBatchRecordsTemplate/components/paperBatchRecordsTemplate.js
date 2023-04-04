@@ -448,6 +448,12 @@ const PaperBatchRecordsTemplate = () => {
 		} else if (field === 'method') {
 			arr[key] = { ...arr[key], method: value?.value }
 			setFormValues(arr)
+			if(value?.value === 'key_value_form'){
+				handleMenuChange('key_value')
+			}
+			// else{
+			// 	handleMenuChange('word')
+			// }
 		} else if (field === 'anchor_dir') {
 			arr[key] = { ...arr[key], anchor_dir: value?.value }
 			setFormValues(arr)
@@ -884,6 +890,7 @@ const PaperBatchRecordsTemplate = () => {
 				method: item.method,
 				pageIdValue: item?.page_name,
 				page_num: item?.param_page,
+				advance_setting:[item?.settings],
 				values: {
 					anchorValue: item?.param_key_text, anchorId: item?.param_value_text, snippetID: item?.param_key_snippet_id,
 					anchorCoords: [
