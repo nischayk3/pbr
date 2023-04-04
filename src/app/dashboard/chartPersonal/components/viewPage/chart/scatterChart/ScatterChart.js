@@ -466,6 +466,10 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 					chart = "SMA"
 					windowValue = ele?.window;
 				}
+				if (chart === 'Imr') {
+					chart = "IMR"
+					windowValue = ele?.window;
+				}
 				if (chart === 'Ewma') {
 					chart = "EWMA"
 					alphaValue = ele?.alpha;
