@@ -33,6 +33,11 @@ const App = () => {
 		try {
 			const sessionres = await getSession()
 			if (sessionres.Status === 200) {
+				if (!sessionres.SignedInfo) {
+					window.open("https://mi-dev.mareana.com", '_self')
+
+					return;
+				}
 				const data = sessionres['Data'];
 				localStorage.setItem('login_details', JSON.stringify(data));
 				localStorage.setItem('user', data?.user_id);
@@ -42,17 +47,12 @@ const App = () => {
 				dispatch(showNotification('success', `Logged in as ${data?.email_id}`));
 				if (data?.token != '') {
 					dispatch(sendLoginDetails(data));
-					// history.push('/dashboard/workspace');
-					dispatch(sendLoginDetails(data));
 				}
 			} else {
 				dispatch(showNotification("error", 'Login Failed', 'Sorry, an unexpectede error occurred. Please try logging in again.'));
-				// history.push('/user/login');
 			}
 		} catch (error) {
-			console.log('error', error)
 			dispatch(showNotification("error", 'Login Failed', 'Sorry, an unexpectede error occurred. Please try logging in again.'));
-			// history.push('/user/login');
 		}
 	}
 
@@ -72,10 +72,10 @@ const App = () => {
 				<SuspenseWrapper>
 					<Switch>
 						<Route exact path="/" key="login">
-							<Redirect to={"/dashboard/workspace"} />
+							<Redirect to={"/mi/dashboard/workspace"} />
 						</Route>
 						<ProctectedRoute
-							path={`${match.url}dashboard`}
+							path={`${match.url}/mi/dashboard`}
 							key="dashboard"
 							authorised={authenticated}
 							errorStatus={error}
