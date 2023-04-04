@@ -448,6 +448,12 @@ const PaperBatchRecordsTemplate = () => {
 		} else if (field === 'method') {
 			arr[key] = { ...arr[key], method: value?.value }
 			setFormValues(arr)
+			if(value?.value === 'key_value_form'){
+				handleMenuChange('key_value')
+			}
+			// else{
+			// 	handleMenuChange('word')
+			// }
 		} else if (field === 'anchor_dir') {
 			arr[key] = { ...arr[key], anchor_dir: value?.value }
 			setFormValues(arr)
