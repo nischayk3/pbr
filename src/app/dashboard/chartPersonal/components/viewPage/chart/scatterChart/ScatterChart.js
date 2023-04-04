@@ -2,7 +2,7 @@
  * @author Vinay Reddy <vinay.reddy@mareana.com>
  * @Mareana - CPV Product
  * @version 2
- * @Last Modified - 03 April, 2023
+ * @Last Modified - 04 April, 2023
  * @Last Changed By - @Vinay
  */
 import React, { useEffect, useRef, useState } from "react";
@@ -146,6 +146,12 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 	const handleCloseModal = () => {
 		setIsModalVisible(false);
 	};
+
+	// checking integer value
+	const isInt = (n) =>  {
+		return Number(n) % 1 === 0;
+	 }
+
 	const onApply = async () => {
 		/* istanbul ignore next */
 		if (axisValues.xaxis === axisValues.yaxis) {
@@ -169,8 +175,13 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			return;
 		}
 
-		if(axisValues.chartType === "SMA" && axisValues?.window <= 2 ) {
+		if(axisValues.chartType === "SMA" && axisValues?.window < 2 ) {
 			dispatch(showNotification("error", "window value should be greater than or equal to 2"));
+			return;
+		}
+
+		if(axisValues.chartType === "SMA" && !isInt(axisValues?.window) ) {
+			dispatch(showNotification("error", "window value should be integer"));
 			return;
 		}
 
