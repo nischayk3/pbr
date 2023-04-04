@@ -32,8 +32,8 @@ function KeyValue(props) {
             let res = await getAdvanceSetting(req)
             if (res.Status === 200) {
                 dispatch(hideLoader());
-                setFuzzyValue(res.Data['fuzz_method'])
-                setFuzzyThreashold(res.Data['fuzz_threshold'])
+                setFuzzyValue(res.Data[0]?.['fuzz_method'])
+                setFuzzyThreashold(res.Data[0]?.['fuzz_threshold'])
                 if (val === 'default') {
                     let obj = formValues
                     obj[name] = { ...obj[name], advance_setting: res.Data }

@@ -890,6 +890,7 @@ const PaperBatchRecordsTemplate = () => {
 				method: item.method,
 				pageIdValue: item?.page_name,
 				page_num: item?.param_page,
+				advance_setting:[item?.settings],
 				values: {
 					anchorValue: item?.param_key_text, anchorId: item?.param_value_text, snippetID: item?.param_key_snippet_id,
 					anchorCoords: [
