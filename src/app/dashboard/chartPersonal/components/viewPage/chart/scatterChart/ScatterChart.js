@@ -89,7 +89,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 	const chartNodeClicked = (data) => {
 		// added chart typesz
 		if (postChartData && postChartData.data && postChartData.data[0] && (postChartData.data[0].chart_type == "scatter" || postChartData.data[0].chart_type == "process control" || postChartData.data[0].chart_type == "bubble" || postChartData.data[0].chart_type == "error" || postChartData.data[0].chart_type == "line" || postChartData.data[0].chart_type == "process control" || postChartData.data[0].chart_type == "bubble" || postChartData.data[0].chart_type == "error" || postChartData.data[0].chart_type == "SMA" || postChartData.data[0].chart_type == "EWMA")) {
-			if (data && data.data && data.data.name !== "mean") {
+			if (data && data.data && data.data.mode === "markers") {
 				postChartData.data.forEach((ele) => {
 					ele.extras.data_table.forEach((el) => {
 						if (el.batch_num === data.text) {
