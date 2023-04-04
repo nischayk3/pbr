@@ -123,3 +123,79 @@ export const postViewDownload = request => {
 		}
 	);
 };
+
+/**
+ * get all drug-substance -v2
+*/
+export const getDrugSubstence = request => {
+	return Service.get(
+		BMS_APP_PYTHON_SERVICE + '/drug-substance-v2',
+		request,
+		request_headers
+	).then(
+		response => {
+			return response.data;
+		},
+		error => {
+			return error.response.data;
+		}
+	);
+}
+
+
+/**
+ * update drug-substance -v2
+*/
+
+export const updateDrugSubstence = request => {
+	return Service.put(
+		BMS_APP_PYTHON_SERVICE + '/drug-substance-v2',
+		request,
+		request_headers
+	).then(
+		response => {
+			return response.data;
+		},
+		error => {
+			return error.response.data;
+		}
+	);
+}
+
+/**
+ * get process step folder structure
+*/
+
+export const getProcessStepFolder = request => {
+	return Service.get(
+		BMS_APP_PYTHON_SERVICE + '/process-step-folder',
+		request,
+		request_headers
+	).then(
+		response => {
+			return response.data;
+		},
+		error => {
+			return error.response.data;
+		}
+	);
+}
+
+/**
+ * update process step folder structure
+*/
+
+export const updateProcessStepFolder = request => {
+	return Service.put(
+		BMS_APP_PYTHON_SERVICE + '/process-step-folder',
+		request,
+		request_headers
+	).then(
+		response => {
+			return response.data;
+		},
+		error => {
+			return error.response.data;
+		}
+	);
+}
