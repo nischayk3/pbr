@@ -197,6 +197,12 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			return false;
 		}
 
+		if(axisValues.chartType === "EWMA" && Number(axisValues?.alpha) > 1) {
+			dispatch(showNotification("error", "alpha value must be between 0 to 1"));
+
+			return false;
+		}
+
 		const chartArr = [...postChartData.data];
 		/* istanbul ignore next */
 		if (axisValues.transform) {
