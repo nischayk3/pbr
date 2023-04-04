@@ -28,8 +28,8 @@ function AbsoluteCoordinate(props) {
             let res = await getAdvanceSetting(req)
             if (res.Status === 200) {
                 dispatch(hideLoader());
-                setWord(res.Data["box_type"]['word'])
-                setLine(res.Data["box_type"]['line'])
+                setWord(res.Data[0]?.["box_type"]['word'])
+                setLine(res.Data[0]?.["box_type"]['line'])
                 if (val === 'default') {
                     let obj = formValues
                     obj[name] = { ...obj[name], advance_setting: res.Data }
