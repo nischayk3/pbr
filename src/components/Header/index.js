@@ -80,8 +80,7 @@ const HeaderBar = () => {
 		localStorage.removeItem('login_details');
 		localStorage.removeItem('username');
 		localStorage.removeItem('loginwith');
-		window.open(`${logoutUrl}`, '_self')
-		window.open(`${logoutUrl}?redirect_url=${MDH_APP_PYTHON_SERVICE}`, '_self')
+		window.open("https://mi-dev.mareana.com", '_self')
 	}
 
 	const wrapperRef = useRef(null);
