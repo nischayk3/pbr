@@ -33,11 +33,6 @@ const App = () => {
 		try {
 			const sessionres = await getSession()
 			if (sessionres.status === 200) {
-				if (!sessionres.SignedInfo) {
-					window.open("https://mi-dev.mareana.com", '_self')
-
-					return;
-				}
 				const data = sessionres['data'];
 				localStorage.setItem('login_details', JSON.stringify(data));
 				localStorage.setItem('user', data?.user_id);

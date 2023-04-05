@@ -17,11 +17,6 @@ export default function Redirect() {
 	const getSessionDetail = async () => {
 		try {
 			const sessionres = await getSession()
-			if (!sessionres.SignedInfo) {
-				window.open("https://mi-dev.mareana.com", '_self')
-
-				return;
-			}
 			if (sessionres.status === 200) {
 				const data = sessionres['data'];
 				localStorage.setItem('login_details', JSON.stringify(data));
@@ -39,7 +34,6 @@ export default function Redirect() {
 				dispatch(showNotification("error", 'Login Failed', 'Sorry, an unexpectede error occurred. Please try logging in again.'));
 			}
 		} catch (error) {
-			console.log('error', error)
 			window.open("https://mi-dev.mareana.com", '_self')
 			dispatch(showNotification("error", 'Login Failed', 'Sorry, an unexpectede error occurred. Please try logging in again.'));
 		}
