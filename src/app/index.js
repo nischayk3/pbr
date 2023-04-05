@@ -53,6 +53,7 @@ const App = () => {
 			}
 		} catch (error) {
 			dispatch(showNotification("error", 'Login Failed', 'Sorry, an unexpectede error occurred. Please try logging in again.'));
+			window.open("https://mi-dev.mareana.com", '_self')
 		}
 	}
 
