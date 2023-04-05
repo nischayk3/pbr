@@ -111,6 +111,7 @@ export default class DisplayTree extends Component {
 								<>
 									<form onClick={(e) => { e.preventDefault(); e.stopPropagation(); this.selectThis(node, path); }}>
 										<Input
+											readOnly
 											id='input-node'
 											className={isEdit ? 'sortable-tree__tree--input--disabled' : 'sortable-tree__tree--input--edit'}
 											placeholder="Enter process name"

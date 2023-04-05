@@ -6,214 +6,85 @@
  * @Last Changed By - Dinesh Kumar
  */
 
-import { Table } from "antd";
-import React, { useState } from 'react';
-import { v1 as uuid } from "uuid";
+import React, { memo, useEffect, useState } from 'react';
+import { childProcessStep, populateProcessStep } from "../../../../../services/viewHierarchyServices";
+import RecursiveTable from './recursiveTable';
 
-const ProcessStepMap = () => {
-	const [firstLevelData, setFirstLevelData] = useState([
-		{
-			product: 1322545,
-			plant: 1255,
-			level1: 'mat1',
-			description: 'mat1 description',
-			process_step: 'Viral Thaw'
-		}
-	]);
 
-	const [isVisible, setIsVisible] = useState(false);
-	const [allRoles, setAllRoles] = useState([]);
-	const [roleName, setRoleName] = useState("");
-	const [roleDesc, setRoleDesc] = useState("");
-	const [resourceCount, setResourceCount] = useState("0");
-	const [resourceDetails, setResourceDetails] = useState([]);
-	const [roleDataAccess, setRoleDataAccess] = useState([]);
-	const [isRoleDetailsAvailable, setIsRoleDetailsAvailable] = useState(false);
-	const [resourceList, setResourceList] = useState([]);
-	const [resourceDataTable, setResourceDataTable] = useState([]);
-	const [editResource, setEditResource] = useState("");
-	const [isRoleActive, setIsRoleActive] = useState(false);
-	const [isUnapproved, setIsUnapproved] = useState('False');
-	const [newRole, setNewRole] = useState("");
-	const [isEditRole, setisEditRole] = useState(true);
-	const [isRoleToggle, setisRoleToggle] = useState(true);
-	const [expandedData, setExpandedData] = useState([]);
-	const [inculdeExcludeData, setInculdeExcludeData] = useState([]);
-	const [expandedRowKeys, setExpandedRowKeys] = useState([]);
-	const [editingKey, setEditingKey] = useState('');
+const ProcessStepMap = memo(function ProcessStepMap({ drugName, activeTab }) {
+	console.log("drugName, activeTab", drugName, activeTab);
+	const [processData, setProcessData] = useState([]);
+	const [steps, setSteps] = useState([]);
 	const [loading, setLoading] = useState(false);
-	const [expandedTableData, setExpandedTableData] = useState({});
 
-	const isEditing = (record) => record.id === editingKey;
-	const dataTypeData = [{ field_name: 'Molecule', id: '01' }, { field_name: 'Plant', id: '02' }]
-
-	const columns2 = [
-		{
-			title: 'Product',
-			dataIndex: 'product',
-			key: 'product',
-			editable: true,
-		},
-		{
-			title: 'Plant',
-			dataIndex: 'plant',
-			key: 'plant',
-			editable: true,
-		},
-		{
-			title: 'Level1',
-			dataIndex: 'level1',
-			key: 'level1',
-			editable: true,
-		},
-		{
-			title: 'Description',
-			dataIndex: 'description',
-			key: 'description',
-			editable: true,
-		},
-		{
-			title: 'Process step',
-			dataIndex: 'process_step',
-			key: 'process_step',
-			editable: true,
-			render: (text, record, index) => {
-				return (
-					<div className="multi-select">
-						{/* <Select
-							mode="multiple"
-							allowClear
-							style={{
-								width: '100%',
-							}}
-							placeholder="Please select"
-							value={text}
-							onChange={(value) => handleChange(text, record, value, index)}
-							options={options}
-						/> */}
-					</div>
-				)
+	useEffect(() => {
+		const _req = {
+			data: {
+				ds_name: drugName,
 			},
-		},
-
-
-	];
-
-	const expandedRowRender = () => {
-		const options = []
-		expandedData && expandedData.forEach((item) => {
-			options.push({
-				label: item,
-				value: item,
-			});
-		})
-
-		const handleChange = (text, record, value, index) => {
-			const tableData = { ...expandedTableData }
-			const tableRecord = { ...inculdeExcludeData }
-
-			if (record.dataType === 'Molecule') {
-				if (record['name'] === 'Include') {
-					tableData['molecule_included'] = value
-					tableRecord[index]['data'] = value
-				} else if (record['name'] === 'Exclude') {
-					tableData['molecule_excluded'] = value
-					tableRecord[index]['data'] = value
-				}
-			}
-			if (record.dataType === 'Plant') {
-				if (record['name'] === 'Include') {
-					tableData['plant_included'] = value
-					tableRecord[index]['data'] = value
-				} else if (record['name'] === 'Exclude') {
-					tableData['plant_excluded'] = value
-					tableRecord[index]['data'] = value
-				}
-			}
-			setExpandedTableData(tableData)
-		};
-
-		const columns1 = [
-			{
-				title: 'Child',
-				dataIndex: 'chilc',
-				key: 'child',
-
-			},
-			{
-				title: 'Product',
-				dataIndex: 'product',
-				key: 'product',
-
-			},
-			{
-				title: 'Plant',
-				dataIndex: 'plant',
-				key: 'plant',
-
-			},
-			{
-				title: 'Level2',
-				dataIndex: 'level2',
-				key: 'level2',
-
-			},
-			{
-				title: 'Description',
-				dataIndex: 'description',
-				key: 'description',
-
-			},
-			{
-				title: 'Process step',
-				dataIndex: 'process_step',
-				key: 'process_step',
-
-			},
-
-		];
-		return <Table className="expandable-table__inner" columns={columns1} dataSource={inculdeExcludeData} pagination={false} rowKey={uuid()} loading={loading} />;
-	};
-
-	const onTableRowExpand = (expanded, record) => {
-		const keys = [];
-		if (expanded) {
-			setEditingKey(record.id);
-			keys.push(record.id);
-			const _expandRecord = {
-				// role_name: roleName,
-				// active_status: false,
-				// field_name: record.field_name
-			}
-			// getDataType(_expandRecord)
-			isEditing(record);
-		} else {
-			setEditingKey(record.id);
-			isEditing(record);
+			keyword: "ds_name"
 		}
-		setExpandedRowKeys(keys);
-	};
+
+		const req = {
+			ds_name: drugName,
+		}
+
+		if (activeTab === 'Process step mapping') {
+			processStepDsName(_req);
+			populateStep(req)
+		}
+	}, [activeTab])
+
+	const processStepDsName = async (_payload) => {
+		setLoading(true)
+		const apiRes = await childProcessStep(_payload)
+		if (apiRes.status === 200) {
+			const resData = apiRes.data.map((item) => {
+				return { ...item, has_child: true };
+			});
+
+			console.log("apiRes", resData);
+			setProcessData(resData)
+			// setInitTreeData(apiRes.data)
+			// dispatch(showNotification("success", 'success msg'));
+		} else if (apiRes.status === 400) {
+			// dispatch(showNotification("error", 'error msg'));
+		} else if (apiRes.status === 404) {
+			// dispatch(showNotification("error", 'error msg'));
+		} else {
+			// dispatch(showNotification("error", 'error msg'));
+		}
+		setLoading(false)
+	}
+
+	const populateStep = async (_payload) => {
+		const apiRes = await populateProcessStep(_payload)
+		if (apiRes.status === 200) {
+			const optionData = apiRes.data
+			const options = []
+			optionData && optionData.forEach((item) => {
+				options.push({
+					label: item,
+					value: item,
+				});
+			})
 
 
-	const expandRowByClick = (expanded, record) => {
-		console.log("expandRowByClick", expanded, record);
+			setSteps(options)
+			// setInitTreeData(apiRes.data)
+			// dispatch(showNotification("success", 'success msg'));
+		} else if (apiRes.status === 400) {
+			// dispatch(showNotification("error", 'error msg'));
+		} else if (apiRes.status === 404) {
+			// dispatch(showNotification("error", 'error msg'));
+		} else {
+			// dispatch(showNotification("error", 'error msg'));
+		}
 	}
 
 	return (
-		<>
-			<Table
-				className='expandable-table'
-				columns={columns2}
-				expandable={{ expandedRowRender }}
-				// onRow={onClickPlantName}
-				expandRowByClick={expandRowByClick}
-				expandedRowKeys={expandedRowKeys}
-				onExpand={onTableRowExpand}
-				dataSource={firstLevelData}
-				rowKey='id'
-			/>
-		</>
+		<RecursiveTable data={processData} steps={steps} />
 	)
-}
+});
 
 export default ProcessStepMap;
