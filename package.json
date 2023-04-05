@@ -2,7 +2,7 @@
 	"name": "CPV",
 	"version": "0.1.0",
 	"private": true,
-	"homepage": "/mi",
+	"homepage": "https://mi-dev.mareana.com/mi",
 	"scripts": {
 		"start": "react-scripts -r @cypress/instrument-cra --max_old_space_size=8192 start",
 		"build": "react-scripts --max_old_space_size=8192 build",
