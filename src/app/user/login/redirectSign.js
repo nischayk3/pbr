@@ -17,8 +17,8 @@ export default function RedirectSign() {
 	const getSessionDetail = async () => {
 		try {
 			const res = await getSession()
-			if (res.Status === 200) {
-				const data = res['Data']
+			if (res.status === 200) {
+				const data = res['data']
 				dispatch(sendLoginDetails(data))
 				localStorage.setItem('login_details', JSON.stringify(data))
 				localStorage.setItem('user', data.user_id);

@@ -32,13 +32,13 @@ const App = () => {
 	const getSessionDetail = async () => {
 		try {
 			const sessionres = await getSession()
-			if (sessionres.Status === 200) {
+			if (sessionres.status === 200) {
 				if (!sessionres.SignedInfo) {
 					window.open("https://mi-dev.mareana.com", '_self')
 
 					return;
 				}
-				const data = sessionres['Data'];
+				const data = sessionres['data'];
 				localStorage.setItem('login_details', JSON.stringify(data));
 				localStorage.setItem('user', data?.user_id);
 				localStorage.setItem('username', data?.firstname ? data?.firstname.replaceAll('^"|"$', '') : data?.email_id.replaceAll('^"|"$', ''));
@@ -73,10 +73,10 @@ const App = () => {
 				<SuspenseWrapper>
 					<Switch>
 						<Route exact path="/" key="login">
-							<Redirect to={"/mi/dashboard/workspace"} />
+							<Redirect to={"/dashboard/workspace"} />
 						</Route>
 						<ProctectedRoute
-							path={`${match.url}/mi/dashboard`}
+							path={`${match.url}dashboard`}
 							key="dashboard"
 							authorised={authenticated}
 							errorStatus={error}
