@@ -146,7 +146,6 @@ export const getDrugSubstence = request => {
 /**
  * update drug-substance -v2
 */
-
 export const updateDrugSubstence = request => {
 	return Service.put(
 		BMS_APP_PYTHON_SERVICE + '/drug-substance-v2',
@@ -188,6 +187,44 @@ export const getProcessStepFolder = request => {
 export const updateProcessStepFolder = request => {
 	return Service.put(
 		BMS_APP_PYTHON_SERVICE + '/process-step-folder',
+		request,
+		request_headers
+	).then(
+		response => {
+			return response.data;
+		},
+		error => {
+			return error.response.data;
+		}
+	);
+}
+
+/**
+ * child process step
+*/
+
+export const childProcessStep = request => {
+	return Service.post(
+		BMS_APP_PYTHON_SERVICE + '/child-process-step',
+		request,
+		request_headers
+	).then(
+		response => {
+			return response.data;
+		},
+		error => {
+			return error.response.data;
+		}
+	);
+}
+
+/**
+ * populate process step
+*/
+
+export const populateProcessStep = request => {
+	return Service.get(
+		BMS_APP_PYTHON_SERVICE + '/populate-process-steps',
 		request,
 		request_headers
 	).then(

@@ -16,7 +16,7 @@ import Banner from "../../../../../assets/images/Popup-Side.svg";
 import BreadCrumbWrapper from "../../../../../components/BreadCrumbWrapper";
 import EditableTree from "../../../../../components/EditableTree/EditableTree";
 import { hideLoader, showLoader, showNotification } from "../../../../../duck/actions/commonActions";
-import { getDrugSubstence, getProcessStep, getProcessStepFolder, getProcessStepMap, putMolecule, putProcessStep, putProcessStepMap } from "../../../../../services/viewHierarchyServices";
+import { getDrugSubstence, getProcessStepFolder, getProcessStepMap, putMolecule, putProcessStep, putProcessStepMap } from "../../../../../services/viewHierarchyServices";
 import "./hierStyle.scss";
 import ProcessStepMap from "./processStepMap";
 
@@ -28,8 +28,7 @@ const Hierarchy = () => {
 	const location = useLocation();
 	const params = queryString.parse(location.search);
 	const dispatch = useDispatch();
-	console.log("paramsssss", params);
-	console.log("location", location);
+
 	const { Option } = Select;
 
 	const [hierarchyName, setHierarchyName] = useState("");
@@ -47,9 +46,11 @@ const Hierarchy = () => {
 	const [deleted, setDeleted] = useState([])
 	const [saveStructure, setSaveStructure] = useState(false);
 	const [initTreeData, setInitTreeData] = useState([]);
+	const [isLoad, setIsLoad] = useState(false);
 
 
-	console.log("initTreeData", initTreeData);
+
+
 	const hier_name = useSelector((state) => state.viewHierarchy.drugName);
 	const load_drug = useSelector((state) => state.viewHierarchy.drugLoad);
 
@@ -59,16 +60,11 @@ const Hierarchy = () => {
 		if (Object.keys(params) && Object.keys(params).length > 0) {
 			console.log("params?.drugname", params?.drugname);
 			setHierarchyName(params?.drugname);
-			if (load_drug) {
-				LoadView(params?.drugname);
-			}
+			// if (load_drug) {
+			LoadView(params?.drugname);
+			setIsLoad(true)
+			// }
 		}
-		// if (hier_name) {
-		// 	let name = hier_name.replace(/%20/g, " ");
-		// 	setHierarchyName(name);
-		// }
-
-
 	}, []);
 
 	// useEffect(() => {
@@ -82,31 +78,13 @@ const Hierarchy = () => {
 	useEffect(() => {
 		if (stepData && stepData.length > 0 && moleculeData && moleculeData.length > 0 && activeTab == "Process step mapping") {
 			getStepMapping();
-		} else if (stepData && stepData.length > 0 && moleculeData && moleculeData.length > 0 && activeTab == "Process steps") {
-			const activeHierarchyName = {
-				ds_name: hierarchyName
-			};
-			getTreeStructure(activeHierarchyName)
 		}
 	}, [activeTab]);
 
-	const getTreeStructure = async (_payload) => {
-		console.log("_payload", _payload);
-		const apiRes = await getProcessStepFolder(_payload)
-		if (apiRes.status === 200) {
-			setInitTreeData(apiRes.data)
-			// dispatch(showNotification("success", 'success msg'));
-		} else if (apiRes.status === 400) {
-			// dispatch(showNotification("error", 'error msg'));
-		} else if (apiRes.status === 404) {
-			// dispatch(showNotification("error", 'error msg'));
-		} else {
-			// dispatch(showNotification("error", 'error msg'));
-		}
-	}
+
 
 	const LoadView = async (param) => {
-		console.log("param", param);
+
 		dispatch(showLoader())
 		if (param.length > 0 && param[param.length - 1] != 'untitled_view') {
 			// param = param[param.length - 1]
@@ -116,26 +94,26 @@ const Hierarchy = () => {
 			// setHierarchyName(name)
 			let req = { ds_name: param }
 			let res = await getDrugSubstence(req)
-			let res_step = await getProcessStep(req)
+			let res_step = await getProcessStepFolder(req)
 			/* istanbul ignore next */
-			if (res['status-code'] == 200) {
-				let data_molecule = [...res.Data]
+			if (res.status === 200) {
+				let data_molecule = [...res.data]
 				data_molecule = data_molecule.map((v, index) => ({ ...v, key: index + 1 }))
 				setCount(Math.max(...data_molecule.map(o => o.key)) + 1)
 				setMoleculeData(data_molecule)
-			} else if (res?.Status === 403) {
-				/* istanbul ignore next */
-				dispatch(showNotification("error", 'You are not authorized', "It seems like you don't have permission to use this service."));
+			} else if (res.status === 400) {
+				dispatch(showNotification("error", res.message));
+			} else if (res.status === 404) {
+				dispatch(showNotification("error", res.message));
 			}
+
 			/* istanbul ignore next */
-			if (res_step['statuscode'] == 200) {
-				let data_step = [...res_step.data]
-				data_step = data_step.map((v, index) => ({ ...v, key: index + 1 }))
-				setStepCount(Math.max(...data_step.map(o => o.key)) + 1)
-				setStepData(data_step)
-			} else if (res_step?.Status === 403) {
-				/* istanbul ignore next */
-				dispatch(showNotification("error", 'You are not authorized', "It seems like you don't have permission to use this service."));
+			if (res_step.status == 200) {
+				setInitTreeData([res_step?.data?.process_steps]);
+			} else if (res_step.status === 400) {
+				dispatch(showNotification("error", res_step.message));
+			} else if (res_step.status === 404) {
+				dispatch(showNotification("error", res_step.message));
 			}
 		}
 		dispatch(hideLoader())
@@ -376,21 +354,7 @@ const Hierarchy = () => {
 		}
 	};
 
-	const handleStepAdd = () => {
-		let is_add = stepCount <= 1 ? true : validate(stepCount - 2, stepData, 'seq_no', 'step')
-		if (is_add) {
-			const newData = {
-				key: stepCount,
-				seq_no: "",
-				process_step: ""
-			};
-			setStepData([...stepData, newData]);
-			setStepCount(stepCount + 1);
-		}
-		else {
-			dispatch(showNotification('error', 'Previous Row is empty'))
-		}
-	};
+
 
 	const handleChange = (index, event) => {
 		const { name, value } = event.target;
@@ -442,7 +406,7 @@ const Hierarchy = () => {
 
 	const handleChangeTab = (value) => {
 		setActiveTab(value);
-		console.log("tabe value", match);
+
 		if (value === 'Plant and molecules') {
 			history.push(`${match.url}/plant-molecule?drugname=${hierarchyName}`);
 		} else if (value === 'Process steps') {
@@ -540,12 +504,24 @@ const Hierarchy = () => {
 					className="hierarchy-card"
 					title={<span><span>Molecule Hierarchy Configuration -</span> <span className="title-card">{hierarchyName}</span> <span className="title-button"> </span></span>}
 				>
-					<Tabs className="hier-tab" activeKey={activeTab} onChange={handleChangeTab} tabBarExtraContent={<Button className="custom-secondary-btn" onClick={() => handleSave()} >Save hierarchy</Button>}>
+					<Tabs className="hier-tab" activeKey={activeTab} onChange={handleChangeTab} >
 						<TabPane tab="Plant and molecules" key="Plant and molecules">
-							<p className="tab-title"> Enter the product and plant details for {hierarchyName} <Button className="data-button-one"> {activeTab == "Process step mapping" ? <span className="tab-button-text">Finish</span> : <span className="tab-button-text" onClick={() => handleNext()}>Next </span>} </Button><Popover className="popover-hier" content={<span className="popover-content">Please save the plant and molecules or process steps before moving to process step mapping</span>} title={false} trigger="hover">
-								<InfoCircleOutlined style={{ padding: "0 5px" }} />
-							</Popover>
-							</p>
+							<div className="hier-tab__button">
+								<p className="tab-title"> Enter the product and plant details for {hierarchyName}
+									<Popover className="popover-hier" content={<span className="popover-content">Please save the plant and molecules or process steps before moving to process step mapping</span>} title={false} trigger="hover">
+										<InfoCircleOutlined style={{ padding: "0 5px" }} />
+									</Popover>
+								</p>
+								<div>
+									<Button className="custom-primary-btn"> {activeTab == "Process step mapping" ?
+										<span className="tab-button-text">Finish</span> :
+										<span className="tab-button-text" onClick={() => handleNext()}>Next
+										</span>}
+									</Button>
+									<Button className="custom-secondary-btn" onClick={() => handleSave()} >Save hierarchy</Button>
+								</div>
+							</div>
+
 							<Table className="hierarchy-table" columns={plantMoleculeColumns} dataSource={moleculeData} pagination={false} />
 							<div className="add-button">
 								<Button
@@ -573,13 +549,26 @@ const Hierarchy = () => {
 							</div>
 						</TabPane> */}
 						<TabPane tab="Process steps" key="Process steps">
-							<EditableTree drugName={hierarchyName} saveStructure={saveStructure} treeData={initTreeData} />
+							<div className="hier-tab__button">
+								<p className="tab-title">The following processess and process steps can be left-clicked to create subsequent processess and to perform a bunch of other actions:</p>
+								<div>
+									<Button className="custom-primary-btn" >
+										Next
+									</Button>
+									<Button className="custom-secondary-btn" onClick={() => handleSave()} >Save hierarchy</Button>
+								</div>
+							</div>
+							<EditableTree drugName={hierarchyName} saveStructure={saveStructure} treeData={initTreeData} isLoad={isLoad} />
 						</TabPane>
 						<TabPane tab="Process step mapping" key="Process step mapping">
-							<p className="tab-title">Enter the process step for {hierarchyName}</p>
+							<div className="hier-tab__button">
+								<p className="tab-title">Enter the process step for {hierarchyName}</p>
+								<Button className="custom-secondary-btn" onClick={() => handleSave()} >Save hierarchy</Button>
+							</div>
+
 							<div className="map-grid">
 								{/* <Table className="hierarchy-map-table" columns={mappingColumns} dataSource={tableData} /> */}
-								<ProcessStepMap />
+								<ProcessStepMap drugName={hierarchyName} activeTab={activeTab} />
 							</div>
 						</TabPane>
 					</Tabs>
