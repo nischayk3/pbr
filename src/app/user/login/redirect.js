@@ -22,8 +22,8 @@ export default function Redirect() {
 
 				return;
 			}
-			if (sessionres.Status === 200) {
-				const data = sessionres['Data'];
+			if (sessionres.status === 200) {
+				const data = sessionres['data'];
 				localStorage.setItem('login_details', JSON.stringify(data));
 				localStorage.setItem('user', data?.user_id);
 				localStorage.setItem('username', data?.firstname ? data?.firstname.replaceAll('^"|"$', '') : data?.email_id.replaceAll('^"|"$', ''));

@@ -146,9 +146,8 @@ export default function RedirectSAMLSign() {
 		try {
 			const res = await getSession()
 			const url = localStorage.getItem('redirectUrl')
-			if (res.Status === 200) {
+			if (res.status === 200) {
 				let signedInfoData = res['SignedInfo'];
-				console.log("signedInfoData", signedInfoData);
 				handleConfirm(signedInfoData?.Reason, signedInfoData?.parameter, signedInfoData?.screenName, signedInfoData?.appType, signedInfoData?.dispId, signedInfoData?.version, signedInfoData?.status, signedInfoData?.resourceDispId, signedInfoData?.resourceVersion, signedInfoData?.fileID, signedInfoData?.userType)
 				history.push(`${url}`)
 			}
