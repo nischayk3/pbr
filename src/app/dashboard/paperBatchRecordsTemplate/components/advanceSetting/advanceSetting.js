@@ -3,6 +3,7 @@ import { Button, Modal } from 'antd';
 import AbsoluteCoordinate from './absoluteCoordinate';
 import AbsoluteDistance from './absoluteDistance';
 import KeyValue from './keyValue'
+import RelativeDistance from './relativeDistance';
 function AdvanceSetting(props) {
     let { advancePopup, setAdvancePopup,method,formValues,setFormValues,name } = props
     const [mainMethod, setMainMethod] = useState('');
@@ -22,6 +23,8 @@ function AdvanceSetting(props) {
         }
         else if(method === "key_value_form"){
             return <KeyValue method={method} formValues={formValues} setFormValues={setFormValues} name={name} advancePopup={advancePopup} setAdvancePopup={setAdvancePopup}/>
+        }else if(method === "relative_direction"){
+            return <RelativeDistance />
         }else{
             return <div>Coming Soon....</div>
         }
