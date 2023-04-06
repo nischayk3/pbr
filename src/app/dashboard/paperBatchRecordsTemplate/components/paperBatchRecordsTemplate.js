@@ -14,7 +14,7 @@ import {
 } from 'antd';
 import React, { useEffect, useState } from 'react';
 import ImageMapper from 'react-image-mapper';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams, useHistory, useRouteMatch } from 'react-router-dom';
 
 import {
 	DeleteOutlined, LeftOutlined, MinusSquareTwoTone, MonitorOutlined, PlusSquareTwoTone, RightOutlined, InfoCircleOutlined
@@ -120,7 +120,8 @@ const PaperBatchRecordsTemplate = () => {
 		{ label: "Cell", value: "cell" },
 		{ label: "Parameters", value: "parameters" }
 	]
-
+	let history = useHistory();
+	const match = useRouteMatch();
 	const location = useLocation()
 	const { id } = useParams()
 	const dispatch = useDispatch();
@@ -448,7 +449,7 @@ const PaperBatchRecordsTemplate = () => {
 		} else if (field === 'method') {
 			arr[key] = { ...arr[key], method: value?.value }
 			setFormValues(arr)
-			if(value?.value === 'key_value_form'){
+			if (value?.value === 'key_value_form') {
 				handleMenuChange('key_value')
 			}
 			// else{
@@ -890,7 +891,7 @@ const PaperBatchRecordsTemplate = () => {
 				method: item.method,
 				pageIdValue: item?.page_name,
 				page_num: item?.param_page,
-				advance_setting:[item?.settings],
+				advance_setting: [item?.settings],
 				values: {
 					anchorValue: item?.param_key_text, anchorId: item?.param_value_text, snippetID: item?.param_key_snippet_id,
 					anchorCoords: [
@@ -1380,6 +1381,9 @@ const PaperBatchRecordsTemplate = () => {
 					setTemplateStatus(batchRes?.Data?.tempStatus)
 					dispatch(hideLoader());
 					dispatch(showNotification('success', batchRes?.Message));
+					history.push({
+						pathname: `/dashboard/paper_batch_records/${batchRes?.Data?.tempDispId}?file=${params?.file}&temp_disp_id=${batchRes?.Data?.tempDispId}&tempalteName=${params.tempalteName}&fromScreen=Workspace&version=${batchRes?.Data?.tempVersion}`,
+					})
 				} else {
 					message.error(batchRes.Message);
 					dispatch(hideLoader());
@@ -1418,6 +1422,7 @@ const PaperBatchRecordsTemplate = () => {
 					setTemplateStatus(batchRes?.Data?.tempStatus)
 					dispatch(hideLoader());
 					dispatch(showNotification('success', batchRes?.Message));
+					
 				} else {
 					openNotification('Create at least one Parameter before save')
 				}
@@ -2244,7 +2249,7 @@ const PaperBatchRecordsTemplate = () => {
 
 																						/>
 																					</Form.Item>
-																					<div style={{ display: "flex",justifyContent:"space-between" }}>
+																					<div style={{ display: "flex", justifyContent: "space-between" }}>
 																						<Form.Item
 																							{...restField}
 																							name={[name, 'method']}
@@ -2252,7 +2257,7 @@ const PaperBatchRecordsTemplate = () => {
 																							rules={[{ required: true, message: 'Select Method' }]}
 																						>
 
-																							<Select style={{ width:220 }} placeholder="Select Method" onChange={(e, value) => onChangeChart(e, 'method', name, value)} allowClear={true}>
+																							<Select style={{ width: 220 }} placeholder="Select Method" onChange={(e, value) => onChangeChart(e, 'method', name, value)} allowClear={true}>
 																								<Option value='absolute_coordinate'>
 																									Get By Absolute Coordinate
 																								</Option>
@@ -2272,8 +2277,8 @@ const PaperBatchRecordsTemplate = () => {
 
 
 																						</Form.Item>
-																						<InfoCircleOutlined onClick={()=>formValues[name]?.method && setAdvancePopup(true)} style={{ marginTop:36,fontSize:19,cursor: formValues[name]?.method ? "pointer" :'not-allowed' }}/>
-																						
+																						<InfoCircleOutlined onClick={() => formValues[name]?.method && setAdvancePopup(true)} style={{ marginTop: 36, fontSize: 19, cursor: formValues[name]?.method ? "pointer" : 'not-allowed' }} />
+
 																					</div>
 																					{formValues[name]?.method === "relative_direction" &&
 																						<Form.Item {...restField}

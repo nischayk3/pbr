@@ -74,6 +74,7 @@ function AbsoluteCoordinate(props) {
     }
 
     useEffect(() => {
+        console.log("advancePopup",advancePopup)
         if (advancePopup) {
             if(formValues[name]?.advance_setting){
                 loadSetting(formValues[name]?.advance_setting[0]?.setting_name)

@@ -53,8 +53,8 @@ function AbsoluteDistance(props) {
                 }
             } else {
                 dispatch(hideLoader());
-                setWord(false)
-                setLine(false)
+                // setWord(false)
+                // setLine(false)
             }
         } catch (err) {
             console.log(err)
