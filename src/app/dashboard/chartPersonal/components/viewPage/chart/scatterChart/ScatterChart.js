@@ -560,7 +560,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		if (
 			axisValues.chartType &&
 			axisValues.yaxis &&
-			(axisValues.chartType === "Histogram" || axisValues.chartType === "Process Capability") &&
+			(axisValues.chartType === "Histogram" || axisValues.chartType === "Process Capability" || axisValues.chartType?.toLowerCase() === "pareto") &&
 			!axisValues.xaxis
 		) {
 
@@ -608,7 +608,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 							selectList={xaxisList}
 							selectedValue={axisValues.xaxis}
 							onChangeSelect={(e) => setAxisValues({ ...axisValues, xaxis: e })}
-							disabled={axisValues.chartType === "Histogram"}
+							disabled={axisValues.chartType === "Histogram" || axisValues.chartType?.toLowerCase() === "pareto"}
 						/>
 					</Col>
 				)}
