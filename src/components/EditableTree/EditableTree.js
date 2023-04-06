@@ -21,11 +21,12 @@ export default class EditableTree extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			isLoad: false,
 			currentPath: [],
 			searchString: '',
 			searchFocusIndex: 0,
 			currentNode: {},
-			treeData: this.props.treeData,
+			treeData: props.treeData,
 			isVisible: false,
 			showMenu: false,
 			menuPosition: { x: 0, y: 0 },
@@ -56,6 +57,20 @@ export default class EditableTree extends Component {
 	// 		}),
 	// 	});
 	// };
+	static getDerivedStateFromProps(nextProps, prevState) {
+		console.log("nextProps, prevState", nextProps, prevState);
+		if (nextProps.isLoad !== prevState.isLoad) {
+			return { count: nextProps.count, isVisible: true, treeData: nextProps.treeData, };
+		}
+		return null;
+	}
+	// componentWillReceiveProps(nextProps) {
+	// 	console.log("nextProps", nextProps);
+	// 	if (this.props.isLoad !== nextProps.isLoad) {
+	// 		this.setState({ isVisible: nextProps.isLoad });
+	// 	}
+	// }
+
 
 	updateTreeData(treeData) {
 		this.setState({ treeData });
@@ -87,7 +102,7 @@ export default class EditableTree extends Component {
 				treeData: state.treeData,
 				depth: 2,
 				minimumTreeIndex: state.treeData.length,
-				newNode: { title: "", expanded: false, children: [{ title: ' ' }] },
+				newNode: { title: "", expanded: false, children: [{ title: "" }] },
 				getNodeKey: ({ treeIndex }) => treeIndex
 			}).treeData
 		}));
@@ -99,8 +114,7 @@ export default class EditableTree extends Component {
 				{
 					title: this.props.drugName,
 					expanded: true,
-					children: [
-					]
+					children: []
 				},
 			],
 		});
@@ -175,17 +189,12 @@ export default class EditableTree extends Component {
 
 	render() {
 		const { searchString, searchFocusIndex, treeData, isVisible, menuPosition, showMenu, items, isEdit } = this.state;
-		const { drugName } = this.props;
+		const { drugName, isLoad } = this.props;
 		const getNodeKey = ({ treeIndex }) => treeIndex;
-		console.log("{treeData}", treeData);
+
 		return (
 			<>
-				<div className="hier-tab__head">
-					<p className="hier-tab__heading">The following processess and process steps can be left-clicked to create subsequent processess and to perform a bunch of other actions:</p>
-					<Button className="custom-primary-btn" onClick={this.saveFolderStructure} disabled={!isVisible}>
-						Next
-					</Button>
-				</div>
+
 				<div className="sortable-tree" style={{ height: 'calc(100vh - 350px)', overflowY: 'auto' }}>
 					{/* <div style={{ flex: '0 0 auto', padding: '0 15px' }}>
 					<h2>React Sortable Tree</h2>
