@@ -39,6 +39,8 @@ const Profile = () => {
 	const [approverCheck, setApproverCheck] = useState(false);
 	const [statusCheck, setStatusCheck] = useState(false);
 	const [fileList, setFileList] = useState([]);
+	const [favAppOptions, setFavAppOptions] = useState([]);
+	const [favApp, setFavApp] = useState("");
 
 
 	useEffect(() => {
@@ -106,6 +108,11 @@ const Profile = () => {
 			{item}
 		</Select.Option>
 	));
+	const optionsFavApp = favAppOptions.map((item, index) => (
+		<Select.Option key={index} value={item}>
+			{item}
+		</Select.Option>
+	));
 	/* istanbul ignore next */
 	const onChange = (value, field) => {
 		/* istanbul ignore next */
@@ -117,6 +124,8 @@ const Profile = () => {
 				setTimeZoneValue(value)
 			} else if (field === 'language') {
 				setLanguageValue(value)
+			} else if (field === 'favApp') {
+				setFavApp(value)			
 			}
 		}
 	}
@@ -129,6 +138,8 @@ const Profile = () => {
 			setTimeZoneValue("")
 		} else if (field === 'language') {
 			setLanguageValue("")
+		} else if (field === 'favApp') {
+			setFavApp("")			
 		}
 	}
 
@@ -145,6 +156,7 @@ const Profile = () => {
 			formData.append("last_name", loginDetails && loginDetails.lastname);
 			formData.append("language", languageValue);
 			formData.append("timezone", timeZoneValue);
+			formData.append("fav_application", favApp ? favApp : 'DEFAULT');
 			const saveRes = await sendUserProfile(formData);
 
 			if (saveRes?.statuscode === 200) {
@@ -252,6 +264,10 @@ const Profile = () => {
 				setLanguageValue(getRes.message[0].language)
 				setApproverCheck(getRes.message[0].approver_notification)
 				setStatusCheck(getRes.message[0].status_notification)
+				setFavAppOptions(getRes.message[1]?.fav_appplication_dropdown)
+				if(getRes.message[0]?.fav_application !== 'DEFAULT') {
+					setFavApp(getRes.message[0]?.fav_application)
+				}
 			} else {
 				/* istanbul ignore next */
 				console.log("getRes", getRes);
@@ -441,6 +457,31 @@ const Profile = () => {
 									>
 										Save Changes
 									</Button>
+								</TabPane>
+									<TabPane id='preferences' tab="Favourite application" key='3'>
+								<p className="sub-heading">Land directly in your favourite application when you log in next time.</p>
+									<div className="split-form">
+										<div className="select-field">
+											<SelectSearchField
+												showSearch
+												id='favApplication'
+												label='Select favourite application'
+												placeholder='Select'
+												onChangeSelect={value => onChange(value, 'favApp')}
+												options={optionsFavApp}
+												handleClearSearch={e => clearSearch(e, 'favApp')}
+												selectedValue={favApp}
+											/>
+										</div>
+										<Button
+											className="custom-secondary-btn "
+											type="primary"
+											style={{ marginTop: "25px" }}
+											onClick={savePreference}
+										>
+											Save Changes
+										</Button>
+									</div>
 								</TabPane>
 							</Tabs>
 
