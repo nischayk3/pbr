@@ -77,7 +77,8 @@ const RecursiveTable = memo(function RecursiveTable({ data, steps }) {
 
 		if (apiRes.status === 200) {
 			const resData = apiRes.data
-
+			const expandJson = createHierarchicalJSON(resData, record.uuid);
+			console.log("createHierarchicalJSON", JSON.parse(expandJson));
 			setStepData(resData);
 		} else if (apiRes.status === 400) {
 			setSecondLevelData([]);
