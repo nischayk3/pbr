@@ -17,8 +17,8 @@ export default function Redirect() {
 	const getSessionDetail = async () => {
 		try {
 			const sessionres = await getSession()
-			if (sessionres.Status === 200) {
-				const data = sessionres['Data'];
+			if (sessionres.status === 200) {
+				const data = sessionres['data'];
 				localStorage.setItem('login_details', JSON.stringify(data));
 				localStorage.setItem('user', data?.user_id);
 				localStorage.setItem('username', data?.firstname ? data?.firstname.replaceAll('^"|"$', '') : data?.email_id.replaceAll('^"|"$', ''));
@@ -32,12 +32,10 @@ export default function Redirect() {
 				}
 			} else {
 				dispatch(showNotification("error", 'Login Failed', 'Sorry, an unexpectede error occurred. Please try logging in again.'));
-				history.push('/user/login');
 			}
 		} catch (error) {
-			console.log('error', error)
+			window.open("https://mi-dev.mareana.com", '_self')
 			dispatch(showNotification("error", 'Login Failed', 'Sorry, an unexpectede error occurred. Please try logging in again.'));
-			history.push('/user/login');
 		}
 	}
 

@@ -1,5 +1,12 @@
-import { DeleteOutlined } from "@ant-design/icons";
-import { Button, Col, Radio, Row, Skeleton } from "antd";
+/**
+ * @author Mihir Bagga <mihir.bagga@mareana.com>
+ * @Mareana - CPV Product
+ * @version 2
+ * @Last Modified - 31 March, 2023
+ * @Last Changed By - @Mihir
+ */
+
+import { Button, Col, Radio, Row, Skeleton, Dropdown } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -17,26 +24,48 @@ const NodeDetails = (props) => {
 		setSelectedTargetVariable,
 		nodeInformation,
 		editFinalJson,
-		getNodes
+		getNodes,
+		setNodeMapping,
+		catMapping
 	} = props;
 	const dispatch = useDispatch();
 	const [nodeData, setNodeData] = useState({});
 	const [dataStatus, setDataStatus] = useState(true);
+	const [outlinerValue, setOutlinerValue] = useState('')
+	const [outlierMapping, setOutlierMapping] = useState({ variable_list: [], option_list: [] })
+	const [catMap, setCatMapping] = useState({ variable_list: [] })
 	const selectedViewData = useSelector(
 		(State) => State.analyticsReducer.viewData
 	);
 
-	const getNodeDetails = async () => {
+
+	const getNodeDetails = async (e) => {
+		setOutlinerValue('')
 		const req = {
 			view_disp_id: selectedViewData?.view_id,
 			version: selectedViewData?.viewVersion,
 			parameter_name: nodeInformation.Node,
 			unapproved: selectedViewData?.data_filter?.unapproved_data === 1 ? true : false,
+			make_categorical: e === true ? true : false,
+			outlier_option: e && e?.target?.value ? e.target.value : ""
 		};
+
+
 		dispatch(showLoader());
 		const apiResponse = await getViewNodeDetails(req);
 		/* istanbul ignore next */
 		if (apiResponse?.Status === 200) {
+			if (e && e?.target?.value) {
+				let outlier_obj = { ...outlierMapping }
+				outlier_obj.variable_list.push(nodeInformation.Node)
+				outlier_obj.option_list.push(e && e?.target?.value ? e.target.value : "")
+				setNodeMapping(outlier_obj)
+			}
+			if (e === true) {
+				let cat_obj = { ...catMap }
+				cat_obj.variable_list.push(nodeInformation.Node)
+				catMapping(cat_obj)
+			}
 			setDataStatus(false);
 			dispatch(hideLoader());
 			if (apiResponse?.data?.Boxplot) {
@@ -62,34 +91,72 @@ const NodeDetails = (props) => {
 		}
 	}, [nodeInformation]);
 
+
+	const items = [
+		{
+			key: '1',
+			label: (
+				<Radio value="Treat" onChange={getNodeDetails} checked={outlinerValue == 'Treat'} >
+					Treat
+				</Radio>
+			),
+		},
+		{
+			key: '2',
+			label: (
+				<Radio value="Clip" onChange={getNodeDetails} checked={outlinerValue == 'Clip'} >
+					Clip
+				</Radio>
+			),
+		},
+		{
+			key: '3',
+			label: (
+				<Radio value="Drop" onChange={getNodeDetails} checked={outlinerValue == 'Drop'} >
+					Drop
+				</Radio>
+			),
+		},
+
+	];
+
+
 	return (
 		<div className="node-container">
 			{!dataStatus ? (
 				<>
 					<div className="node-details-container">
 						<Row gutter={16}>
-							<Col span={24}>
-								<Button className="custom-primary-btn">
-									<Radio
-										checked={nodeInformation.Node === selectedTargetValue}
-										onChange={() => {
-											getNodes(nodeInformation.Node)
-											setSelectedTargetVariable(nodeInformation.Node)
-										}
-										}
-									/>
-									Make target Variable
-								</Button>
-								<Button
-									className="custom-primary-btn"
-									onClick={() => addEstimator("transform")}
-								>
-									Add transformation
-								</Button>
-								<Button className="custom-primary-btn">Make categorical</Button>
-								<DeleteOutlined className="delete-b" /> &nbsp;
-								<span>Remove connectors</span>
-							</Col>
+							{/* <Col span={24}> */}
+							<Button className="custom-primary-btn">
+								<Radio
+									checked={nodeInformation.Node === selectedTargetValue}
+									onChange={() => {
+										getNodes(nodeInformation.Node)
+										setSelectedTargetVariable(nodeInformation.Node)
+									}
+									}
+								/>
+								Make target Variable
+							</Button>
+							<Button
+								className="custom-primary-btn"
+								onClick={() => addEstimator("transform")}
+							>
+								Add transformation
+							</Button>
+							<Button className="custom-primary-btn" onClick={() => getNodeDetails(true)}>Make categorical</Button>
+							{/* <DeleteOutlined className="delete-b" /> &nbsp; */}
+							{/* <span>Remove connectors</span> */}
+							<Dropdown menu={{
+								items,
+							}} trigger={['click']}
+								disabled={nodeInformation?.Variable_Category !== 'numerical'}
+							>
+								<Button className="custom-primary-btn">Outlier Treatment</Button>
+							</Dropdown>
+
+							{/* </Col> */}
 						</Row>
 					</div>
 					<Row gutter={24} className="details-box">
@@ -138,7 +205,7 @@ const NodeDetails = (props) => {
 						<Col span={8}>
 							<Row>
 								<Col span={10}>
-									<span>1st quartile</span>
+									<span>Q1</span>
 								</Col>
 								<Col span={10}>
 									<span>{nodeData?.data?.Stat?.Q1 || "-"}</span>
@@ -202,10 +269,10 @@ const NodeDetails = (props) => {
 						<Col span={8}>
 							<Row>
 								<Col span={10}>
-									<span>2nd quartile</span>
+									<span>Q3</span>
 								</Col>
 								<Col span={10}>
-									<span>{nodeData?.data?.Stat?.Q2 || "-"}</span>
+									<span>{nodeData?.data?.Stat?.Q3 || "-"}</span>
 								</Col>
 							</Row>
 						</Col>

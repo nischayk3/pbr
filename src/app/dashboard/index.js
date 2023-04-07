@@ -93,15 +93,6 @@ const Dashboard = () => {
 			ReactGA.send({ hitType: "pageview", page: location.pathname, title: "Page visited" });
 
 		}
-
-		if (JSON.parse(localStorage.getItem('login_details')) == null && !window.location.href.includes('user/login') && !window.location.href.includes('/redirect')) {
-			dispatch(showNotification('error', 'Please login first to proceed'))
-			setTimeout(() => {
-				history.push('/user/login');
-				window.location.reload()
-			}, 3000)
-
-		}
 		if (PRODUCT_FOR == 'BMS') {
 			if (status !== "WITHOUT_AD" || status == "") {
 				localStorage.setItem("loginwith", 'WITH_SAML')

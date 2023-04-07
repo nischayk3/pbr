@@ -1,3 +1,10 @@
+/**
+ * @author Vinay Reddy <vinay.reddy@mareana.com>
+ * @Mareana - CPV Product
+ * @version 2
+ * @Last Modified - 04 April, 2023
+ * @Last Changed By - @Vinay
+ */
 import React, { useEffect, useRef, useState } from "react";
 import "./ScatterStyles.scss";
 //antd imports
@@ -19,6 +26,7 @@ import {
 	hideLoader, showLoader, showNotification
 } from "../../../../../../../duck/actions/commonActions";
 import ProcessCapabilityResult from "../dataTables/ProcessCapabilityResult";
+import InputField from "../../../../../../../components/InputField/InputField";
 
 const { TabPane } = Tabs;
 
@@ -36,13 +44,18 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		"Error",
 		"Bubble",
 		"2D-histogram",
-		"Process Capability"
+		"Process Capability",
+		"SMA",
+		"EWMA",
+		"Pareto",
+		"IMR"
 	];
 	const [axisValues, setAxisValues] = useState({
 		xaxis: null,
 		yaxis: null,
 		zaxis: null,
 		chartType: null,
+		window: null
 	});
 	const [chartData, setChartData] = useState([]);
 	const [layoutData, setLayoutData] = useState({});
@@ -74,8 +87,9 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 	const [exclusionTable, setExclusionTable] = useState([]);
 	/* istanbul ignore next */
 	const chartNodeClicked = (data) => {
-		if (postChartData && postChartData.data && postChartData.data[0] && (postChartData.data[0].chart_type == "scatter" || postChartData.data[0].chart_type == "process control" || postChartData.data[0].chart_type == "bubble" || postChartData.data[0].chart_type == "error" || postChartData.data[0].chart_type == "line")) {
-			if (data && data.data && data.data.name !== "mean") {
+		// added chart typesz
+		if (postChartData && postChartData.data && postChartData.data[0] && (postChartData.data[0].chart_type == "scatter" || postChartData.data[0].chart_type == "process control" || postChartData.data[0].chart_type == "bubble" || postChartData.data[0].chart_type == "error" || postChartData.data[0].chart_type == "line" || postChartData.data[0].chart_type == "process control" || postChartData.data[0].chart_type == "bubble" || postChartData.data[0].chart_type == "error" || postChartData.data[0].chart_type == "SMA" || postChartData.data[0].chart_type == "EWMA")) {
+			if (data && data.data && data.data.mode === "markers") {
 				postChartData.data.forEach((ele) => {
 					ele.extras.data_table.forEach((el) => {
 						if (el.batch_num === data.text) {
@@ -132,6 +146,12 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 	const handleCloseModal = () => {
 		setIsModalVisible(false);
 	};
+
+	// checking integer value
+	const isInt = (n) =>  {
+		return Number(n) % 1 === 0;
+	 }
+
 	const onApply = async () => {
 		/* istanbul ignore next */
 		if (axisValues.xaxis === axisValues.yaxis) {
@@ -147,6 +167,40 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 				dispatch(showNotification("error", "Y and Z axis cannot be same"));
 				return;
 			}
+		}
+
+		//added chart error messages for SMA && EWMA
+		if(axisValues.chartType === "SMA" && !axisValues?.window) {
+			dispatch(showNotification("error", "Please enter window input value"));
+			return;
+		}
+
+		if(axisValues.chartType === "SMA" && axisValues?.window < 2 ) {
+			dispatch(showNotification("error", "window value should be greater than or equal to 2"));
+			return;
+		}
+
+		if(axisValues.chartType === "SMA" && !isInt(axisValues?.window) ) {
+			dispatch(showNotification("error", "window value should be integer"));
+			return;
+		}
+
+		if(axisValues.chartType === "EWMA" && !axisValues?.alpha) {
+			dispatch(showNotification("error", "Please enter alpha input value"));
+			return;
+		}
+
+
+		if(axisValues.chartType === "EWMA" && String(axisValues?.alpha) === "0") {
+			dispatch(showNotification("error", "alpha value must be greater than 0"));
+
+			return false;
+		}
+
+		if(axisValues.chartType === "EWMA" && Number(axisValues?.alpha) > 1) {
+			dispatch(showNotification("error", "alpha value must be between 0 to 1"));
+
+			return false;
 		}
 
 		const chartArr = [...postChartData.data];
@@ -242,6 +296,19 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			/* istanbul ignore next */
 			if (axisValues.chartType === "2D-histogram") {
 				ele.chart_type = "2D-histogram";
+			}
+			// setting up chart and window values
+			if (axisValues.chartType === 'SMA') {
+				ele.window = Number(axisValues?.window)
+				ele.chart_type = "SMA";
+			}
+			if ((axisValues.chartType)?.toUpperCase() === 'IMR') {
+				ele.chart_type = "IMR";
+			}
+			// setting up chart and alpha values 
+			if (axisValues.chartType === 'EWMA') {
+				ele.alpha = Number(axisValues.alpha)
+				ele.chart_type = "EWMA";
 			}
 			ele.chart_mapping.x = Object.keys(xAxis).length !== 0 ? xAxis : obj;
 			ele.chart_mapping.y = yAxis;
@@ -357,7 +424,6 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 
 	useEffect(() => {
 		const newCovArr = JSON.parse(JSON.stringify(postChartData));
-		console.log("newCovArr", newCovArr);
 		newCovArr &&
 			newCovArr.data &&
 			newCovArr.data.forEach((ele) => {
@@ -379,86 +445,93 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 					});
 
 				setExclusionTable(table);
-				if (
-					(ele?.data[0]?.x && ele?.data[0]?.x?.length >= 1) ||
-					ele?.data[0]?.type === "pie"
-				) {
-					const chart =
-						ele.chart_type === "scatter"
-							? "Scatter Plot"
-							: ele.chart_type.replaceAll(
-								/\S*/g,
-								(word) =>
-									`${word.slice(0, 1).toUpperCase()}${word
-										.slice(1)
-										.toLowerCase()}`
-							);
-
-
-					let xValue = "";
-					let yValue = "";
-					let zValue = "";
-					let transformValue = "";
-					if (ele.chart_type !== "process control") {
-						xValue = ele.chart_mapping.x.function_name;
-					} else {
-						xValue =
-							ele.chart_mapping.x.function_name === "batch_num"
-								? "Batch"
-								: "Date";
-					}
-					yValue = ele.chart_mapping.y.function_name
-						? ele.chart_mapping.y.function_name
-						: "";
-					zValue = ele.chart_mapping?.z?.function_name
-						? ele.chart_mapping?.z?.function_name
-						: "";
-					transformValue = ele.chart_mapping?.transform?.function_name
-						? ele.chart_mapping?.transform?.function_name
-						: "";
-					if (zValue) {
-						setShowZAxis(true);
-					} else {
-						setShowZAxis(false);
-					}
-					if (ele.chart_mapping?.transform?.function_name !== "") {
-						if (ele.ppk_cpk_data?.return_code === 200) {
-							setShowPpk(true)
-							setPpkData(ele.ppk_cpk_data)
-							// ele.layout.width = 500;
-							// ele.layout.height = 350;
-							dispatch(showNotification("success", `Best Transformation : ${ele.ppk_cpk_data?.best_transformer}`));
-						} else {
-							setShowPpk(false)
-							setPpkData({})
-						}
+				let chart =
+					ele.chart_type === "scatter"
+						? "Scatter Plot"
+						: ele.chart_type.replaceAll(
+							/\S*/g,
+							(word) =>
+								`${word.slice(0, 1).toUpperCase()}${word
+									.slice(1)
+									.toLowerCase()}`
+						);
+				let xValue = "";
+				let yValue = "";
+				let zValue = "";
+				let transformValue = "";
+				// setting up values for window and chart while loading the chart
+				let windowValue = '';
+				let alphaValue = '';
+				if (chart === 'Sma') {
+					chart = "SMA"
+					windowValue = ele?.window;
+				}
+				if (chart === 'Imr') {
+					chart = "IMR"
+					windowValue = ele?.window;
+				}
+				if (chart === 'Ewma') {
+					chart = "EWMA"
+					alphaValue = ele?.alpha;
+				}
+				if (ele.chart_type !== "process control") {
+					xValue = ele.chart_mapping.x.function_name;
+				} else {
+					xValue =
+						ele.chart_mapping.x.function_name === "batch_num"
+							? "Batch"
+							: "Date";
+				}
+				yValue = ele.chart_mapping.y.function_name
+					? ele.chart_mapping.y.function_name
+					: "";
+				zValue = ele.chart_mapping?.z?.function_name
+					? ele.chart_mapping?.z?.function_name
+					: "";
+				transformValue = ele.chart_mapping?.transform?.function_name
+					? ele.chart_mapping?.transform?.function_name
+					: "";
+				if (zValue) {
+					setShowZAxis(true);
+				} else {
+					setShowZAxis(false);
+				}
+				if (ele.chart_mapping?.transform?.function_name !== "") {
+					if (ele.ppk_cpk_data?.return_code === 200) {
+						setShowPpk(true)
+						setPpkData(ele.ppk_cpk_data)
+						// ele.layout.width = 500;
+						// ele.layout.height = 350;
+						dispatch(showNotification("success", `Best Transformation : ${ele.ppk_cpk_data?.best_transformer}`));
 					} else {
 						setShowPpk(false)
 						setPpkData({})
 					}
-					setAxisValues({
-						...axisValues,
-						chartType: chart,
-						xaxis: xValue,
-						yaxis: yValue,
-						zaxis: zValue,
-						transform: transformValue,
-					});
+				} else {
+					setShowPpk(false)
+					setPpkData({})
+				}
+				setAxisValues({
+					...axisValues,
+					chartType: chart,
+					xaxis: xValue,
+					yaxis: yValue,
+					zaxis: zValue,
+					transform: transformValue,
+					window: windowValue,
+					alpha: alphaValue
+				});
+				setChartData(ele.data);
+				setLayoutData(ele.layout);
+				if (
+					(ele?.data[0]?.x && ele?.data[0]?.x?.length >= 1) ||
+					ele?.data[0]?.type === "pie"
+				) {
 					setShowChart(true);
-					setChartData(ele.data);
-					setLayoutData(ele.layout);
 				} else {
 					setShowChart(false);
 					setChartData([]);
 					setLayoutData({});
-					setAxisValues({
-						...axisValues,
-						chartType: null,
-						xaxis: null,
-						yaxis: null,
-						zaxis: null,
-						transform: ""
-					});
 				}
 			});
 	}, [postChartData]);
@@ -487,7 +560,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		if (
 			axisValues.chartType &&
 			axisValues.yaxis &&
-			(axisValues.chartType === "Histogram" || axisValues.chartType === "Process Capability") &&
+			(axisValues.chartType === "Histogram" || axisValues.chartType === "Process Capability" || axisValues.chartType?.toLowerCase() === "pareto") &&
 			!axisValues.xaxis
 		) {
 
@@ -516,7 +589,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 	return (
 		<div className="chartLayout-container">
 			<Row gutter={24}>
-				<Col span={showZAxis ? 5 : 6}>
+				<Col span={(showZAxis || axisValues.chartType === 'SMA' || axisValues.chartType === 'EWMA') ? 5 : 6}>
 					<p>Chart Type</p>
 					<SelectField
 						placeholder="Select Chart type"
@@ -528,19 +601,19 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 				{axisValues.chartType === 'Process Capability' || axisValues.chartType === 'process capability' ? (
 					<></>
 				) : (
-					<Col span={showZAxis ? 5 : 6}>
+					<Col span={(showZAxis || axisValues.chartType === 'SMA' || axisValues.chartType === 'EWMA') ? 5 : 6}>
 						<p>X-axis</p>
 						<SelectField
 							placeholder="Select X-axis"
 							selectList={xaxisList}
 							selectedValue={axisValues.xaxis}
 							onChangeSelect={(e) => setAxisValues({ ...axisValues, xaxis: e })}
-							disabled={axisValues.chartType === "Histogram"}
+							disabled={axisValues.chartType === "Histogram" || axisValues.chartType?.toLowerCase() === "pareto"}
 						/>
 					</Col>
 				)}
 
-				<Col span={showZAxis ? 5 : 6}>
+				<Col span={(showZAxis || axisValues.chartType === 'SMA' || axisValues.chartType === 'EWMA') ? 5 : 6}>
 					<p>{axisValues.chartType === 'Process Capability' || axisValues.chartType === 'process capability' ? 'Parameter' : 'Y-axis'}</p>
 					<SelectField
 						placeholder="Select Y-axis"
@@ -578,7 +651,27 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 					</Col>
 				)}
 
-				<Col span={showZAxis ? 4 : 6} className="button-visible">
+				{axisValues.chartType === 'SMA' && (
+					<Col span={5}>
+						<InputField
+							label="Window"
+							value={axisValues.window}
+							type="Number"
+							onChangeInput={(e) => setAxisValues({ ...axisValues, window: e.target.value })}
+						/>
+					</Col>
+				)}
+				{(axisValues.chartType)?.toUpperCase() === 'EWMA' && (
+					<Col span={5}>
+						<InputField
+							label="Alpha"
+							value={axisValues.alpha}
+							type="Number"
+							onChangeInput={(e) => setAxisValues({ ...axisValues, alpha: e.target.value })}
+						/>
+					</Col>
+				)}
+				<Col span={(showZAxis || axisValues.chartType === 'SMA' || axisValues.chartType === 'EWMA') ? 4 : 6} className="button-visible">
 					<p>button</p>
 					<Button
 						className="custom-primary-btn"
