@@ -602,11 +602,13 @@ function TreePlot(props) {
 					.attr("id", function (d) {
 						var nodeName = "";
 						var batchName = "";
+						var productNo = "";
 						var poName = "";
 						var purchaseOrder = "";
 						if (d.type === "Material") {
-							batchName = d["nodeId"].split("|");
-							nodeName = batchName[1];
+							productNo = d.matNo
+							batchName = d.batchNo;
+							nodeName = `${productNo}|${batchName}`;
 							return "node-" + nodeName;
 						} else if (d.type === "Process Order") {
 							poName = d.poNo;
@@ -733,10 +735,12 @@ function TreePlot(props) {
 						var nodeName = "";
 						var batchName = "";
 						var poName = "";
+						var productNo = "";
 						var purchaseOrder = "";
 						if (d.type === "Material") {
-							batchName = d["nodeId"].split("|");
-							nodeName = batchName[1];
+							productNo = d.matNo
+							batchName = d.batchNo;
+							nodeName = `${productNo}|${batchName}`;
 							return nodeName;
 						} else if (d.type === "Process Order") {
 							poName = d.poNo;

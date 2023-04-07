@@ -1,14 +1,23 @@
 import { Select, Table } from "antd";
-import React, { memo, useRef, useState } from 'react';
-import { childProcessStep } from "../../../../../services/viewHierarchyServices";
+import React, { memo, useEffect, useState } from 'react';
+import { childProcessStep } from "../../../../../../services/viewHierarchyServices";
+
+const testData = [];
 
 const RecursiveTable = memo(function RecursiveTable({ data, steps }) {
 	const [stepData, setStepData] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [expandedRowKeys, setExpandedRowKeys] = useState([]);
 	const [procssStepJson, setProcssStepJson] = useState([]);
+	const [tableData, setTableData] = useState([]);
 
-	const tempStatData = useRef();
+
+
+	useEffect(() => {
+		setTableData(data)
+	}, [data])
+
+
 
 	const columns = [
 		{
@@ -64,16 +73,12 @@ const RecursiveTable = memo(function RecursiveTable({ data, steps }) {
 
 	const processStepProduct = async (_payload) => {
 		setLoading(true)
-		const apiRes = await childProcessStep(_payload)
+		const apiRes = await childProcessStep(_payload);
+
 		if (apiRes.status === 200) {
 			const resData = apiRes.data
-			tempStatData.current = apiRes.data;
-			const esData = data.map((item) => {
-				return { ...item, children: resData };
-			});
-
-
-			// tempData = resData;
+			const expandJson = createHierarchicalJSON(resData, record.uuid);
+			console.log("createHierarchicalJSON", JSON.parse(expandJson));
 			setStepData(resData);
 		} else if (apiRes.status === 400) {
 			setSecondLevelData([]);
@@ -83,19 +88,35 @@ const RecursiveTable = memo(function RecursiveTable({ data, steps }) {
 		setLoading(false)
 	}
 
+	function createHierarchicalJSON(data, keyField) {
+		const items = {};
+		const roots = [];
+
+		for (let i = 0; i < data.length; i++) {
+			const item = data[i];
+			const itemId = item[keyField];
+			const parentId = item.parentId || null;
+
+			if (!items[itemId]) {
+				items[itemId] = { ...item, children: [] };
+			}
+
+			if (parentId === null) {
+				roots.push(items[itemId]);
+			} else if (items[parentId]) {
+				items[parentId].children.push(items[itemId]);
+			}
+		}
+
+		return JSON.stringify(roots);
+	}
+
 
 
 	const onTableRowExpand = (expanded, record) => {
-		const newExpandedRowKeys = expanded
-			? [...expandedRowKeys, record.uuid]
-			: expandedRowKeys.filter((key) => key !== record.uuid);
-		setExpandedRowKeys(newExpandedRowKeys);
-
+		const keys = [];
 		if (expanded) {
-			tempStatData.current = [];
-
-
-
+			keys.push(record.uuid);
 			if (record.level > 0) {
 				const _expandProduct = {
 					data: record,
@@ -111,21 +132,24 @@ const RecursiveTable = memo(function RecursiveTable({ data, steps }) {
 			}
 
 
+			// const esData = data.map((item) => {
+			// 	return { ...item, children: resData };
+			// });
+
 		}
+		setExpandedRowKeys(keys);
 	};
 
-	console.log("data", data)
-	console.log("stepdata", stepData)
+	console.log("tableData", tableData);
 	return (
 		<Table
-
 			className='expandable-table'
 			columns={columns}
-			dataSource={data}
+			dataSource={tableData}
 			pagination={false}
-			rowKey="uuid"
+			rowKey={(record) => record.uuid}
 			loading={loading}
-			// expandedRowKeys={expandedRowKeys}
+			expandedRowKeys={expandedRowKeys}
 			onExpand={onTableRowExpand}
 			expandable={{
 				expandedRowRender: () => <RecursiveTable data={stepData} steps={steps} />,

@@ -150,7 +150,7 @@ const Login = () => {
 				localStorage.setItem("username", data?.firstname ? data.firstname.replaceAll("^\"|\"$", "") : data.email_id.replaceAll("^\"|\"$", ""));
 				localStorage.setItem("loginwith", 'WITH_LDAP')
 				localStorage.setItem("user_id", data?.user_id)
-				
+
 				dispatch(showNotification("success", `Logged in as ${data.email_id}`));
 				if (isChecked) {
 					localStorage.setItem("isRemember", isChecked);

@@ -12,9 +12,8 @@ import '@nosferatu500/react-sortable-tree/style.css';
 import { Button, Input } from 'antd';
 import React, { Component } from 'react';
 import FileExplorerTheme from 'react-sortable-tree-theme-file-explorer';
-import { updateProcessStepFolder } from '../../services/viewHierarchyServices';
-import ContextMenu from '../ContextMenu/ContextMenu';
-import CustomButton from '../CustomButton/CustomButton';
+import ContextMenu from '../../../../../../components/ContextMenu/ContextMenu';
+import CustomButton from '../../../../../../components/CustomButton/CustomButton';
 import DisplayTree from './DisplayTree';
 import './EditableTree.scss';
 export default class EditableTree extends Component {
@@ -44,6 +43,7 @@ export default class EditableTree extends Component {
 				// 	eventName: 'collapseAll',
 				// }
 			],
+			callbackStructure: props.callbackStructure,
 		};
 	}
 
@@ -57,19 +57,16 @@ export default class EditableTree extends Component {
 	// 		}),
 	// 	});
 	// };
-	static getDerivedStateFromProps(nextProps, prevState) {
-		console.log("nextProps, prevState", nextProps, prevState);
-		if (nextProps.isLoad !== prevState.isLoad) {
-			return { count: nextProps.count, isVisible: true, treeData: nextProps.treeData, };
+
+	UNSAFE_componentWillReceiveProps(nextProps) {
+		console.log("nextProps", nextProps);
+		if (this.props.isLoad !== nextProps.isLoad) {
+			this.setState({ isLoad: nextProps.isLoad, isVisible: true, treeData: nextProps.treeData, });
 		}
-		return null;
+		if (this.props.callbackStructure !== nextProps.callbackStructure) {
+			return this.props.callbackData(this.state.treeData);
+		}
 	}
-	// componentWillReceiveProps(nextProps) {
-	// 	console.log("nextProps", nextProps);
-	// 	if (this.props.isLoad !== nextProps.isLoad) {
-	// 		this.setState({ isVisible: nextProps.isLoad });
-	// 	}
-	// }
 
 
 	updateTreeData(treeData) {
@@ -161,31 +158,7 @@ export default class EditableTree extends Component {
 		}
 	}
 
-	saveFolderStructure = () => {
-		const folderStructure = {
-			ds_name: this.props.drugName,
-			process_step: this.state.treeData[0]
-		}
-		this.saveTreeStructure(folderStructure)
-	}
 
-
-	/**
-	 * Folder Struture Save API CALL
-	 */
-
-	saveTreeStructure = async (_payload) => {
-		const apiRes = await updateProcessStepFolder(_payload)
-		if (apiRes.status === 200) {
-			// dispatch(showNotification("success", 'success msg'));
-		} else if (apiRes.status === 400) {
-			// dispatch(showNotification("error", 'error msg'));
-		} else if (apiRes.status === 404) {
-			// dispatch(showNotification("error", 'error msg'));
-		} else {
-			// dispatch(showNotification("error", 'error msg'));
-		}
-	}
 
 	render() {
 		const { searchString, searchFocusIndex, treeData, isVisible, menuPosition, showMenu, items, isEdit } = this.state;

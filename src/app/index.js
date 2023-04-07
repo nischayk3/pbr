@@ -1,17 +1,17 @@
 import React, { lazy, useEffect } from "react";
+import ReactGA from 'react-ga4';
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch, useRouteMatch } from "react-router-dom";
 import Loading from "../components/Loading";
 import Notification from "../components/Notification";
 import SuspenseWrapper from "../components/SuspenseWrapper";
 import { MDH_APP_PYTHON_SERVICE, PRODUCT_FOR } from "../constants/apiBaseUrl";
-import ErrorPage from "./errorPage";
-import ProctectedRoute from "./PrivateRoute";
-import TokenExpired from "./tokenexpired";
-import ReactGA from 'react-ga4';
-import { getSession } from "../services/loginService";
 import { showNotification } from "../duck/actions/commonActions";
 import { sendLoginDetails } from "../duck/actions/loginAction";
+import { getSession } from "../services/loginService";
+import ProctectedRoute from "./PrivateRoute";
+import ErrorPage from "./errorPage";
+import TokenExpired from "./tokenexpired";
 
 // APP ROUTE COMPONENTS
 const Dashboard = lazy(() => import("./dashboard"));
@@ -53,7 +53,7 @@ const App = () => {
 	}
 
 	useEffect(() => {
-		// google analytis initialize 
+		// google analytis initialize
 		if (window.location.host == 'merck-mi-dev.mareana.com' || window.location.host == 'mi-devv3-7.mareana.com') {
 			ReactGA.initialize('G-1WM83NDTY2');
 		}
