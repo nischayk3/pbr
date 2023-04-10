@@ -7,9 +7,8 @@
  */
 
 import React, { memo, useEffect, useState } from 'react';
-import { childProcessStep, populateProcessStep } from "../../../../../services/viewHierarchyServices";
+import { childProcessStep, populateProcessStep } from "../../../../../../services/viewHierarchyServices";
 import RecursiveTable from './recursiveTable';
-
 
 const ProcessStepMap = memo(function ProcessStepMap({ drugName, activeTab }) {
 	console.log("drugName, activeTab", drugName, activeTab);

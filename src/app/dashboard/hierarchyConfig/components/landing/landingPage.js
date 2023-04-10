@@ -16,6 +16,7 @@ import Banner from "../../../../../assets/images/Popup-Side.svg";
 import illustrations from "../../../../../assets/images/ViewCreation_bannerillustration.png";
 import ScreenHeader from "../../../../../components/ScreenHeader/screenHeader";
 import StatusBlock from "../../../../../components/StatusBlock/statusBlock";
+import { showNotification } from "../../../../../duck/actions/commonActions";
 import {
 	loadDrug, sendDrugSub
 } from "../../../../../duck/actions/viewHierarchyAction";
@@ -48,8 +49,18 @@ export default function LandingPage() {
 	};
 
 
-	const checkUnique = (hierarchyName) => {
-		history.push(`/dashboard/molecule_hierarchy_configuration/tabs/plant-molecule?drugname=${hierarchyName}`);
+	const checkUnique = async (hierarchyName) => {
+		const checkUnique = await uniqueDrug(hierarchyName, viewList, 'ds_name');
+		console.log("checkUnique", checkUnique);
+		if (checkUnique) {
+			dispatch(showNotification('error', 'Drug substance name already present, please enter unique name'))
+		} else {
+			history.push(`/dashboard/molecule_hierarchy_configuration/tabs/plant-molecule?drugname=${hierarchyName}`);
+		}
+	}
+
+	const uniqueDrug = (value, array, property) => {
+		return array.some((item) => item[property] === value);
 	}
 
 	const getViews = async () => {
@@ -134,17 +145,6 @@ export default function LandingPage() {
 	};
 
 	const search = (value) => {
-		// if (value == "") setSearched(false);
-		// else {
-		// 	setSearched(true);
-		// 	const tableData = viewList;
-		// 	const filterTableData = tableData.filter((o) =>
-		// 		Object.keys(o).some((k) =>
-		// 			String(o[k]).toLowerCase().includes(value.toLowerCase())
-		// 		)
-		// 	);
-		// 	setFilterTable(filterTableData);
-		// }
 		let arr = [];
 		setSearched(true);
 		const tableData = [...viewList];
@@ -166,8 +166,6 @@ export default function LandingPage() {
 			)
 		);
 		setFilterTable(filterTableSearch);
-
-
 	};
 
 	return (

@@ -33,7 +33,7 @@ export const getAllViews = request => {
 //   }
 export const putMolecule = request => {
 	return Service.put(
-		BMS_APP_PYTHON_SERVICE + '/drug-substance',
+		BMS_APP_PYTHON_SERVICE + '/drug-substance-v2',
 		request,
 		request_headers
 	).then(
