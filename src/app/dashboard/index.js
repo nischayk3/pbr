@@ -13,12 +13,11 @@ import HeaderBar from "../../components/Header";
 import Sidebar from "../../components/Sidebar";
 import SuspenseWrapper from "../../components/SuspenseWrapper";
 import { PRODUCT_FOR } from "../../constants/apiBaseUrl";
-import { showNotification } from "../../duck/actions/commonActions";
 import LoginRedirect from "../user/login/redirect";
 import RedirectSign from "../user/login/redirectSign";
 import RedirectSAMLSign from "../user/login/samlRedirectSign";
-import "./dashboard.scss";
 import PrivateRoute from "./ProtectedRoute";
+import "./dashboard.scss";
 // DASHBOARD ROUTE COMPONENTS
 // const HeaderBar = lazy(() => import("../../components/Header"))
 //const Sidebar = lazy(() => import("../../components/Sidebar"))

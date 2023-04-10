@@ -21,6 +21,7 @@ import {
 import './style.scss';
 
 function Filter(props) {
+	const [isLoading, setIsLoading] = useState(false);
 	const [disabled, setDisabled] = useState(true);
 	const [isCheck, setisCheck] = useState(true);
 	const [isEmptyPlant, setIsEmptyPlant] = useState(false);
@@ -189,7 +190,7 @@ function Filter(props) {
 				setIsEmptyBatch(false);
 			}
 		}
-	}, 1500);
+	}, 1200);
 
 	const getGenealogyFilterData = async (
 		selectedPlantValue,
@@ -209,8 +210,11 @@ function Filter(props) {
 		};
 
 		try {
+			setIsLoading(true)
 			const filterRes = await getGeanealogyFilter(reqFilter);
+
 			if (filterRes?.statuscode === 200) {
+				setIsLoading(false)
 				setParamList(prevState => {
 					return {
 						...prevState,
@@ -219,25 +223,31 @@ function Filter(props) {
 						produtList: filterRes && filterRes.material
 					};
 				});
+
 			}
 			/* istanbul ignore next */
 			else if (filterRes?.data?.statuscode != 200) {
+				setIsLoading(false)
 				/* istanbul ignore next */
 				dispatch(showNotification('error', filterRes?.data?.message));
 			} else {
+				setIsLoading(false)
 				/* istanbul ignore next */
 				dispatch(showNotification('error', "Unable to fetch data"));
 			}
 		} catch (err) {
+			setIsLoading(false)
 			/* istanbul ignore next */
-			dispatch(showNotification('error', err));
+			console.log("err", err)
 		}
 	};
 
 	const getProductType = async () => {
 		try {
 			const getProductTypeRes = await getGenealogyProductType();
+			setIsLoading(true)
 			if (getProductTypeRes?.statuscode == 200) {
+				setIsLoading(false)
 				let productList = [];
 				getProductTypeRes.Data.map(product => {
 					productList.push(product.prod_type_cd);
@@ -250,6 +260,7 @@ function Filter(props) {
 				});
 			}
 		} catch (error) {
+			setIsLoading(false)
 			dispatch(showNotification('error', error));
 		}
 	};
@@ -340,10 +351,12 @@ function Filter(props) {
 		</Select.Option>
 	));
 
+
 	return (
 		<div className='param-filter-wrap'>
 			<div className='param-filter'>
 				<SelectSearchField
+					loading={isLoading}
 					showSearch
 					label='Plant *'
 					placeholder='Select'
@@ -355,6 +368,7 @@ function Filter(props) {
 					selectedValue={selectParam['plant']}
 				/>
 				<SelectSearchField
+					loading={isLoading}
 					showSearch
 					label='Product *'
 					placeholder='Select'
@@ -366,6 +380,7 @@ function Filter(props) {
 					selectedValue={selectParam['productCode']}
 				/>
 				<SelectSearchField
+					loading={isLoading}
 					showSearch
 					label='Batch *'
 					placeholder='Select'

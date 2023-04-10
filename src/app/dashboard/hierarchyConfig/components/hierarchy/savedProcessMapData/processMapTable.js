@@ -2,16 +2,22 @@ import { Select, Table } from "antd";
 import React, { memo, useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
 import { showNotification } from "../../../../../../duck/actions/commonActions";
-import { childProcessStep } from "../../../../../../services/viewHierarchyServices";
-const RecursiveTable = memo(function RecursiveTable({ data, steps, finalJson, setFinalJson }) {
+import { childProcessStep, populateProcessStep } from "../../../../../../services/viewHierarchyServices";
+
+const ProcessMapTable = memo(function ProcessMapTable({ drugName, activeTab, processData, finalJson, setFinalJson }) {
 	const [tableData, setTableData] = useState([]);
 	const [loading, setLoading] = useState(false);
+	const [steps, setSteps] = useState([]);
 
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		setTableData(data)
-	}, [data])
+		const req = {
+			ds_name: drugName,
+		}
+		setTableData(processData)
+		populateStep(req)
+	}, [processData])
 
 	const columns = [
 		{
@@ -95,6 +101,29 @@ const RecursiveTable = memo(function RecursiveTable({ data, steps, finalJson, se
 	};
 
 
+	const populateStep = async (_payload) => {
+		const apiRes = await populateProcessStep(_payload)
+		if (apiRes.status === 200) {
+			const optionData = apiRes.data
+			const options = []
+			optionData && optionData.forEach((item) => {
+				options.push({
+					label: item,
+					value: item,
+				});
+			})
+
+			setSteps(options)
+		} else if (apiRes.status === 400) {
+			setSteps([])
+			dispatch(showNotification("error", apiRes.message));
+		} else if (apiRes.status === 404) {
+			setSteps([])
+			dispatch(showNotification("error", apiRes.message));
+		} else {
+			setSteps([])
+		}
+	}
 
 	const processStepProduct = async (_payload) => {
 		setLoading(true)
@@ -105,16 +134,16 @@ const RecursiveTable = memo(function RecursiveTable({ data, steps, finalJson, se
 			setFinalJson(apiRes.data);
 			setTableData(resData)
 		} else if (apiRes.status === 400) {
-			setFinalJson({});
-			setTableData([]);
+			setFinalJson({})
+			setProcessData([])
 			dispatch(showNotification("error", apiRes.message));
 		} else if (apiRes.status === 404) {
-			setFinalJson({});
-			setTableData([]);
+			setFinalJson({})
+			setProcessData([])
 			dispatch(showNotification("error", apiRes.message));
 		} else {
-			setFinalJson({});
-			setTableData([]);
+			setFinalJson({})
+			setProcessData([])
 		}
 	}
 
@@ -149,10 +178,10 @@ const RecursiveTable = memo(function RecursiveTable({ data, steps, finalJson, se
 			pagination={false}
 			rowKey={(record) => record.uuid}
 			loading={loading}
-			onExpand={onTableRowExpand}
+		// onExpand={onTableRowExpand}
 		/>
 	);
 });
 
 
-export default RecursiveTable;
+export default ProcessMapTable;

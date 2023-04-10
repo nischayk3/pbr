@@ -45,13 +45,13 @@ export default function LandingPage() {
 	const loadHier = async (ds_name) => {
 		dispatch(sendDrugSub(ds_name));
 		dispatch(loadDrug(true));
-		history.push(`/dashboard/molecule_hierarchy_configuration/tabs/plant-molecule?drugname=${ds_name}`);
+		history.push(`/dashboard/molecule_hierarchy_configuration/tabs/plant-molecule?drugname=${ds_name}&load=true`);
 	};
 
 
 	const checkUnique = async (hierarchyName) => {
 		const checkUnique = await uniqueDrug(hierarchyName, viewList, 'ds_name');
-		console.log("checkUnique", checkUnique);
+
 		if (checkUnique) {
 			dispatch(showNotification('error', 'Drug substance name already present, please enter unique name'))
 		} else {
@@ -71,10 +71,26 @@ export default function LandingPage() {
 
 		if (response?.status == 200) {
 			setLastEightView(response?.data);
+		} else if (response?.status == 400) {
+			setLastEightView([])
+			dispatch(showNotification("error", response.message));
+		} else if (response?.status == 404) {
+			setLastEightView([])
+			dispatch(showNotification("error", response.message));
+		} else {
+			setLastEightView([])
 		}
 
 		if (response_two?.status == 200) {
 			setViewList(response_two?.data);
+		} else if (response_two?.status == 400) {
+			setViewList([])
+			dispatch(showNotification("error", response_two.message));
+		} else if (response_two?.status == 404) {
+			setViewList([])
+			dispatch(showNotification("error", response_two.message));
+		} else {
+			setViewList([])
 		}
 	};
 

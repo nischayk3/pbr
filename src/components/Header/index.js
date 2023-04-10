@@ -5,10 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import mareanaLogo from '../../assets/mareana_logo_svg.svg';
 import { adenabled } from '../../config/config';
-import { MDH_APP_PYTHON_SERVICE } from '../../constants/apiBaseUrl';
 import { logoutApp, showNotification } from '../../duck/actions/commonActions';
 import { getUploadProfile } from '../../duck/actions/loginAction';
-import { getUserProfile, logoutUrl } from "../../services/loginService";
+import { getUserProfile } from "../../services/loginService";
 import Auth from '../../utils/auth';
 import './style.scss';
 
@@ -53,7 +52,7 @@ const HeaderBar = () => {
 	const Logout = () => {
 		// LOGOUT API NOT WORKING
 		Auth.logout(() => {
-			history.push('/');
+			history.push('/user/logout');
 		});
 	};
 
@@ -71,16 +70,12 @@ const HeaderBar = () => {
 		}, [ref]);
 	}
 
-	const adLogout = (tokenExpired) => {
-		if (tokenExpired) {
-			dispatch(logoutApp(true))
-			dispatch(showNotification("error", 'Signature Expired! Please login again.'))
-		}
+	const adLogout = () => {
 		dispatch(logoutApp(true))
 		localStorage.removeItem('login_details');
 		localStorage.removeItem('username');
 		localStorage.removeItem('loginwith');
-		window.open("https://mi-dev.mareana.com", '_self')
+		history.push('/user/logout');
 	}
 
 	const wrapperRef = useRef(null);
