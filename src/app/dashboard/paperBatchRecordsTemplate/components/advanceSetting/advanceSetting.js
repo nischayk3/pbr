@@ -24,7 +24,7 @@ function AdvanceSetting(props) {
         else if(method === "key_value_form"){
             return <KeyValue method={method} formValues={formValues} setFormValues={setFormValues} name={name} advancePopup={advancePopup} setAdvancePopup={setAdvancePopup}/>
         }else if(method === "relative_direction"){
-            return <RelativeDistance />
+            return <RelativeDistance method={method} formValues={formValues} setFormValues={setFormValues} name={name} advancePopup={advancePopup} setAdvancePopup={setAdvancePopup} />
         }else{
             return <div>Coming Soon....</div>
         }
