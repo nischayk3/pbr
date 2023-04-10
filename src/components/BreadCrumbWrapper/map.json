@@ -27,7 +27,6 @@
 	"/dashboard/user-roles-and-access/application-controls": "Application controls",
 	"/dashboard/molecule_hierarchy_configuration": "Molecule Hierarchy Configuration",
 	"/dashboard/filterRegister/filterList/filterDetails": "Filter Details",
-	"/dashboard/molecule_hierarchy_configurations": "Molecule Hierarchy Configuration",
 	"/dashboard/analysis": "Analysis",
 	"/dashboard/analysis/:id": "Model",
 	"/dashboard/pbr_reviewer": "PBR Reviewer",

@@ -236,3 +236,41 @@ export const populateProcessStep = request => {
 		}
 	);
 }
+
+/**
+ * Save Process Mapping
+*/
+
+export const SaveProcessFoldermapping = request => {
+	return Service.put(
+		BMS_APP_PYTHON_SERVICE + '/process-folder-mapping',
+		request,
+		request_headers
+	).then(
+		response => {
+			return response.data;
+		},
+		error => {
+			return error.response.data;
+		}
+	);
+}
+
+/**
+ * Get Process Mapping
+*/
+
+export const getProcessFoldermapping = request => {
+	return Service.get(
+		BMS_APP_PYTHON_SERVICE + '/process-folder-mapping',
+		request,
+		request_headers
+	).then(
+		response => {
+			return response.data;
+		},
+		error => {
+			return error.response.data;
+		}
+	);
+}

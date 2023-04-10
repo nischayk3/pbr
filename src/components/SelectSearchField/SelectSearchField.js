@@ -1,7 +1,7 @@
+import { CloseOutlined } from '@ant-design/icons';
+import { Button, Select, Spin } from 'antd';
 import React from 'react';
 import './SelectSearchField.scss';
-import { Button, Select } from 'antd';
-import { CloseOutlined } from '@ant-design/icons';
 const SelectSearchField = props => {
 	return (
 		<div className='select_field_search'>
@@ -11,13 +11,15 @@ const SelectSearchField = props => {
 			<div className='search-block'>
 				<Select
 					id={props.id}
-					disabled = {props.disabled}
+					disabled={props.disabled}
 					mode={props.mode}
 					showSearch={props.showSearch}
 					placeholder={props.placeholder}
 					value={props.selectedValue}
 					onChange={props.onChangeSelect}
 					onSearch={props.onSearchSelect}
+					loading={props.loading}
+					notFoundContent={props.loading ? <Spin size="small" /> : null}
 					style={{ width: '100%', margin: '0px' }}>
 					{props.options}
 				</Select>
