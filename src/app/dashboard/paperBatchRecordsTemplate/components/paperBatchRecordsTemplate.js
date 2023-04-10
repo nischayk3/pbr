@@ -47,6 +47,7 @@ import './styles.scss';
 import TableIdentifier from './tableIdentifier/tableIdentifier';
 import WorkflowPreviewModal from './workflowPreviewModal';
 import AdvanceSetting from "./advanceSetting/advanceSetting"
+import RelativeDirection from './relativeDirection'
 const { Panel } = Collapse;
 const { Option } = Select;
 
@@ -847,6 +848,11 @@ const PaperBatchRecordsTemplate = () => {
 						param_transformation: item?.param_value_rule?.transformation,
 
 					}
+					if(item?.param_value_direction){
+						item?.param_value_direction.forEach((item,index)=>{
+							obj[`dir${index}`] = item
+						})
+					}
 					demoValues.users.push(obj)
 				})
 				loadData[0]?.pbr_template_info?.pbrTableInfo.forEach((item, index) => {
@@ -892,6 +898,7 @@ const PaperBatchRecordsTemplate = () => {
 				pageIdValue: item?.page_name,
 				page_num: item?.param_page,
 				advance_setting: [item?.settings],
+				directions:item?.param_value_direction,
 				values: {
 					anchorValue: item?.param_key_text, anchorId: item?.param_value_text, snippetID: item?.param_key_snippet_id,
 					anchorCoords: [
@@ -1253,7 +1260,7 @@ const PaperBatchRecordsTemplate = () => {
 						filename: params?.file,
 						name: ele.name,
 						page_name: ele?.pageIdValue,
-						param_value_direction: parameterFormData[index]?.AnchorDirection,
+						param_value_direction: ele?.directions,
 						param_value_regex: parameterFormData[index]?.regex,
 						settings: ele?.advance_setting ? ele?.advance_setting[0] : {}
 					}
@@ -1381,9 +1388,12 @@ const PaperBatchRecordsTemplate = () => {
 					setTemplateStatus(batchRes?.Data?.tempStatus)
 					dispatch(hideLoader());
 					dispatch(showNotification('success', batchRes?.Message));
-					history.push({
-						pathname: `/dashboard/paper_batch_records/${batchRes?.Data?.tempDispId}?file=${params?.file}&temp_disp_id=${batchRes?.Data?.tempDispId}&tempalteName=${params.tempalteName}&fromScreen=Workspace&version=${batchRes?.Data?.tempVersion}`,
-					})
+					if (params.fromScreen !== 'Workspace') {
+						history.push({
+							pathname: `/dashboard/paper_batch_records/${batchRes?.Data?.tempDispId}?file=${params?.file}&temp_disp_id=${batchRes?.Data?.tempDispId}&tempalteName=${params.tempalteName}&fromScreen=Workspace&version=${batchRes?.Data?.tempVersion}`,
+						})
+					}
+
 				} else {
 					message.error(batchRes.Message);
 					dispatch(hideLoader());
@@ -1422,7 +1432,7 @@ const PaperBatchRecordsTemplate = () => {
 					setTemplateStatus(batchRes?.Data?.tempStatus)
 					dispatch(hideLoader());
 					dispatch(showNotification('success', batchRes?.Message));
-					
+
 				} else {
 					openNotification('Create at least one Parameter before save')
 				}
@@ -1551,7 +1561,7 @@ const PaperBatchRecordsTemplate = () => {
 				name: formValues[activeKey]?.name,
 				method: formValues[activeKey]?.method,
 				page_name: formValues[activeKey]?.pageIdValue,
-				param_value_direction: parameterFormData[activeKey]?.AnchorDirection,
+				param_value_direction: ele?.directions,
 				param_value_regex: parameterFormData[activeKey]?.regex,
 				settings: formValues[activeKey]?.advance_setting ? formValues[activeKey]?.advance_setting[0] : {}
 			}
@@ -1672,10 +1682,12 @@ const PaperBatchRecordsTemplate = () => {
 
 	}
 	/* istanbul ignore next */
-	const showModal = async () => {
-		setIsModalVisible(true);
-
+	const showModal = async (flag) => {
+		if (flag) {
+			setIsModalVisible(true);
+		}
 		if (!showRowColIdentifier) {
+			dispatch(showLoader());
 			setTableLoading(true)
 			var req1 = {
 				extraction_type: "custom",
@@ -1692,7 +1704,7 @@ const PaperBatchRecordsTemplate = () => {
 					name: ele.name,
 					page_name: ele?.pageIdValue,
 					method: ele.method,
-					param_value_direction: parameterFormData[index]?.AnchorDirection,
+					param_value_direction: ele?.directions,
 					param_value_regex: parameterFormData[index]?.regex,
 					settings: ele?.advance_setting ? ele?.advance_setting[0] : {}
 				}
@@ -1810,9 +1822,11 @@ const PaperBatchRecordsTemplate = () => {
 				dispatch(showNotification('error', res?.Message))
 			}
 			setTableLoading(false)
+			dispatch(hideLoader());
 		} else {
 			setTriggerPreview(true)
 			setTableLoading(false)
+			dispatch(hideLoader());
 		}
 	};
 	/* istanbul ignore next */
@@ -2280,28 +2294,7 @@ const PaperBatchRecordsTemplate = () => {
 																						<InfoCircleOutlined onClick={() => formValues[name]?.method && setAdvancePopup(true)} style={{ marginTop: 36, fontSize: 19, cursor: formValues[name]?.method ? "pointer" : 'not-allowed' }} />
 
 																					</div>
-																					{formValues[name]?.method === "relative_direction" &&
-																						<Form.Item {...restField}
-																							name={[name, 'AnchorDirection']}
-																							rules={[{ required: true, message: 'Select Anchor Direction' }]}
-																						// label="AnchorDirection"
-																						>
 
-																							<Select placeholder="AnchorDirection" allowClear value={null} onChange={(e, value) => onChangeChart(e, 'anchor_dir', name, value)}>
-																								<Option value='ABOVE'>
-																									Above
-																								</Option>
-																								<Option value='LEFT'>
-																									Left
-																								</Option>
-																								<Option value='UNDER'>
-																									Under
-																								</Option>
-																								<Option value='RIGHT'>
-																									Right
-																								</Option>
-																							</Select>
-																						</Form.Item>}
 																					{formValues[name]?.method === "regex" &&
 																						<Form.Item {...restField}
 																							name={[name, 'regex']}
@@ -2380,7 +2373,31 @@ const PaperBatchRecordsTemplate = () => {
 																							}
 																						/>
 																					</Form.Item>
-																					<div className='parameterAddingBlock parameterValueBlock'>
+																					{formValues[name]?.method === "relative_direction" &&
+																						<RelativeDirection modalData={modalData} showModal={() => showModal(false)} parameterForm={parameterForm} setParameterFormData={setParameterFormData} parameterFormData={parameterFormData} name={name} setFormValues={setFormValues} formValues={formValues} restField={restField} />
+																						// <Form.Item {...restField}
+																						// 	name={[name, 'AnchorDirection']}
+																						// 	rules={[{ required: true, message: 'Select Anchor Direction' }]}
+																						// // label="AnchorDirection"
+																						// >
+
+																						// 	<Select placeholder="AnchorDirection" allowClear value={null} onChange={(e, value) => onChangeChart(e, 'anchor_dir', name, value)}>
+																						// 		<Option value='ABOVE'>
+																						// 			Above
+																						// 		</Option>
+																						// 		<Option value='LEFT'>
+																						// 			Left
+																						// 		</Option>
+																						// 		<Option value='UNDER'>
+																						// 			Under
+																						// 		</Option>
+																						// 		<Option value='RIGHT'>
+																						// 			Right
+																						// 		</Option>
+																						// 	</Select>
+																						// </Form.Item>
+																					}
+																					<div className='parameterAddingBlock parameterValueBlock' style={{marginTop:formValues[name]?.method === "relative_direction" ? 10:5}}>
 																						<Form.Item  {...restField}
 																							name={[name, 'param_rule']}
 																						>
@@ -2862,7 +2879,7 @@ const PaperBatchRecordsTemplate = () => {
 
 																	))}
 																</Collapse>
-																{params.fromScreen != "Workflow" &&
+																{params?.fromScreen != "Workflow" &&
 																	<Form.Item>
 																		<div
 																			className='firstParameter-para'
@@ -2943,7 +2960,7 @@ const PaperBatchRecordsTemplate = () => {
 											Preview
 										</p>
 										<Tooltip title={params?.file}>
-											<span style={{ marginTop: 4 }}>{params?.file.slice(0, 28)}</span>
+											<span style={{ marginTop: 4 }}>{params?.file?.slice(0, 28)}</span>
 										</Tooltip>
 										<div>
 											<LeftOutlined disabled={true} className='icon_size' onClick={() => handlePageChange(pageNumber - 1)} />

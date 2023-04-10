@@ -27,7 +27,7 @@ function AbsoluteDistance(props) {
     const fuzzyOptions = [{ lable: 'ratio', value: 'ratio' }, { lable: 'partial_ratio', value: 'partial_ratio' }, { lable: 'wratio', value: 'wratio' }, { lable: 'token_sort_ratio', value: 'token_sort_ratio' },
     { lable: 'token_set_ratio', value: 'token_set_ratio' }, { lable: 'partial_token_sort_ratio', value: 'partial_token_sort_ratio' }, { lable: 'partial_token_set_ratio', value: 'partial_token_set_ratio' }]
 
-    const advanceSetting = async (val) => {
+    const advanceSetting = async (val,flag) => {
         try {
             dispatch(showLoader());
             let req = {
@@ -46,7 +46,7 @@ function AbsoluteDistance(props) {
                 setAnchorThreashold(res.Data[0]?.['anchor_loc_threshold'])
                 setValueThreashold(res.Data[0]?.['value_loc_threshold'])
                 setFuzzyThreashold(res.Data[0]?.['fuzz_threshold'])
-                if (val === 'default') {
+                if (val === 'default'&& flag==='apply') {
                     let obj = formValues
                     obj[name] = { ...obj[name], advance_setting: res.Data }
                     setFormValues(obj)
@@ -91,7 +91,7 @@ function AbsoluteDistance(props) {
 
     useEffect(() => {
         if (advancePopup) {
-            if(formValues[name]?.advance_setting){
+            if(formValues[name]?.advance_setting && method === formValues[name]?.advance_setting[0]?.method){
                 loadSetting(formValues[name]?.advance_setting[0]?.setting_name)
             }
             else{
@@ -122,7 +122,8 @@ function AbsoluteDistance(props) {
                         value_loc_threshold: valueThreashold,
                         fuzz_method: fuzzyValue,
                         fuzz_threshold: fuzzyThreashold,
-                        setting_name:loadValue
+                        setting_name:loadValue,
+                        method: method,
                     },
                     changed_by: user,
                     action_type: "save",
@@ -171,7 +172,8 @@ function AbsoluteDistance(props) {
                         value_loc_threshold: valueThreashold,
                         fuzz_method: fuzzyValue,
                         fuzz_threshold: fuzzyThreashold,
-                        setting_name:loadValue
+                        setting_name:loadValue,
+                        method: method,
                     },
                     changed_by: null,
                     action_type: "save_as",
@@ -214,7 +216,7 @@ function AbsoluteDistance(props) {
                     </Col>
                     <Col span={12}>
                         <div style={{ display: "flex", justifyContent: "end" }}>
-                            <Button onClick={() => loadValue === 'default' ? advanceSetting('default') : handleSave()}>{loadValue === 'default'?'Apply' :`Apply / Save`}</Button>
+                            <Button onClick={() => loadValue === 'default' ? advanceSetting('default','apply') : handleSave()}>{loadValue === 'default'?'Apply' :`Apply / Save`}</Button>
                             <Button onClick={() => setSaveAs(true)} className='custom-secondary-btn' style={{ marginLeft: 10 }}>Create New</Button>
                         </div>
                     </Col>
