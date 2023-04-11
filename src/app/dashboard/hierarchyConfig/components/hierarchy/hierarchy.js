@@ -242,10 +242,14 @@ const Hierarchy = () => {
 
 	/* istanbul ignore next */
 	const handleNext = () => {
-		if (activeTab == "Process steps")
+		if (activeTab == "Process steps") {
+			handleChangeTab("Process step mapping");
 			setActiveTab("Process step mapping");
-		if (activeTab == "Plant and molecules")
+		}
+		if (activeTab == "Plant and molecules") {
+			handleChangeTab("Process steps");
 			setActiveTab("Process steps");
+		}
 	};
 
 
@@ -382,7 +386,7 @@ const Hierarchy = () => {
 							<div className="hier-tab__button">
 								<p className="tab-title">The following processess and process steps can be left-clicked to create subsequent processess and to perform a bunch of other actions:</p>
 								<div>
-									<Button className="custom-primary-btn" >
+									<Button className="custom-primary-btn" onClick={() => handleNext()} >
 										Next
 									</Button>
 									<Button className="custom-secondary-btn" onClick={() => handleSave()} >Save hierarchy</Button>
