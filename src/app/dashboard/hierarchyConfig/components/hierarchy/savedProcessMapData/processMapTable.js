@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { showNotification } from "../../../../../../duck/actions/commonActions";
 import { childProcessStep, populateProcessStep } from "../../../../../../services/viewHierarchyServices";
 
-const ProcessMapTable = memo(function ProcessMapTable({ drugName, activeTab, processData, finalJson, setFinalJson }) {
+const ProcessMapTable = memo(function ProcessMapTable({ drugName, processData, finalJson, setFinalJson }) {
 	const [tableData, setTableData] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [steps, setSteps] = useState([]);
@@ -49,6 +49,7 @@ const ProcessMapTable = memo(function ProcessMapTable({ drugName, activeTab, pro
 			key: 'process_step',
 			editable: true,
 			render: (text, record, index) => {
+				console.log("text, record, index", text, record, index);
 				return (
 					<div className="multi-select">
 						<Select
@@ -57,7 +58,7 @@ const ProcessMapTable = memo(function ProcessMapTable({ drugName, activeTab, pro
 								width: '100%',
 							}}
 							placeholder="Please select"
-							value={text}
+							value={record['process-step']}
 							onChange={(value) => handleChange(text, record, value, index)}
 							options={steps}
 						/>
@@ -147,29 +148,6 @@ const ProcessMapTable = memo(function ProcessMapTable({ drugName, activeTab, pro
 		}
 	}
 
-
-	const onTableRowExpand = (expanded, record) => {
-		if (expanded) {
-			if (record.level > 0) {
-				const _expandProduct = {
-					data: record,
-					keyword: 'nodes',
-					main_json: finalJson,
-				}
-				processStepProduct(_expandProduct);
-			} else {
-				const _expandNode = {
-					data: record,
-					keyword: 'product_num',
-					main_json: finalJson,
-				}
-				processStepProduct(_expandNode);
-			}
-		}
-	};
-
-	console.log("dataaaaaaaaaaaaa", tableData);
-
 	return (
 		<Table
 			className='expandable-table'
@@ -178,7 +156,6 @@ const ProcessMapTable = memo(function ProcessMapTable({ drugName, activeTab, pro
 			pagination={false}
 			rowKey={(record) => record.uuid}
 			loading={loading}
-		// onExpand={onTableRowExpand}
 		/>
 	);
 });
