@@ -1,9 +1,16 @@
+/**
+ * @author Vinay Reddy <vinay.reddy@mareana.com>
+ * @Mareana - CPV Product
+ * @version 2
+ * @Last Modified - 11 April, 2023
+ * @Last Changed By - @Vinay
+ */
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useHistory, useRouteMatch } from "react-router-dom";
 import "./LandingStyles.scss";
 //antd imports
 import { PlusOutlined } from "@ant-design/icons";
-import { Card, Col, Divider, Input, Row } from "antd";
+import { Card, Col, Divider, Input, Row, Tooltip } from "antd";
 //svg
 import Banner from "../../../../../assets/images/ChartBanner.svg";
 //redux
@@ -206,7 +213,9 @@ const LandingPage = () => {
 																</div>
 																<div className="chart-info">
 																	<p className="cid">{ele.chart_disp_id}</p>
-																	<p className="chartName">{ele.chart_name}</p>
+																	<Tooltip placement="right" title={ele?.chart_name}>
+																		<p className="chartName">{ele?.chart_name}</p>
+																	</Tooltip>
 																</div>
 															</div>
 														</Col>
