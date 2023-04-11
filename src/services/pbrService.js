@@ -518,3 +518,63 @@ export const saveAdvanceSetting = (_queryParam) => {
 		}
 	);
 };
+
+export const loadRelativeDirectionSetting = (_queryParam) => {
+	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	const request_headers = {
+		'x-access-token': login_response?.token ? login_response?.token : '',
+		'resource-name': 'PBR'
+	};
+	return Service.get(
+		MDH_APP_PYTHON_SERVICE + "/pbr/udh/load_relative_direction_setting",
+		_queryParam,
+		request_headers
+	).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};
+
+export const saveRelativeDirection = (_queryParam) => {
+	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	const request_headers = {
+		'x-access-token': login_response?.token ? login_response?.token : '',
+		'resource-name': 'PBR'
+	};
+	return Service.put(
+		MDH_APP_PYTHON_SERVICE + "/pbr/udh/relative_direction_setting",
+		_queryParam,
+		request_headers
+	).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};
+
+export const getRelativeDirectionSetting = (_queryParam) => {
+	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	const request_headers = {
+		'x-access-token': login_response?.token ? login_response?.token : '',
+		'resource-name': 'PBR'
+	};
+	return Service.get(
+		MDH_APP_PYTHON_SERVICE + "/pbr/udh/relative_direction_setting",
+		_queryParam,
+		request_headers
+	).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};

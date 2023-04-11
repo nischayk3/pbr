@@ -16,6 +16,7 @@ import Banner from "../../../../../assets/images/Popup-Side.svg";
 import illustrations from "../../../../../assets/images/ViewCreation_bannerillustration.png";
 import ScreenHeader from "../../../../../components/ScreenHeader/screenHeader";
 import StatusBlock from "../../../../../components/StatusBlock/statusBlock";
+import { showNotification } from "../../../../../duck/actions/commonActions";
 import {
 	loadDrug, sendDrugSub
 } from "../../../../../duck/actions/viewHierarchyAction";
@@ -44,12 +45,22 @@ export default function LandingPage() {
 	const loadHier = async (ds_name) => {
 		dispatch(sendDrugSub(ds_name));
 		dispatch(loadDrug(true));
-		history.push(`/dashboard/molecule_hierarchy_configuration/tabs/plant-molecule?drugname=${ds_name}`);
+		history.push(`/dashboard/molecule_hierarchy_configuration/tabs/plant-molecule?drugname=${ds_name}&load=true`);
 	};
 
 
-	const checkUnique = (hierarchyName) => {
-		history.push(`/dashboard/molecule_hierarchy_configuration/tabs/plant-molecule?drugname=${hierarchyName}`);
+	const checkUnique = async (hierarchyName) => {
+		const checkUnique = await uniqueDrug(hierarchyName, viewList, 'ds_name');
+
+		if (checkUnique) {
+			dispatch(showNotification('error', 'Drug substance name already present, please enter unique name'))
+		} else {
+			history.push(`/dashboard/molecule_hierarchy_configuration/tabs/plant-molecule?drugname=${hierarchyName}`);
+		}
+	}
+
+	const uniqueDrug = (value, array, property) => {
+		return array.some((item) => item[property] === value);
 	}
 
 	const getViews = async () => {
@@ -60,10 +71,26 @@ export default function LandingPage() {
 
 		if (response?.status == 200) {
 			setLastEightView(response?.data);
+		} else if (response?.status == 400) {
+			setLastEightView([])
+			dispatch(showNotification("error", response.message));
+		} else if (response?.status == 404) {
+			setLastEightView([])
+			dispatch(showNotification("error", response.message));
+		} else {
+			setLastEightView([])
 		}
 
 		if (response_two?.status == 200) {
 			setViewList(response_two?.data);
+		} else if (response_two?.status == 400) {
+			setViewList([])
+			dispatch(showNotification("error", response_two.message));
+		} else if (response_two?.status == 404) {
+			setViewList([])
+			dispatch(showNotification("error", response_two.message));
+		} else {
+			setViewList([])
 		}
 	};
 
@@ -134,17 +161,6 @@ export default function LandingPage() {
 	};
 
 	const search = (value) => {
-		// if (value == "") setSearched(false);
-		// else {
-		// 	setSearched(true);
-		// 	const tableData = viewList;
-		// 	const filterTableData = tableData.filter((o) =>
-		// 		Object.keys(o).some((k) =>
-		// 			String(o[k]).toLowerCase().includes(value.toLowerCase())
-		// 		)
-		// 	);
-		// 	setFilterTable(filterTableData);
-		// }
 		let arr = [];
 		setSearched(true);
 		const tableData = [...viewList];
@@ -166,8 +182,6 @@ export default function LandingPage() {
 			)
 		);
 		setFilterTable(filterTableSearch);
-
-
 	};
 
 	return (

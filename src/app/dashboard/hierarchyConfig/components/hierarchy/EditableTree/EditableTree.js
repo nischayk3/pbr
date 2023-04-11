@@ -7,70 +7,57 @@
  */
 
 import { DeleteOutlined, EditOutlined, HolderOutlined, PlusOutlined, SisternodeOutlined } from '@ant-design/icons';
-import SortableTree, { changeNodeAtPath, insertNode, removeNodeAtPath } from '@nosferatu500/react-sortable-tree';
+import SortableTree, { addNodeUnderParent, changeNodeAtPath, removeNodeAtPath } from '@nosferatu500/react-sortable-tree';
 import '@nosferatu500/react-sortable-tree/style.css';
 import { Button, Input } from 'antd';
+import queryString from 'query-string';
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import FileExplorerTheme from 'react-sortable-tree-theme-file-explorer';
-import { updateProcessStepFolder } from '../../services/viewHierarchyServices';
-import ContextMenu from '../ContextMenu/ContextMenu';
-import CustomButton from '../CustomButton/CustomButton';
+import ContextMenu from '../../../../../../components/ContextMenu/ContextMenu';
+import CustomButton from '../../../../../../components/CustomButton/CustomButton';
 import DisplayTree from './DisplayTree';
 import './EditableTree.scss';
-export default class EditableTree extends Component {
+class EditableTree extends Component {
 	constructor(props) {
 		super(props);
+		const { location } = this.props;
+		const params = queryString.parse(location.search);
+
 		this.state = {
-			isLoad: false,
+			params: params,
 			currentPath: [],
 			searchString: '',
 			searchFocusIndex: 0,
 			currentNode: {},
-			treeData: props.treeData,
+			treeData: [],
 			isVisible: false,
 			showMenu: false,
 			menuPosition: { x: 0, y: 0 },
 			isEdit: true,
-			items: [
-
-				// {
-				// 	value: 'Expand all',
-				// 	icon: '',
-				// 	eventName: 'expandAll',
-				// },
-				// {
-				// 	value: 'Collapse all',
-				// 	icon: '',
-				// 	eventName: 'collapseAll',
-				// }
-			],
+			items: [],
+			callbackStructure: props.callbackStructure,
 		};
 	}
 
-
-
-	// expandAndCollapse = (expanded) => {
-	// 	this.setState({
-	// 		treeData: toggleExpandedForAll({
-	// 			treeData: this.state.treeData,
-	// 			expanded,
-	// 		}),
-	// 	});
-	// };
-	static getDerivedStateFromProps(nextProps, prevState) {
-		console.log("nextProps, prevState", nextProps, prevState);
-		if (nextProps.isLoad !== prevState.isLoad) {
-			return { count: nextProps.count, isVisible: true, treeData: nextProps.treeData, };
+	componentWillMount() {
+		const { location, treeData } = this.props;
+		const params = queryString.parse(location.search);
+		console.log("check params", params);
+		this.setState({ params: params });
+		if (Object.keys(params) && Object.keys(params).length > 0) {
+			if (params?.load) {
+				console.log("check params1", params);
+				this.setState({ isVisible: true, treeData: treeData });
+			}
 		}
-		return null;
 	}
-	// componentWillReceiveProps(nextProps) {
-	// 	console.log("nextProps", nextProps);
-	// 	if (this.props.isLoad !== nextProps.isLoad) {
-	// 		this.setState({ isVisible: nextProps.isLoad });
-	// 	}
-	// }
 
+	UNSAFE_componentWillReceiveProps(nextProps) {
+		if (this.props.callbackStructure !== nextProps.callbackStructure) {
+			return this.props.callbackData(this.state.treeData);
+		}
+	}
 
 	updateTreeData(treeData) {
 		this.setState({ treeData });
@@ -96,13 +83,13 @@ export default class EditableTree extends Component {
 		this.setState({ currentNode: node, path: path });
 	}
 
-	insertNewNode = () => {
+	insertNewNode = (path) => {
 		this.setState(state => ({
-			treeData: insertNode({
+			treeData: addNodeUnderParent({
 				treeData: state.treeData,
-				depth: 2,
-				minimumTreeIndex: state.treeData.length,
-				newNode: { title: "", expanded: false, children: [{ title: "" }] },
+				parentKey: path[path.length - 1],
+				expandParent: true,
+				newNode: { title: "", },
 				getNodeKey: ({ treeIndex }) => treeIndex
 			}).treeData
 		}));
@@ -153,7 +140,7 @@ export default class EditableTree extends Component {
 
 	handleMenuClick = (eventName) => {
 		if (eventName === 'addNode') {
-			this.insertNewNode()
+			this.insertNewNode(this.state.currentPath)
 		} else if (eventName === 'deleteNode') {
 			this.removeNode(this.state.currentPath)
 		} else if (eventName === 'editNode') {
@@ -161,57 +148,24 @@ export default class EditableTree extends Component {
 		}
 	}
 
-	saveFolderStructure = () => {
-		const folderStructure = {
-			ds_name: this.props.drugName,
-			process_step: this.state.treeData[0]
-		}
-		this.saveTreeStructure(folderStructure)
-	}
 
-
-	/**
-	 * Folder Struture Save API CALL
-	 */
-
-	saveTreeStructure = async (_payload) => {
-		const apiRes = await updateProcessStepFolder(_payload)
-		if (apiRes.status === 200) {
-			// dispatch(showNotification("success", 'success msg'));
-		} else if (apiRes.status === 400) {
-			// dispatch(showNotification("error", 'error msg'));
-		} else if (apiRes.status === 404) {
-			// dispatch(showNotification("error", 'error msg'));
-		} else {
-			// dispatch(showNotification("error", 'error msg'));
-		}
-	}
 
 	render() {
-		const { searchString, searchFocusIndex, treeData, isVisible, menuPosition, showMenu, items, isEdit } = this.state;
-		const { drugName, isLoad } = this.props;
+		const { treeData, isVisible, menuPosition, showMenu, items, isEdit, } = this.state;
+		const { drugName, } = this.props;
 		const getNodeKey = ({ treeIndex }) => treeIndex;
 
+		console.log("this.state", this.state);
 		return (
 			<>
 
 				<div className="sortable-tree" style={{ height: 'calc(100vh - 350px)', overflowY: 'auto' }}>
-					{/* <div style={{ flex: '0 0 auto', padding: '0 15px' }}>
-					<h2>React Sortable Tree</h2>
-					<Button onClick={() => { this.expandAndCollapse(true); }}>Expand all</Button>
-					<Button onClick={() => { this.expandAndCollapse(false); }}>Collapse all</Button>&nbsp;&nbsp;&nbsp;
-					<Input placeholder='Search' value={searchString}
-						onChange={event => this.setState({ searchString: event.target.value })} />
-				</div> */}
-
-					<CustomButton className="custom__btn--dashed" icon={<PlusOutlined />} type="dashed" onClick={(e) => this.showTree()}>Create new process</CustomButton>
+					<CustomButton className="custom__btn--dashed" icon={<PlusOutlined />} disabled={isVisible} type="dashed" onClick={(e) => this.showTree()}>Create new process</CustomButton>
 					<div className="sortable-tree__tree">
 						{isVisible && (
 							<>
 								<SortableTree
 									theme={FileExplorerTheme}
-									// searchQuery={searchString}
-									// searchFocusOffset={searchFocusIndex}
 									treeData={treeData}
 									onChange={treeData => {
 										this.setState({ treeData }),
@@ -240,8 +194,6 @@ export default class EditableTree extends Component {
 														}} />
 
 													<Button className='context__menu--icon' type="link" icon={<HolderOutlined />} onClick={(e) => this.handleContextMenu(e, path, node.title)}></Button>
-													{/* <Button onClick={(e) => { e.preventDefault(); e.stopPropagation(); this.insertNewNode(path) }} >+</Button>
-										<Button onClick={(e) => { e.preventDefault(); e.stopPropagation(); this.removeNode(path) }} >-</Button> */}
 												</form>
 
 											</>
@@ -261,3 +213,4 @@ export default class EditableTree extends Component {
 		);
 	}
 }
+export default withRouter(EditableTree);

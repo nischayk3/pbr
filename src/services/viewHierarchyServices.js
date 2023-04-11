@@ -33,7 +33,7 @@ export const getAllViews = request => {
 //   }
 export const putMolecule = request => {
 	return Service.put(
-		BMS_APP_PYTHON_SERVICE + '/drug-substance',
+		BMS_APP_PYTHON_SERVICE + '/drug-substance-v2',
 		request,
 		request_headers
 	).then(
@@ -225,6 +225,44 @@ export const childProcessStep = request => {
 export const populateProcessStep = request => {
 	return Service.get(
 		BMS_APP_PYTHON_SERVICE + '/populate-process-steps',
+		request,
+		request_headers
+	).then(
+		response => {
+			return response.data;
+		},
+		error => {
+			return error.response.data;
+		}
+	);
+}
+
+/**
+ * Save Process Mapping
+*/
+
+export const SaveProcessFoldermapping = request => {
+	return Service.put(
+		BMS_APP_PYTHON_SERVICE + '/process-folder-mapping',
+		request,
+		request_headers
+	).then(
+		response => {
+			return response.data;
+		},
+		error => {
+			return error.response.data;
+		}
+	);
+}
+
+/**
+ * Get Process Mapping
+*/
+
+export const getProcessFoldermapping = request => {
+	return Service.get(
+		BMS_APP_PYTHON_SERVICE + '/process-folder-mapping',
 		request,
 		request_headers
 	).then(

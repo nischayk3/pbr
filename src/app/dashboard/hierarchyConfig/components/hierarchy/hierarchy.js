@@ -7,139 +7,98 @@
  * @Last Changed By - @Dinesh
  */
 import { DeleteTwoTone, InfoCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Card, Col, Input, Modal, Popconfirm, Popover, Row, Select, Table, Tabs } from "antd";
+import { Button, Card, Col, Input, Modal, Popconfirm, Popover, Row, Table, Tabs } from "antd";
 import queryString from "query-string";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation, useRouteMatch } from "react-router-dom";
 import Banner from "../../../../../assets/images/Popup-Side.svg";
 import BreadCrumbWrapper from "../../../../../components/BreadCrumbWrapper";
-import EditableTree from "../../../../../components/EditableTree/EditableTree";
 import { hideLoader, showLoader, showNotification } from "../../../../../duck/actions/commonActions";
-import { getDrugSubstence, getProcessStepFolder, getProcessStepMap, putMolecule, putProcessStep, putProcessStepMap } from "../../../../../services/viewHierarchyServices";
+import { SaveProcessFoldermapping, getDrugSubstence, getProcessFoldermapping, getProcessStepFolder, putMolecule, updateProcessStepFolder } from "../../../../../services/viewHierarchyServices";
+import EditableTree from "./EditableTree/EditableTree";
 import "./hierStyle.scss";
-import ProcessStepMap from "./processStepMap";
+import ProcessStepMap from "./processStepMapping/processStepMap";
+import ProcessMapTable from "./savedProcessMapData/processMapTable";
 
 const { TabPane } = Tabs;
 
 const Hierarchy = () => {
+	const dispatch = useDispatch();
 	const match = useRouteMatch();
 	const history = useHistory();
 	const location = useLocation();
 	const params = queryString.parse(location.search);
-	const dispatch = useDispatch();
-
-	const { Option } = Select;
 
 	const [hierarchyName, setHierarchyName] = useState("");
 	const [moleculeData, setMoleculeData] = useState([]);
-	const [stepData, setStepData] = useState([]);
 	const [isModalVisible, setIsModalVisible] = useState(false);
-	const [stepArray, setStepArray] = useState([]);
 	const [count, setCount] = useState(1);
-	const [stepCount, setStepCount] = useState(1);
-	const [tableData, setTableData] = useState([]);
 	const [activeTab, setActiveTab] = useState("Plant and molecules");
 	const [onceSaved, setOnceSaved] = useState(false);
-	const [stepSaved, setStepSaved] = useState(false);
 	const [del, setDel] = useState([])
 	const [deleted, setDeleted] = useState([])
-	const [saveStructure, setSaveStructure] = useState(false);
 	const [initTreeData, setInitTreeData] = useState([]);
 	const [isLoad, setIsLoad] = useState(false);
+	const [callbackStructure, setCallbackStructure] = useState(false);
+	const [finalJson, setFinalJson] = useState({});
+	const [processData, setProcessData] = useState([]);
+	const [url, setUrl] = useState('');
 
 
-
-
-	const hier_name = useSelector((state) => state.viewHierarchy.drugName);
 	const load_drug = useSelector((state) => state.viewHierarchy.drugLoad);
 
 	useEffect(() => {
 		handleAdd();
-		// handleStepAdd();
 		if (Object.keys(params) && Object.keys(params).length > 0) {
-			console.log("params?.drugname", params?.drugname);
+			console.log("parammmmm", location);
+			setUrl(location?.pathname);
 			setHierarchyName(params?.drugname);
-			// if (load_drug) {
-			LoadView(params?.drugname);
-			setIsLoad(true)
-			// }
+			if (params?.load) {
+
+				LoadView(params?.drugname);
+				setIsLoad(true)
+			}
 		}
 	}, []);
 
-	// useEffect(() => {
-	// 	const url = window.location.href
-	// 	let param = url.split('/')
-	// 	if (param.length > 0)
-	// 		LoadView(param)
-	// }, []
-	// );
-
-	useEffect(() => {
-		if (stepData && stepData.length > 0 && moleculeData && moleculeData.length > 0 && activeTab == "Process step mapping") {
-			getStepMapping();
-		}
-	}, [activeTab]);
-
-
 
 	const LoadView = async (param) => {
-
 		dispatch(showLoader())
 		if (param.length > 0 && param[param.length - 1] != 'untitled_view') {
-			// param = param[param.length - 1]
-			// let name = param.replace(/%20/g, " ");
-
-			// dispatch(sendDrugSub(name))
-			// setHierarchyName(name)
 			let req = { ds_name: param }
 			let res = await getDrugSubstence(req)
 			let res_step = await getProcessStepFolder(req)
-			/* istanbul ignore next */
 			if (res.status === 200) {
 				let data_molecule = [...res.data]
 				data_molecule = data_molecule.map((v, index) => ({ ...v, key: index + 1 }))
 				setCount(Math.max(...data_molecule.map(o => o.key)) + 1)
 				setMoleculeData(data_molecule)
 			} else if (res.status === 400) {
+				setMoleculeData([]);
 				dispatch(showNotification("error", res.message));
 			} else if (res.status === 404) {
+				setMoleculeData([])
 				dispatch(showNotification("error", res.message));
+			} else {
+				setMoleculeData([]);
 			}
 
-			/* istanbul ignore next */
 			if (res_step.status == 200) {
 				setInitTreeData([res_step?.data?.process_steps]);
 			} else if (res_step.status === 400) {
+				setInitTreeData([]);
 				dispatch(showNotification("error", res_step.message));
 			} else if (res_step.status === 404) {
+				setInitTreeData([]);
 				dispatch(showNotification("error", res_step.message));
+			} else {
+				setInitTreeData([]);
 			}
 		}
 		dispatch(hideLoader())
 	}
 
-	const getStepMapping = async () => {
-		dispatch(showLoader());
-		let req = { ds_name: hierarchyName };
-		let mapResponse = await getProcessStepMap(req);
-		/* istanbul ignore next */
-		if (mapResponse["status-code"] == 200) {
-			let data_response = mapResponse.Data.data && mapResponse.Data.data[0] ? mapResponse.Data.data[0] : []
-			if (data_response) {
-				data_response.forEach(function (row, index) {
-					row.index = index;
-				});
-			}
-			setTableData(data_response ? data_response : []);
-			setStepArray(mapResponse.Data.options);
-			/* istanbul ignore next */
-		} else if (mapResponse?.Status === 403) {
-			/* istanbul ignore next */
-			dispatch(showNotification("error", 'You are not authorized', "It seems like you don't have permission to use this service."));
-		}
-		dispatch(hideLoader());
-	};
 
 	const validate = (keyCount, keyData, keyName, currentStep) => {
 		let data = [...keyData]
@@ -211,133 +170,6 @@ const Hierarchy = () => {
 			}
 		];
 
-	const stepMapColumns =
-		[
-			{
-				title: "Action",
-				dataIndex: "action",
-				width: "10%",
-				render: (_, record) => (
-					<Popconfirm
-						title="Sure to delete?"
-						onConfirm={() => handleStepDelete(record.key, record)}
-					>
-						<DeleteTwoTone twoToneColor="red" />
-					</Popconfirm>
-				)
-			},
-			{
-				title: "Sequence No",
-				dataIndex: "seq_no",
-				key: "seq_no",
-				width: "20%",
-				render: (text, record) =>
-					stepData.map((data, index) => {
-						if (record.key === data.key) {
-							return (
-								<Input
-									type="text"
-									name="seq_no"
-									value={data.seq_no}
-									onChange={(e) => handleStepChange(index, e)}
-
-								/>
-							);
-						}
-					})
-			},
-			{
-				title: "Process Step",
-				dataIndex: "process_step",
-				key: "process_step",
-				width: "70%",
-				render: (text, record) =>
-					stepData.map((data, index) => {
-						if (record.key === data.key) {
-							return (
-								<Input
-									type="text"
-									name="process_step"
-									value={data.process_step}
-									onChange={(e) => handleStepChange(index, e)}
-								/>
-							);
-						}
-					})
-			}
-		];
-
-	/* istanbul ignore next */
-	const handleProcessStepChange = (text, index, rec) => {
-		dispatch(showLoader());
-		let newAggrValue = [...tableData];
-		newAggrValue[rec.index].process_step = text ? text.value : "";
-		setTableData(newAggrValue);
-		dispatch(hideLoader());
-	};
-
-	const mappingColumns = [
-		{
-			title: "Product",
-			dataIndex: "parent_product_num",
-			key: "parent_product_num",
-			width: "200"
-		},
-		{
-			title: "Plant",
-			dataIndex: "site_num",
-			key: "site_num",
-			width: "200"
-		},
-		{
-			title: "Level1",
-			dataIndex: "l1_product",
-			key: "l1_product",
-			width: "200"
-		},
-		{
-			title: "Description",
-			dataIndex: "description",
-			key: "description",
-			width: "200"
-		},
-		{
-			title: "Process Step",
-			dataIndex: "process_step",
-			key: "process_step",
-			width: "200",
-			align: "left",
-			render: (text, record, index) => {
-				return (
-					<Select
-						row={1}
-						className="filter-button"
-						allowClear
-						dropdownStyle={{ border: "10" }}
-						// value={ }
-						onChange={(e, value) => {
-							handleProcessStepChange(value, index, record);
-						}}
-						{...(text && { value: text })}
-						placeholder="Select Step"
-						style={{ width: "100%", borderRadius: "4px", right: "15px" }}
-					>
-						{stepArray && stepArray.length > 0 ? stepArray.map((item, i) => (
-
-							<Option value={item.process_step} key={i}>
-								{item.process_step}
-							</Option>
-						)) : <Option >
-
-						</Option>
-						}
-					</Select>
-				);
-			}
-		}
-
-	];
-
 	const handleAdd = () => {
 		let is_add = count <= 1 ? true : validate(count - 2, moleculeData, 'product_num', 'mol')
 		if (is_add) {
@@ -353,8 +185,6 @@ const Hierarchy = () => {
 			dispatch(showNotification('error', 'Previous Row is empty'))
 		}
 	};
-
-
 
 	const handleChange = (index, event) => {
 		const { name, value } = event.target;
@@ -372,59 +202,56 @@ const Hierarchy = () => {
 	};
 
 	/* istanbul ignore next */
-	const handleStepChange = (index, event) => {
-		const { name, value } = event.target;
-		const rowsInput = [...stepData];
-		rowsInput[index][name] = value;
-		setStepArray(rowsInput.map(function (el) { return el.process_step; }));
-		setStepData(rowsInput);
-	};
-
-	/* istanbul ignore next */
 	const handleDelete = (key, record) => {
 		const dataSource = [...moleculeData];
 		let deleted_data = [...del]
 		setMoleculeData(dataSource.filter((item) => item.key !== key));
-		// setCount(count - 1);
 		let obj = {}
 		obj[`${record.product_num}`] = record.site_code
 		deleted_data.push(obj)
 		setDel(deleted_data)
 	};
 
-	/* istanbul ignore next */
-	const handleStepDelete = (key, record) => {
-		const dataSource = [...stepData];
-		let deleted_data = [...deleted]
-		let obj = {}
-		obj[`${record.seq_no}`] = record.process_step
-		deleted_data.push(obj)
-		setDeleted(deleted_data)
-		setStepData(dataSource.filter((item) => item.key !== key));
-		// setStepCount(stepCount - 1);
-	};
-
 	const handleChangeTab = (value) => {
 		setActiveTab(value);
-
 		if (value === 'Plant and molecules') {
-			history.push(`${match.url}/plant-molecule?drugname=${hierarchyName}`);
+			if (isLoad) {
+				history.push(`${match.url}/plant-molecule?drugname=${hierarchyName}&load=true`);
+			} else {
+				history.push(`${match.url}/plant-molecule?drugname=${hierarchyName}`);
+			}
 		} else if (value === 'Process steps') {
-			history.push(`${match.url}/process-steps?drugname=${hierarchyName}`);
+			if (isLoad) {
+				history.push(`${match.url}/process-steps?drugname=${hierarchyName}&load=true`);
+			} else {
+				history.push(`${match.url}/process-steps?drugname=${hierarchyName}`);
+			}
+
 		} else {
-			history.push(`${match.url}/process-steps-mapping?drugname=${hierarchyName}`);
+			if (isLoad) {
+				history.push(`${match.url}/process-steps-mapping?drugname=${hierarchyName}&load=true`);
+				const _req = {
+					ds_name: hierarchyName,
+				}
+				getProcessMap(_req);
+			} else {
+				history.push(`${match.url}/process-steps-mapping?drugname=${hierarchyName}`);
+			}
 		}
 	};
 
 	/* istanbul ignore next */
 	const handleNext = () => {
-		if (activeTab == "Process steps")
+		if (activeTab == "Process steps") {
+			handleChangeTab("Process step mapping");
 			setActiveTab("Process step mapping");
-
-
-		if (activeTab == "Plant and molecules")
+		}
+		if (activeTab == "Plant and molecules") {
+			handleChangeTab("Process steps");
 			setActiveTab("Process steps");
+		}
 	};
+
 
 	const handleSave = async () => {
 		if (activeTab == "Plant and molecules") {
@@ -436,76 +263,97 @@ const Hierarchy = () => {
 			};
 			let response = await putMolecule(req);
 			/* istanbul ignore next */
-			if (response["statuscode"] == 200) {
-				dispatch(showNotification('success', "Saved"))
+			if (response.status == 200) {
+				dispatch(showNotification("success", `Drug substance ${hierarchyName} has been saved successfully.`));
 				setDeleted([])
 				setDel([])
 				setOnceSaved(true)
+			} else if (response.status === 400) {
+				dispatch(showNotification("error", response.message));
+			} else if (response.status === 404) {
+				dispatch(showNotification("error", response.message));
 			}
-			else {
-				dispatch(showNotification('error', response.message))
-			}
+
 		}
+
 		/* istanbul ignore next */
 		if (activeTab == "Process steps") {
-			let req = {
-				ds_name: hierarchyName,
-				seq_no: stepData.map((i) => { return parseInt(i.seq_no); }),
-				process_step: stepData.map((i) => { return i.process_step; }),
-				delete_row: !stepSaved && !load_drug ? [] : deleted.length > 0 ? deleted : []
-			};
-			let response = await putProcessStep(req);
-			/* istanbul ignore next */
-			if (response["statuscode"] == 200) {
-				dispatch(showNotification('success', "Saved"))
-				setDeleted([])
-				setDel([])
-				setStepSaved(true)
-			}
-			else {
-				dispatch(showNotification('error', response.message))
-			}
+			setCallbackStructure(true)
+
 		}
+
 		/* istanbul ignore next */
 		if (activeTab == "Process step mapping") {
-			let req = {
+			let _req = {
 				ds_name: hierarchyName,
-				l1_product: tableData.map((i) => { return i.l1_product ? parseInt(i.l1_product) : ""; }),
-				process_step: tableData.map((i) => { return i.process_step ? i.process_step : ""; }),
-				site_num: tableData.map((i) => { return i.site_num ? i.site_num : ""; }),
-				molecule_num: tableData.map((i) => { return i.parent_product_num ? i.parent_product_num : ""; }),
-				delete_row: false
+				process_mapping: finalJson,
 			};
 
-			let response = await putProcessStepMap(req);
-			/* istanbul ignore next */
-			if (response["statuscode"] == 200) {
-				dispatch(showNotification('success', "Saved"))
-				setOnceSaved(true)
-
-			}
-			else {
-				dispatch(showNotification('error', response.message))
-			}
+			await saveprocessMap(_req)
 		}
 	};
 
+	const callbackTree = (treeData) => {
+		const folderStructure = {
+			ds_name: hierarchyName,
+			process_step: treeData && treeData[0]
+		}
+		saveTreeStructure(folderStructure);
+	}
+
+	/**
+	 * Folder Struture Save API CALL
+	 */
+
+	const saveTreeStructure = async (_payload) => {
+		const apiRes = await updateProcessStepFolder(_payload)
+		if (apiRes.status === 200) {
+			dispatch(showNotification("success", `Drug substance ${hierarchyName} has been saved successfully.`));
+		} else if (apiRes.status === 400) {
+			dispatch(showNotification("error", apiRes.message));
+		} else if (apiRes.status === 404) {
+			dispatch(showNotification("error", apiRes.message));
+		}
+	}
+
+	const saveprocessMap = async (_payload) => {
+		const apiRes = await SaveProcessFoldermapping(_payload)
+		if (apiRes.status === 200) {
+			dispatch(showNotification("success", `Drug substance ${hierarchyName} has been saved successfully.`));
+		} else if (apiRes.status === 400) {
+			dispatch(showNotification("error", apiRes.message));
+		} else if (apiRes.status === 404) {
+			dispatch(showNotification("error", apiRes.message));
+		}
+	}
+
+	const getProcessMap = async (_payload) => {
+		const apiRes = await getProcessFoldermapping(_payload)
+		if (apiRes.status === 200) {
+			setFinalJson(apiRes?.data?.process_folders_mapping)
+			setProcessData(apiRes?.data?.process_folders_mapping?.children)
+		} else if (apiRes.status === 400) {
+			dispatch(showNotification("error", apiRes.message));
+		} else if (apiRes.status === 404) {
+			dispatch(showNotification("error", apiRes.message));
+		} else {
+			setFinalJson({})
+			setProcessData([])
+		}
+	}
 
 	return (
-
 		<div className="custom-wrapper">
-			<BreadCrumbWrapper urlName={
-				`/dashboard/molecule_hierarchy_configuration/${hierarchyName}`}
+			<BreadCrumbWrapper urlName={url}
 				value={hierarchyName}
 				data="Untitled" />
 			<div className="custom-content-layout">
-				{/* {!show ? */}
 				<Card
 					className="hierarchy-card"
 					title={<span><span>Molecule Hierarchy Configuration -</span> <span className="title-card">{hierarchyName}</span> <span className="title-button"> </span></span>}
 				>
 					<Tabs className="hier-tab" activeKey={activeTab} onChange={handleChangeTab} >
-						<TabPane tab="Plant and molecules" key="Plant and molecules">
+						<TabPane tab="Plant and molecules" key="Plant and molecules" className="hier-tab__containet">
 							<div className="hier-tab__button">
 								<p className="tab-title"> Enter the product and plant details for {hierarchyName}
 									<Popover className="popover-hier" content={<span className="popover-content">Please save the plant and molecules or process steps before moving to process step mapping</span>} title={false} trigger="hover">
@@ -522,7 +370,7 @@ const Hierarchy = () => {
 								</div>
 							</div>
 
-							<Table className="hierarchy-table" columns={plantMoleculeColumns} dataSource={moleculeData} pagination={false} />
+							<Table className='expandable-table hierarchy-table' columns={plantMoleculeColumns} dataSource={moleculeData} pagination={false} />
 							<div className="add-button">
 								<Button
 									onClick={() => handleAdd()}
@@ -533,42 +381,28 @@ const Hierarchy = () => {
 								</Button>
 							</div>
 						</TabPane>
-						{/* <TabPane tab="Process steps" key="Process steps">
-							<p className="tab-title">Enter the process step for {hierarchyName} <Button className="data-button"> {activeTab == "Process step mapping" ? <span className="tab-button-text">Finish</span> : <span className="tab-button-text" onClick={() => handleNext()}>Next</span>}</Button><Popover className="popover-hier" content={<span className="popover-content">Please save the plant and molecules or process steps before moving to process step mapping</span>} title={false} trigger="hover">
-								<InfoCircleOutlined style={{ padding: "0 5px" }} />
-							</Popover></p>
-							<Table className="hierarchy-table" columns={stepMapColumns} dataSource={stepData} pagination={false} />
-							<div className="add-button">
-								<Button
-									onClick={() => handleStepAdd()}
-									className="add-row-button"
-								>
-									<PlusOutlined />
-									Add new row
-								</Button>
-							</div>
-						</TabPane> */}
-						<TabPane tab="Process steps" key="Process steps">
+
+						<TabPane tab="Process steps" key="Process steps" className="hier-tab__containet">
 							<div className="hier-tab__button">
 								<p className="tab-title">The following processess and process steps can be left-clicked to create subsequent processess and to perform a bunch of other actions:</p>
 								<div>
-									<Button className="custom-primary-btn" >
+									<Button className="custom-primary-btn" onClick={() => handleNext()} >
 										Next
 									</Button>
 									<Button className="custom-secondary-btn" onClick={() => handleSave()} >Save hierarchy</Button>
 								</div>
 							</div>
-							<EditableTree drugName={hierarchyName} saveStructure={saveStructure} treeData={initTreeData} isLoad={isLoad} />
+							<EditableTree drugName={hierarchyName} treeData={initTreeData} isLoad={isLoad} callbackStructure={callbackStructure} callbackData={callbackTree} />
 						</TabPane>
-						<TabPane tab="Process step mapping" key="Process step mapping">
+
+						<TabPane tab="Process step mapping" key="Process step mapping" className="hier-tab__containet">
 							<div className="hier-tab__button">
 								<p className="tab-title">Enter the process step for {hierarchyName}</p>
 								<Button className="custom-secondary-btn" onClick={() => handleSave()} >Save hierarchy</Button>
 							</div>
 
 							<div className="map-grid">
-								{/* <Table className="hierarchy-map-table" columns={mappingColumns} dataSource={tableData} /> */}
-								<ProcessStepMap drugName={hierarchyName} activeTab={activeTab} />
+								{isLoad ? (<ProcessMapTable drugName={hierarchyName} activeTab={activeTab} processData={processData} finalJson={finalJson} setFinalJson={setFinalJson} />) : (<ProcessStepMap drugName={hierarchyName} activeTab={activeTab} finalJson={finalJson} setFinalJson={setFinalJson} />)}
 							</div>
 						</TabPane>
 					</Tabs>
@@ -578,7 +412,6 @@ const Hierarchy = () => {
 					className="landing-modal"
 					title="Create New Dashboard"
 					visible={isModalVisible}
-					//onOk={handleOk}
 					onCancel={handleCancel}
 					footer={[
 						<Button className="custom-secondary-button" onClick={() =>

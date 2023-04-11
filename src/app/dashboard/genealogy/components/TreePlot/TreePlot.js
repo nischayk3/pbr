@@ -602,11 +602,17 @@ function TreePlot(props) {
 					.attr("id", function (d) {
 						var nodeName = "";
 						var batchName = "";
+						var productNo = "";
 						var poName = "";
 						var purchaseOrder = "";
 						if (d.type === "Material") {
-							batchName = d["nodeId"].split("|");
-							nodeName = batchName[1];
+							productNo = d.matNo
+							batchName = d.batchNo;
+							if (d.matNo === firstNode) {
+								nodeName = productNo
+							} else {
+								nodeName = `${productNo}|${batchName}`;
+							}
 							return "node-" + nodeName;
 						} else if (d.type === "Process Order") {
 							poName = d.poNo;
@@ -614,6 +620,9 @@ function TreePlot(props) {
 						} else if (d.type === "Purchase Order") {
 							purchaseOrder = d.pur_ord_no;
 							return "node-" + purchaseOrder;
+						} else if (d.mat === firstNode) {
+							nodeName = productNo
+							return "node-" + nodeName;
 						}
 					})
 					.attr("transform", function (d) {
@@ -713,9 +722,11 @@ function TreePlot(props) {
 					.append("svg:text")
 					.attr("x", function (d) {
 						if (d.matNo === firstNode) {
-							return d.traceability === "backward" ? 80 : 20; // 80 20
+							return d.traceability === "backward" ? 75 : 20; // 80 20
+						} else if (d.poNo) {
+							return d.traceability === "backward" ? 35 : -40; // 80
 						} else {
-							return d.traceability === "backward" ? 25 : -25; // 80
+							return d.traceability === "backward" ? 50 : -60; // 80
 						}
 					})
 
@@ -733,10 +744,17 @@ function TreePlot(props) {
 						var nodeName = "";
 						var batchName = "";
 						var poName = "";
+						var productNo = "";
 						var purchaseOrder = "";
 						if (d.type === "Material") {
-							batchName = d["nodeId"].split("|");
-							nodeName = batchName[1];
+							productNo = d.matNo
+							batchName = d.batchNo;
+							if (d.matNo === firstNode) {
+
+								nodeName = productNo
+							} else {
+								nodeName = `${productNo} | ${batchName}`;
+							}
 							return nodeName;
 						} else if (d.type === "Process Order") {
 							poName = d.poNo;
