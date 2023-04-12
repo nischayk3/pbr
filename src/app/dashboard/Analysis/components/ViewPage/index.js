@@ -1,3 +1,11 @@
+/**
+ * @author Mihir Bagga <mihir.bagga@mareana.com>
+ * @Mareana - CPV Product
+ * @version 2
+ * @Last Modified - 12 April, 2023
+ * @Last Changed By - @Mihir
+ */
+
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import "./viewPage.scss";
@@ -125,7 +133,7 @@ const ViewPageAnalysis = () => {
 
 		dispatch(showLoader());
 		const apiResponse = await putPipelineObj(req);
-		if (apiResponse?.statuscode === 200) {
+		if (apiResponse?.status === 200) {
 			dispatch(hideLoader());
 			setExectStart(true);
 			dispatch(showNotification("success", "Model saved successfully"));
@@ -191,7 +199,7 @@ const ViewPageAnalysis = () => {
 		};
 		dispatch(showLoader());
 		const data = await getPipeline(req)
-		if (data?.Status === 200) {
+		if (data?.status === 200) {
 			const viewDetails = {
 				pipeline_name: data?.data?.pipeline_name,
 				savetype: "saveas",
