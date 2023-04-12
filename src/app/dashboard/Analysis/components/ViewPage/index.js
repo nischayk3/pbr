@@ -1,3 +1,11 @@
+/**
+ * @author Mihir Bagga <mihir.bagga@mareana.com>
+ * @Mareana - CPV Product
+ * @version 2
+ * @Last Modified - 12 April, 2023
+ * @Last Changed By - @Mihir
+ */
+
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import "./viewPage.scss";
@@ -186,13 +194,11 @@ const ViewPageAnalysis = () => {
 	// };
 
 	const getPipelineList = async () => {
-		console.log(id)
 		let req = {
 			pipelineId: id
 		};
 		dispatch(showLoader());
 		const data = await getPipeline(req)
-		console.log(data)
 		if (data?.status === 200) {
 			const viewDetails = {
 				pipeline_name: data?.data?.pipeline_name,
