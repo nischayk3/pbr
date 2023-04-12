@@ -25,7 +25,7 @@ const columns = [
     render: (text, record, index) => (
       <>
         {record.coverage_metric_percent === "100.0%" ||
-        record.coverage_metric_percent === "100%" ? (
+          record.coverage_metric_percent === "100%" ? (
           <span>
             <img src={StatusCorrect} />
           </span>
@@ -100,18 +100,18 @@ const BatchesComponent = (props) => {
       ...viewDetails,
       data_filter: filterRef.current,
       target_variable: '',
-      batch_filter : []
+      batch_filter: []
     };
     viewDetails.data_filter = filterRef.current;
     dispatch(showLoader());
     const apiResponse = await putPipelineObj(req);
-    if (apiResponse?.pipeline_disp_id) {
+    if (apiResponse?.data?.pipeline_disp_id) {
       dispatch(hideLoader());
       history.push({
-        pathname: `${match.url}/${apiResponse?.pipeline_disp_id}`,
+        pathname: `${match.url}/${apiResponse?.data?.pipeline_disp_id}`,
         state: req,
       });
-      viewDetails.pipeline_id = apiResponse?.pipeline_disp_id;
+      viewDetails.pipeline_id = apiResponse?.data?.pipeline_disp_id;
       dispatch(getAnalyticsViewData(viewDetails));
     } else {
       /* istanbul ignore next */
@@ -138,8 +138,8 @@ const BatchesComponent = (props) => {
   const onFilterChange = () => {
     const dateRange = batchFilters.startDate
       ? new Date(batchFilters.startDate).toISOString() +
-        "/" +
-        new Date(batchFilters.endDate).toISOString()
+      "/" +
+      new Date(batchFilters.endDate).toISOString()
       : "";
     filterRef.current = {
       site: batchFilters.site ? batchFilters.site : "",
@@ -209,9 +209,9 @@ const BatchesComponent = (props) => {
               value={
                 batchFilters.startDate
                   ? [
-                      moment(batchFilters.startDate, dateFormat),
-                      moment(batchFilters.endDate, dateFormat),
-                    ]
+                    moment(batchFilters.startDate, dateFormat),
+                    moment(batchFilters.endDate, dateFormat),
+                  ]
                   : ""
               }
               format={dateFormat}

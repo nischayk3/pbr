@@ -61,9 +61,11 @@ const Preprocess = ({ setModelData, setTableKey, editFinalJson }) => {
 			view_disp_id: editFinalJson?.view_disp_id ? editFinalJson?.view_disp_id : location?.state?.view_id,
 			view_version: editFinalJson?.view_version ? editFinalJson?.view_version : location?.state?.view_version,
 		};
-		request.data_filter.site = request?.data_filter?.site
-			? request?.data_filter?.site
-			: "";
+		if (Object.keys(request).length > 0 && request.data_filter) {
+			request.data_filter.site = request?.data_filter?.site
+				? request?.data_filter?.site
+				: "";
+		}
 		dispatch(showLoader());
 		const apiResponse = await getPreprocessing(request);
 		if (apiResponse?.Status === 200) {

@@ -109,6 +109,27 @@ export const getPreprocessing = (request) => {
 	);
 };
 
+export const analysePipeline = (request) => {
+	let login_response = JSON.parse(localStorage.getItem("login_details"));
+	const headers = {
+		"content-type": "application/json",
+		"x-access-token": login_response.token ? login_response.token : "",
+		"resource-name": "AUTO_ML",
+	};
+	return Service.get(
+		BMS_APP_PYTHON_SERVICE + "/analyse-pipeline",
+		request,
+		headers
+	).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};
+
 //save pipeline data
 export const savePreprocessing = (request) => {
 	let login_response = JSON.parse(localStorage.getItem("login_details"));

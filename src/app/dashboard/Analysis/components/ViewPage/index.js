@@ -125,7 +125,7 @@ const ViewPageAnalysis = () => {
 
 		dispatch(showLoader());
 		const apiResponse = await putPipelineObj(req);
-		if (apiResponse?.statuscode === 200) {
+		if (apiResponse?.status === 200) {
 			dispatch(hideLoader());
 			setExectStart(true);
 			dispatch(showNotification("success", "Model saved successfully"));
@@ -186,12 +186,14 @@ const ViewPageAnalysis = () => {
 	// };
 
 	const getPipelineList = async () => {
+		console.log(id)
 		let req = {
 			pipelineId: id
 		};
 		dispatch(showLoader());
 		const data = await getPipeline(req)
-		if (data?.Status === 200) {
+		console.log(data)
+		if (data?.status === 200) {
 			const viewDetails = {
 				pipeline_name: data?.data?.pipeline_name,
 				savetype: "saveas",
