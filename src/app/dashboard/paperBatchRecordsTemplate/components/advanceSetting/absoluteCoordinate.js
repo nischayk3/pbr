@@ -17,7 +17,7 @@ function AbsoluteCoordinate(props) {
     const [saveAs, setSaveAs] = useState(false);
     const [saveAsName, setSaveAsName] = useState('');
 
-    const advanceSetting = async (val) => {
+    const advanceSetting = async (val,flag) => {
         try {
             dispatch(showLoader());
             let req = {
@@ -30,7 +30,7 @@ function AbsoluteCoordinate(props) {
                 dispatch(hideLoader());
                 setWord(res.Data[0]?.["box_type"]['word'])
                 setLine(res.Data[0]?.["box_type"]['line'])
-                if (val === 'default') {
+                if (val === 'default' && flag==='apply') {
                     let obj = formValues
                     obj[name] = { ...obj[name], advance_setting: res.Data }
                     setFormValues(obj)
@@ -75,7 +75,7 @@ function AbsoluteCoordinate(props) {
 
     useEffect(() => {
         if (advancePopup) {
-            if(formValues[name]?.advance_setting){
+            if(formValues[name]?.advance_setting && method === formValues[name]?.advance_setting[0]?.method){
                 loadSetting(formValues[name]?.advance_setting[0]?.setting_name)
             }
             else{
@@ -92,7 +92,7 @@ function AbsoluteCoordinate(props) {
                 let req = {
                     name: loadValue,
                     method: method,
-                    settings: { "box_type": { "word": word, "line": line },setting_name:loadValue },
+                    settings: { "box_type": { "word": word, "line": line },setting_name:loadValue,method:method },
                     changed_by: user,
                     action_type: "save",
                     created_by: null
@@ -124,7 +124,7 @@ function AbsoluteCoordinate(props) {
                 let req = {
                     name: saveAsName,
                     method: method,
-                    settings: {"box_type": { "word": word, "line": line },setting_name:loadValue},
+                    settings: {"box_type": { "word": word, "line": line },setting_name:loadValue,method:method},
                     changed_by: null,
                     action_type: "save_as",
                     created_by: user
@@ -167,7 +167,7 @@ function AbsoluteCoordinate(props) {
                     </Col>
                     <Col span={12}>
                         <div style={{ display: "flex", justifyContent: "end" }}>
-                            <Button onClick={() => loadValue === 'default' ? advanceSetting('default') : handleSave()}>{loadValue === 'default' ? 'Apply' : `Apply / Save`}</Button>
+                            <Button onClick={() => loadValue === 'default' ? advanceSetting('default','apply') : handleSave()}>{loadValue === 'default' ? 'Apply' : `Apply / Save`}</Button>
                             <Button onClick={() => setSaveAs(true)} className='custom-secondary-btn' style={{ marginLeft: 10 }}>Create New</Button>
                         </div>
                     </Col>

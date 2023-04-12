@@ -219,6 +219,10 @@ p {
 			font-weight: 300;
 			line-height: 22px;
 			letter-spacing: 0em;
+			width: 100px;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
 		}
 		text-align: center;
 		background: #e2e8f2;
