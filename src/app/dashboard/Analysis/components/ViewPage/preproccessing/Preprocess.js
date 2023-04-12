@@ -81,7 +81,7 @@ const Preprocess = ({ setModelData, setTableKey, editFinalJson }) => {
 			/* istanbul ignore next */
 			dispatch(hideLoader());
 			/* istanbul ignore next */
-			dispatch(showNotification("error", "Unable to fetch preprocessing data"));
+			// dispatch(showNotification("error", "Unable to fetch preprocessing data"));
 		}
 	};
 
