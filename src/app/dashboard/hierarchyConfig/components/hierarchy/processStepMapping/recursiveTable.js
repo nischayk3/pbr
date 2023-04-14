@@ -39,8 +39,8 @@ const RecursiveTable = memo(function RecursiveTable({ data, steps, finalJson, se
 		},
 		{
 			title: 'Process step',
-			dataIndex: 'process_step',
-			key: 'process_step',
+			dataIndex: 'process-step',
+			key: 'process-step',
 			editable: true,
 			render: (text, record, index) => {
 				return (
