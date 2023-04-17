@@ -1,3 +1,11 @@
+/**
+ * @author Mihir Bagga <mihir.bagga@mareana.com>
+ * @Mareana - CPV Product
+ * @version 2
+ * @Last Modified - 17 April, 2023
+ * @Last Changed By - @Mihir
+ */
+
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, Col, Row } from "antd";
 import Sider from "antd/lib/layout/Sider";
