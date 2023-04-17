@@ -4,6 +4,7 @@ import AbsoluteCoordinate from './absoluteCoordinate';
 import AbsoluteDistance from './absoluteDistance';
 import KeyValue from './keyValue'
 import RelativeDistance from './relativeDistance';
+import SelectionMethod from './selection_method';
 function AdvanceSetting(props) {
     let { advancePopup, setAdvancePopup,method,formValues,setFormValues,name } = props
     const [mainMethod, setMainMethod] = useState('');
@@ -25,6 +26,9 @@ function AdvanceSetting(props) {
             return <KeyValue method={method} formValues={formValues} setFormValues={setFormValues} name={name} advancePopup={advancePopup} setAdvancePopup={setAdvancePopup}/>
         }else if(method === "relative_direction"){
             return <RelativeDistance method={method} formValues={formValues} setFormValues={setFormValues} name={name} advancePopup={advancePopup} setAdvancePopup={setAdvancePopup} />
+        }
+        else if(method === "selection_method"){
+            return <SelectionMethod method={method} formValues={formValues} setFormValues={setFormValues} name={name} advancePopup={advancePopup} setAdvancePopup={setAdvancePopup} />
         }else{
             return <div>Coming Soon....</div>
         }

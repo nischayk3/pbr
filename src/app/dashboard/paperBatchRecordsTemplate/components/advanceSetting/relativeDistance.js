@@ -33,7 +33,6 @@ function RelativeDistance(props) {
         try {
             dispatch(showLoader());
             let str = val?.lastIndexOf("-");
-            console.log("str",str)
             let req = {
                 version: 1,
                 name: val.slice(0,str),
@@ -122,7 +121,7 @@ function RelativeDistance(props) {
                 let user = localStorage.getItem("user_id")
                 let str = loadValue?.lastIndexOf("-");
                 let req = {
-                    name: loadValue.slice(0,str),
+                    name: str === -1 ? loadValue : loadValue.slice(0,str),
                     version: 1,
                     settings: {
                         word: settingValues.word,

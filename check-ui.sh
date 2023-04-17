@@ -1,5 +1,5 @@
 #!/bin/bash
-until curl -s -f -o /dev/null "http://nginx"
+until curl -s -f -o /dev/null "http://nginx/mi"
 do
   sleep 2
   echo " ui container not started yet"
