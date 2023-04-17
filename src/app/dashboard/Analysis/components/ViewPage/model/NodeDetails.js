@@ -40,7 +40,7 @@ const NodeDetails = (props) => {
 	);
 
 	const makeOutlierCategorical = async (e) => {
-		setOutlinerValue('')
+		setOutlinerValue(e && e?.target?.value ? e.target.value : "")
 		const req = {
 			view_disp_id: selectedViewData?.view_id,
 			pipeline_disp_id: selectedViewData?.pipeline_id,
@@ -75,6 +75,17 @@ const NodeDetails = (props) => {
 			if (apiResponse?.data?.Histogram) {
 				apiResponse.data.Histogram.layout.height = "100px";
 				apiResponse.data.Histogram.layout.width = "100px";
+			}
+			if (apiResponse?.data?.transformations) {
+				setOutlinerValue(apiResponse.data.transformations.outlier)
+			}
+			if (apiResponse?.data?.transformations) {
+				if (apiResponse.data.transformations.categorical == "True") {
+					setIsCat(true)
+				}
+				else {
+					setIsCat(false)
+				}
 			}
 			setNodeData(apiResponse);
 		}
@@ -111,17 +122,7 @@ const NodeDetails = (props) => {
 				apiResponse.data.Histogram.layout.height = "100px";
 				apiResponse.data.Histogram.layout.width = "100px";
 			}
-			if (apiResponse?.data?.transformations) {
-				setOutlinerValue(apiResponse?.data?.transformations?.outlier)
-			}
-			if (apiResponse?.data?.transformations) {
-				if (apiResponse?.data?.transformations?.categorical == "True") {
-					setIsCat(true)
-				}
-				else {
-					setIsCat(false)
-				}
-			}
+
 			setIsCat
 			setNodeData(apiResponse);
 			/* istanbul ignore next */
@@ -137,7 +138,6 @@ const NodeDetails = (props) => {
 			setDataStatus(true);
 		}
 	}, [nodeInformation]);
-
 
 	const items = [
 		{
