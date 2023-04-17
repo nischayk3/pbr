@@ -1,5 +1,5 @@
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Col, Row, Select } from "antd";
+import { Button, Checkbox, Col, Row, Select, Collapse } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import ModalComponent from "../../../../../../components/Modal/Modal";
@@ -10,6 +10,7 @@ import HyperParameterTable from "./HyperParameterTable";
 import urlJson from './urls.json';
 
 const { Option } = Select;
+const { Panel } = Collapse
 
 
 const Estimator = (props) => {
@@ -57,46 +58,49 @@ const Estimator = (props) => {
 		}
 	});
 
+	const filterCustomValue = (custom_array) => {
+		let newObj = {}
+		custom_array?.forEach((ele) => {
+			ele.parameter = ele?.parameter?.replace(" ", '')
+			if (ele.customValue) {
+				if (ele.valid_value === 'Integer') {
+					ele.customValue = ele?.customValue?.split(',')
+					ele.customValue = ele?.customValue.map(Number)
+				} else if (ele.valid_value.includes('True')) {
+					ele.customValue = [true]
+				} else if (ele.valid_value.includes('False')) {
+					ele.customValue = [false]
+				} else if (ele.valid_value.includes('Float')) {
+					ele.customValue = ele?.customValue?.split(',')
+					ele.customValue = ele.customValue.map(Number)
+				} else {
+					// ele.customValue = ele?.customValue?.split(',')
+					ele.customValue = ele?.customValue
+				}
+				newObj[ele.parameter] = ele?.customValue
+			}
+		})
+
+		return newObj
+	}
 
 	const onClickSave = () => {
-		const tempObj = JSON.parse(JSON.stringify(finalModelJson));
-		let newObj = {};
-		const tempHyper = JSON.parse(JSON.stringify(hyperParameters))
-		if (estimatorPopupDataValues.enableGrid) {
-			tempHyper?.forEach((ele) => {
-				ele.parameter = ele?.parameter?.replace(" ", '')
-				if (ele.customValue) {
-					if (ele.valid_value === 'Integer') {
-						ele.customValue = ele?.customValue?.split(',')
-						ele.customValue = ele.customValue.map(Number)
-					} else if (ele.valid_value.includes('True')) {
-						ele.customValue = [true]
-					} else if (ele.valid_value.includes('False')) {
-						ele.customValue = [false]
-					} else if (ele.valid_value.includes('Float')) {
-						ele.customValue = ele?.customValue?.split(',')
-						ele.customValue = ele.customValue.map(Number)
-					} else {
-						ele.customValue = ele?.customValue?.split(',')
-					}
-					newObj[ele.parameter] = ele?.customValue
-				}
-			})
-		}
 
-		Object.entries(tempObj.estimator).forEach(([key, value]) => {
-			value.estimator_type = estimatorPopupDataValues.typeListValue
-			value.model_name = `e_${estimatorPopupDataValues.algoValue.toLowerCase()}`;
-			if (Object.keys(newObj)?.length) {
-				value.hyperparamters = newObj
-			} else {
-				value.hyperparamters = {};
+		let estimator_obj = {}
+
+		estimatorPopupDataValues.algoValue.map((i, idx) => {
+			estimator_obj[`e__${idx}`] = {
+				estimator_type: estimatorPopupDataValues.typeListValue,
+				hyperparamters: estimatorPopupDataValues.enableGrid && estimatorPopupDataValues?.hyperparameters[i] ? filterCustomValue(estimatorPopupDataValues.hyperparameters[i]) : {},
+				model_name: `e_${i.toLowerCase()}`
 			}
-		});
+		})
+
+		const tempObj = JSON.parse(JSON.stringify(finalModelJson));
 		const metricsTemp = {
 			metric_name: estimatorPopupDataValues.regressionListvalue
 		}
-		setFinalModelJson({ ...finalModelJson, estimator: tempObj.estimator, metrics: metricsTemp, hyperParams: estimatorPopupDataValues.enableGrid ? hyperParameters : undefined });
+		setFinalModelJson({ ...finalModelJson, estimator: estimator_obj, metrics: metricsTemp, hyperParams: estimatorPopupDataValues.enableGrid ? estimatorPopupDataValues.hyperparameters : undefined });
 		setSavedEstimatorPopupDataValues({
 			...savedEstimatorPopupDataValues,
 			typeListValue: estimatorPopupDataValues.typeListValue,
@@ -192,25 +196,28 @@ const Estimator = (props) => {
 		left: x + 10,
 	}
 
-	const getHyperParameter = async () => {
+	const getHyperParameter = async (algo) => {
 		let moduleName = '';
 		algosListData.map((ele) => {
-			if (ele.submodule === estimatorPopupDataValues.algoValue) {
+			if (ele.submodule === algo) {
 				moduleName = ele.module
 			}
 		})
 		const reqBody = {
 			module: moduleName,
-			submodule: estimatorPopupDataValues.algoValue
+			submodule: algo
 		}
 		dispatch(showLoader());
 		const apiResponse = await getHyperParameters(reqBody)
 		if (apiResponse?.Status === 200) {
 			setShowParameter(true)
+			let hyperparameter_data = { ...estimatorPopupDataValues }
+
 			apiResponse.data.forEach((ele, index) => {
 				ele.key = index + 1;
 				ele.customValue = '';
 			})
+			hyperparameter_data.hyperparameters[algo] = apiResponse.data
 			setHyperParameters(apiResponse.data)
 			dispatch(hideLoader());
 		} else {
@@ -222,7 +229,7 @@ const Estimator = (props) => {
 	const handleCheckboxChange = (e) => {
 		if (e.target.checked === true) {
 			if (!finalModelJson?.hyperParams) {
-				getHyperParameter();
+				// getHyperParameter();
 			}
 		}
 		setEstimatorPopupDataValues({
@@ -241,7 +248,17 @@ const Estimator = (props) => {
 		}
 	}, [finalModelJson])
 
-
+	const onChange = (key) => {
+		let algo_value = estimatorPopupDataValues.algoValue[key[key.length - 1]]
+		if (key.length > 0) {
+			if (estimatorPopupDataValues.hyperparameters && estimatorPopupDataValues.hyperparameters.hasOwnProperty(algo_value)) {
+				algo_value = algo_value
+			}
+			else {
+				getHyperParameter(algo_value);
+			}
+		}
+	}
 	return (
 		<>
 			{
@@ -252,19 +269,6 @@ const Estimator = (props) => {
 			<div className="drawer-head">
 				<h3>Estimator</h3>
 			</div>
-			{/* <div class="container-bar">
-        <ul class="progressbar">
-          <li class="active"></li>
-          <li class="active"></li>
-          <li class="active"></li>
-          <li class="active"></li>
-          <li class="active"></li>
-          <li class="progress"></li>
-          <li></li>
-          <li></li>
-          <li></li>
-        </ul>
-      </div> */}
 			<div className="estimator-details">
 				<SelectField
 					label="Model type"
@@ -275,7 +279,7 @@ const Estimator = (props) => {
 					}
 				/>
 				<p style={{ marginBottom: '0px' }}>Algorithms</p>
-				<Select value={estimatorPopupDataValues.algoValue} disabled={!estimatorPopupDataValues.typeListValue}
+				<Select mode="multiple" value={estimatorPopupDataValues.algoValue} disabled={!estimatorPopupDataValues.typeListValue}
 					onChange={(e) => onAlgoChange(e)} style={{ width: "100%" }}>
 					{algosListData?.length && algosListData?.map((ele) => {
 						return <Option value={ele.submodule} onContextMenu={handleClick}>{ele.display_name}</Option>
@@ -306,16 +310,19 @@ const Estimator = (props) => {
 							Enable grid search
 						</Checkbox>
 					</Col>
-					{estimatorPopupDataValues.enableGrid && hyperParameters.length && <Col span={12}>
+					{/* {estimatorPopupDataValues.enableGrid && hyperParameters.length && <Col span={12}>
+						<Button onClick={() => setShowParameter(true)}>Edit Hyperparameters</Button>
+					</Col>} */}
+					{estimatorPopupDataValues.enableGrid && <Col span={12}>
 						<Button onClick={() => setShowParameter(true)}>Edit Hyperparameters</Button>
 					</Col>}
 				</Row>
 
 				<div className="button-save">
 					<Button id='save_changes' onClick={onClickSave}>Save Changes</Button>
-					<Button disabled>
+					{/* <Button disabled>
 						<PlusOutlined /> Add another estimator
-					</Button>
+					</Button> */}
 				</div>
 			</div>
 			<ModalComponent
@@ -337,8 +344,16 @@ const Estimator = (props) => {
 					</Button>,
 				]}
 			>
-				<HyperParameterTable columns={columns} dataSource={hyperParameters} setDataSource={setHyperParameters} />
-			</ModalComponent>
+
+				<Collapse onChange={onChange} ghost={true}>
+					{estimatorPopupDataValues && estimatorPopupDataValues?.algoValue?.length > 0 && estimatorPopupDataValues.algoValue.map((i, idx) => (
+						<Panel header={i} key={idx} >
+							<HyperParameterTable columns={columns} dataSource={estimatorPopupDataValues.hyperparameters[i]} setDataSource={setHyperParameters} estimatorPopupDataValues={estimatorPopupDataValues} setEstimatorPopupDataValues={setEstimatorPopupDataValues} algo={i} />
+						</Panel>
+					))}
+				</Collapse>
+
+			</ModalComponent >
 		</>
 	);
 };
