@@ -578,3 +578,24 @@ export const getRelativeDirectionSetting = (_queryParam) => {
 		}
 	);
 };
+
+export const getFileList = (_queryParam) => {
+	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	const request_headers = {
+		'x-access-token': login_response?.token ? login_response?.token : '',
+		'resource-name': 'PBR'
+	};
+	return Service.get(
+		MDH_APP_PYTHON_SERVICE + "/pbr/udh/file_list",
+		_queryParam,
+		request_headers
+	).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};
+
