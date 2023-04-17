@@ -44,9 +44,10 @@ function RelativeDirection(props) {
 
 
     useEffect(() => {
+        console.log("formValues",formValues)
         getDirctionValues()
-        if(formValues[name]?.directions){
-            let arr = formValues[name]?.directions.map((item,index )=> index)
+        if(formValues[name]?.directions && typeof(formValues[name]?.directions) != 'string'){
+            let arr = formValues[name]?.directions?.map((item,index )=> index)
             setFieldCount(arr)
         }
     }, [])
@@ -109,7 +110,7 @@ function RelativeDirection(props) {
                         showModal()
                         setUpdate(true)
                     }
-                    } style={{ display: "block", float: "right", fontSize: "20px", marginTop: 3, marginRight: 15 }} />
+                    } style={{ display: "block", float: "right", fontSize: "20px", marginTop: 3, marginRight: 20 }} />
 
                 </div>
 

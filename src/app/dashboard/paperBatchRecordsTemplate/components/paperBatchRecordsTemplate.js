@@ -36,7 +36,7 @@ import {
 } from '../../../../duck/actions/commonActions';
 import { loadTemplateInfo } from '../../../../duck/actions/pbrAction';
 import {
-	findParameter, getBoundingBoxData, getPbrTemplateData, savePbrTemplate, timeZone, workflowTemplateReject
+	findParameter, getBoundingBoxData, getPbrTemplateData, savePbrTemplate, timeZone, workflowTemplateReject, getFileList
 } from '../../../../services/pbrService';
 import ChangeCoordiantes from '../components/rightSidePanel/changeCoordiantes';
 import ParameterList from '../components/rightSidePanel/parameterList';
@@ -48,6 +48,7 @@ import TableIdentifier from './tableIdentifier/tableIdentifier';
 import WorkflowPreviewModal from './workflowPreviewModal';
 import AdvanceSetting from "./advanceSetting/advanceSetting"
 import RelativeDirection from './relativeDirection'
+import SelectionMethodInput from './selectionMethod'
 const { Panel } = Collapse;
 const { Option } = Select;
 
@@ -172,6 +173,8 @@ const PaperBatchRecordsTemplate = () => {
 	const [areasMapFilteredArr, setAreasMapFilteredArr] = useState([]);
 	const [open, setOpen] = useState(["1"]);
 	const [formValues, setFormValues] = useState([]);
+	const [selectionActive, setSelectionActive] = useState(false);
+	const [selectionDraggedValue, setSelectionDraggedValue] = useState('');
 	const [DraggerActiveMultiple, setDraggerActiveMultiple] = useState({
 		value: false,
 		valueSnippet: false,
@@ -233,6 +236,9 @@ const PaperBatchRecordsTemplate = () => {
 	const [pageIdDropdownValues, setPageIdDropdownValues] = useState([])
 	const [fileTimezoneData, setFileTimezoneData] = useState('')
 	const [advancePopup, setAdvancePopup] = useState(false)
+	const [changeFile, setChangeFile] = useState(false)
+	const [changeFileOptions, setChangeFileOptions] = useState([])
+	const [changeFileValue, setChangeFileValue] = useState('')
 	const toggleLeftCollapsed = () => {
 		setLeftPanelCollapsed(!leftPanelCollapsed);
 		setRightPanelCollapsed(!rightPanelCollapsed);
@@ -663,7 +669,7 @@ const PaperBatchRecordsTemplate = () => {
 		try {
 			dispatch(showLoader());
 			let _reqBatch = {
-				filename: `${params?.file?.split('.pdf')[0]}_page-${pageNumber}.jpeg.json`,
+				filename: changeFileValue ? `${changeFileValue?.split('.pdf')[0]}_page-${pageNumber}.jpeg.json` : `${params?.file?.split('.pdf')[0]}_page-${pageNumber}.jpeg.json`,
 				bbox_type: params?.fromScreen == "Workflow" ? "PARAMETER_TABLE" : mode,
 				page: pageNumber + 1,
 				// action_type: params?.temp_disp_id ? "edit" : "create",
@@ -848,8 +854,8 @@ const PaperBatchRecordsTemplate = () => {
 						param_transformation: item?.param_value_rule?.transformation,
 
 					}
-					if(item?.param_value_direction){
-						item?.param_value_direction.forEach((item,index)=>{
+					if (item?.param_value_direction && typeof (item?.param_value_direction) != 'string') {
+						item?.param_value_direction.forEach((item, index) => {
 							obj[`dir${index}`] = item
 						})
 					}
@@ -887,6 +893,7 @@ const PaperBatchRecordsTemplate = () => {
 			}
 		}
 		getIdTemplateData()
+		getChangeFileData()
 	}, []);
 	/* istanbul ignore next */
 	useEffect(() => {
@@ -898,7 +905,7 @@ const PaperBatchRecordsTemplate = () => {
 				pageIdValue: item?.page_name,
 				page_num: item?.param_page,
 				advance_setting: [item?.settings],
-				directions:item?.param_value_direction,
+				directions: item?.param_value_direction,
 				values: {
 					anchorValue: item?.param_key_text, anchorId: item?.param_value_text, snippetID: item?.param_key_snippet_id,
 					anchorCoords: [
@@ -944,7 +951,7 @@ const PaperBatchRecordsTemplate = () => {
 
 	}, [imageWidth, imageHeight])
 
-	const getImage = async (val) => {
+	const getImage = async (val, changeFile) => {
 		// dispatch(showLoader());
 		let login_response = JSON.parse(localStorage.getItem('login_details'));
 		var requestOptions = {
@@ -958,7 +965,7 @@ const PaperBatchRecordsTemplate = () => {
 			})
 		};
 		let response = await fetch(
-			MDH_APP_PYTHON_SERVICE + `/pbr/udh/get_file_page_image?filename=${params?.file}&pageId=${val ? val : pageNumber}`,
+			MDH_APP_PYTHON_SERVICE + `/pbr/udh/get_file_page_image?filename=${changeFile ? changeFile : params?.file}&pageId=${val ? val : pageNumber}`,
 			requestOptions
 		)
 			.then((response) => response)
@@ -976,6 +983,20 @@ const PaperBatchRecordsTemplate = () => {
 		}
 	}
 
+	const getChangeFileData = async () => {
+		try {
+			let req = {
+				product_num: matBatch?.material_num
+			}
+			let res = await getFileList(req)
+			setChangeFileOptions(res.data)
+			let val = res.data.filter(item => item.value === params.file)
+			setChangeFileValue(val[0].value)
+		} catch (err) {
+			console.log(err)
+		}
+
+	}
 	// useEffect(() => {
 	//     if(displayImage!=""){
 	//         dispatch(hideLoader());
@@ -1046,117 +1067,121 @@ const PaperBatchRecordsTemplate = () => {
 		if (mainPanelValue == 2) {
 			setPageDragValue(area)
 		}
-		setClickedSnippetId(area.areaValue);
-		setSnippetNumber(area.snippetID)
-		let updateObj = { ...areasMap }
-		updateObj.areas.forEach(item => {
-			if (item.snippetID === area.snippetID) {
-				item.strokeColor = "green",
-					item['lineWidth'] = 3
-			} else {
-				item.strokeColor = "blue"
-				item['lineWidth'] = 1
-			}
-		})
-		setAreasMap(updateObj)
-		let obj = {
-			snippetID: area.snippetID,
-			areaValue: area.areaValue,
-			shape: area.shape,
-			coords: area.coords,
-			preFillColor: area.preFillColor,
-			fillColor: area.fillColor,
-			strokeColor: area.strokeColor,
-		};
-		setAreasMapObject(obj);
-		let filteredArr = [...areasMapFilteredArr];
-		if (DraggerActiveMultiple.value && mainPanelValue !== 2) {
-			let obj1 = { ...parameterValue };
-			obj1[`param${Number(activeKey) + 1}`] = {
-				...obj1[`param${Number(activeKey) + 1}`],
-				anchorValue: area.areaValue,
+		if (selectionActive) {
+			setSelectionDraggedValue(area)
+		} else {
+			setClickedSnippetId(area.areaValue);
+			setSnippetNumber(area.snippetID)
+			let updateObj = { ...areasMap }
+			updateObj.areas.forEach(item => {
+				if (item.snippetID === area.snippetID) {
+					item.strokeColor = "green",
+						item['lineWidth'] = 3
+				} else {
+					item.strokeColor = "blue"
+					item['lineWidth'] = 1
+				}
+			})
+			setAreasMap(updateObj)
+			let obj = {
+				snippetID: area.snippetID,
+				areaValue: area.areaValue,
+				shape: area.shape,
+				coords: area.coords,
+				preFillColor: area.preFillColor,
+				fillColor: area.fillColor,
+				strokeColor: area.strokeColor,
 			};
-			let arr = [...formValues]
-			arr[activeKey] = { ...arr[activeKey], page_num: pageNumber, values: { ...arr[activeKey]?.values, anchorValue: area.areaValue, snippetID: area.snippetID, anchorCoords: area.coords } }
-			setParameterValue(obj1);
-			setFormValues(arr)
-			let fields = parameterForm.getFieldsValue()
-			fields.users[activeKey]["param_key"] = area.areaValue
-			parameterForm.setFieldsValue(fields)
+			setAreasMapObject(obj);
+			let filteredArr = [...areasMapFilteredArr];
+			if (DraggerActiveMultiple.value && mainPanelValue !== 2) {
+				let obj1 = { ...parameterValue };
+				obj1[`param${Number(activeKey) + 1}`] = {
+					...obj1[`param${Number(activeKey) + 1}`],
+					anchorValue: area.areaValue,
+				};
+				let arr = [...formValues]
+				arr[activeKey] = { ...arr[activeKey], page_num: pageNumber, values: { ...arr[activeKey]?.values, anchorValue: area.areaValue, snippetID: area.snippetID, anchorCoords: area.coords } }
+				setParameterValue(obj1);
+				setFormValues(arr)
+				let fields = parameterForm.getFieldsValue()
+				fields.users[activeKey]["param_key"] = area.areaValue
+				parameterForm.setFieldsValue(fields)
 
-		} else if (DraggerActiveMultiple.unit && mainPanelValue !== "2") {
-			let obj1 = { ...parameterValue };
-			obj1[`param${Number(activeKey) + 1}`] = {
-				...obj1[`param${Number(activeKey) + 1}`],
-				unitAnchor: area.areaValue,
-			};
-			let arr = [...formValues]
-			arr[activeKey] = { ...arr[activeKey], unitValues: { ...arr[activeKey]?.unitValues, unitAnchor: area.areaValue, snippetID: area.snippetID, coords: area.coords } }
-			setFormValues(arr)
-			setParameterValue(obj1);
-		} else if (DraggerActiveMultiple.time && mainPanelValue !== "2") {
-			let obj1 = { ...parameterValue };
-			obj1[`param${Number(activeKey) + 1}`] = {
-				...obj1[`param${Number(activeKey) + 1}`],
-				timeAnchor: area.areaValue,
-			};
-			let arr = [...formValues]
-			arr[activeKey] = { ...arr[activeKey], timeValues: { ...arr[activeKey]?.timeValues, timeAnchor: area.areaValue, snippetID: area.snippetID, coords: area.coords } }
-			setFormValues(arr)
-			setParameterValue(obj1);
-		} else if (DraggerActiveMultiple.date && mainPanelValue !== "2") {
-			let obj1 = { ...parameterValue };
-			obj1[`param${Number(activeKey) + 1}`] = {
-				...obj1[`param${Number(activeKey) + 1}`],
-				dateAnchor: area.areaValue,
-			};
-			let arr = [...formValues]
-			arr[activeKey] = { ...arr[activeKey], dateValues: { ...arr[activeKey]?.dateValues, dateAnchor: area.areaValue, snippetID: area.snippetID, coords: area.coords } }
-			setFormValues(arr)
-			setParameterValue(obj1);
-		} else if (DraggerActiveMultiple.valueSnippet && mainPanelValue !== "2") {
-			let obj1 = { ...parameterValue };
-			obj1[`param${Number(activeKey) + 1}`] = {
-				...obj1[`param${Number(activeKey) + 1}`],
-				anchorId: area.areaValue,
-			};
-			let arr = [...formValues]
-			arr[activeKey] = { ...arr[activeKey], values: { ...arr[activeKey]?.values, anchorId: area.areaValue, valueSnippetID: area.snippetID, valueCoords: area.coords } }
-			setFormValues(arr)
-			setParameterValue(obj1);
-			let fields = parameterForm.getFieldsValue()
-			fields.users[activeKey]["param_snippet_value"] = area.areaValue
-			parameterForm.setFieldsValue(fields)
-		} else if (DraggerActiveMultiple.unitSnippet && mainPanelValue !== "2") {
-			let obj1 = { ...parameterValue };
-			obj1[`param${Number(activeKey) + 1}`] = {
-				...obj1[`param${Number(activeKey) + 1}`],
-				unitId: area.areaValue,
-			};
-			let arr = [...formValues]
-			arr[activeKey] = { ...arr[activeKey], unitValues: { ...arr[activeKey]?.unitValues, unitId: area.areaValue, valueSnippetID: area.snippetID, valueCoords: area.coords } }
-			setFormValues(arr)
-			setParameterValue(obj1);
-		} else if (DraggerActiveMultiple.timeSnippet && mainPanelValue !== "2") {
-			let obj1 = { ...parameterValue };
-			obj1[`param${Number(activeKey) + 1}`] = {
-				...obj1[`param${Number(activeKey) + 1}`],
-				timeId: area.areaValue,
-			};
-			let arr = [...formValues]
-			arr[activeKey] = { ...arr[activeKey], timeValues: { ...arr[activeKey]?.timeValues, timeId: area.areaValue, valueSnippetID: area.snippetID, valueCoords: area.coords } }
-			setFormValues(arr)
-			setParameterValue(obj1);
-		} else if (DraggerActiveMultiple.dateSnippet && mainPanelValue !== "2") {
-			let obj1 = { ...parameterValue };
-			obj1[`param${Number(activeKey) + 1}`] = {
-				...obj1[`param${Number(activeKey) + 1}`],
-				dateId: area.areaValue,
-			};
-			let arr = [...formValues]
-			arr[activeKey] = { ...arr[activeKey], dateValues: { ...arr[activeKey]?.dateValues, dateId: area.areaValue, valueSnippetID: area.snippetID, valueCoords: area.coords } }
-			setFormValues(arr)
-			setParameterValue(obj1);
+			} else if (DraggerActiveMultiple.unit && mainPanelValue !== "2") {
+				let obj1 = { ...parameterValue };
+				obj1[`param${Number(activeKey) + 1}`] = {
+					...obj1[`param${Number(activeKey) + 1}`],
+					unitAnchor: area.areaValue,
+				};
+				let arr = [...formValues]
+				arr[activeKey] = { ...arr[activeKey], unitValues: { ...arr[activeKey]?.unitValues, unitAnchor: area.areaValue, snippetID: area.snippetID, coords: area.coords } }
+				setFormValues(arr)
+				setParameterValue(obj1);
+			} else if (DraggerActiveMultiple.time && mainPanelValue !== "2") {
+				let obj1 = { ...parameterValue };
+				obj1[`param${Number(activeKey) + 1}`] = {
+					...obj1[`param${Number(activeKey) + 1}`],
+					timeAnchor: area.areaValue,
+				};
+				let arr = [...formValues]
+				arr[activeKey] = { ...arr[activeKey], timeValues: { ...arr[activeKey]?.timeValues, timeAnchor: area.areaValue, snippetID: area.snippetID, coords: area.coords } }
+				setFormValues(arr)
+				setParameterValue(obj1);
+			} else if (DraggerActiveMultiple.date && mainPanelValue !== "2") {
+				let obj1 = { ...parameterValue };
+				obj1[`param${Number(activeKey) + 1}`] = {
+					...obj1[`param${Number(activeKey) + 1}`],
+					dateAnchor: area.areaValue,
+				};
+				let arr = [...formValues]
+				arr[activeKey] = { ...arr[activeKey], dateValues: { ...arr[activeKey]?.dateValues, dateAnchor: area.areaValue, snippetID: area.snippetID, coords: area.coords } }
+				setFormValues(arr)
+				setParameterValue(obj1);
+			} else if (DraggerActiveMultiple.valueSnippet && mainPanelValue !== "2") {
+				let obj1 = { ...parameterValue };
+				obj1[`param${Number(activeKey) + 1}`] = {
+					...obj1[`param${Number(activeKey) + 1}`],
+					anchorId: area.areaValue,
+				};
+				let arr = [...formValues]
+				arr[activeKey] = { ...arr[activeKey], values: { ...arr[activeKey]?.values, anchorId: area.areaValue, valueSnippetID: area.snippetID, valueCoords: area.coords } }
+				setFormValues(arr)
+				setParameterValue(obj1);
+				let fields = parameterForm.getFieldsValue()
+				fields.users[activeKey]["param_snippet_value"] = area.areaValue
+				parameterForm.setFieldsValue(fields)
+			} else if (DraggerActiveMultiple.unitSnippet && mainPanelValue !== "2") {
+				let obj1 = { ...parameterValue };
+				obj1[`param${Number(activeKey) + 1}`] = {
+					...obj1[`param${Number(activeKey) + 1}`],
+					unitId: area.areaValue,
+				};
+				let arr = [...formValues]
+				arr[activeKey] = { ...arr[activeKey], unitValues: { ...arr[activeKey]?.unitValues, unitId: area.areaValue, valueSnippetID: area.snippetID, valueCoords: area.coords } }
+				setFormValues(arr)
+				setParameterValue(obj1);
+			} else if (DraggerActiveMultiple.timeSnippet && mainPanelValue !== "2") {
+				let obj1 = { ...parameterValue };
+				obj1[`param${Number(activeKey) + 1}`] = {
+					...obj1[`param${Number(activeKey) + 1}`],
+					timeId: area.areaValue,
+				};
+				let arr = [...formValues]
+				arr[activeKey] = { ...arr[activeKey], timeValues: { ...arr[activeKey]?.timeValues, timeId: area.areaValue, valueSnippetID: area.snippetID, valueCoords: area.coords } }
+				setFormValues(arr)
+				setParameterValue(obj1);
+			} else if (DraggerActiveMultiple.dateSnippet && mainPanelValue !== "2") {
+				let obj1 = { ...parameterValue };
+				obj1[`param${Number(activeKey) + 1}`] = {
+					...obj1[`param${Number(activeKey) + 1}`],
+					dateId: area.areaValue,
+				};
+				let arr = [...formValues]
+				arr[activeKey] = { ...arr[activeKey], dateValues: { ...arr[activeKey]?.dateValues, dateId: area.areaValue, valueSnippetID: area.snippetID, valueCoords: area.coords } }
+				setFormValues(arr)
+				setParameterValue(obj1);
+			}
 		}
 
 	};
@@ -1348,8 +1373,30 @@ const PaperBatchRecordsTemplate = () => {
 						}
 
 					}
+					if (ele?.selection_method) {
+						obj["selection_method"] = {
+							"param_value_height": [],
+							"param_value_left": [],
+							"param_value_text": [],
+							"param_value_top": [],
+							"param_value_width": [],
+							"param_value_snippet_id": [],
+						}
+						ele.selection_method.forEach(item => {
+							obj["selection_method"]['param_value_height'].push((item?.coords[3] - item?.coords[1]) / imageHeight)
+							obj["selection_method"]['param_value_left'].push(item?.coords[0] / imageWidth)
+							obj["selection_method"]['param_value_text'].push(item?.selectionVal)
+							obj["selection_method"]['param_value_top'].push(item?.coords[1] / imageHeight)
+							obj["selection_method"]['param_value_width'].push((item?.coords[2] - item?.coords[0]) / imageWidth)
+							obj["selection_method"]['param_value_snippet_id'].push(item?.snippetID)
+						})
+
+					}
 					arr.push(obj);
+
 				});
+
+
 
 				let pageArr = []
 				if (pageIdFormValues) {
@@ -1368,6 +1415,7 @@ const PaperBatchRecordsTemplate = () => {
 						}
 					})
 				}
+
 				_reqBatch.templateInfo.pbrTemplateInfo = arr;
 				_reqBatch.templateInfo.pbrPageIdentifier = pageArr;
 				let tableRer = tableDataReq()
@@ -1870,7 +1918,7 @@ const PaperBatchRecordsTemplate = () => {
 			if (val > pageLimit) {
 				dispatch(showNotification('error', `Maximum page ${pageLimit}`))
 			} else {
-				getImage(val)
+				getImage(val, null)
 				setPageNumber(val)
 				for (let i = 0; i < 2; i++) {
 					setTimeout(() => {
@@ -1904,7 +1952,7 @@ const PaperBatchRecordsTemplate = () => {
 	}, 300)
 
 	const handlePageChangeEnter = () => {
-		getImage(pageNumber)
+		getImage(pageNumber, null)
 		for (let i = 0; i < 2; i++) {
 			setTimeout(() => {
 				getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode, pageNumber - 1);
@@ -2010,6 +2058,24 @@ const PaperBatchRecordsTemplate = () => {
 		} catch (err) {
 			console.log("err", err)
 		}
+	}
+
+	const handleChangeFileOk = () => {
+		if (params.tempDispId) {
+			history.push(`${match.url}/${params.tempDispId ? params.tempDispId : `Untitled`}?file=${changeFileValue}&temp_disp_id=${params.tempDispId ? params.tempDispId : null}&tempalteName=${params.tempalteName ? params.tempalteName : null}&fromScreen=Workspace&version=${params.tempVersion ? params.tempVersion : null}`);
+		} else {
+			history.push(`${match.url}/Untitled?file=${changeFileValue}&tempalteName=${params.tempalteName}&fromScreen=Workspace`);
+		}
+
+		getImage(null, changeFileValue)
+		for (let i = 0; i < 2; i++) {
+			setTimeout(() => {
+				getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode, pageNumber - 1);
+			}, i * 1000)
+		}
+		setChangeFile(false)
+
+
 	}
 
 	return (
@@ -2287,6 +2353,9 @@ const PaperBatchRecordsTemplate = () => {
 																								<Option value='absolute_distance'>
 																									Get By Absolute Distance
 																								</Option>
+																								<Option value='selection_method'>
+																									Get By Selection Method
+																								</Option>
 																							</Select>
 
 
@@ -2375,29 +2444,11 @@ const PaperBatchRecordsTemplate = () => {
 																					</Form.Item>
 																					{formValues[name]?.method === "relative_direction" &&
 																						<RelativeDirection modalData={modalData} showModal={() => showModal(false)} parameterForm={parameterForm} setParameterFormData={setParameterFormData} parameterFormData={parameterFormData} name={name} setFormValues={setFormValues} formValues={formValues} restField={restField} />
-																						// <Form.Item {...restField}
-																						// 	name={[name, 'AnchorDirection']}
-																						// 	rules={[{ required: true, message: 'Select Anchor Direction' }]}
-																						// // label="AnchorDirection"
-																						// >
-
-																						// 	<Select placeholder="AnchorDirection" allowClear value={null} onChange={(e, value) => onChangeChart(e, 'anchor_dir', name, value)}>
-																						// 		<Option value='ABOVE'>
-																						// 			Above
-																						// 		</Option>
-																						// 		<Option value='LEFT'>
-																						// 			Left
-																						// 		</Option>
-																						// 		<Option value='UNDER'>
-																						// 			Under
-																						// 		</Option>
-																						// 		<Option value='RIGHT'>
-																						// 			Right
-																						// 		</Option>
-																						// 	</Select>
-																						// </Form.Item>
 																					}
-																					<div className='parameterAddingBlock parameterValueBlock' style={{marginTop:formValues[name]?.method === "relative_direction" ? 10:5}}>
+																					{formValues[name]?.method === "selection_method" &&
+																						<SelectionMethodInput selectionDraggedValue={selectionDraggedValue} setSelectionActive={setSelectionActive} parameterForm={parameterForm} setParameterFormData={setParameterFormData} parameterFormData={parameterFormData} name={name} setFormValues={setFormValues} formValues={formValues} restField={restField} />
+																					}
+																					<div className='parameterAddingBlock parameterValueBlock' style={{ marginTop: formValues[name]?.method === "relative_direction" ? 10 : 5 }}>
 																						<Form.Item  {...restField}
 																							name={[name, 'param_rule']}
 																						>
@@ -2960,7 +3011,7 @@ const PaperBatchRecordsTemplate = () => {
 											Preview
 										</p>
 										<Tooltip title={params?.file}>
-											<span style={{ marginTop: 4 }}>{params?.file?.slice(0, 28)}</span>
+											<span onClick={() => setChangeFile(true)} style={{ marginTop: 4 }}>{params?.file?.slice(0, 28)}</span>
 										</Tooltip>
 										<div>
 											<LeftOutlined disabled={true} className='icon_size' onClick={() => handlePageChange(pageNumber - 1)} />
@@ -3068,6 +3119,9 @@ const PaperBatchRecordsTemplate = () => {
 			</div>
 			<AdvanceSetting formValues={formValues} setFormValues={setFormValues} name={activeKey} method={formValues[activeKey]?.method} advancePopup={advancePopup} setAdvancePopup={setAdvancePopup} />
 			<WorkflowPreviewModal templateVersion={templateVersion} params={params} isModalOpen={workflowPreviewModal} setIsModalOpen={setWorkflowPreviewModal} />
+			<Modal title="Change File" visible={changeFile} onOk={handleChangeFileOk} onCancel={() => setChangeFile(false)}>
+				<Select onChange={(val) => setChangeFileValue(val)} value={changeFileValue} options={changeFileOptions} style={{ width: 400 }} />
+			</Modal>
 			<Signature
 				isPublish={isPublish}
 				handleClose={handleClose}
