@@ -2,7 +2,7 @@
  * @author Mihir Bagga <mihir.bagga@mareana.com>
  * @Mareana - CPV Product
  * @version 2
- * @Last Modified - 31 March, 2023
+ * @Last Modified - 12 April, 2023
  * @Last Changed By - @Mihir
  */
 
@@ -13,7 +13,7 @@ import {
 	hideLoader,
 	showLoader
 } from "../../../../../../duck/actions/commonActions";
-import { getViewNodeDetails } from "../../../../../../services/analyticsService";
+import { getViewNodeDetails, analysePipeline } from "../../../../../../services/analyticsService";
 import "./model.scss";
 
 
@@ -32,12 +32,68 @@ const NodeDetails = (props) => {
 	const [nodeData, setNodeData] = useState({});
 	const [dataStatus, setDataStatus] = useState(true);
 	const [outlinerValue, setOutlinerValue] = useState('')
+	const [isCat, setIsCat] = useState(false)
 	const [outlierMapping, setOutlierMapping] = useState({ variable_list: [], option_list: [] })
 	const [catMap, setCatMapping] = useState({ variable_list: [] })
 	const selectedViewData = useSelector(
 		(State) => State.analyticsReducer.viewData
 	);
 
+	const makeOutlierCategorical = async (e) => {
+		setOutlinerValue(e && e?.target?.value ? e.target.value : "")
+		const req = {
+			view_disp_id: selectedViewData?.view_id,
+			pipeline_disp_id: selectedViewData?.pipeline_id,
+			version: selectedViewData?.view_version,
+			parameter_name: nodeInformation.Node,
+			site: selectedViewData?.data_filter?.site,
+			date_range: selectedViewData?.data_filter?.date_range,
+			outlier_option: e && e?.target?.value ? e.target.value : "",
+			make_categorical: e === true ? true : false,
+			unapproved: selectedViewData?.data_filter?.unapproved_data === 1 ? true : false,
+		};
+
+		let apiResponse = await analysePipeline(req)
+		if (apiResponse.status == 200) {
+			setDataStatus(false);
+			dispatch(hideLoader());
+			if (e && e?.target?.value) {
+				let outlier_obj = { ...outlierMapping }
+				outlier_obj.variable_list.push(nodeInformation.Node)
+				outlier_obj.option_list.push(e && e?.target?.value ? e.target.value : "")
+				setNodeMapping(outlier_obj)
+			}
+			if (e === true) {
+				let cat_obj = { ...catMap }
+				cat_obj.variable_list.push(nodeInformation.Node)
+				catMapping(cat_obj)
+			}
+			if (apiResponse?.data?.Boxplot) {
+				apiResponse.data.Boxplot.layout.height = "100px";
+				apiResponse.data.Boxplot.layout.width = "100px";
+			}
+			if (apiResponse?.data?.Histogram) {
+				apiResponse.data.Histogram.layout.height = "100px";
+				apiResponse.data.Histogram.layout.width = "100px";
+			}
+			if (apiResponse?.data?.transformations) {
+				setOutlinerValue(apiResponse.data.transformations.outlier)
+			}
+			if (apiResponse?.data?.transformations) {
+				if (apiResponse.data.transformations.categorical == "True") {
+					setIsCat(true)
+				}
+				else {
+					setIsCat(false)
+				}
+			}
+			setNodeData(apiResponse);
+		}
+		else {
+			dispatch(hideLoader());
+			setDataStatus(false);
+		}
+	}
 
 	const getNodeDetails = async (e) => {
 		setOutlinerValue('')
@@ -55,17 +111,7 @@ const NodeDetails = (props) => {
 		const apiResponse = await getViewNodeDetails(req);
 		/* istanbul ignore next */
 		if (apiResponse?.Status === 200) {
-			if (e && e?.target?.value) {
-				let outlier_obj = { ...outlierMapping }
-				outlier_obj.variable_list.push(nodeInformation.Node)
-				outlier_obj.option_list.push(e && e?.target?.value ? e.target.value : "")
-				setNodeMapping(outlier_obj)
-			}
-			if (e === true) {
-				let cat_obj = { ...catMap }
-				cat_obj.variable_list.push(nodeInformation.Node)
-				catMapping(cat_obj)
-			}
+
 			setDataStatus(false);
 			dispatch(hideLoader());
 			if (apiResponse?.data?.Boxplot) {
@@ -76,6 +122,8 @@ const NodeDetails = (props) => {
 				apiResponse.data.Histogram.layout.height = "100px";
 				apiResponse.data.Histogram.layout.width = "100px";
 			}
+
+			setIsCat
 			setNodeData(apiResponse);
 			/* istanbul ignore next */
 		} else {
@@ -86,17 +134,16 @@ const NodeDetails = (props) => {
 	useEffect(() => {
 		/* istanbul ignore next */
 		if (nodeInformation) {
-			getNodeDetails();
+			makeOutlierCategorical();
 			setDataStatus(true);
 		}
 	}, [nodeInformation]);
-
 
 	const items = [
 		{
 			key: '1',
 			label: (
-				<Radio value="Treat" onChange={getNodeDetails} checked={outlinerValue == 'Treat'} >
+				<Radio value="Treat" onChange={makeOutlierCategorical} checked={outlinerValue == 'Treat'} >
 					Treat
 				</Radio>
 			),
@@ -104,7 +151,7 @@ const NodeDetails = (props) => {
 		{
 			key: '2',
 			label: (
-				<Radio value="Clip" onChange={getNodeDetails} checked={outlinerValue == 'Clip'} >
+				<Radio value="Clip" onChange={makeOutlierCategorical} checked={outlinerValue == 'Clip'} >
 					Clip
 				</Radio>
 			),
@@ -112,7 +159,7 @@ const NodeDetails = (props) => {
 		{
 			key: '3',
 			label: (
-				<Radio value="Drop" onChange={getNodeDetails} checked={outlinerValue == 'Drop'} >
+				<Radio value="Drop" onChange={makeOutlierCategorical} checked={outlinerValue == 'Drop'} >
 					Drop
 				</Radio>
 			),
@@ -145,7 +192,7 @@ const NodeDetails = (props) => {
 							>
 								Add transformation
 							</Button>
-							<Button className="custom-primary-btn" onClick={() => getNodeDetails(true)}>Make categorical</Button>
+							<Button className="custom-primary-btn" onClick={() => makeOutlierCategorical(true)}>Make categorical</Button>
 							{/* <DeleteOutlined className="delete-b" /> &nbsp; */}
 							{/* <span>Remove connectors</span> */}
 							<Dropdown menu={{

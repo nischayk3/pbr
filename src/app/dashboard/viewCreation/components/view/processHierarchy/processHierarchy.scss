@@ -1,0 +1,102 @@
+.custom__card {
+	.parameter__wraper {
+		.parameter__wraper--select {
+			flex-direction: row;
+			display: flex;
+			justify-content: space-between;
+
+			p {
+				margin: 0;
+				width: 100px;
+			}
+
+			.select_field_search {
+				width: 100%
+			}
+		}
+	}
+}
+
+
+.hiearchy-tree__wrapper {
+	display: flex;
+	width: 400px;
+	height: calc(100vh - 490px);
+	overflow-y: auto;
+
+	.sortable-tree__tree {
+		position: relative;
+		width: 370px;
+
+		.sortable-tree__tree--node {
+			.anticon-plus {
+				margin-left: 30px;
+			}
+		}
+
+		.sortable-tree__tree--head {
+			font-style: normal;
+			font-weight: 500;
+			font-size: 16px;
+			line-height: 22px;
+			/* identical to box height, or 138% */
+			display: flex;
+			align-items: center;
+			color: #093185;
+			margin: 0px;
+			padding-bottom: 22px;
+		}
+
+
+
+		.rst__tree {
+
+			.rst__virtualScrollOverride {
+				padding: 0 0 0 4px;
+				overflow: hidden !important;
+
+				.rstcustom__expandButton {
+					background-image: url('../../../../../../assets/icons/folderFilled.svg');
+					background-size: 20px;
+					background-repeat: no-repeat;
+					background-position: center;
+				}
+
+				.rstcustom__collapseButton {
+					background-image: url('../../../../../../assets/icons/folderOpenFilled.svg');
+					background-size: 20px;
+					background-repeat: no-repeat;
+					background-position: center;
+				}
+
+				.rstcustom__collapseButton::after,
+				.rstcustom__expandButton::after {
+					-webkit-transform-origin: 4px 6px;
+					-ms-transform-origin: 4px 6px;
+					transform-origin: 4px 6px;
+					border: solid transparent 7px;
+					border-left-width: 5px;
+					border-right-width: 5px;
+				}
+
+				::after {
+					transform: translate3d(-200%, -35%, 0) rotateZ(-90deg) !important;
+					border-top-color: #262626;
+				}
+			}
+
+			.sortable-tree__tree--input--disabled {
+				width: 200px;
+				font-style: normal;
+				font-weight: 400;
+				font-size: 12px;
+				line-height: 18px;
+				color: #262626;
+				padding: 0px;
+				//margin: 6px 2px 6px 10px;
+				background: transparent;
+				border: 0
+			}
+		}
+	}
+}

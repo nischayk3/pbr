@@ -13,12 +13,11 @@ import HeaderBar from "../../components/Header";
 import Sidebar from "../../components/Sidebar";
 import SuspenseWrapper from "../../components/SuspenseWrapper";
 import { PRODUCT_FOR } from "../../constants/apiBaseUrl";
-import { showNotification } from "../../duck/actions/commonActions";
 import LoginRedirect from "../user/login/redirect";
 import RedirectSign from "../user/login/redirectSign";
 import RedirectSAMLSign from "../user/login/samlRedirectSign";
-import "./dashboard.scss";
 import PrivateRoute from "./ProtectedRoute";
+import "./dashboard.scss";
 // DASHBOARD ROUTE COMPONENTS
 // const HeaderBar = lazy(() => import("../../components/Header"))
 //const Sidebar = lazy(() => import("../../components/Sidebar"))
@@ -54,6 +53,10 @@ const Hierarchy = lazy(() => import("./hierarchyConfig"));
 const HierarchyMain = lazy(() =>
 	import("./hierarchyConfig/components/hierarchy/hierarchy")
 );
+
+const ViewCreationLanding = lazy(() => import("./viewCreation"));
+const ViewCreation = lazy(() => import("./viewCreation/components/view/view"))
+
 const DataAccess = lazy(() =>
 	import("./dataAccess/index")
 );
@@ -193,6 +196,26 @@ const Dashboard = () => {
 												path={`${url}/:id`}
 												authorised={authorised}
 												component={View}
+											/>
+										</>
+									)}
+								/>
+
+								<Route
+									path={`${match.url}/view`}
+									render={({ match: { url } }) => (
+										<>
+											<PrivateRoute
+												path={`${url}/`}
+												exact
+												authorised={authorised}
+												component={ViewCreationLanding}
+											/>
+
+											<PrivateRoute
+												path={`${url}/:id`}
+												authorised={authorised}
+												component={ViewCreation}
 											/>
 										</>
 									)}

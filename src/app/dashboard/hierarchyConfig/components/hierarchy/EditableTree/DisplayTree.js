@@ -66,9 +66,6 @@ export default class DisplayTree extends Component {
 		};
 	}
 
-	// componentDidMount() {
-	// 	this.expandAndCollapse(true);
-	// }
 
 	expandAndCollapse = (expanded) => {
 		this.setState({
@@ -92,7 +89,7 @@ export default class DisplayTree extends Component {
 
 
 	render() {
-		const { treeData, isVisible, menuPosition, showMenu, items, isEdit } = this.state;
+		const { treeData, isEdit } = this.state;
 		const getNodeKey = ({ treeIndex }) => treeIndex;
 
 		return (
