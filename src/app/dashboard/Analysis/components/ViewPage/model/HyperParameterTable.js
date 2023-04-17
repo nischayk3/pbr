@@ -2,14 +2,16 @@ import { Input, Table } from 'antd'
 import React from 'react'
 import './model.scss'
 
-const HyperParameterTable = (props) => {
-	const { dataSource, setDataSource } = props
+const HyperParameterTable = ({ dataSource, setDataSource, estimatorPopupDataValues, setEstimatorPopupDataValues, algo }) => {
 
 	const handleChange = (index, event) => {
+		let custom_array = { ...estimatorPopupDataValues }
 		const rowsInput = [...dataSource];
 		const { name, value } = event.target;
-		rowsInput[index][name] = value;
-		setDataSource(rowsInput);
+		custom_array.hyperparameters[algo][index]['customValue'] = value;
+
+		setEstimatorPopupDataValues(custom_array)
+		setDataSource(custom_array);
 	};
 
 
