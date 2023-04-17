@@ -1,7 +1,9 @@
 import {
 	AppstoreAddOutlined, AppstoreOutlined, AreaChartOutlined, BarChartOutlined, BlockOutlined,
 	CheckCircleOutlined, CloudUploadOutlined, ClusterOutlined, CodeOutlined, DeploymentUnitOutlined, DiffOutlined, FileDoneOutlined, FilePdfOutlined, FileProtectOutlined, FileSearchOutlined, FileSyncOutlined, FundOutlined, FundProjectionScreenOutlined,
-	NodeIndexOutlined, PartitionOutlined, SisternodeOutlined, TeamOutlined, UploadOutlined, UserOutlined, TagsOutlined
+	NodeIndexOutlined, PartitionOutlined, SisternodeOutlined,
+	TagsOutlined,
+	TeamOutlined, UploadOutlined, UserOutlined
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import React, { useEffect, useState } from "react";
@@ -109,6 +111,17 @@ const Sidebar = () => {
 									className={path == '/dashboard/view_creation' ? 'ant-menu-item-selected' : 'remove-selected'}
 								>
 									<Link to='/dashboard/view_creation'>View Creation</Link>
+								</Menu.Item>
+							)}
+
+							{permissions['VIEW'] && (
+								<Menu.Item
+									key='view_creation'
+									icon={<ClusterOutlined className="menu-icons" />}
+									id='view_creation'
+									className={path == '/dashboard/view' ? 'ant-menu-item-selected' : 'remove-selected'}
+								>
+									<Link to='/dashboard/view'>View Creation - V2</Link>
 								</Menu.Item>
 							)}
 
