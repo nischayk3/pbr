@@ -1,0 +1,18 @@
+.custom__card {
+	.parameter__wraper {
+		.parameter__wraper--select {
+			flex-direction: row;
+			display: flex;
+			justify-content: space-between;
+
+			p {
+				margin: 0;
+				width: 100px;
+			}
+
+			.select_field_search {
+				width: 100%
+			}
+		}
+	}
+}

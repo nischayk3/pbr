@@ -15,11 +15,10 @@ import { useHistory, useLocation, useRouteMatch } from "react-router-dom";
 import Banner from "../../../../../assets/images/Popup-Side.svg";
 import BreadCrumbWrapper from "../../../../../components/BreadCrumbWrapper";
 import { hideLoader, showLoader, showNotification } from "../../../../../duck/actions/commonActions";
-import { SaveProcessFoldermapping, getDrugSubstence, getProcessFoldermapping, getProcessStepFolder, putMolecule, updateProcessStepFolder } from "../../../../../services/viewHierarchyServices";
+import { SaveProcessFoldermapping, getDrugSubstence, getProcessStepFolder, putMolecule, updateProcessStepFolder } from "../../../../../services/viewHierarchyServices";
 import EditableTree from "./EditableTree/EditableTree";
 import "./hierStyle.scss";
 import ProcessStepMap from "./processStepMapping/processStepMap";
-import ProcessMapTable from "./savedProcessMapData/processMapTable";
 
 const { TabPane } = Tabs;
 
@@ -42,7 +41,6 @@ const Hierarchy = () => {
 	const [isLoad, setIsLoad] = useState(false);
 	const [callbackStructure, setCallbackStructure] = useState(false);
 	const [finalJson, setFinalJson] = useState({});
-	const [processData, setProcessData] = useState([]);
 	const [url, setUrl] = useState('');
 
 
@@ -230,10 +228,7 @@ const Hierarchy = () => {
 		} else {
 			if (isLoad) {
 				history.push(`${match.url}/process-steps-mapping?drugname=${hierarchyName}&load=true`);
-				const _req = {
-					ds_name: hierarchyName,
-				}
-				getProcessMap(_req);
+
 			} else {
 				history.push(`${match.url}/process-steps-mapping?drugname=${hierarchyName}`);
 			}
@@ -327,20 +322,7 @@ const Hierarchy = () => {
 		}
 	}
 
-	const getProcessMap = async (_payload) => {
-		const apiRes = await getProcessFoldermapping(_payload)
-		if (apiRes.status === 200) {
-			setFinalJson(apiRes?.data?.process_folders_mapping)
-			setProcessData(apiRes?.data?.process_folders_mapping?.children)
-		} else if (apiRes.status === 400) {
-			dispatch(showNotification("error", apiRes.message));
-		} else if (apiRes.status === 404) {
-			dispatch(showNotification("error", apiRes.message));
-		} else {
-			setFinalJson({})
-			setProcessData([])
-		}
-	}
+
 
 	return (
 		<div className="custom-wrapper">
@@ -402,7 +384,7 @@ const Hierarchy = () => {
 							</div>
 
 							<div className="map-grid">
-								{isLoad ? (<ProcessMapTable drugName={hierarchyName} activeTab={activeTab} processData={processData} finalJson={finalJson} setFinalJson={setFinalJson} />) : (<ProcessStepMap drugName={hierarchyName} activeTab={activeTab} finalJson={finalJson} setFinalJson={setFinalJson} />)}
+								<ProcessStepMap drugName={hierarchyName} activeTab={activeTab} finalJson={finalJson} setFinalJson={setFinalJson} isLoad={isLoad} />
 							</div>
 						</TabPane>
 					</Tabs>

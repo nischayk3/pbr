@@ -9,9 +9,9 @@
 import React, { memo, useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
 import { showNotification } from '../../../../../../duck/actions/commonActions';
-import { childProcessStep, populateProcessStep } from "../../../../../../services/viewHierarchyServices";
+import { childProcessStep, getProcessFoldermapping, populateProcessStep } from "../../../../../../services/viewHierarchyServices";
 import RecursiveTable from './recursiveTable';
-const ProcessStepMap = memo(function ProcessStepMap({ drugName, activeTab, finalJson, setFinalJson }) {
+const ProcessStepMap = memo(function ProcessStepMap({ drugName, activeTab, finalJson, setFinalJson, isLoad }) {
 	const [processData, setProcessData] = useState([]);
 	const [steps, setSteps] = useState([]);
 	const dispatch = useDispatch();
@@ -30,8 +30,13 @@ const ProcessStepMap = memo(function ProcessStepMap({ drugName, activeTab, final
 		}
 
 		if (activeTab === 'Process step mapping') {
-			processStepDsName(_req);
-			populateStep(req)
+			if (isLoad) {
+				populateStep(req)
+				getProcessMap(req);
+			} else {
+				processStepDsName(_req);
+				populateStep(req)
+			}
 		}
 	}, [activeTab])
 
@@ -52,7 +57,25 @@ const ProcessStepMap = memo(function ProcessStepMap({ drugName, activeTab, final
 			setFinalJson({})
 			setProcessData([])
 		}
+	}
 
+	const getProcessMap = async (_payload) => {
+		const apiRes = await getProcessFoldermapping(_payload)
+		if (apiRes.status === 200) {
+			setFinalJson(apiRes?.data?.process_folders_mapping)
+			setProcessData(apiRes?.data?.process_folders_mapping?.children)
+		} else if (apiRes.status === 400) {
+			setFinalJson({})
+			setProcessData([])
+			dispatch(showNotification("error", apiRes.message));
+		} else if (apiRes.status === 404) {
+			setFinalJson({})
+			setProcessData([])
+			dispatch(showNotification("error", apiRes.message));
+		} else {
+			setFinalJson({})
+			setProcessData([])
+		}
 	}
 
 	const populateStep = async (_payload) => {
