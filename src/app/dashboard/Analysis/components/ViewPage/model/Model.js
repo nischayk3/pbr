@@ -546,16 +546,27 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
 			apiResponse?.data?.all_metric?.forEach((metric) => {
 				tempRegressionList.push(metric);
 			})
+			let regression_list_value = []
+			if (finalJson?.metrics?.metric_name) {
+				let regresiion_list_val = finalJson.metrics.metric_name
+				if (typeof (regresiion_list_val) == 'string') {
+					regression_list_value.push(regresiion_list_val)
+				}
+				else {
+					regression_list_value = regresiion_list_val
+				}
+
+			}
 			setEstimatorPopupDataValues((prev) => {
 				return {
 					...prev,
-					regressionListvalue: finalJson?.metrics?.metric_name
+					regressionListvalue: regression_list_value
 				}
 			})
 			setSavedEstimatorPopupDataValues((prev) => {
 				return {
 					...prev,
-					regressionListvalue: finalJson?.metrics?.metric_name
+					regressionListvalue: regression_list_value
 				}
 			})
 			setEstimatorPopupData({
