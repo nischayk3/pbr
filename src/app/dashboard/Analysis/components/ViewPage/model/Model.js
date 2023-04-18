@@ -1,3 +1,11 @@
+/**
+ * @author Mihir Bagga <mihir.bagga@mareana.com>
+ * @Mareana - CPV Product
+ * @version 2
+ * @Last Modified - 17 April, 2023
+ * @Last Changed By - @Mihir
+ */
+
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, Col, Row } from "antd";
 import Sider from "antd/lib/layout/Sider";
@@ -57,10 +65,11 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
 		typeList: [],
 	});
 	const [estimatorPopupDataValues, setEstimatorPopupDataValues] = useState({
-		algoValue: "",
+		algoValue: [],
 		regressionListvalue: [],
 		typeListValue: "",
 		enableGrid: false,
+		hyperparameters: {}
 	});
 	const [savedEstimatorPopupDataValues, setSavedEstimatorPopupDataValues] =
 		useState({
@@ -508,14 +517,32 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
 			const tempVariable = tempEstNode.data.Destination_Parameter.type === 'Regression' ? 'Regression' : 'Classification';
 			modelType.current = tempVariable;
 			const esttype = tempEstNode.data.Destination_Parameter.type === 'Regression' ? 'e_randomforestregressor_0' : 'e_randomforestclassifier_0';
+			let hyperParameters_obj = {}
+			let all_estimator = finalJson?.estimator
+			let all_estimator_keys = Object.keys(all_estimator ? all_estimator : {})
+			let algo_array = []
+			let regression_estimator_type = ""
 			apiResponse?.data?.all_estimator?.forEach((regression) => {
 				tempEstAlgoList.push(regression);
 				tempEstTypeList.push(regression?.estimator_type);
-				if (finalJson?.estimator?.e__0?.model_name === regression?.model_name) {
-					setEstimatorPopupDataValues({ ...estimatorPopupDataValues, algoValue: regression.display_name, typeListValue: regression.estimator_type })
-					setSavedEstimatorPopupDataValues({ ...estimatorPopupDataValues, algoValue: regression.display_name, typeListValue: regression.estimator_type })
-				}
+
+			})
+
+			if (finalJson?.hyperParams) {
+				hyperParameters_obj = { ...finalJson.hyperParams }
+			}
+
+			all_estimator_keys && all_estimator_keys.map((i) => {
+				apiResponse?.data?.all_estimator?.forEach((regression) => {
+					if (finalJson?.estimator[i]?.model_name === regression?.model_name) {
+						regression_estimator_type = regression.estimator_type
+						algo_array.push(regression.display_name)
+					}
+				})
 			});
+			setEstimatorPopupDataValues({ ...estimatorPopupDataValues, algoValue: algo_array, typeListValue: regression_estimator_type, hyperparameters: hyperParameters_obj })
+			setSavedEstimatorPopupDataValues({ ...estimatorPopupDataValues, algoValue: algo_array, typeListValue: regression_estimator_type, hyperparameters: hyperParameters_obj })
+
 			apiResponse?.data?.all_metric?.forEach((metric) => {
 				tempRegressionList.push(metric);
 			})
@@ -559,12 +586,25 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
 		dispatch(showLoader());
 		const apiResponse = await getAnalyticsModel(reqBody);
 		if (apiResponse?.Status === 200) {
-			data?.all_estimator?.forEach((regression) => {
-				if (apiResponse?.data?.estimator?.model_name === regression?.model_name) {
-					setEstimatorPopupDataValues({ ...estimatorPopupDataValues, algoValue: regression.display_name, typeListValue: regression.estimator_type })
-					setSavedEstimatorPopupDataValues({ ...estimatorPopupDataValues, algoValue: regression.display_name, typeListValue: regression.estimator_type })
-				}
+			let all_estimator = data?.estimator
+			let hyperParameters_obj = {}
+			let all_estimator_keys = Object.keys(all_estimator ? all_estimator : {})
+			let algo_array = []
+			let regression_estimator_type = ""
+			if (data?.hyperParams) {
+				hyperParameters_obj = { ...data.hyperParams }
+			}
+			all_estimator_keys && all_estimator_keys.map((i) => {
+				apiResponse?.data?.all_estimator?.forEach((regression) => {
+					if (finalJson?.estimator[i]?.model_name === regression?.model_name) {
+						regression_estimator_type = regression.estimator_type
+						algo_array.push(regression.display_name)
+					}
+				})
 			});
+			setEstimatorPopupDataValues({ ...estimatorPopupDataValues, algoValue: algo_array, typeListValue: regression_estimator_type, hyperparameters: hyperParameters_obj })
+			setSavedEstimatorPopupDataValues({ ...estimatorPopupDataValues, algoValue: algo_array, typeListValue: regression_estimator_type, hyperparameters: hyperParameters_obj })
+
 			setEstimatorPopupDataValues((prev) => {
 				return {
 					...prev,

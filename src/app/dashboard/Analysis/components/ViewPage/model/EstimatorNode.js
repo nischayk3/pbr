@@ -14,6 +14,7 @@ export default ({
 		if (selected) console.log("I've been selected!");
 	}, [selected]);
 
+
 	const handleClick = (event) => {
 		event.stopPropagation();
 		setEstimatorPopupDataValues({
@@ -56,7 +57,7 @@ export default ({
 					}}
 					onClick={handleClick}
 				>
-					{savedEstimatorPopupDataValues.algoValue ||
+					{savedEstimatorPopupDataValues.algoValue.length > 0 ? savedEstimatorPopupDataValues.algoValue.join(',') :
 						"Choose Estimator"}
 				</button>
 			</div>

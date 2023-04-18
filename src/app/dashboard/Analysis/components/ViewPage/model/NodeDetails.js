@@ -192,7 +192,7 @@ const NodeDetails = (props) => {
 							>
 								Add transformation
 							</Button>
-							<Button className="custom-primary-btn" onClick={() => makeOutlierCategorical(true)}>Make categorical</Button>
+							<Button className="custom-primary-btn" disabled={isCat} onClick={() => makeOutlierCategorical(true)}>Make categorical</Button>
 							{/* <DeleteOutlined className="delete-b" /> &nbsp; */}
 							{/* <span>Remove connectors</span> */}
 							<Dropdown menu={{

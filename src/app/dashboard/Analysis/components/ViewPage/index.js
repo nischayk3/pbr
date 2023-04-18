@@ -122,13 +122,15 @@ const ViewPageAnalysis = () => {
 			tempObj.feature_union_mapping = Object.assign(tempObj.feature_union_mapping, tempEncoder)
 
 		}
+		tempObj['outlier_mapping'] = outlierMapping ? outlierMapping : {}
+		tempObj['categorical_mapping'] = catMapping ? catMapping : {}
 		const req = {
 			...selectedViewData.viewData,
 			data: [{ ...tempObj }],
 			savetype: save,
 			pipeline_disp_id: selectedViewData.viewData.pipeline_id,
-			outlier_mapping: outlierMapping,
-			categorical_mapping: catMapping
+			outlier_mapping: outlierMapping ? outlierMapping : {},
+			categorical_mapping: catMapping ? catMapping : {}
 		};
 
 		dispatch(showLoader());
