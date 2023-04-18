@@ -167,3 +167,22 @@ export const viewDownload = (_queryParam) => {
 		}
 	);
 };
+
+/**
+ * view hiearacrchy api
+*/
+
+export const viewhieararchyTree = (_queryParam) => {
+	return Service.get(
+		BMS_APP_PYTHON_SERVICE + "/view-hierarchy",
+		_queryParam,
+		_reqheader('VIEW')
+	).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};
