@@ -17,7 +17,7 @@ import ImageMapper from 'react-image-mapper';
 import { useLocation, useParams, useHistory, useRouteMatch } from 'react-router-dom';
 
 import {
-	DeleteOutlined, LeftOutlined, MinusSquareTwoTone, MonitorOutlined, PlusSquareTwoTone, RightOutlined, InfoCircleOutlined
+	DeleteOutlined, LeftOutlined, MinusSquareTwoTone, MonitorOutlined, PlusSquareTwoTone, RightOutlined, InfoCircleOutlined, UndoOutlined
 } from '@ant-design/icons';
 
 import Sider from 'antd/lib/layout/Sider';
@@ -127,7 +127,7 @@ const PaperBatchRecordsTemplate = () => {
 	const location = useLocation()
 	const { id } = useParams()
 	const dispatch = useDispatch();
-	const params = QueryString.parse(location.search)
+	let params = QueryString.parse(location.search)
 
 	const mat_batch = useSelector((state) => state?.pbrReducer?.matBatchInfo)
 	const esignPublishRes = useSelector((state) => state.commonReducer.publishRes)
@@ -239,6 +239,10 @@ const PaperBatchRecordsTemplate = () => {
 	const [changeFile, setChangeFile] = useState(false)
 	const [changeFileOptions, setChangeFileOptions] = useState([])
 	const [changeFileValue, setChangeFileValue] = useState('')
+	const [saveAsModal, setSaveAsModal] = useState(false)
+	const [originalFile, setOriginalFile] = useState(params?.file)
+	const [saveAsName, setSaveAsName] = useState('')
+	const [saveAsFlag, setSaveAsFlag] = useState(true)
 	const toggleLeftCollapsed = () => {
 		setLeftPanelCollapsed(!leftPanelCollapsed);
 		setRightPanelCollapsed(!rightPanelCollapsed);
@@ -665,11 +669,11 @@ const PaperBatchRecordsTemplate = () => {
 	 * TODO: get boundingBoxData info
 	 */
 	/* istanbul ignore next */
-	const getBoundingBoxDataInfo = async (width, height, mode, pageNumber = 0, table_identifier = {}) => {
+	const getBoundingBoxDataInfo = async (width, height, mode, pageNumber = 0, table_identifier = {},filename=null) => {
 		try {
 			dispatch(showLoader());
 			let _reqBatch = {
-				filename: changeFileValue ? `${changeFileValue?.split('.pdf')[0]}_page-${pageNumber}.jpeg.json` : `${params?.file?.split('.pdf')[0]}_page-${pageNumber}.jpeg.json`,
+				filename: filename ? `${filename?.split('.pdf')[0]}_page-${pageNumber}.jpeg.json` : `${params?.file?.split('.pdf')[0]}_page-${pageNumber}.jpeg.json`,
 				bbox_type: params?.fromScreen == "Workflow" ? "PARAMETER_TABLE" : mode,
 				page: pageNumber + 1,
 				// action_type: params?.temp_disp_id ? "edit" : "create",
@@ -773,6 +777,7 @@ const PaperBatchRecordsTemplate = () => {
 					site: loadData[0].site_code
 				}
 				getTimeZone(loadMatBatch)
+				getChangeFileData(loadMatBatch.material_num)
 				let additional = {
 					pbrDisplayId: loadData[0]?.pbr_template_disp_id,
 					pbrTempId: loadData[0]?.pbr_temp_int_id,
@@ -793,6 +798,7 @@ const PaperBatchRecordsTemplate = () => {
 				// }
 			} else {
 				getTimeZone()
+				getChangeFileData()
 			}
 
 			if (params?.temp_disp_id || localStorage.getItem("test_enabled") == !null) {
@@ -893,7 +899,7 @@ const PaperBatchRecordsTemplate = () => {
 			}
 		}
 		getIdTemplateData()
-		getChangeFileData()
+		
 	}, []);
 	/* istanbul ignore next */
 	useEffect(() => {
@@ -983,10 +989,10 @@ const PaperBatchRecordsTemplate = () => {
 		}
 	}
 
-	const getChangeFileData = async () => {
+	const getChangeFileData = async (material_num) => {
 		try {
 			let req = {
-				product_num: matBatch?.material_num
+				product_num: material_num ? material_num : matBatch?.material_num
 			}
 			let res = await getFileList(req)
 			setChangeFileOptions(res.data)
@@ -1436,11 +1442,7 @@ const PaperBatchRecordsTemplate = () => {
 					setTemplateStatus(batchRes?.Data?.tempStatus)
 					dispatch(hideLoader());
 					dispatch(showNotification('success', batchRes?.Message));
-					if (params.fromScreen !== 'Workspace') {
-						history.push({
-							pathname: `/dashboard/paper_batch_records/${batchRes?.Data?.tempDispId}?file=${params?.file}&temp_disp_id=${batchRes?.Data?.tempDispId}&tempalteName=${params.tempalteName}&fromScreen=Workspace&version=${batchRes?.Data?.tempVersion}`,
-						})
-					}
+					history.push(`${match.url}/${batchRes?.Data?.tempDispId}?file=${params?.file}&temp_disp_id=${batchRes?.Data?.tempDispId}&tempalteName=${params.tempalteName}&fromScreen=Workspace&version=${batchRes?.Data?.tempVersion}`);
 
 				} else {
 					message.error(batchRes.Message);
@@ -1493,25 +1495,7 @@ const PaperBatchRecordsTemplate = () => {
 			dispatch(showNotification('error', 'No Data Found'));
 		}
 	};
-	// const saveTemplateHandler = () => {
-	//     savePbrTemplateDataInfo();
-	// };
-	// const batchProcess = async () => {
-	//     dispatch(showLoader());
-	//     let req = ""
-	//     let res = await processBatchRecord(req)
-	//     if (res.Found_file_list.length > 0) {
-	//         message.success(res.Message);
-	//         dispatch(hideLoader());
-	//     } else {
-	//         message.error(res.Message);
-	//         dispatch(hideLoader());
-	//     }
-	//     dispatch(hideLoader());
 
-
-	// };
-	/* istanbul ignore next */
 	const onFinish = values => {
 		console.log('Received values of form:', values);
 	};
@@ -1557,11 +1541,6 @@ const PaperBatchRecordsTemplate = () => {
 	const parameterValuesChange = (changedValues, values) => {
 		setParameterFormData(values.users)
 	};
-	/* istanbul ignore next */
-	// const pageIdentifierValueChange = (changedValues, values) => {
-	// 	setPageIdentifierData(values)
-	// };
-	/* istanbul ignore next */
 	const close = () => {
 		console.log(
 			'Notification was closed. Either the close button was clicked or duration time elapsed.',
@@ -2060,21 +2039,228 @@ const PaperBatchRecordsTemplate = () => {
 		}
 	}
 
-	const handleChangeFileOk = () => {
-		if (params.tempDispId) {
-			history.push(`${match.url}/${params.tempDispId ? params.tempDispId : `Untitled`}?file=${changeFileValue}&temp_disp_id=${params.tempDispId ? params.tempDispId : null}&tempalteName=${params.tempalteName ? params.tempalteName : null}&fromScreen=Workspace&version=${params.tempVersion ? params.tempVersion : null}`);
+	const handleChangeFileOk = (val) => {
+		if (params.temp_disp_id) {
+			history.push(`${match.url}/${params.temp_disp_id ? params.temp_disp_id : `Untitled`}?file=${val ? val : changeFileValue}&temp_disp_id=${params.temp_disp_id ? params.temp_disp_id : null}&tempalteName=${params.tempalteName ? params.tempalteName : null}&fromScreen=Workspace&version=${params.version ? params.version : null}`);
 		} else {
-			history.push(`${match.url}/Untitled?file=${changeFileValue}&tempalteName=${params.tempalteName}&fromScreen=Workspace`);
+			history.push(`${match.url}/Untitled?file=${val ? val : changeFileValue}&tempalteName=${params.tempalteName}&fromScreen=Workspace`);
 		}
-
-		getImage(null, changeFileValue)
+		getImage(null, val ? val : changeFileValue)
 		for (let i = 0; i < 2; i++) {
 			setTimeout(() => {
-				getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode, pageNumber - 1);
+				getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode, pageNumber - 1,{},val ? val : changeFileValue);
 			}, i * 1000)
 		}
-		setChangeFile(false)
+		if (params?.temp_disp_id) {
+			setSaveAsFlag(false)
+		}
 
+		setChangeFile(false)
+	}
+
+	const handleSaveAs = async () => {
+		if (saveAsName.length > 0) {
+			try {
+				dispatch(showLoader());
+				if (formValues.length > 0 || formTableData.length > 0) {
+					let login_response = JSON.parse(localStorage.getItem('login_details'));
+					let _reqBatch = {
+						pbrTemplateName: saveAsName,
+						custKey: '1000',
+						pbrTemplateVersion: 1,
+						// pbrTemplateStatus: 'DRFT',
+						createdBy: login_response?.email_id,
+						changedBy: params.temp_disp_id ? login_response?.email_id : "",
+						templateInfo: { pbrTemplateInfo: [], pbrPageIdentifier: {}, pbrTableInfo: [], tableData: formTableData, filename: params?.file, },
+						material: matBatch?.material_num,
+						batch: matBatch?.batch,
+						siteCode: matBatch?.site,
+						actionType: "create",
+						pbrDisplayId: "",
+						pbrTempId: 0,
+						pbrTemplateStatus: "DRFT"
+					};
+					let arr = [];
+					formValues.forEach((ele, index) => {
+						let obj = {
+							method: ele.method,
+							filename: params?.file,
+							name: ele.name,
+							page_name: ele?.pageIdValue,
+							param_value_direction: ele?.directions,
+							param_value_regex: parameterFormData[index]?.regex,
+							settings: ele?.advance_setting ? ele?.advance_setting[0] : {}
+						}
+						if (ele.values) {
+							obj['color'] = "blue"
+							obj['param_key_height'] = (ele?.values?.anchorCoords[3] - ele?.values?.anchorCoords[1]) / imageHeight
+							obj['param_key_left'] = ele?.values?.anchorCoords[0] / imageWidth
+							obj['param_key_text'] = ele?.values?.anchorValue
+							obj['param_key_top'] = ele?.values?.anchorCoords[1] / imageHeight
+							obj['param_key_width'] = (ele?.values?.anchorCoords[2] - ele?.values?.anchorCoords[0]) / imageWidth
+							obj['param_page'] = ele?.page_num
+							obj['param_key_snippet_id'] = ele?.values?.snippetID
+							obj['param_value_height'] = (ele?.values?.valueCoords[3] - ele?.values?.valueCoords[1]) / imageHeight
+							obj['param_value_left'] = ele?.values?.valueCoords[0] / imageWidth
+							obj['param_value_text'] = ele?.values?.anchorId
+							obj['param_value_top'] = ele?.values?.valueCoords[1] / imageHeight
+							obj['param_value_width'] = (ele?.values?.valueCoords[2] - ele?.values?.valueCoords[0]) / imageWidth
+							obj['param_value_snippet_id'] = ele?.values?.valueSnippetID
+							obj['param_value_rule'] = {
+								rule_name: parameterFormData[index]?.param_rule, regex_text: parameterFormData[index]?.param_valueArea,
+								range_min: parameterFormData[index]?.param_min, range_max: parameterFormData[index]?.param_max,
+								factor: parameterFormData[index]?.param_valueTransformation, transformation: parameterFormData[index]?.param_transformation
+							}
+						}
+						if (ele.unitValues) {
+							obj['uom_key_height'] = (ele?.unitValues?.coords[3] - ele?.unitValues?.coords[1]) / imageHeight
+							obj['uom_key_left'] = ele?.unitValues?.coords[0] / imageWidth
+							obj['uom_key_text'] = ele?.unitValues?.unitAnchor
+							obj['uom_key_top'] = ele?.unitValues?.coords[1] / imageHeight
+							obj['uom_key_width'] = (ele?.unitValues?.coords[2] - ele?.unitValues?.coords[0]) / imageWidth
+							obj['uom_page'] = ele?.page_num
+							obj['uom_key_snippet_id'] = ele?.unitValues?.snippetID
+							obj['uom_value_height'] = (ele?.unitValues?.valueCoords[3] - ele?.unitValues?.valueCoords[1]) / imageHeight
+							obj['uom_value_left'] = ele?.unitValues?.valueCoords[0] / imageWidth
+							obj['uom_value_text'] = ele?.unitValues?.unitId
+							obj['uom_value_top'] = ele?.unitValues?.valueCoords[1] / imageHeight
+							obj['uom_value_width'] = (ele?.unitValues?.valueCoords[2] - ele?.unitValues?.valueCoords[0]) / imageWidth
+							obj['uom_value_snippet_id'] = ele?.unitValues?.valueSnippetID
+							obj['uom_value_rule'] = {
+								rule_name: parameterFormData[index]?.uom_rule, regex_text: parameterFormData[index]?.uom_valueArea,
+								range_min: parameterFormData[index]?.uom_min, range_max: parameterFormData[index]?.uom_max,
+								factor: parameterFormData[index]?.uom_valueTransformation, transformation: parameterFormData[index]?.uom_transformation
+							}
+
+						}
+						if (ele.timeValues) {
+							obj['time_key_height'] = (ele?.timeValues?.coords[3] - ele?.timeValues?.coords[1]) / imageHeight
+							obj['time_key_left'] = ele?.timeValues?.coords[0] / imageWidth
+							obj['time_key_text'] = ele?.timeValues?.timeAnchor
+							obj['time_key_top'] = ele?.timeValues?.coords[1] / imageHeight
+							obj['time_key_width'] = (ele?.timeValues?.coords[2] - ele?.timeValues?.coords[0]) / imageWidth
+							obj['time_page'] = ele?.page_num
+							obj['time_key_snippet_id'] = ele?.timeValues?.snippetID
+							obj['time_value_height'] = (ele?.timeValues?.valueCoords[3] - ele?.timeValues?.valueCoords[1]) / imageHeight
+							obj['time_value_left'] = ele?.timeValues?.valueCoords[0] / imageWidth
+							obj['time_value_text'] = ele?.timeValues?.timeId
+							obj['time_value_top'] = ele?.timeValues?.valueCoords[1] / imageHeight
+							obj['time_value_width'] = (ele?.timeValues?.valueCoords[2] - ele?.timeValues?.valueCoords[0]) / imageWidth
+							obj['time_value_snippet_id'] = ele?.timeValues?.valueSnippetID
+							obj['time_value_rule'] = {
+								rule_name: parameterFormData[index]?.time_rule, regex_text: parameterFormData[index]?.time_valueArea,
+								range_min: parameterFormData[index]?.time_min, range_max: parameterFormData[index]?.time_max,
+								factor: parameterFormData[index]?.time_valueTransformation, transformation: parameterFormData[index]?.time_transformation
+							}
+
+						}
+						if (ele.dateValues) {
+							obj['date_key_height'] = (ele?.dateValues?.coords[3] - ele?.dateValues?.coords[1]) / imageHeight
+							obj['date_key_left'] = ele?.dateValues?.coords[0] / imageWidth
+							obj['date_key_text'] = ele?.dateValues?.dateAnchor
+							obj['date_key_top'] = ele?.dateValues?.coords[1] / imageHeight
+							obj['date_key_width'] = (ele?.dateValues?.coords[2] - ele?.dateValues?.coords[0]) / imageWidth
+							obj['date_page'] = ele?.page_num
+							obj['date_key_snippet_id'] = ele?.dateValues?.snippetID
+							obj['date_value_height'] = (ele?.dateValues?.valueCoords[3] - ele?.dateValues?.valueCoords[1]) / imageHeight
+							obj['date_value_left'] = ele?.dateValues?.valueCoords[0] / imageWidth
+							obj['date_value_text'] = ele?.dateValues?.dateId
+							obj['date_value_top'] = ele?.dateValues?.valueCoords[1] / imageHeight
+							obj['date_value_width'] = (ele?.dateValues?.valueCoords[2] - ele?.dateValues?.valueCoords[0]) / imageWidth
+							obj['date_value_snippet_id'] = ele?.dateValues?.valueSnippetID
+							obj['date_value_rule'] = {
+								rule_name: parameterFormData[index]?.date_rule, regex_text: parameterFormData[index]?.date_valueArea,
+								range_min: parameterFormData[index]?.date_min, range_max: parameterFormData[index]?.date_max,
+								factor: parameterFormData[index]?.date_valueTransformation, transformation: parameterFormData[index]?.date_transformation
+							}
+
+						}
+						if (ele?.selection_method) {
+							obj["selection_method"] = {
+								"param_value_height": [],
+								"param_value_left": [],
+								"param_value_text": [],
+								"param_value_top": [],
+								"param_value_width": [],
+								"param_value_snippet_id": [],
+							}
+							ele.selection_method.forEach(item => {
+								obj["selection_method"]['param_value_height'].push((item?.coords[3] - item?.coords[1]) / imageHeight)
+								obj["selection_method"]['param_value_left'].push(item?.coords[0] / imageWidth)
+								obj["selection_method"]['param_value_text'].push(item?.selectionVal)
+								obj["selection_method"]['param_value_top'].push(item?.coords[1] / imageHeight)
+								obj["selection_method"]['param_value_width'].push((item?.coords[2] - item?.coords[0]) / imageWidth)
+								obj["selection_method"]['param_value_snippet_id'].push(item?.snippetID)
+							})
+
+						}
+						arr.push(obj);
+
+					});
+
+
+
+					let pageArr = []
+					if (pageIdFormValues) {
+						pageIdFormValues?.forEach(item => {
+							if (item != undefined) {
+								let obj = { name: "", keys: [] }
+								Object.entries(item).forEach(item1 => {
+									if (item1[0] != "name" && item1[0] != "keyCount") {
+										obj.keys.push(item1[1])
+									}
+									if (item1[0] === "name") {
+										obj.name = item1[1]
+									}
+								})
+								pageArr.push(obj)
+							}
+						})
+					}
+
+					_reqBatch.templateInfo.pbrTemplateInfo = arr;
+					_reqBatch.templateInfo.pbrPageIdentifier = pageArr;
+					let tableRer = tableDataReq()
+					_reqBatch.templateInfo.pbrTableInfo = tableRer;
+					//api call
+					const batchRes = await savePbrTemplate(_reqBatch);
+					if (batchRes.Status === 202) {
+						let additional = {
+							pbrDisplayId: batchRes?.Data?.tempDispId,
+							pbrTempId: Number(batchRes?.Data?.tempDispId.replace(/\D/g, '')),
+							pbrTemplateStatus: batchRes?.Data?.tempStatus,
+							pbrVersion: batchRes?.Data?.tempVersion
+						}
+						setAdditionalData(additional)
+						message.success(batchRes.Message);
+						setTemplateId(batchRes?.Data?.tempDispId)
+						setTemplateVersion(batchRes?.Data?.tempVersion)
+						setTemplateStatus(batchRes?.Data?.tempStatus)
+						dispatch(hideLoader());
+						dispatch(showNotification('success', batchRes?.Message));
+						history.push(`${match.url}/${batchRes?.Data?.tempDispId}?file=${params?.file}&temp_disp_id=${batchRes?.Data?.tempDispId}&tempalteName=${params.tempalteName}&fromScreen=Workspace&version=${batchRes?.Data?.tempVersion}`);
+						setSaveAsFlag(true)
+						setSaveAsName('')
+						setSaveAsModal(false)
+						// }
+
+					} else {
+						message.error(batchRes.Message);
+						dispatch(hideLoader());
+						dispatch(showNotification('error', batchRes?.detail));
+					}
+
+				} else {
+					dispatch(hideLoader());
+					openNotification('Create at least one Parameter before save')
+				}
+			} catch (error) { /* istanbul ignore next */
+				dispatch(hideLoader());
+				dispatch(showNotification('error', 'No Data Found'));
+			}
+		} else {
+			dispatch(showNotification('error', 'Please Enter Name'));
+		}
 
 	}
 
@@ -2094,6 +2280,13 @@ const PaperBatchRecordsTemplate = () => {
 							Object.keys(params).length > 0 &&
 							params.fromScreen !== "Workflow" ?
 							(<div className='btns'>
+								<Button
+									className='custom-primary-btn'
+									id="saveButton"
+									style={{ margin: "0px 16px" }}
+									disabled={saveAsFlag}
+									onClick={() => setSaveAsModal(true)}
+								>Save As</Button>
 								<Button className='custom-primary-btn'
 									id="saveButton"
 									type='default'
@@ -3011,7 +3204,14 @@ const PaperBatchRecordsTemplate = () => {
 											Preview
 										</p>
 										<Tooltip title={params?.file}>
-											<span onClick={() => setChangeFile(true)} style={{ marginTop: 4 }}>{params?.file?.slice(0, 28)}</span>
+											<span onClick={() => setChangeFile(true)} style={{ marginTop: 4,cursor:'pointer' }}>{params?.file?.slice(0, 28)}</span>
+											{!saveAsFlag &&
+												<span onClick={() => {
+													setChangeFileValue(originalFile)
+													handleChangeFileOk(originalFile)
+													setSaveAsFlag(true)
+												}} style={{ marginLeft: 8, marginTop: 4,cursor:'pointer' }}><UndoOutlined /></span>
+											}
 										</Tooltip>
 										<div>
 											<LeftOutlined disabled={true} className='icon_size' onClick={() => handlePageChange(pageNumber - 1)} />
@@ -3119,8 +3319,15 @@ const PaperBatchRecordsTemplate = () => {
 			</div>
 			<AdvanceSetting formValues={formValues} setFormValues={setFormValues} name={activeKey} method={formValues[activeKey]?.method} advancePopup={advancePopup} setAdvancePopup={setAdvancePopup} />
 			<WorkflowPreviewModal templateVersion={templateVersion} params={params} isModalOpen={workflowPreviewModal} setIsModalOpen={setWorkflowPreviewModal} />
-			<Modal title="Change File" visible={changeFile} onOk={handleChangeFileOk} onCancel={() => setChangeFile(false)}>
+			<Modal title="Change File" visible={changeFile} onOk={()=>handleChangeFileOk()} onCancel={() => setChangeFile(false)}>
 				<Select onChange={(val) => setChangeFileValue(val)} value={changeFileValue} options={changeFileOptions} style={{ width: 400 }} />
+			</Modal>
+			<Modal title="Save As" visible={saveAsModal} onOk={handleSaveAs} onCancel={() => {
+				setSaveAsFlag(true)
+				setSaveAsName('')
+				setSaveAsModal(false)
+			}}>
+				<Input onChange={(e) => setSaveAsName(e.target.value)} value={saveAsName} style={{ width: 400 }} />
 			</Modal>
 			<Signature
 				isPublish={isPublish}
