@@ -798,6 +798,7 @@ const PaperBatchRecordsTemplate = () => {
 				// }
 			} else {
 				getTimeZone()
+				getChangeFileData()
 			}
 
 			if (params?.temp_disp_id || localStorage.getItem("test_enabled") == !null) {
