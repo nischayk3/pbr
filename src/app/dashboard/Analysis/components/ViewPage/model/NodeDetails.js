@@ -40,7 +40,6 @@ const NodeDetails = (props) => {
 	);
 
 	const makeOutlierCategorical = async (e) => {
-		console.log(e)
 		setOutlinerValue(e && e?.target?.value ? e.target.value : "")
 		const req = {
 			view_disp_id: selectedViewData?.view_id,
