@@ -10,7 +10,7 @@
 				width: 100px;
 			}
 
-			.select_field_search {
+			.select_field {
 				width: 100%
 			}
 		}
@@ -64,6 +64,11 @@
 			.sortable-tree__tree--materialnode {
 				display: flex;
 				margin: 3px 0;
+
+				.anticon-caret-right {
+					margin-left: -26px;
+
+				}
 
 				>p {
 					padding-left: 5px;
@@ -133,6 +138,20 @@
 				color: #262626;
 				padding: 0px;
 				margin: 0px;
+				background: transparent;
+				border: 0
+			}
+
+			.sortable-tree__tree--materialtitle {
+				width: 200px;
+				font-style: normal;
+				font-weight: 400;
+				font-size: 12px;
+				line-height: 18px;
+				color: #262626;
+				padding: 0px;
+				margin-left: 7px;
+				margin-bottom: 0px;
 				background: transparent;
 				border: 0
 			}

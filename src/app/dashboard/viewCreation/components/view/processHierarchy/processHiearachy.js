@@ -13,7 +13,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import FileExplorerTheme from 'react-sortable-tree-theme-file-explorer';
 import InputField from "../../../../../../components/InputField/InputField";
-import SelectSearchField from "../../../../../../components/SelectSearchField/SelectSearchField";
 import { hideLoader, showLoader, showNotification } from "../../../../../../duck/actions/commonActions";
 import { getMoleculeList, viewhieararchyTree } from "../../../../../../services/viewCreationPublishing";
 import "./processHierarchy.scss";
@@ -25,7 +24,7 @@ const ProcessHierarchy = () => {
 	const [moleculeList, setMoleculeList] = useState([]);
 	const [treeData, setTreeData] = useState([]);
 	const [expandHierarchy, setExpandHierarchy] = useState(true);
-	// const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(false);
 	const [searchString, setSearchString] = useState("");
 	const [searchFocusIndex, setSearchFocusIndex] = useState(0);
 
@@ -46,8 +45,16 @@ const ProcessHierarchy = () => {
 	}
 
 	const onChangeMolecule = (e) => {
-		viewHiearchy(e)
-		setMoleculeId(e)
+		console.log("eeeeeee", e);
+		if (e !== undefined) {
+			viewHiearchy(e)
+			setMoleculeId(e)
+		} else {
+			setMoleculeId("");
+			setTreeData([]);
+			setSearchString("");
+		}
+
 	}
 
 	const handleExpand = () => {
@@ -56,12 +63,6 @@ const ProcessHierarchy = () => {
 
 	const handleExpandExit = () => {
 		setExpandHierarchy(true)
-	}
-
-	const clearSearch = (e) => {
-		setMoleculeId("");
-		setTreeData([]);
-		setSearchString("");
 	}
 
 	//Moleculelist api call
@@ -104,11 +105,6 @@ const ProcessHierarchy = () => {
 		}
 	}
 
-	const optionsMolecule = moleculeList && moleculeList.map((item, index) => (
-		<Select.Option key={index} value={item.ds_name}>
-			{item.ds_name}
-		</Select.Option >
-	));
 
 	return (
 		<div>
@@ -117,17 +113,23 @@ const ProcessHierarchy = () => {
 					<div className='parameter__wraper'>
 						<div className="parameter__wraper--select">
 							<p>Molecule</p>
-
-							<SelectSearchField
-								id="filter-molecule"
-								showSearch
+							<Select
 								placeholder='Search Molecule'
-								onChangeSelect={e => onChangeMolecule(e)}
-								//onSearchSelect={type => onSearchParam(type)}
-								handleClearSearch={e => clearSearch(e)}
-								options={optionsMolecule}
-								selectedValue={moleculeId}
-							/>
+								id="molecule"
+								value={moleculeId}
+								onChange={e => onChangeMolecule(e)}
+								style={{ width: "100%", margin: "0px" }}
+								allowClear
+								showSearch
+							>
+								{moleculeList &&
+									moleculeList.map((item) => (
+										<Select.Option key={item.ds_name} value={item.ds_name} >
+											{item.ds_name}
+										</Select.Option>
+									))}
+							</Select>
+
 						</div>
 
 					</div>
@@ -196,15 +198,11 @@ const ProcessHierarchy = () => {
 														{node && node?.n_mat_desc ? (
 															<div className="sortable-tree__tree--node">
 																<Tooltip title={node?.title.toUpperCase()}>
-																	{/* <Tag color="geekblue">
-																		{node?.title.toUpperCase()}
-																	</Tag> */}
 																	<div className="sortable-tree__tree--materialnode">
 																		<CaretRightOutlined />
-																		<p className='sortable-tree__tree--input--disabled'>{node?.title.toUpperCase()}</p>
+																		<p className='sortable-tree__tree--materialtitle'>{node?.title.toUpperCase()}</p>
 																	</div>
 																</Tooltip>
-
 															</div>) : (
 															<p className='sortable-tree__tree--input--disabled'>{node?.title.toUpperCase()}</p>
 														)}
