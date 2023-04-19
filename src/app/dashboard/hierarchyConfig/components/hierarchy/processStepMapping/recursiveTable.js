@@ -139,10 +139,13 @@ const RecursiveTable = memo(function RecursiveTable({ data, steps, finalJson, se
 		}
 	};
 
-	console.log("dataaaaaaaaaaaaa", tableData);
+
 
 	return (
 		<Table
+			rowClassName={(record, index) =>
+				index % 2 === 0 ? "table-row-light" : "table-row-dark"
+			}
 			className='expandable-table'
 			columns={columns}
 			dataSource={tableData}

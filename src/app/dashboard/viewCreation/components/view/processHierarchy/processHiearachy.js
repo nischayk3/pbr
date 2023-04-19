@@ -5,10 +5,10 @@
  * @Last Modified - 11 April, 2023
  * @Last Changed By - Dinesh
  */
-import { FullscreenExitOutlined, FullscreenOutlined, PlusOutlined } from "@ant-design/icons";
+import { CaretRightOutlined, FullscreenExitOutlined, FullscreenOutlined } from "@ant-design/icons";
 import SortableTree from '@nosferatu500/react-sortable-tree';
 import '@nosferatu500/react-sortable-tree/style.css';
-import { Card, Divider, Empty, Select, Tag, Tooltip } from "antd";
+import { Card, Divider, Empty, Select, Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import FileExplorerTheme from 'react-sortable-tree-theme-file-explorer';
@@ -182,7 +182,7 @@ const ProcessHierarchy = () => {
 											title: (
 												<>
 													<form onClick={(e) => { e.preventDefault(); e.stopPropagation(); selectThis(node, path); }}>
-														{node && node?.n_mat_desc ? (
+														{/* {node && node?.n_mat_desc ? (
 															<div className="sortable-tree__tree--node">
 																<Tooltip title={node?.title.toUpperCase()}>
 																	<Tag color="geekblue">
@@ -190,6 +190,21 @@ const ProcessHierarchy = () => {
 																	</Tag>
 																</Tooltip>
 																<PlusOutlined />
+															</div>) : (
+															<p className='sortable-tree__tree--input--disabled'>{node?.title.toUpperCase()}</p>
+														)} */}
+														{node && node?.n_mat_desc ? (
+															<div className="sortable-tree__tree--node">
+																<Tooltip title={node?.title.toUpperCase()}>
+																	{/* <Tag color="geekblue">
+																		{node?.title.toUpperCase()}
+																	</Tag> */}
+																	<div className="sortable-tree__tree--materialnode">
+																		<CaretRightOutlined />
+																		<p className='sortable-tree__tree--input--disabled'>{node?.title.toUpperCase()}</p>
+																	</div>
+																</Tooltip>
+
 															</div>) : (
 															<p className='sortable-tree__tree--input--disabled'>{node?.title.toUpperCase()}</p>
 														)}
