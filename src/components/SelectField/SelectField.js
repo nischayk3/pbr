@@ -1,15 +1,9 @@
-import "./SelectFieldStyle.scss";
-import React from "react";
 import { Select } from "antd";
+import React from "react";
+import "./SelectFieldStyle.scss";
 
 const SelectField = (props) => {
 
-	function capitalizeFirstLetter(string) {
-		if (typeof(string) !== 'number') {
-			return string?.charAt(0)?.toUpperCase() + string?.slice(1)?.replace("_" , '');	
-		}
-		return string;
-	  }
 	return (
 		<div className="select_field">
 			{props.label ||
