@@ -1,0 +1,48 @@
+.view-summary_lable {
+	display: flex;
+}
+
+.param-table {
+	position: relative;
+
+	.param-column {
+		position: absolute;
+		right: 4px;
+		z-index: 1;
+		background: #f0f7fa;
+		padding: 8px 10px;
+		top: 63px;
+
+		.right-circle {
+			font-size: 18px;
+			margin: 3px 0;
+			color: #486BC9;
+			cursor: pointer;
+		}
+	}
+}
+
+.batch-modal {
+	.ant-input-group-wrapper {
+		width: 50%;
+	}
+}
+
+.batch-table-block {
+	overflow: hidden;
+
+	.batch-table-footer {
+		float: right;
+		margin: 16px 0 0 0;
+
+		button {
+			margin: 0px 4px;
+		}
+
+	}
+}
+
+.delete-param {
+	color: #FF2828;
+	font-size: 18px;
+}

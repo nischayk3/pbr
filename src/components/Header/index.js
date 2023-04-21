@@ -5,9 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import mareanaLogo from '../../assets/mareana_logo_svg.svg';
 import { adenabled } from '../../config/config';
+import { MDH_APP_PYTHON_SERVICE } from '../../constants/apiBaseUrl';
 import { logoutApp, showNotification } from '../../duck/actions/commonActions';
 import { getUploadProfile } from '../../duck/actions/loginAction';
-import { getUserProfile } from "../../services/loginService";
+import { getUserProfile, logoutUrl } from "../../services/loginService";
 import Auth from '../../utils/auth';
 import './style.scss';
 
@@ -72,10 +73,12 @@ const HeaderBar = () => {
 
 	const adLogout = () => {
 		dispatch(logoutApp(true))
+
 		localStorage.removeItem('login_details');
 		localStorage.removeItem('username');
-		localStorage.removeItem('loginwith');
-		history.push('/user/logout');
+
+		window.open(`${logoutUrl}`, '_self');
+		window.open(`${logoutUrl}?redirect_url=${MDH_APP_PYTHON_SERVICE}/%23/user/logout`, '_self');
 	}
 
 	const wrapperRef = useRef(null);
