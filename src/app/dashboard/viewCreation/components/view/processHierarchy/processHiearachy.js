@@ -45,7 +45,6 @@ const ProcessHierarchy = () => {
 	}
 
 	const onChangeMolecule = (e) => {
-		console.log("eeeeeee", e);
 		if (e !== undefined) {
 			viewHiearchy(e)
 			setMoleculeId(e)
@@ -90,24 +89,24 @@ const ProcessHierarchy = () => {
 			ds_name: _reqMolecule
 		}
 		try {
-			dispatch(showLoader());
+			setLoading(true);
 			const apiRes = await viewhieararchyTree(_req);
 			if (apiRes.status === 200) {
 				const data = apiRes?.data?.process_steps
 				setTreeData([data])
-				dispatch(hideLoader());
+				setLoading(false);
 			} else if (apiRes.status === 400 || apiRes.status === 404) {
-				dispatch(hideLoader());
+				setLoading(false);
 				dispatch(showNotification("error", "No Data Found"));
 			}
 		} catch (error) {
-			dispatch(hideLoader());
+			setLoading(false);
 		}
 	}
 
 
 	return (
-		<div>
+		<div className="card__block--wrapper">
 			{expandHierarchy && (
 				<Card title='Parameter Lookup' className='custom__card'>
 					<div className='parameter__wraper'>
@@ -131,7 +130,6 @@ const ProcessHierarchy = () => {
 							</Select>
 
 						</div>
-
 					</div>
 				</Card>
 			)}
@@ -147,9 +145,10 @@ const ProcessHierarchy = () => {
 						<FullscreenExitOutlined onClick={handleExpandExit} />
 					</Tooltip>
 				}
+				loading={loading}
 			>
-				{treeData.length === 0 ? (<Empty description="Nothing to see here!" imageStyle={{
-					height: 60,
+				{treeData.length === 0 ? (<Empty className="empty--layout" description="Nothing to see here!" imageStyle={{
+					height: 120,
 				}} image={Empty.PRESENTED_IMAGE_SIMPLE} />)
 					: (
 						<>
@@ -217,11 +216,9 @@ const ProcessHierarchy = () => {
 					)}
 			</Card>
 
-			{
-				expandHierarchy && (
-					<Card title='Files' className='custom__card'></Card>
-				)
-			}
+			{expandHierarchy && (
+				<Card title='Files' className='custom__card'></Card>
+			)}
 		</div >
 	)
 }
