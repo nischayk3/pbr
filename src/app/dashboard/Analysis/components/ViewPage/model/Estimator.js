@@ -123,7 +123,7 @@ const Estimator = (props) => {
 		setEstimatorPopupDataValues({
 			...estimatorPopupDataValues,
 			typeListValue: e,
-			algoValue: '',
+			algoValue: [],
 			enableGrid: false,
 			regressionListvalue: []
 		})

@@ -5,156 +5,220 @@
  * @Last Modified - 11 April, 2023
  * @Last Changed By - Dinesh
  */
-import { PlusOutlined } from "@ant-design/icons";
-import SortableTree, { changeNodeAtPath } from '@nosferatu500/react-sortable-tree';
+import { CaretRightOutlined, FullscreenExitOutlined, FullscreenOutlined } from "@ant-design/icons";
+import SortableTree from '@nosferatu500/react-sortable-tree';
 import '@nosferatu500/react-sortable-tree/style.css';
-import { Card, Input, Tag } from "antd";
-import React, { useState } from "react";
+import { Card, Divider, Empty, Select, Tooltip } from "antd";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import FileExplorerTheme from 'react-sortable-tree-theme-file-explorer';
-import SelectSearchField from "../../../../../../components/SelectSearchField/SelectSearchField";
+import InputField from "../../../../../../components/InputField/InputField";
+import { hideLoader, showLoader, showNotification } from "../../../../../../duck/actions/commonActions";
+import { getMoleculeList, viewhieararchyTree } from "../../../../../../services/viewCreationPublishing";
 import "./processHierarchy.scss";
-
 const ProcessHierarchy = () => {
-	const [currentPath, setCurrentPath] = useState([]);
+	const dispatch = useDispatch();
+
+	const [moleculeId, setMoleculeId] = useState("");
 	const [currentNode, setCurrentNode] = useState({});
-	const [treeData, setTreeData] = useState([{
-		expanded: true,
-		title: "This is a drug name",
-		children: [
-			{
-				expanded: true,
-				title: 'This is a process',
-				children: [
-					{
-						title: 'This is a sub-process',
-						children: [{
-							title: 'This is a sub-process',
-							children: [],
+	const [moleculeList, setMoleculeList] = useState([]);
+	const [treeData, setTreeData] = useState([]);
+	const [expandHierarchy, setExpandHierarchy] = useState(true);
+	const [loading, setLoading] = useState(false);
+	const [searchString, setSearchString] = useState("");
+	const [searchFocusIndex, setSearchFocusIndex] = useState(0);
 
-						}],
-						expanded: false
-					},
-					{
-						title: 'This is another sub-process',
-						expanded: true,
-						children: [
-							{
-								title: 'This is a process step',
-								children: [{
-									title: 'This is a process step',
-									children: [],
-									expanded: false,
-								}],
-								expanded: false,
-							}
-						]
-					}
-				]
-			},
-		]
-	}]);
-
-
-
+	useEffect(() => {
+		const reqMol = {
+			'data': {},
+			'parameters': {}
+		}
+		loadMolecule(reqMol)
+	}, [])
 
 	const updateTreeData = (treeData) => {
-		console.log("treeData 1", treeData);
 		setTreeData(treeData);
 	}
 
 	const selectThis = (node, path) => {
-		console.log("treeData 2", node, path);
 		setCurrentNode({ currentNode: node, path: path });
 	}
 
-	const getNodeKey = ({ treeIndex }) => treeIndex;
+	const onChangeMolecule = (e) => {
+		if (e !== undefined) {
+			viewHiearchy(e)
+			setMoleculeId(e)
+		} else {
+			setMoleculeId("");
+			setTreeData([]);
+			setSearchString("");
+		}
 
-	console.log("tree dataa", treeData);
+	}
+
+	const handleExpand = () => {
+		setExpandHierarchy(false)
+	}
+
+	const handleExpandExit = () => {
+		setExpandHierarchy(true)
+	}
+
+	//Moleculelist api call
+	const loadMolecule = async (_reqMolecule) => {
+		try {
+			const _resourceName = 'VIEW';
+			dispatch(showLoader());
+			const moleculeRes = await getMoleculeList(_reqMolecule, _resourceName);
+			if (moleculeRes.Status === 200) {
+				setMoleculeList(moleculeRes.Data.hierarchy);
+				dispatch(hideLoader());
+			} else if (moleculeRes.Status === 400 || moleculeRes.Status === 404) {
+				dispatch(hideLoader());
+				dispatch(showNotification("error", "No Data Found"));
+			}
+		} catch (error) {
+			dispatch(hideLoader());
+			dispatch(showNotification("error", error));
+		}
+	}
+
+	//View Hieararchy api call
+	const viewHiearchy = async (_reqMolecule) => {
+		const _req = {
+			ds_name: _reqMolecule
+		}
+		try {
+			setLoading(true);
+			const apiRes = await viewhieararchyTree(_req);
+			if (apiRes.status === 200) {
+				const data = apiRes?.data?.process_steps
+				setTreeData([data])
+				setLoading(false);
+			} else if (apiRes.status === 400 || apiRes.status === 404) {
+				setLoading(false);
+				dispatch(showNotification("error", "No Data Found"));
+			}
+		} catch (error) {
+			setLoading(false);
+		}
+	}
+
+
 	return (
-		<div>
-			<Card title='Parameter Lookup' className='custom__card'>
-				<div className='parameter__wraper'>
-					<div className="parameter__wraper--select">
-						<p>Molecule</p>
+		<div className="card__block--wrapper">
+			{expandHierarchy && (
+				<Card title='Parameter Lookup' className='custom__card'>
+					<div className='parameter__wraper'>
+						<div className="parameter__wraper--select">
+							<p>Molecule</p>
+							<Select
+								placeholder='Search Molecule'
+								id="molecule"
+								value={moleculeId}
+								onChange={e => onChangeMolecule(e)}
+								style={{ width: "100%", margin: "0px" }}
+								allowClear
+								showSearch
+							>
+								{moleculeList &&
+									moleculeList.map((item) => (
+										<Select.Option key={item.ds_name} value={item.ds_name} >
+											{item.ds_name}
+										</Select.Option>
+									))}
+							</Select>
 
-						<SelectSearchField
-							id="filter-molecule"
-							showSearch
-							//placeholder='Search Molecule'
-							onChangeSelect={e => onChangeMolecule(e)}
-						//onSearchSelect={type => onSearchParam(type)}
-						// handleClearSearch={e => clearSearch(e)}
-						//options={optionsMolecule}
-						//selectedValue={filterValue}
-						/>
+						</div>
 					</div>
-					<div className="parameter__wraper--select">
-						<p>Filters</p>
+				</Card>
+			)}
 
-						<SelectSearchField
-							id="filter-molecule"
-							showSearch
-							//placeholder='Search Molecule'
-							onChangeSelect={e => onChangeParam(e)}
-							onSearchSelect={type => onSearchParam(type)}
-						// handleClearSearch={e => clearSearch(e)}
-						//options={optionsMolecule}
-						//selectedValue={filterValue}
-						/>
-					</div>
-				</div>
+			<Card
+				title='Process hierarchy'
+				className='custom__card'
+				extra={expandHierarchy ?
+					<Tooltip title="Expand panel">
+						<FullscreenOutlined onClick={handleExpand} />
+					</Tooltip> :
+					<Tooltip title="Collapse panel">
+						<FullscreenExitOutlined onClick={handleExpandExit} />
+					</Tooltip>
+				}
+				loading={loading}
+			>
+				{treeData.length === 0 ? (<Empty className="empty--layout" description="Nothing to see here!" imageStyle={{
+					height: 120,
+				}} image={Empty.PRESENTED_IMAGE_SIMPLE} />)
+					: (
+						<>
+							<div className="parameter__wraper--select">
+								<p>Filters</p>
+								<InputField
+									// label="Model name"
+									placeholder="Search here"
+									value={searchString}
+									onChangeInput={(e) => {
+										const search = e.target.value;
+										setSearchString(search?.toUpperCase());
+									}}
+								/>
+							</div>
+							<Divider />
+							<div className={expandHierarchy ? "hiearchy-tree__wrapper expand--panel" : "hiearchy-tree__wrapper collapse--panel"}>
+
+								<div className="sortable-tree__tree">
+									<SortableTree
+										searchQuery={searchString}
+										searchFocusOffset={searchFocusIndex}
+										canDrag={false}
+										theme={FileExplorerTheme}
+										treeData={treeData}
+										onChange={treeData => {
+											setTreeData(treeData);
+											updateTreeData(treeData)
+										}}
+										generateNodeProps={({ node, path }) => ({
+
+											title: (
+												<>
+													<form onClick={(e) => { e.preventDefault(); e.stopPropagation(); selectThis(node, path); }}>
+														{/* {node && node?.n_mat_desc ? (
+															<div className="sortable-tree__tree--node">
+																<Tooltip title={node?.title.toUpperCase()}>
+																	<Tag color="geekblue">
+																		{node?.title.toUpperCase()}
+																	</Tag>
+																</Tooltip>
+																<PlusOutlined />
+															</div>) : (
+															<p className='sortable-tree__tree--input--disabled'>{node?.title.toUpperCase()}</p>
+														)} */}
+														{node && node?.n_mat_desc ? (
+															<div className="sortable-tree__tree--node">
+																<Tooltip title={node?.title.toUpperCase()}>
+																	<div className="sortable-tree__tree--materialnode">
+																		<CaretRightOutlined />
+																		<p className='sortable-tree__tree--materialtitle'>{node?.title.toUpperCase()}</p>
+																	</div>
+																</Tooltip>
+															</div>) : (
+															<p className='sortable-tree__tree--input--disabled'>{node?.title.toUpperCase()}</p>
+														)}
+													</form>
+												</>
+											)
+										})}
+									/>
+								</div>
+							</div>
+						</>
+					)}
 			</Card>
-			<Card title='Process hierarchy' className='custom__card'>
-				<div className="hiearchy-tree__wrapper">
-					<div className="sortable-tree__tree">
-						<SortableTree
-							canDrag={false}
-							theme={FileExplorerTheme}
-							treeData={treeData}
-							onChange={treeData => {
-								setTreeData(treeData);
-								updateTreeData(treeData)
-							}}
-							generateNodeProps={({ node, path }) => ({
-								title: (
-									<>
-										<form onClick={(e) => { e.preventDefault(); e.stopPropagation(); selectThis(node, path); }}>
-											{node.children.length === 0 ? (
-												<div className="sortable-tree__tree--node">
-													<Tag color="geekblue">
-														{node.title}
-													</Tag>
-													<PlusOutlined />
-												</div>) : (
-												<Input
-													readOnly
-													id='input-node'
-													className='sortable-tree__tree--input--disabled'
-													placeholder="Enter process name"
-													value={node.title}
-													onChange={event => {
-														const title = event.target.value;
-														setTreeData(() => ({
-															treeData: changeNodeAtPath({
-																treeData: treeData,
-																path,
-																getNodeKey,
-																newNode: { ...node, title }
-															})
-														}))
-													}} />
-											)}
 
-
-										</form>
-									</>
-								)
-							})}
-						/>
-					</div>
-				</div>
-			</Card >
-			<Card title='Files' className='custom__card'></Card>
+			{expandHierarchy && (
+				<Card title='Files' className='custom__card'></Card>
+			)}
 		</div >
 	)
 }

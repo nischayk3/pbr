@@ -7,17 +7,21 @@ import "./logout.scss";
 
 const Logout = () => {
 	const history = useHistory();
+	const status = localStorage.getItem("loginwith");
 
 	useEffect(() => {
 		localStorage.removeItem('login_details');
 		localStorage.removeItem('username');
-		localStorage.removeItem('loginwith');
 	}, []);
 
 	const loginBack = () => {
 		if (PRODUCT_FOR == 'BMS') {
-			window.open(`${window.location.origin}auth/saml-login?redirect_url=${MDH_APP_PYTHON_SERVICE}/%23/dashboard/redirect&from_=UI`, '_self');
-			localStorage.setItem("loginwith", 'WITH_SAML')
+			if (status === 'WITH_SAML') {
+				window.open(`${window.location.origin}/auth/saml-login?redirect_url=${MDH_APP_PYTHON_SERVICE}/%23/dashboard/redirect&from_=UI`, '_self');
+				localStorage.setItem("loginwith", 'WITH_SAML');
+			} else {
+				history.push('/user/admin');
+			}
 		} else {
 			history.push('/user/login');
 		}

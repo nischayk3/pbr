@@ -1,3 +1,8 @@
+.card__block--wrapper {
+	overflow: hidden;
+}
+
+
 .custom__card {
 	.parameter__wraper {
 		.parameter__wraper--select {
@@ -10,29 +15,72 @@
 				width: 100px;
 			}
 
-			.select_field_search {
+			.select_field {
 				width: 100%
 			}
 		}
 	}
 }
 
+.parameter__wraper--select {
+	flex-direction: row;
+	display: flex;
+	justify-content: space-between;
+
+	p {
+		margin: 0;
+		width: 100px;
+	}
+
+	.input_field {
+		width: 100%;
+
+		>p {
+			display: none;
+		}
+	}
+}
 
 .hiearchy-tree__wrapper {
 	display: flex;
-	width: 400px;
-	height: calc(100vh - 490px);
+	width: 100%;
 	overflow-y: auto;
+
+
 
 	.sortable-tree__tree {
 		position: relative;
-		width: 370px;
+		width: 100%;
 
 		.sortable-tree__tree--node {
 			.anticon-plus {
 				margin-left: 30px;
+				vertical-align: super;
+			}
+
+			.ant-tag-geekblue {
+				margin: 3px 0;
+				width: 200px;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+
+			.sortable-tree__tree--materialnode {
+				display: flex;
+				margin: 3px 0;
+
+				.anticon-caret-right {
+					margin-left: -26px;
+
+				}
+
+				>p {
+					padding-left: 5px;
+				}
 			}
 		}
+
 
 		.sortable-tree__tree--head {
 			font-style: normal;
@@ -53,7 +101,8 @@
 
 			.rst__virtualScrollOverride {
 				padding: 0 0 0 4px;
-				overflow: hidden !important;
+				overflow-y: auto !important;
+				overflow-x: hidden !important;
 
 				.rstcustom__expandButton {
 					background-image: url('../../../../../../assets/icons/folderFilled.svg');
@@ -93,10 +142,83 @@
 				line-height: 18px;
 				color: #262626;
 				padding: 0px;
-				//margin: 6px 2px 6px 10px;
+				margin: 0px;
+				background: transparent;
+				border: 0
+			}
+
+			.sortable-tree__tree--materialtitle {
+				width: 200px;
+				font-style: normal;
+				font-weight: 400;
+				font-size: 12px;
+				line-height: 18px;
+				color: #262626;
+				padding: 0px;
+				margin-left: 7px;
+				margin-bottom: 0px;
 				background: transparent;
 				border: 0
 			}
 		}
 	}
+}
+
+.custom__card {
+	.ant-card-head {
+		.ant-card-extra {
+			padding: 0px;
+		}
+	}
+}
+
+.expand--panel {
+	height: calc(100vh - 490px);
+}
+
+.collapse--panel {
+	height: calc(100vh - 220px);
+}
+
+.rstcustom__rowSearchFocus {
+	.ant-tag-geekblue {
+		color: #d46b08;
+		background: #fff7e6;
+		border-color: #ffd591;
+	}
+
+	.sortable-tree__tree--node {
+		.sortable-tree__tree--materialnode {
+			.sortable-tree__tree--materialtitle {
+				color: #d46b08;
+				border-color: #ffd591;
+				background: #fff7e6;
+			}
+		}
+	}
+
+	// -webkit-box-shadow: inset 0 -7px 7px -3px #fc6421;
+	box-shadow: none;
+}
+
+.rstcustom__rowSearchMatch {
+	.ant-tag-geekblue {
+		color: #d46b08;
+		background: #fff7e6;
+		border-color: #ffd591;
+
+	}
+
+	.sortable-tree__tree--node {
+		.sortable-tree__tree--materialnode {
+			.sortable-tree__tree--materialtitle {
+				color: #d46b08;
+				border-color: #ffd591;
+				background: #fff7e6;
+			}
+		}
+	}
+
+	// -webkit-box-shadow: inset 0 -7px 7px -3px #0080ff;
+	box-shadow: none;
 }

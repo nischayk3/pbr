@@ -1,5 +1,51 @@
 .view__landing--layout {
-	grid-template-columns: 30% 69%;
-	grid-gap: 0 24px;
-	display: grid;
+	gap: 0 24px;
+	display: flex;
+
+	.trigger__left {
+		position: absolute;
+		left: -21px;
+		top: 50%;
+	}
+
+	.trigger__right {
+		position: absolute;
+		right: -21px;
+		top: 50%;
+
+		.panel__left--img {
+			transform: rotate(180deg);
+		}
+	}
+
+	.view-summary__center {
+		width: 80% !important;
+	}
+
+	.ant-layout-sider {
+		background: #fff;
+	}
+}
+
+
+.empty--layout {
+	/* Regular / 14px | 22px */
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 22px;
+	/* identical to box height, or 157% */
+	text-align: center;
+	color: #646464;
+
+	.ant-empty-image {
+		.ant-empty-img-simple {
+			width: 100%;
+		}
+	}
+}
+
+.variable__card--wrapper {
+	overflow: hidden;
 }

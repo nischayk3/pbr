@@ -143,7 +143,7 @@ const NodeDetails = (props) => {
 		{
 			key: '1',
 			label: (
-				<Radio value="Treat" onChange={makeOutlierCategorical} checked={outlinerValue == 'Treat'} >
+				<Radio value="Treat" onClick={makeOutlierCategorical} checked={outlinerValue == 'Treat'} >
 					Treat
 				</Radio>
 			),
@@ -151,7 +151,7 @@ const NodeDetails = (props) => {
 		{
 			key: '2',
 			label: (
-				<Radio value="Clip" onChange={makeOutlierCategorical} checked={outlinerValue == 'Clip'} >
+				<Radio value="Clip" onClick={makeOutlierCategorical} checked={outlinerValue == 'Clip'} >
 					Clip
 				</Radio>
 			),
@@ -159,7 +159,7 @@ const NodeDetails = (props) => {
 		{
 			key: '3',
 			label: (
-				<Radio value="Drop" onChange={makeOutlierCategorical} checked={outlinerValue == 'Drop'} >
+				<Radio value="Drop" onClick={makeOutlierCategorical} checked={outlinerValue == 'Drop'} >
 					Drop
 				</Radio>
 			),

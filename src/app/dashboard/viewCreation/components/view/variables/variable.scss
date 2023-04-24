@@ -1,0 +1,76 @@
+.add-var_block {
+	border: 1px dashed #486bc9;
+	box-sizing: border-box;
+	border-radius: 2px;
+	padding: 8px 14px;
+	margin-right: 16px;
+	height: 40px;
+	cursor: pointer;
+
+	span {
+		color: var(--primary-color);
+	}
+
+	p {
+		margin: 0px;
+		font-family: var(--primary-font-family);
+		font-style: normal;
+		font-weight: 400;
+		font-size: 16px;
+		line-height: 24px;
+		/* identical to box height, or 157% */
+		color: var(--primary-color);
+	}
+}
+
+.add-var_block_bg {
+	background: #adc6ff;
+}
+
+.variable-wrapper {
+	float: right;
+	padding: 0 0 18px 0;
+}
+
+.variable__card--block {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 14px;
+	height: 100%;
+	overflow-y: auto;
+
+	.var_block_card {
+		background: #f0f5ff;
+		border: 1px dashed #adc6ff;
+		box-sizing: border-box;
+		border-radius: 2px;
+		width: 140px;
+		text-align: center;
+		padding: 11.5px 17px 11px 17px;
+		height: 71px;
+
+		p {
+			margin: 0;
+		}
+
+		.var-btn {
+			display: flex;
+			flex-wrap: nowrap;
+			justify-content: space-between;
+
+			button {
+				background: transparent;
+				border: 0;
+				padding: 0;
+			}
+
+			.edit {
+				color: var(--primary-color);
+			}
+
+			.delete {
+				color: #ff2828;
+			}
+		}
+	}
+}

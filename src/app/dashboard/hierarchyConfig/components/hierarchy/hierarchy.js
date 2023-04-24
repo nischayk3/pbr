@@ -352,7 +352,9 @@ const Hierarchy = () => {
 								</div>
 							</div>
 
-							<Table className='expandable-table hierarchy-table' columns={plantMoleculeColumns} dataSource={moleculeData} pagination={false} />
+							<Table rowClassName={(record, index) =>
+								index % 2 === 0 ? "table-row-light" : "table-row-dark"
+							} className='expandable-table hierarchy-table' columns={plantMoleculeColumns} dataSource={moleculeData} pagination={false} />
 							<div className="add-button">
 								<Button
 									onClick={() => handleAdd()}
