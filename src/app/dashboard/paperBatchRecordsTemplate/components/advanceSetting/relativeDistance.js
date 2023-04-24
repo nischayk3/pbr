@@ -7,6 +7,7 @@ import {
     showNotification
 } from '../../../../../duck/actions/commonActions';
 import { useDispatch } from 'react-redux';
+import angleImage from '../../../../../assets/angleImage.png'
 
 function RelativeDistance(props) {
     let { method, formValues, setFormValues, name, setAdvancePopup, advancePopup } = props
@@ -22,7 +23,8 @@ function RelativeDistance(props) {
         angleRange2: 135,
         word: false,
         line: false,
-        range: [0.3, 0.8]
+        range: [0.3, 0.8],
+        regex: ''
 
     });
     const [saveAs, setSaveAs] = useState(false);
@@ -35,7 +37,7 @@ function RelativeDistance(props) {
             let str = val?.lastIndexOf("-");
             let req = {
                 version: 1,
-                name: val.slice(0,str),
+                name: val.slice(0, str),
                 created_by: null
             }
             let res = await getRelativeDirectionSetting(req)
@@ -49,7 +51,8 @@ function RelativeDistance(props) {
                     angleRange2: res.data[0].angle_range[1],
                     word: res.data[0].word,
                     line: res.data[0].line,
-                    range: res.data[0].dist_range
+                    range: res.data[0].dist_range,
+                    regex: res.data[0]?.regex
                 })
                 // if (val === 'default') {
                 //     let obj = formValues
@@ -121,7 +124,7 @@ function RelativeDistance(props) {
                 let user = localStorage.getItem("user_id")
                 let str = loadValue?.lastIndexOf("-");
                 let req = {
-                    name: str === -1 ? loadValue : loadValue.slice(0,str),
+                    name: str === -1 ? loadValue : loadValue.slice(0, str),
                     version: 1,
                     settings: {
                         word: settingValues.word,
@@ -131,8 +134,9 @@ function RelativeDistance(props) {
                         dist_range: settingValues.range,
                         angle: settingValues.angle,
                         angle_range: [settingValues.angleRange1, settingValues.angleRange2],
-                        method:method,
-                        setting_name:loadValue
+                        regex: settingValues.regex,
+                        method: method,
+                        setting_name: loadValue
                     },
                     action_type: "save",
                     created_by: user
@@ -172,8 +176,9 @@ function RelativeDistance(props) {
                         dist_range: settingValues.range,
                         angle: settingValues.angle,
                         angle_range: [settingValues.angleRange1, settingValues.angleRange2],
-                        method:method,
-                        setting_name:loadValue
+                        regex: settingValues.regex,
+                        method: method,
+                        setting_name: loadValue
                     },
                     action_type: "save_as",
                     created_by: user
@@ -272,14 +277,18 @@ function RelativeDistance(props) {
             </div>
             <div>
                 <Row style={{ marginTop: 20 }}>
-                    <Col span={12}>
+                    <Col span={6}>
                         <h4>Angle</h4>
-                        <InputNumber onChange={(val) => setSettingValues({ ...settingValues, angle: val })} min={1} max={360} value={settingValues.angle} />
+                        <InputNumber onChange={(val) => setSettingValues({ ...settingValues, angle: val })} value={settingValues.angle} />
+
+                    </Col>
+                    <Col span={6}>
+                        <img style={{ width: 110 }} src={angleImage} />
                     </Col>
                     <Col span={12}>
                         <h4>Angle Range</h4>
-                        <InputNumber onChange={(val) => setSettingValues({ ...settingValues, angleRange1: val })} min={1} max={360} value={settingValues.angleRange1} />
-                        <InputNumber onChange={(val) => setSettingValues({ ...settingValues, angleRange2: val })} style={{ marginLeft: 10 }} min={1} max={360} value={settingValues.angleRange2} />
+                        <InputNumber onChange={(val) => setSettingValues({ ...settingValues, angleRange1: val })} value={settingValues.angleRange1} />
+                        <InputNumber onChange={(val) => setSettingValues({ ...settingValues, angleRange2: val })} style={{ marginLeft: 10 }} value={settingValues.angleRange2} />
                     </Col>
                 </Row>
                 <Row style={{ marginTop: 20 }}>
@@ -295,17 +304,22 @@ function RelativeDistance(props) {
                 </Row>
                 <Row style={{ marginTop: 20 }}>
                     <Col span={12}>
-                        <h4>Range</h4>
+                        <h4>Distance Range</h4>
                         <Slider
                             range={{
                                 draggableTrack: true,
                             }}
+                            style={{ width: 190, marginTop: 20 }}
                             onChange={(val) => setSettingValues({ ...settingValues, range: val })}
                             step={0.1}
                             min={0}
                             max={1}
                             value={settingValues?.range}
                         />
+                    </Col>
+                    <Col span={12}>
+                        <h4>Regex</h4>
+                        <Input style={{ width: 190 }} value={settingValues?.regex} onChange={(val) => setSettingValues({ ...settingValues, regex: e.target.value })} placeholder='Enter Regex' />
                     </Col>
                 </Row>
             </div>

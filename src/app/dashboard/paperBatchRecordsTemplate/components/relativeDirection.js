@@ -11,7 +11,7 @@ import {
 import './styles.scss';
 
 function RelativeDirection(props) {
-    let { name, restField, setParameterFormData, parameterFormData, formValues, setFormValues, parameterForm, showModal, modalData } = props
+    let { name, restField, advancePopup, parameterFormData, formValues, setFormValues, parameterForm, showModal, modalData } = props
     const dispatch = useDispatch();
     const [fieldCount, setFieldCount] = useState([1]);
     const [loadSettingOptions, setLoadSettingOptions] = useState([]);
@@ -42,9 +42,15 @@ function RelativeDirection(props) {
         }
     }
 
+    useEffect(() => {
+        if(!advancePopup){
+            getDirctionValues()
+        }
+    
+    }, [advancePopup])
+
 
     useEffect(() => {
-        console.log("formValues",formValues)
         getDirctionValues()
         if(formValues[name]?.directions && typeof(formValues[name]?.directions) != 'string'){
             let arr = formValues[name]?.directions?.map((item,index )=> index)

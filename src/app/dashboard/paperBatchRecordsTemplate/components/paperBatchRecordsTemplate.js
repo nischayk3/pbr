@@ -17,7 +17,7 @@ import ImageMapper from 'react-image-mapper';
 import { useLocation, useParams, useHistory, useRouteMatch } from 'react-router-dom';
 
 import {
-	DeleteOutlined, LeftOutlined, MinusSquareTwoTone, MonitorOutlined, PlusSquareTwoTone, RightOutlined, InfoCircleOutlined, UndoOutlined
+	DeleteOutlined, ArrowRightOutlined, LeftOutlined, MinusSquareTwoTone, MonitorOutlined, PlusSquareTwoTone, RightOutlined, InfoCircleOutlined, UndoOutlined
 } from '@ant-design/icons';
 
 import Sider from 'antd/lib/layout/Sider';
@@ -669,7 +669,7 @@ const PaperBatchRecordsTemplate = () => {
 	 * TODO: get boundingBoxData info
 	 */
 	/* istanbul ignore next */
-	const getBoundingBoxDataInfo = async (width, height, mode, pageNumber = 0, table_identifier = {},filename=null) => {
+	const getBoundingBoxDataInfo = async (width, height, mode, pageNumber = 0, table_identifier = {}, filename = null) => {
 		try {
 			dispatch(showLoader());
 			let _reqBatch = {
@@ -838,6 +838,7 @@ const PaperBatchRecordsTemplate = () => {
 						param_valueArea: item?.param_value_rule?.regex_text,
 						param_max: item?.param_value_rule?.range_max,
 						param_min: item?.param_value_rule?.range_min,
+						valueType: item?.param_value_type,
 						param_valueTransformation: item?.param_value_rule?.factor,
 						uom_rule: item?.uom_value_rule?.rule_name,
 						uom_valueArea: item?.uom_value_rule?.regex_text,
@@ -863,6 +864,11 @@ const PaperBatchRecordsTemplate = () => {
 					if (item?.param_value_direction && typeof (item?.param_value_direction) != 'string') {
 						item?.param_value_direction.forEach((item, index) => {
 							obj[`dir${index}`] = item
+						})
+					}
+					if (item?.param_value_list) {
+						item?.param_value_list?.param_value_text?.forEach((item, index) => {
+							obj[`selection${index}`] = item
 						})
 					}
 					demoValues.users.push(obj)
@@ -899,7 +905,7 @@ const PaperBatchRecordsTemplate = () => {
 			}
 		}
 		getIdTemplateData()
-		
+
 	}, []);
 	/* istanbul ignore next */
 	useEffect(() => {
@@ -912,6 +918,16 @@ const PaperBatchRecordsTemplate = () => {
 				page_num: item?.param_page,
 				advance_setting: [item?.settings],
 				directions: item?.param_value_direction,
+				selection_method: item?.param_value_list?.param_value_text.map((i, ind) => (
+					{
+						selectionVal: i,
+						snippetID: item?.param_value_list?.param_value_snippet_id[ind],
+						coords: [
+							item?.param_value_list?.param_value_left[ind] * imageWidth, item?.param_value_list?.param_value_top[ind] * imageHeight,
+							(item?.param_value_list?.param_value_left[ind] + item?.param_value_list?.param_value_width[ind]) * imageWidth, (item?.param_value_list?.param_value_top[ind] + item?.param_value_list?.param_value_height[ind]) * imageHeight
+						]
+					}
+				)),
 				values: {
 					anchorValue: item?.param_key_text, anchorId: item?.param_value_text, snippetID: item?.param_key_snippet_id,
 					anchorCoords: [
@@ -1293,7 +1309,8 @@ const PaperBatchRecordsTemplate = () => {
 						page_name: ele?.pageIdValue,
 						param_value_direction: ele?.directions,
 						param_value_regex: parameterFormData[index]?.regex,
-						settings: ele?.advance_setting ? ele?.advance_setting[0] : {}
+						settings: ele?.advance_setting ? ele?.advance_setting[0] : {},
+						param_value_type: "checkbox"
 					}
 					if (ele.values) {
 						obj['color'] = "blue"
@@ -1380,7 +1397,7 @@ const PaperBatchRecordsTemplate = () => {
 
 					}
 					if (ele?.selection_method) {
-						obj["selection_method"] = {
+						obj["param_value_list"] = {
 							"param_value_height": [],
 							"param_value_left": [],
 							"param_value_text": [],
@@ -1389,12 +1406,12 @@ const PaperBatchRecordsTemplate = () => {
 							"param_value_snippet_id": [],
 						}
 						ele.selection_method.forEach(item => {
-							obj["selection_method"]['param_value_height'].push((item?.coords[3] - item?.coords[1]) / imageHeight)
-							obj["selection_method"]['param_value_left'].push(item?.coords[0] / imageWidth)
-							obj["selection_method"]['param_value_text'].push(item?.selectionVal)
-							obj["selection_method"]['param_value_top'].push(item?.coords[1] / imageHeight)
-							obj["selection_method"]['param_value_width'].push((item?.coords[2] - item?.coords[0]) / imageWidth)
-							obj["selection_method"]['param_value_snippet_id'].push(item?.snippetID)
+							obj["param_value_list"]['param_value_height'].push((item?.coords[3] - item?.coords[1]) / imageHeight)
+							obj["param_value_list"]['param_value_left'].push(item?.coords[0] / imageWidth)
+							obj["param_value_list"]['param_value_text'].push(item?.selectionVal)
+							obj["param_value_list"]['param_value_top'].push(item?.coords[1] / imageHeight)
+							obj["param_value_list"]['param_value_width'].push((item?.coords[2] - item?.coords[0]) / imageWidth)
+							obj["param_value_list"]['param_value_snippet_id'].push(item?.snippetID)
 						})
 
 					}
@@ -1669,6 +1686,25 @@ const PaperBatchRecordsTemplate = () => {
 					factor: parameterFormData[activeKey]?.date_valueTransformation, transformation: parameterFormData[activeKey]?.date_transformation
 				}
 			}
+			if (formValues[activeKey]?.selection_method) {
+				obj["param_value_list"] = {
+					"param_value_height": [],
+					"param_value_left": [],
+					"param_value_text": [],
+					"param_value_top": [],
+					"param_value_width": [],
+					"param_value_snippet_id": [],
+				}
+				formValues[activeKey].selection_method.forEach(item => {
+					obj["param_value_list"]['param_value_height'].push((item?.coords[3] - item?.coords[1]) / imageHeight)
+					obj["param_value_list"]['param_value_left'].push(item?.coords[0] / imageWidth)
+					obj["param_value_list"]['param_value_text'].push(item?.selectionVal)
+					obj["param_value_list"]['param_value_top'].push(item?.coords[1] / imageHeight)
+					obj["param_value_list"]['param_value_width'].push((item?.coords[2] - item?.coords[0]) / imageWidth)
+					obj["param_value_list"]['param_value_snippet_id'].push(item?.snippetID)
+				})
+
+			}
 			let pageArr = []
 			if (pageIdFormValues) {
 				pageIdFormValues.forEach(item => {
@@ -1693,16 +1729,16 @@ const PaperBatchRecordsTemplate = () => {
 		// _reqBatch.templateInfo.pbrTemplateInfo = arr;
 		// _reqBatch.templateInfo.pbrPageIdentifier = pageIdentifierData;
 		let res = await findParameter(req)
-		if (res?.Found_file_list?.length > 0) {
-			dispatch(showNotification('success', res?.Message))
-			setFileList(res.Found_file_list)
-			setSearchedFileList(res.Searched_file_list)
+		if (res?.found_file_list?.length > 0) {
+			dispatch(showNotification('success', res?.message))
+			setFileList(res.found_file_list)
+			setSearchedFileList(res.searched_file_list)
 			dispatch(hideLoader());
 
 		} else {
-			setFileList(res.Found_file_list)
-			setSearchedFileList(res.Searched_file_list)
-			dispatch(showNotification('error', res.Message))
+			setFileList(res.found_file_list)
+			setSearchedFileList(res.searched_file_list)
+			dispatch(showNotification('error', res.message))
 			dispatch(hideLoader());
 
 		}
@@ -1733,7 +1769,9 @@ const PaperBatchRecordsTemplate = () => {
 					method: ele.method,
 					param_value_direction: ele?.directions,
 					param_value_regex: parameterFormData[index]?.regex,
-					settings: ele?.advance_setting ? ele?.advance_setting[0] : {}
+					settings: ele?.advance_setting ? ele?.advance_setting[0] : {},
+					param_value_type: "checkbox"
+
 				}
 				if (ele.values) {
 					obj['color'] = "blue"
@@ -1819,6 +1857,25 @@ const PaperBatchRecordsTemplate = () => {
 						factor: parameterFormData[index]?.date_valueTransformation, transformation: parameterFormData[index]?.date_transformation
 					}
 				}
+				if (ele?.selection_method) {
+					obj["param_value_list"] = {
+						"param_value_height": [],
+						"param_value_left": [],
+						"param_value_text": [],
+						"param_value_top": [],
+						"param_value_width": [],
+						"param_value_snippet_id": [],
+					}
+					ele.selection_method.forEach(item => {
+						obj["param_value_list"]['param_value_height'].push((item?.coords[3] - item?.coords[1]) / imageHeight)
+						obj["param_value_list"]['param_value_left'].push(item?.coords[0] / imageWidth)
+						obj["param_value_list"]['param_value_text'].push(item?.selectionVal)
+						obj["param_value_list"]['param_value_top'].push(item?.coords[1] / imageHeight)
+						obj["param_value_list"]['param_value_width'].push((item?.coords[2] - item?.coords[0]) / imageWidth)
+						obj["param_value_list"]['param_value_snippet_id'].push(item?.snippetID)
+					})
+
+				}
 				arr.push(obj);
 			});
 			let pageArr = []
@@ -1841,12 +1898,12 @@ const PaperBatchRecordsTemplate = () => {
 			req1.templateInfo.pbrTemplateInfo = arr;
 			req1.templateInfo.pbrPageIdentifier = pageArr;
 			let res = await findParameter(req1)
-			if (res?.Found_file_list?.length > 0) {
-				setModalData(res.Extraction)
-				dispatch(showNotification('success', res?.Message))
+			if (res?.found_file_list?.length > 0) {
+				setModalData(res.extraction)
+				dispatch(showNotification('success', res?.message))
 			} else {
 				setModalData(res.Extraction)
-				dispatch(showNotification('error', res?.Message))
+				dispatch(showNotification('error', res?.message))
 			}
 			setTableLoading(false)
 			dispatch(hideLoader());
@@ -1941,17 +1998,28 @@ const PaperBatchRecordsTemplate = () => {
 	}
 
 	const genExtra = (remove, name, key, restfield) => (
-		<DeleteOutlined
-			id="deleteParameter"
-			onClick={event => {
-				// If you don't want click extra trigger collapse, you can prevent this:
-				remove(name)
-				let arr = [...formValues]
-				arr.splice(name, 1)
-				setFormValues(arr)
-				// event.stopPropagation();
-			}}
-		/>
+		<div>
+			<Tooltip title={'Go to page'}>
+				<ArrowRightOutlined style={{marginRight:10}} onClick={() => {
+					formValues[name]?.page_num ?
+						handlePageChange(formValues[name]?.page_num) :
+						dispatch(showNotification('error', "Create Parameter with Anchor and Value"))
+				}} />
+			</Tooltip>
+
+			<DeleteOutlined
+				id="deleteParameter"
+				onClick={event => {
+					// If you don't want click extra trigger collapse, you can prevent this:
+					remove(name)
+					let arr = [...formValues]
+					arr.splice(name, 1)
+					setFormValues(arr)
+					// event.stopPropagation();
+				}}
+			/>
+		</div>
+
 	);
 	/* istanbul ignore next */
 	function initDraw(canvas) {
@@ -2048,7 +2116,7 @@ const PaperBatchRecordsTemplate = () => {
 		getImage(null, val ? val : changeFileValue)
 		for (let i = 0; i < 2; i++) {
 			setTimeout(() => {
-				getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode, pageNumber - 1,{},val ? val : changeFileValue);
+				getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode, pageNumber - 1, {}, val ? val : changeFileValue);
 			}, i * 1000)
 		}
 		if (params?.temp_disp_id) {
@@ -2263,7 +2331,7 @@ const PaperBatchRecordsTemplate = () => {
 		}
 
 	}
-
+	
 	return (
 		<div className='pbr-content-layout' >
 			<div className='custom-wrapper pbr-wrapper'>
@@ -2636,7 +2704,7 @@ const PaperBatchRecordsTemplate = () => {
 																						/>
 																					</Form.Item>
 																					{formValues[name]?.method === "relative_direction" &&
-																						<RelativeDirection modalData={modalData} showModal={() => showModal(false)} parameterForm={parameterForm} setParameterFormData={setParameterFormData} parameterFormData={parameterFormData} name={name} setFormValues={setFormValues} formValues={formValues} restField={restField} />
+																						<RelativeDirection advancePopup={advancePopup} modalData={modalData} showModal={() => showModal(false)} parameterForm={parameterForm} setParameterFormData={setParameterFormData} parameterFormData={parameterFormData} name={name} setFormValues={setFormValues} formValues={formValues} restField={restField} />
 																					}
 																					{formValues[name]?.method === "selection_method" &&
 																						<SelectionMethodInput selectionDraggedValue={selectionDraggedValue} setSelectionActive={setSelectionActive} parameterForm={parameterForm} setParameterFormData={setParameterFormData} parameterFormData={parameterFormData} name={name} setFormValues={setFormValues} formValues={formValues} restField={restField} />
@@ -3180,7 +3248,7 @@ const PaperBatchRecordsTemplate = () => {
 								</Panel>
 								<Panel id="tableExtraction" header='Table' key='4'>
 									<div className='tabletype'>
-										<DynamicTableForm handleSideState={handleSideState} sideTableData={sideTableData}
+										<DynamicTableForm handleSideState={handleSideState} sideTableData={sideTableData} handlePageChange={handlePageChange}
 											setTableActiveKey={setTableActiveKey} setFormTableData={setFormTableData} initialSideTableData={initialSideTableData}
 											handleOnFinishFailed={handleOnFinishFailed} parameterFormFinish={parameterFormFinish} params={params}
 											pageIdDropdownValues={pageIdDropdownValues} initialPageIdentifierData={initialPageIdentifierData} pageNumber={pageNumber}
@@ -3204,13 +3272,13 @@ const PaperBatchRecordsTemplate = () => {
 											Preview
 										</p>
 										<Tooltip title={params?.file}>
-											<span onClick={() => setChangeFile(true)} style={{ marginTop: 4,cursor:'pointer' }}>{params?.file?.slice(0, 28)}</span>
+											<span onClick={() => setChangeFile(true)} style={{ marginTop: 4, cursor: 'pointer' }}>{params?.file?.slice(0, 28)}</span>
 											{!saveAsFlag &&
 												<span onClick={() => {
 													setChangeFileValue(originalFile)
 													handleChangeFileOk(originalFile)
 													setSaveAsFlag(true)
-												}} style={{ marginLeft: 8, marginTop: 4,cursor:'pointer' }}><UndoOutlined /></span>
+												}} style={{ marginLeft: 8, marginTop: 4, cursor: 'pointer' }}><UndoOutlined /></span>
 											}
 										</Tooltip>
 										<div>
@@ -3317,9 +3385,9 @@ const PaperBatchRecordsTemplate = () => {
 					</div>
 				</div>
 			</div>
-			<AdvanceSetting formValues={formValues} setFormValues={setFormValues} name={activeKey} method={formValues[activeKey]?.method} advancePopup={advancePopup} setAdvancePopup={setAdvancePopup} />
+			{advancePopup && <AdvanceSetting formValues={formValues} setFormValues={setFormValues} name={activeKey} method={formValues[activeKey]?.method} advancePopup={advancePopup} setAdvancePopup={setAdvancePopup} />}
 			<WorkflowPreviewModal templateVersion={templateVersion} params={params} isModalOpen={workflowPreviewModal} setIsModalOpen={setWorkflowPreviewModal} />
-			<Modal title="Change File" visible={changeFile} onOk={()=>handleChangeFileOk()} onCancel={() => setChangeFile(false)}>
+			<Modal title="Change File" visible={changeFile} onOk={() => handleChangeFileOk()} onCancel={() => setChangeFile(false)}>
 				<Select onChange={(val) => setChangeFileValue(val)} value={changeFileValue} options={changeFileOptions} style={{ width: 400 }} />
 			</Modal>
 			<Modal title="Save As" visible={saveAsModal} onOk={handleSaveAs} onCancel={() => {
