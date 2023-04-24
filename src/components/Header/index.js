@@ -78,7 +78,7 @@ const HeaderBar = () => {
 		localStorage.removeItem('username');
 
 		window.open(`${logoutUrl}`, '_self');
-		window.open(`${logoutUrl}?redirect_url=${MDH_APP_PYTHON_SERVICE}/%23/user/logout`, '_self');
+		window.open(`${logoutUrl}?redirect_url=${MDH_APP_PYTHON_SERVICE}/mi/%23/user/logout`, '_self');
 	}
 
 	const wrapperRef = useRef(null);
