@@ -4,6 +4,7 @@
 
 .param-table {
 	position: relative;
+	margin-top: 60px;
 
 	.param-column {
 		position: absolute;
@@ -11,7 +12,7 @@
 		z-index: 1;
 		background: #f0f7fa;
 		padding: 8px 10px;
-		top: 63px;
+		top: 5px;
 
 		.right-circle {
 			font-size: 18px;
@@ -45,4 +46,21 @@
 .delete-param {
 	color: #FF2828;
 	font-size: 18px;
+}
+
+.variable__input--block {
+	.input_field {
+		>p {
+			width: 160px;
+			padding: 0;
+			line-height: 30px;
+		}
+	}
+}
+
+.variable__input--button {
+	display: flex;
+	flex-direction: row-reverse;
+	gap: 16px;
+	margin: 16px 0 0 0;
 }

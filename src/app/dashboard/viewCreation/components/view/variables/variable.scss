@@ -42,35 +42,35 @@
 	.var_block_card {
 		background: #f0f5ff;
 		border: 1px dashed #adc6ff;
-		box-sizing: border-box;
 		border-radius: 2px;
-		width: 140px;
+		box-sizing: border-box;
+		height: 36px;
+		padding: 6px 10px;
 		text-align: center;
-		padding: 11.5px 17px 11px 17px;
-		height: 71px;
+		width: 130px;
+		display: flex;
+		justify-content: space-between;
+
+		button {
+			background: transparent;
+			border: 0;
+			padding: 0;
+		}
+
+		.edit {
+			color: var(--primary-color);
+		}
+
+		.delete {
+			color: #ff2828;
+			vertical-align: 0.1em;
+		}
 
 		p {
 			margin: 0;
+			padding: 2px 0;
 		}
 
-		.var-btn {
-			display: flex;
-			flex-wrap: nowrap;
-			justify-content: space-between;
 
-			button {
-				background: transparent;
-				border: 0;
-				padding: 0;
-			}
-
-			.edit {
-				color: var(--primary-color);
-			}
-
-			.delete {
-				color: #ff2828;
-			}
-		}
 	}
 }
