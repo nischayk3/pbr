@@ -319,7 +319,7 @@ function RelativeDistance(props) {
                     </Col>
                     <Col span={12}>
                         <h4>Regex</h4>
-                        <Input style={{ width: 190 }} value={settingValues?.regex} onChange={(val) => setSettingValues({ ...settingValues, regex: e.target.value })} placeholder='Enter Regex' />
+                        <Input style={{ width: 190 }} value={settingValues?.regex} onChange={(e) => setSettingValues({ ...settingValues, regex: e.target.value })} placeholder='Enter Regex' />
                     </Col>
                 </Row>
             </div>
