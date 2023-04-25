@@ -7,26 +7,23 @@
  */
 
 import { PlusOutlined } from '@ant-design/icons';
-import { Card, Empty } from "antd";
+import { Button, Card, Empty, Modal } from "antd";
 import React, { useState } from "react";
 import CustomButton from "../../../../../../components/CustomButton/CustomButton";
+import InputField from "../../../../../../components/InputField/InputField";
 import LabelTag from "../../../../../../components/LabelTag";
 import ParameterTable from "./parameterTable/parameterTable";
 import "./viewParameterSummary.scss";
 
 const ViewParamterSummary = () => {
 	const [cardTitle, setCardTitle] = useState("Create Variable");
-	const [createNameModal, setCreateNameModal] = useState(false);
-
-	const addVariable = () => {
-		setCardTitle("Select parameters");
-		setRowDisable(true);
-		setIscheckBox(true);
-	};
+	const [variableName, setVariableName] = useState("");
+	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const addVariableName = () => {
+		console.log("clicked");
 		setVariableName("");
-		setCreateNameModal(!createNameModal);
+		setIsModalOpen(!isModalOpen);
 	};
 
 	return (
@@ -44,29 +41,37 @@ const ViewParamterSummary = () => {
 			</Card>
 			<Card title='Parameter' className='custom__card'>
 				<div className="variable-wrapper">
-					<CustomButton className="add-var_block add-var_block_bg" icon={<PlusOutlined />} type="dashed" >Create variable</CustomButton>
+					<CustomButton className="add-var_block add-var_block_bg" icon={<PlusOutlined />} type="dashed" onClick={addVariableName} >Create variable</CustomButton>
 					<CustomButton className="custom__btn--dashed" icon={<PlusOutlined />} type="dashed" >Create function</CustomButton>
-
-
-					{/* {varData && (
-							varData.map((item, index) => {
-								return (
-									<VariableCard
-										id={item.id}
-										// item={item}
-										variableName={item.variableName}
-										deleteVariable={deleteVariable}
-										editVariable={editVariable}
-										fromWorkflowScreen={fromWorkflowScreen}
-									/>
-								);
-							})
-						)} */}
-
 				</div>
 				<ParameterTable />
+
 			</Card>
-		</div>
+			<Modal
+				visible={isModalOpen}
+				width={400}
+				title="Create Variable"
+				footer={null}
+				onCancel={addVariableName}
+			// handleCancel={addVariableName}
+			// closable={false}
+			>
+				<div className="variable__input--block">
+					<InputField
+						label="Variable name"
+						placeholder="Enter Variable name"
+						value={variableName}
+						onChangeInput={(e) => setVariableName(e.target.value)}
+					/>
+				</div>
+				<div className="variable__input--button">
+					<Button className='custom-primary-btn'>Cancel</Button>
+					<Button className="custom-secondary-btn" >
+						Create
+					</Button>
+				</div>
+			</Modal>
+		</div >
 	)
 }
 
