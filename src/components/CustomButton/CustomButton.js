@@ -9,9 +9,9 @@
 import { Button } from 'antd';
 import React from 'react';
 
-const CustomButton = ({ children, className, type, shape, icon, size, ...rest }) => {
+const CustomButton = ({ children, className, type, shape, icon, size, onClick, ...rest }) => {
 	return (
-		<Button className={className} type={type} shape={shape} size={size} icon={icon}  {...rest}>
+		<Button className={className} type={type} shape={shape} size={size} icon={icon} onClick={onClick}  {...rest}>
 			{children}
 		</Button>
 	);
