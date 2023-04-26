@@ -52,7 +52,7 @@ spec:
     app: cpv-nextgen-ui
   type: ClusterIP
 ---
-apiVersion: autoscaling/v2beta1     # kubectl api-versions  (to check the versions of api w
+apiVersion: autoscaling/v2beta2     # kubectl api-versions  (to check the versions of api w
 kind: HorizontalPodAutoscaler
 metadata:
   name: cpv-nextgen-ui-autoscaler
