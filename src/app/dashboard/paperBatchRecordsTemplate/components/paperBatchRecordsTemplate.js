@@ -894,6 +894,7 @@ const PaperBatchRecordsTemplate = () => {
 
 					}
 					sideData["keyCount"] = item.keys.length
+					sideData["page_num"] = item.page_num
 					pageID.users.push(sideData)
 				})
 				setPageIdFormValues(pageID?.users)
@@ -1418,27 +1419,26 @@ const PaperBatchRecordsTemplate = () => {
 					arr.push(obj);
 
 				});
-
-
-
 				let pageArr = []
 				if (pageIdFormValues) {
 					pageIdFormValues?.forEach(item => {
 						if (item != undefined) {
-							let obj = { name: "", keys: [] }
+							let obj = { name: "", keys: [],page_num:'' }
 							Object.entries(item).forEach(item1 => {
-								if (item1[0] != "name" && item1[0] != "keyCount") {
+								if (item1[0] != "name" && item1[0] != "keyCount" && item1[0] != "page_num") {
 									obj.keys.push(item1[1])
 								}
 								if (item1[0] === "name") {
 									obj.name = item1[1]
+								}
+								if (item1[0] === "page_num") {
+									obj.page_num = item1[1]
 								}
 							})
 							pageArr.push(obj)
 						}
 					})
 				}
-
 				_reqBatch.templateInfo.pbrTemplateInfo = arr;
 				_reqBatch.templateInfo.pbrPageIdentifier = pageArr;
 				let tableRer = tableDataReq()
@@ -1605,7 +1605,7 @@ const PaperBatchRecordsTemplate = () => {
 				name: formValues[activeKey]?.name,
 				method: formValues[activeKey]?.method,
 				page_name: formValues[activeKey]?.pageIdValue,
-				param_value_direction: ele?.directions,
+				param_value_direction: formValues[activeKey]?.directions,
 				param_value_regex: parameterFormData[activeKey]?.regex,
 				settings: formValues[activeKey]?.advance_setting ? formValues[activeKey]?.advance_setting[0] : {}
 			}
@@ -1902,7 +1902,7 @@ const PaperBatchRecordsTemplate = () => {
 				setModalData(res.extraction)
 				dispatch(showNotification('success', res?.message))
 			} else {
-				setModalData(res.Extraction)
+				setModalData(res.extraction)
 				dispatch(showNotification('error', res?.message))
 			}
 			setTableLoading(false)
@@ -2517,7 +2517,7 @@ const PaperBatchRecordsTemplate = () => {
 									</Form>
 								</Panel>
 								<Panel id="page-Identifier" header='Page Identifier' key='2'>
-									<PageIdentifierForm pageDragValue={pageDragValue} setPageIdFormValues={setPageIdFormValues}
+									<PageIdentifierForm handlePageChange={handlePageChange} pageNumber={pageNumber} pageDragValue={pageDragValue} setPageIdFormValues={setPageIdFormValues}
 										handleOnFinishFailed={handleOnFinishFailed} parameterFormFinish={parameterFormFinish}
 										initialPageIdentifierData={initialPageIdentifierData} matBatch={matBatch} params={params} />
 								</Panel>
@@ -3385,7 +3385,7 @@ const PaperBatchRecordsTemplate = () => {
 					</div>
 				</div>
 			</div>
-			{advancePopup && <AdvanceSetting formValues={formValues} setFormValues={setFormValues} name={activeKey} method={formValues[activeKey]?.method} advancePopup={advancePopup} setAdvancePopup={setAdvancePopup} />}
+			{advancePopup && <AdvanceSetting pageNumber={pageNumber} imageHeight={imageHeight} imageWidth={imageWidth} formValues={formValues} setFormValues={setFormValues} name={activeKey} method={formValues[activeKey]?.method} advancePopup={advancePopup} setAdvancePopup={setAdvancePopup} />}
 			<WorkflowPreviewModal templateVersion={templateVersion} params={params} isModalOpen={workflowPreviewModal} setIsModalOpen={setWorkflowPreviewModal} />
 			<Modal title="Change File" visible={changeFile} onOk={() => handleChangeFileOk()} onCancel={() => setChangeFile(false)}>
 				<Select onChange={(val) => setChangeFileValue(val)} value={changeFileValue} options={changeFileOptions} style={{ width: 400 }} />

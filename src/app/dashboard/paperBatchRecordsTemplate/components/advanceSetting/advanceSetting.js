@@ -6,7 +6,7 @@ import KeyValue from './keyValue'
 import RelativeDistance from './relativeDistance';
 import SelectionMethod from './selection_method';
 function AdvanceSetting(props) {
-    let { advancePopup, setAdvancePopup,method,formValues,setFormValues,name } = props
+    let { advancePopup, setAdvancePopup,method,formValues,setFormValues,name,imageHeight,imageWidth,pageNumber } = props
     const [mainMethod, setMainMethod] = useState('');
 
     useEffect(() => {
@@ -28,7 +28,7 @@ function AdvanceSetting(props) {
             return <RelativeDistance method={method} formValues={formValues} setFormValues={setFormValues} name={name} advancePopup={advancePopup} setAdvancePopup={setAdvancePopup} />
         }
         else if(method === "selection_method"){
-            return <SelectionMethod method={method} formValues={formValues} setFormValues={setFormValues} name={name} advancePopup={advancePopup} setAdvancePopup={setAdvancePopup} />
+            return <SelectionMethod pageNumber={pageNumber} method={method} formValues={formValues} setFormValues={setFormValues} name={name} advancePopup={advancePopup} setAdvancePopup={setAdvancePopup}  imageHeight={imageHeight} imageWidth={imageWidth} />
         }else{
             return <div>Coming Soon....</div>
         }
