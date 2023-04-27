@@ -34,9 +34,9 @@ spec:
           resources:
             requests:
               memory: 0.5Gi
-                limits:
-                  cpu: 200m
-                  memory: 1Gi
+            limits:
+              cpu: 200m
+              memory: 1Gi
 ---
 apiVersion: v1     #service is enabled which is available in cluster , not outside .  Because to discover by the depeendency pods 
 kind: Service
