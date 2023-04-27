@@ -1,6 +1,6 @@
-FROM IMAGE as build
-ARG app_dns
-ARG jupyter_dns
+FROM node:12 as build
+#ARG app_dns
+#ARG jupyter_dns
 #RUN echo "dns name is ${app_dns}"
 RUN echo "deb http://archive.debian.org/debian stretch stretch-security main contrib non-free" > /etc/apt/sources.list && \
 	apt-get -y update && \

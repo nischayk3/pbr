@@ -62,7 +62,7 @@ pipeline {
           stage("Build Docker Image") {
             steps {
                 withDockerRegistry(credentialsId: 'docker-registry-mareana', url: 'https://registry.cloud.mareana.com') {
-                sh 'sudo docker build -t  $DOCKER_IMAGE:$BUILD_NUMBER --no-cache -f Dockerfile-dev .'
+                sh 'sudo docker build -t  $DOCKER_IMAGE:$BUILD_NUMBER --no-cache -f Dockerfile-prod .'
               }
             }
           }
