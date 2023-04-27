@@ -11,7 +11,7 @@ const LabelTag = props => {
 	return (
 		<div className='lable-tag'>
 			<p>{props.lableName} : </p>
-			<p>{props.lableValue}</p>
+			<p> {props.lableValue}</p>
 		</div>
 	);
 };
