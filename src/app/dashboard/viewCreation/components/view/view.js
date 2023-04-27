@@ -15,8 +15,8 @@ import "./view.scss";
 import ViewParamterSummary from "./viewParamterSummary/viewParameterSummary";
 
 const View = () => {
-	const [leftPanelCollapsed, setLeftPanelCollapsed] = useState(true);
-	const [rightPanelCollapsed, setRightPanelCollapsed] = useState(false);
+	const [leftPanelCollapsed, setLeftPanelCollapsed] = useState(false);
+	const [rightPanelCollapsed, setRightPanelCollapsed] = useState(true);
 
 	const toggleLeftCollapsed = () => {
 		setLeftPanelCollapsed(!leftPanelCollapsed);
