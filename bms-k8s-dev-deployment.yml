@@ -34,7 +34,7 @@ spec:
           resources:
             requests:
               memory: 0.5Gi
-       restartPolicy: Always
+      restartPolicy: Always
               #  limits:
                   #   cpu: 200m
                   #  memory: 1Gi
