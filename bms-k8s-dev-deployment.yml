@@ -34,10 +34,9 @@ spec:
           resources:
             requests:
               memory: 0.5Gi
-      restartPolicy: Always
-              #  limits:
-                  #   cpu: 200m
-                  #  memory: 1Gi
+                limits:
+                  cpu: 200m
+                  memory: 1Gi
 ---
 apiVersion: v1     #service is enabled which is available in cluster , not outside .  Because to discover by the depeendency pods 
 kind: Service
@@ -66,15 +65,15 @@ spec:
     name: cpv-nextgen-ui
   minReplicas: 1
   maxReplicas: 2
-  #  targetCPUUtilizationPercentage: 80
+    targetCPUUtilizationPercentage: 80
   metrics:
-          #  - type: Resource
-          #resource:
-          # name: cpu
-          #      targetAverageUtilization: 80
   - type: Resource
     resource:
-      name: memory
+      name: cpu
+      targetAverageUtilization: 80
+ # - type: Resource
+  #  resource:
+   #   name: memory
       # targetAverageValue: 200Mi  not work, changed to below
-      targetAverageUtilization: 90
+   #   targetAverageUtilization: 90
 
