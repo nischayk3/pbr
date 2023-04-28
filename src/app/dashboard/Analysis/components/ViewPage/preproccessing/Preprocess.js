@@ -1,4 +1,4 @@
-import { Button, Col, Progress, Row, Select, Skeleton, Table } from "antd";
+import { Button, Col, Progress, Row, Select, Skeleton, Table, Popconfirm } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
@@ -15,12 +15,15 @@ import {
 } from "../../../../../../services/analyticsService";
 import "./preprocess.scss";
 
+const { Option } = Select
+
 const Preprocess = ({ setModelData, setTableKey, editFinalJson }) => {
 	const location = useLocation();
 	const dispatch = useDispatch();
 	const [preprocessData, setPreprocessData] = useState([]);
 	const [selectedValues, setSelectedValues] = useState();
 	const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+	const [deleteRows, setDeleteRows] = useState(new Set());
 	const [progressBarPercentage, setProgressbarPercentage] = useState(10)
 	const progress = useRef(10);
 	const [showProgressBar, setShowProgressBar] = useState(false)
@@ -30,7 +33,6 @@ const Preprocess = ({ setModelData, setTableKey, editFinalJson }) => {
 		(state) => state.analyticsReducer.viewData
 	);
 	let columns = [];
-
 	const first = "batch_num";
 	let objkeys = (
 		preprocessData !== undefined && preprocessData.length > 0
@@ -43,13 +45,28 @@ const Preprocess = ({ setModelData, setTableKey, editFinalJson }) => {
 	const uniqueArr = (value, index, self) => {
 		return self.indexOf(value) === index;
 	};
+	const onConfirmOk = (record) => {
+		if (!deleteRows.has(record.batch_num)) {
+			let array = [...selectedRowKeys]
+			let find_idx = array.findIndex((i) => i == record.batch_num)
+			array.splice(find_idx, 1)
+			setSelectedRowKeys(array)
+			setDeleteRows(new Set([record.batch_num, ...deleteRows]));
+		}
+	}
 	const filterColumn = objkeys.filter(uniqueArr);
 	filterColumn.forEach((item, i) => {
 		columns.push({
 			title: item.toUpperCase().replace("_", " "),
 			dataIndex: item,
 			key: `${item}-${i}`,
-			render: (text) => String(text),
+			render: (text, record) => text == null ? <Popconfirm
+				title="Delete the row"
+				description="Are you sure to delete this row?"
+				okText="Yes"
+				cancelText="No"
+				onConfirm={() => onConfirmOk(record)}
+			> {String(text)}  </Popconfirm> : String(text),
 		});
 	});
 	columns = columns.filter((ele) => ele.title !== "KEY");
@@ -90,9 +107,24 @@ const Preprocess = ({ setModelData, setTableKey, editFinalJson }) => {
 		setSelectedValues(value);
 	};
 
-	const onSelectChange = (newSelectedRowKeys) => {
-		setSelectedRowKeys(newSelectedRowKeys);
+	const onSelectChange = (selectedRowkey) => {
+		setSelectedRowKeys(selectedRowkey);
+		let length = selectedRowkey.length
+		let data_inserted = selectedRowkey[length - 1]
+		const delete_rows = [...deleteRows]
+		if (delete_rows.length > 0 && delete_rows.includes(data_inserted)) {
+			let f_index = delete_rows.findIndex((i) => i == data_inserted)
+			delete_rows.splice(f_index, 1)
+			setDeleteRows(new Set(delete_rows));
+		}
 	};
+	const rowClassName = (record, index) => {
+		if (deleteRows.has(record.batch_num)) {
+			return 'strike-row';
+		}
+		return '';
+	};
+
 
 	const rowSelection = {
 		selectedRowKeys,
@@ -241,6 +273,7 @@ const Preprocess = ({ setModelData, setTableKey, editFinalJson }) => {
 							pagination={{ pageSize: 8 }}
 							rowKey={(record) => record.key}
 							rowSelection={rowSelection}
+							rowClassName={rowClassName}
 						/>
 					</Col>
 				</Row></> : <Skeleton style={{ marginTop: '50px' }} active paragraph={{
