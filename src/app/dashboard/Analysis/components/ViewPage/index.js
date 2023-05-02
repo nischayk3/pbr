@@ -2,7 +2,7 @@
  * @author Mihir Bagga <mihir.bagga@mareana.com>
  * @Mareana - CPV Product
  * @version 2
- * @Last Modified - 12 April, 2023
+ * @Last Modified - 28 April, 2023
  * @Last Changed By - @Mihir
  */
 
@@ -400,7 +400,7 @@ const ViewPageAnalysis = () => {
 					{/* {exectStart && <TabPane tab="Transformation" key="4">
 						<Transformation finalModelJson={finalModelJson} editFinalJson={editFinalJson} tableKey={tableKey} />
 					</TabPane>} */}
-					{resultsData?.run_status !== 'Pending' && resultsData?.run_status !== 'Not Executed' && <TabPane tab="Results" key="5">
+					{resultStatus !== 'Pending' && resultStatus !== 'Not Executed' && <TabPane tab="Results" key="5">
 						<Results jobId={jobId} tablekey={tableKey} modelType={modelType} resultsData={resultsData} metricList={metricList} resultStatus={resultStatus} setResultsData={setResultsData} />
 					</TabPane>}
 				</Tabs>
@@ -416,7 +416,7 @@ const ViewPageAnalysis = () => {
 				status={approveReject}
 			/>
 			{executedModel && <ModalComponent isModalVisible={executedModel} closable={false} centered>
-				<ModelExcecute jobId={jobId} getResultFunc={getResultFunc} resultsData={resultsData} results={results} />
+				<ModelExcecute jobId={jobId} getResultFunc={getResultFunc} resultsData={resultsData} resultStatus={resultStatus} results={results} />
 			</ModalComponent>}
 			<ModalComponent
 				title="Schedule Execution"

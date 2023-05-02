@@ -3,13 +3,13 @@ import { useParams } from "react-router-dom";
 import "./viewPage.scss";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { Progress } from "antd";
-import { MDH_AIRFLOW_DAGS,MDH_AIRFLOW_ANALYTICS } from "../../../../../constants/apiBaseUrl";
+import { MDH_AIRFLOW_DAGS, MDH_AIRFLOW_ANALYTICS } from "../../../../../constants/apiBaseUrl";
 import ModelExcecuteImg1 from "../../../../../assets/images/analysis_execute_images/ExecuteImg1.svg";
 import ModelExcecuteImg2 from "../../../../../assets/images/analysis_execute_images/ExecuteImg2.svg";
 import ModelExcecuteImg3 from "../../../../../assets/images/analysis_execute_images/ExecuteImg3.svg";
 import ModelExcecuteImg4 from "../../../../../assets/images/analysis_execute_images/ExecuteImg4.svg";
 
-const ModelExcecute = ({ getResultFunc, resultsData, jobId }) => {
+const ModelExcecute = ({ getResultFunc, resultsData, jobId, resultStatus }) => {
   const [execPercent, setExecPercent] = useState(20);
   const [content, setContent] = useState("Getting ready to build your model");
   const [imgSrc, setImgSrc] = useState(ModelExcecuteImg1);
@@ -24,7 +24,7 @@ const ModelExcecute = ({ getResultFunc, resultsData, jobId }) => {
       setImgSrc(ModelExcecuteImg3);
       setContent("Running...");
     } else if (execPercent === 100) {
-       /* istanbul ignore next */
+      /* istanbul ignore next */
       setImgSrc(ModelExcecuteImg2);
       /* istanbul ignore next */
       setContent("Execution complete");
@@ -52,7 +52,7 @@ const ModelExcecute = ({ getResultFunc, resultsData, jobId }) => {
   /* istanbul ignore next */
   useEffect(() => {
     if (execPercent === 90) {
-      const intervalId = (results.run_status === "Pending" || results.run_status === "Not Executed") && setInterval(() => {
+      const intervalId = (resultStatus === "Pending" || resultStatus === "Not Executed") && setInterval(() => {
         getResultFunc();
       }
         , 5000);
