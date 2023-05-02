@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { showNotification } from '../../../duck/actions/commonActions';
 import { sendLoginDetails } from '../../../duck/actions/loginAction';
 import { getSession } from '../../../services/loginService';
+import { MDH_APP_PYTHON_SERVICE } from '../../../constants/apiBaseUrl';
 
 export default function Redirect() {
 	const dispatch = useDispatch();
@@ -34,7 +35,7 @@ export default function Redirect() {
 				dispatch(showNotification("error", 'Login Failed', 'Sorry, an unexpectede error occurred. Please try logging in again.'));
 			}
 		} catch (error) {
-			window.open("https://mi-dev.mareana.com", '_self')
+			window.open(MDH_APP_PYTHON_SERVICE, '_self')
 			dispatch(showNotification("error", 'Login Failed', 'Sorry, an unexpectede error occurred. Please try logging in again.'));
 		}
 	}
