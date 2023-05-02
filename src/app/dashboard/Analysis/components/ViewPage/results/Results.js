@@ -1,3 +1,11 @@
+/**
+ * @author Mihir Bagga <mihir.bagga@mareana.com>
+ * @Mareana - CPV Product
+ * @version 2
+ * @Last Modified - 28 April, 2023
+ * @Last Changed By - @Mihir
+ */
+
 import { Collapse, Row, Col, Table, Select } from "antd";
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
@@ -22,10 +30,12 @@ const Results = ({ tablekey, resultsData, jobId, metricList, resultStatus, setRe
     setSelectedMetric(value)
     let result_data = [...resultsData]
     let find_index = result_data.findIndex((i) => i.name == metricList[value])
-    let deleted_obj = result_data[find_index]
-    result_data.splice(find_index, 1)
-    result_data.unshift(deleted_obj)
-    setResultsData(result_data)
+    if (find_index >= 0) {
+      let deleted_obj = result_data[find_index]
+      result_data.splice(find_index, 1)
+      result_data.unshift(deleted_obj)
+      setResultsData(result_data)
+    }
   }
   const getColumns = (score_array) => {
     let columns = []
@@ -48,7 +58,6 @@ const Results = ({ tablekey, resultsData, jobId, metricList, resultStatus, setRe
   }
 
   const lists = Object.keys(metricList).map((i, idx) => { return { value: i, labele: i, key: idx } })
-
   return (
     <div className="result_container">
       {resultsData && resultsData.length > 1 && <> <Row style={{ display: 'inline-block' }}>
@@ -56,7 +65,7 @@ const Results = ({ tablekey, resultsData, jobId, metricList, resultStatus, setRe
       </Row><br /><br /></>}
       {(resultStatus !== 'Failed') && resultsData.length && (
         <Collapse expandIconPosition="right" accordion>
-          {resultsData && resultsData.map((i) => (
+          {resultsData && resultsData.length > 0 && resultsData.map((i) => (
             <Panel header={<span style={{ display: 'inline' }}><>{i.name} &nbsp;&nbsp;&nbsp;&nbsp;</>{resultsData.length > 1 ? i.name == metricList[selectedMetric] && <TrophyTwoTone twoToneColor="orange" style={{ fontSize: '20px' }} /> : resultsData.length == 1 ? <TrophyTwoTone twoToneColor="orange" style={{ fontSize: '20px' }} /> : <></>} </span>}>
               <Collapse expandIconPosition="right" accordion>
                 <Panel
