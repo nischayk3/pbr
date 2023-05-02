@@ -54,7 +54,7 @@ function SelectionMethod(props) {
                 })
                 setWord(res.Data[0]?.["box_type"]['word'])
                 setLine(res.Data[0]?.["box_type"]['line'])
-                setInvert(res.Data[0]?.["box_type"]['invert'])
+                setInvert(res.Data[0]?.['invert'])
                 // if (val === 'default' && flag==='apply') {
                 //     let obj = formValues
                 //     obj[name] = { ...obj[name], advance_setting: res.Data }
