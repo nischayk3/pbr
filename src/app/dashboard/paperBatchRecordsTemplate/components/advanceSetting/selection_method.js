@@ -155,7 +155,7 @@ function SelectionMethod(props) {
                     method: method,
                     settings: {
                         box_type: { "word": word, "line": line },
-                        invert: false,
+                        invert: invert,
                         mapper: mapper,
                         setting_name: loadValue,
                         bbox_delta: {
@@ -199,7 +199,7 @@ function SelectionMethod(props) {
                     method: method,
                     settings: {
                         box_type: { "word": word, "line": line },
-                        invert: false,
+                        invert: invert,
                         mapper: mapper,
                         setting_name: loadValue,
                         bbox_delta: {

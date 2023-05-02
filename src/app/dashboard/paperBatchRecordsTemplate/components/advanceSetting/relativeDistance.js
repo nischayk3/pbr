@@ -36,7 +36,7 @@ function RelativeDistance(props) {
             dispatch(showLoader());
             let str = val?.lastIndexOf("-");
             let req = {
-                version: 1,
+                version: Number(val.slice(str+2, str+3)),
                 name: val.slice(0, str),
                 created_by: null
             }

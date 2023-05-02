@@ -183,6 +183,7 @@ function PageIdentifierForm(props) {
 			dispatch(showNotification('error', 'Add Page Identifier Values'));
 		}
 	}
+	
 	return (
 		<Form name="dynamic_form_nest_item"
 			form={form}
