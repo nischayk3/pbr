@@ -8,20 +8,20 @@
 
 import { Card } from "antd";
 import React from "react";
-import { useDispatch } from "react-redux";
 import "./variable.scss";
 import VariableCard from "./variableCard";
 
-const Variable = () => {
-	const dispatch = useDispatch();
+const Variable = ({ viewDataJson, setViewDataJson }) => {
 
-	const varData = [
-		{ id: "1", variableName: "Variable 1" },
-		{ id: "2", variableName: "Variable 2" },
-		{ id: "3", variableName: "Variable 3" },
-		{ id: "4", variableName: "Variable 4" },
-		{ id: "5", variableName: "Variable 5" },
-	]
+
+	const jsonData = { ...viewDataJson }
+	const obj = jsonData && jsonData?.data[0]?.variables
+	const variableObj = Object.entries(obj);
+
+	console.log("viewDataJson", viewDataJson);
+	console.log("jsonData", jsonData);
+	console.log("variableObj", variableObj);
+	console.log("obj", obj);
 	return (
 		<div className="variable__card--wrapper">
 			<Card
@@ -29,13 +29,13 @@ const Variable = () => {
 				className='custom__card'
 			>
 				<div className="variable__card--block">
-					{varData && (
-						varData.map((item, index) => {
+					{variableObj && (
+						variableObj.map(([key, value]) => {
 							return (
 								<VariableCard
-									id={item.id}
+									// id={index}
 									// item={item}
-									variableName={item.variableName}
+									variableName={key}
 								// deleteVariable={deleteVariable}
 								// editVariable={editVariable}
 								// fromWorkflowScreen={fromWorkflowScreen}
