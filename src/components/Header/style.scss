@@ -1,13 +1,13 @@
 #header {
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.25);
 	background-color: #162154;
-	padding: 5px 17px;
+	padding: 5px 10px;
 	height: 50px;
 	line-height: 50px;
 	margin-left: 0px;
 	display: flex;
 	width: 100%;
-	z-index: 9999;
+	z-index: 10;
 	flex-direction: row;
 	justify-content: space-between;
 
@@ -20,6 +20,49 @@
 		margin-left: 30px;
 	}
 }
+
+
+.dropdown-content {
+	z-index: 9999 !important;
+	top: 46px !important;
+	border-radius: 0px !important;
+	width: 250px;
+	background: #fff;
+	box-shadow: 0 3px 6px -4px #0000001f, 0 6px 16px 0 #00000014,
+		0 9px 28px 8px #0000000d;
+
+	.space-class {
+		margin-top: 10px;
+		margin-left: 16px;
+
+		p {
+			font-family: 'Roboto';
+			font-style: normal;
+			font-weight: 600;
+			font-size: 14px;
+			line-height: 22px;
+			color: #797979;
+			margin-bottom: 0px !important;
+		}
+	}
+}
+
+.dropdown-content .ant-dropdown-menu {
+	box-shadow: none;
+
+	a {
+		font-family: 'Roboto';
+		font-style: normal;
+		font-weight: 400;
+		line-height: 22px;
+		color: #262626;
+	}
+}
+
+.ant-dropdown {
+	top: 46px !important;
+}
+
 
 .header-logo {
 	span {

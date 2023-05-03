@@ -1,6 +1,6 @@
 import { BellOutlined, CaretUpOutlined, DownOutlined, LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Button, Layout, Modal } from 'antd';
-import { useEffect, useRef, useState } from 'react';
+import { Avatar, Button, Layout, Modal, Dropdown, Space, Divider, } from 'antd';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import mareanaLogo from '../../assets/mareana_logo_svg.svg';
@@ -11,6 +11,7 @@ import { getUploadProfile } from '../../duck/actions/loginAction';
 import { getUserProfile, logoutUrl } from "../../services/loginService";
 import Auth from '../../utils/auth';
 import './style.scss';
+import menuIcon from '../../assets/icons/menuicon.svg'
 
 const { Header } = Layout;
 // const { Search } = Input;
@@ -22,6 +23,7 @@ const HeaderBar = () => {
 	const [imgRes, setImgRes] = useState("");
 	const [imagePrev, setImagePrev] = useState(false);
 	const [dropdownVisible, setDropdownVisible] = useState(false);
+	const [items, setNavigationMenuItems] = useState([]);
 	const [modal, setModal] = useState(false)
 
 	const loginDetails = JSON.parse(localStorage.getItem("login_details"))
@@ -102,11 +104,51 @@ const HeaderBar = () => {
 		}
 	}
 
+	// useeffect for setting up navigation items for routing between applications.
+	useEffect(() => {
+		if (loginDetails) {
+			const tempMenu = [...items]
+			loginDetails?.applicable_applications?.forEach((appItem, index) => {
+				const obj = {
+					key: index + 1,
+					label: (
+						<div>
+							<Avatar
+								style={{ marginRight: '10px'}}
+								size={18}
+							>
+							</Avatar>
+							<a href={appItem?.relative_path}>{appItem?.application}</a>
+						</div>
+					)
+				}
+				tempMenu.push(obj)
+			})
+			setNavigationMenuItems(tempMenu)
+		}
+	}, [])
+
 	return (
 		<Header id='header' ref={wrapperRef}>
 			<div id='hamburger' className='inline'>
 				<div className='header-logo'>
-					<img src={mareanaLogo} height='39' alt='menu' />
+					{<Dropdown
+						menu={{
+							items,
+						}}
+						trigger={['click']}
+						dropdownRender={(menu) => (
+							<div className="dropdown-content">
+								<Space className='space-class'>
+									<p>Switch to</p>
+								</Space>
+								{menu}
+							</div>
+						)}
+					>
+						<img src={menuIcon} height='39' alt='menu' style={{ marginBottom: '-15px'}} />
+					</Dropdown>}
+					<img src={mareanaLogo} height='39' alt='menu' style={{ marginLeft: '30px'}} />
 				</div>
 			</div>
 			<div className="subheader">

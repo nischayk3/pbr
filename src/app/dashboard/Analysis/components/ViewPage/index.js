@@ -2,7 +2,7 @@
  * @author Mihir Bagga <mihir.bagga@mareana.com>
  * @Mareana - CPV Product
  * @version 2
- * @Last Modified - 12 April, 2023
+ * @Last Modified - 28 April, 2023
  * @Last Changed By - @Mihir
  */
 
@@ -50,8 +50,10 @@ const ViewPageAnalysis = () => {
 	const [catMapping, setCatMapping] = useState({});
 	const [editFinalJson, setEditFinalModelJson] = useState();
 	const [resultsData, setResultsData] = useState([]);
+	const [metricList, setMetricList] = useState([]);
 	const [executedModel, setExecutedModal] = useState(false);
 	const [results, setResults] = useState(false);
+	const [resultStatus, setResultStatus] = useState('')
 	const modelType = useRef('');
 	const jobId = useRef('')
 
@@ -238,18 +240,44 @@ const ViewPageAnalysis = () => {
 
 		return flag
 	}
-
+	const resultDataCleanUp = (json, stats) => {
+		if (stats == "Successful") {
+			const array_not_to_be_include = ['res_message', 'run_status', 'Evaluation'];
+			const algorithms_list = Object.keys(json);
+			const results_list = algorithms_list
+				.filter((i) => !array_not_to_be_include.includes(i))
+				.map((i) => {
+					const { score, charts } = json[i];
+					return {
+						score,
+						charts: charts ? charts.map((c) => Object.values(c)) : [],
+						name: i,
+					};
+				});
+			return results_list;
+		}
+		else {
+			return []
+		}
+	};
 	const getResultFunc = async () => {
 		const reqBody = {
 			pipelineid: id,
 		};
 		const apiResponse = await getResults(reqBody);
-		if (apiResponse?.statuscode === 200) {
+		if (apiResponse?.status === 200) {
 			dispatch(hideLoader());
 			if (checkStatus(apiResponse.data.run_status)) {
 				setExecutedModal(false);
+				setResultStatus(apiResponse.data.run_status)
 			}
-			setResultsData(apiResponse.data);
+
+			setResultsData(resultDataCleanUp(apiResponse.data, apiResponse.data.run_status));
+			if (apiResponse?.data?.Evaluation) {
+				const { Evaluation } = apiResponse.data
+				setMetricList(Evaluation)
+
+			}
 		} else {
 			/* istanbul ignore next */
 			dispatch(hideLoader());
@@ -372,8 +400,8 @@ const ViewPageAnalysis = () => {
 					{/* {exectStart && <TabPane tab="Transformation" key="4">
 						<Transformation finalModelJson={finalModelJson} editFinalJson={editFinalJson} tableKey={tableKey} />
 					</TabPane>} */}
-					{resultsData?.run_status !== 'Pending' && resultsData?.run_status !== 'Not Executed' && <TabPane tab="Results" key="5">
-						<Results jobId={jobId} tablekey={tableKey} modelType={modelType} resultsData={resultsData} />
+					{resultStatus !== 'Pending' && resultStatus !== 'Not Executed' && <TabPane tab="Results" key="5">
+						<Results jobId={jobId} tablekey={tableKey} modelType={modelType} resultsData={resultsData} metricList={metricList} resultStatus={resultStatus} setResultsData={setResultsData} />
 					</TabPane>}
 				</Tabs>
 			</div>
@@ -388,7 +416,7 @@ const ViewPageAnalysis = () => {
 				status={approveReject}
 			/>
 			{executedModel && <ModalComponent isModalVisible={executedModel} closable={false} centered>
-				<ModelExcecute jobId={jobId} getResultFunc={getResultFunc} resultsData={resultsData} results={results} />
+				<ModelExcecute jobId={jobId} getResultFunc={getResultFunc} resultsData={resultsData} resultStatus={resultStatus} results={results} />
 			</ModalComponent>}
 			<ModalComponent
 				title="Schedule Execution"

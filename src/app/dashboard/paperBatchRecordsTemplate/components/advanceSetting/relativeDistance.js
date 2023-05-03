@@ -36,7 +36,7 @@ function RelativeDistance(props) {
             dispatch(showLoader());
             let str = val?.lastIndexOf("-");
             let req = {
-                version: 1,
+                version: Number(val.slice(str+2, str+3)),
                 name: val.slice(0, str),
                 created_by: null
             }
@@ -319,7 +319,7 @@ function RelativeDistance(props) {
                     </Col>
                     <Col span={12}>
                         <h4>Regex</h4>
-                        <Input style={{ width: 190 }} value={settingValues?.regex} onChange={(val) => setSettingValues({ ...settingValues, regex: e.target.value })} placeholder='Enter Regex' />
+                        <Input style={{ width: 190 }} value={settingValues?.regex} onChange={(e) => setSettingValues({ ...settingValues, regex: e.target.value })} placeholder='Enter Regex' />
                     </Col>
                 </Row>
             </div>

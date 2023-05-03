@@ -1,5 +1,5 @@
-import { DeleteOutlined, MinusSquareTwoTone, MonitorOutlined, PlusSquareTwoTone } from '@ant-design/icons';
-import { Button, Col, Collapse, Form, Input, Row, Select } from 'antd';
+import { DeleteOutlined, MinusSquareTwoTone, MonitorOutlined, PlusSquareTwoTone,ArrowRightOutlined } from '@ant-design/icons';
+import { Button, Col, Collapse, Form, Input, Row, Select,Tooltip } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {
@@ -15,7 +15,7 @@ const { Panel } = Collapse;
 const { Option } = Select;
 /* istanbul ignore next */
 function PageIdentifierForm(props) {
-	let { pageDragValue, setPageIdFormValues, handleOnFinishFailed, parameterFormFinish, initialPageIdentifierData, matBatch, params } = props
+	let { pageDragValue, setPageIdFormValues, handleOnFinishFailed, parameterFormFinish, initialPageIdentifierData, matBatch, params, pageNumber,handlePageChange } = props
 	const dispatch = useDispatch();
 	const [form] = Form.useForm()
 	const [pageIdentifierFormValues, setPageIdentifierFormValues] = useState(initialPageIdentifierData ? initialPageIdentifierData : { users: [] });
@@ -44,7 +44,7 @@ function PageIdentifierForm(props) {
 
 	useEffect(() => {
 		form.setFieldsValue(pageIdentifierFormValues)
-	   }, [form, pageIdentifierFormValues])
+	}, [form, pageIdentifierFormValues])
 
 	useEffect(() => {
 		if (pageIdentifierFormValues?.users[activeKey]?.keyCount) {
@@ -106,22 +106,32 @@ function PageIdentifierForm(props) {
 	}
 
 	const genExtra = (remove, name, key, restfield) => (
-		<DeleteOutlined
-			id="deleteParameter"
-			onClick={event => {
-				remove(name)
-				// let arr = [...pageIdentifierFormValues.users]
-				// arr.splice(name, 1)
-				// setTableData(arr)
-				// setFormTableData(arr)
-			}}
-		/>
+		<div>
+			<Tooltip title={'Go to page'}>
+				<ArrowRightOutlined style={{ marginRight: 10 }} onClick={() => {
+					pageIdentifierFormValues?.users[name]?.page_num ?
+						handlePageChange(pageIdentifierFormValues?.users[name]?.page_num) :
+						dispatch(showNotification('error', "Create Parameter"))
+				}} />
+			</Tooltip>
+			<DeleteOutlined
+				id="deleteParameter"
+				onClick={event => {
+					remove(name)
+					// let arr = [...pageIdentifierFormValues.users]
+					// arr.splice(name, 1)
+					// setTableData(arr)
+					// setFormTableData(arr)
+				}}
+			/>
+		</div>
+
 	);
 	useEffect(() => {
-		console.log("pageDragValue", pageDragValue)
 		if (Object.keys(pageDragValue).length) {
 			let obj = { ...pageIdentifierFormValues.users[activeKey] }
 			obj[updateKeyValueClicked] = pageDragValue.areaValue
+			obj["page_num"] = pageNumber
 			let newVal = { ...pageIdentifierFormValues }
 			newVal.users[activeKey] = obj
 			setPageIdentifierFormValues(newVal)
@@ -173,7 +183,7 @@ function PageIdentifierForm(props) {
 			dispatch(showNotification('error', 'Add Page Identifier Values'));
 		}
 	}
-
+	
 	return (
 		<Form name="dynamic_form_nest_item"
 			form={form}
