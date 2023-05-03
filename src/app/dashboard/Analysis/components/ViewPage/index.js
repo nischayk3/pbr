@@ -52,8 +52,10 @@ const ViewPageAnalysis = () => {
 	const [resultsData, setResultsData] = useState([]);
 	const [metricList, setMetricList] = useState([]);
 	const [executedModel, setExecutedModal] = useState(false);
-	const [results, setResults] = useState(false);
+	// const [results, setResults] = useState(false);
 	const [resultStatus, setResultStatus] = useState('')
+	const [message, setMessage] = useState('')
+
 	const modelType = useRef('');
 	const jobId = useRef('')
 
@@ -268,8 +270,11 @@ const ViewPageAnalysis = () => {
 		if (apiResponse?.status === 200) {
 			dispatch(hideLoader());
 			if (checkStatus(apiResponse.data.run_status)) {
-				setExecutedModal(false);
+				if (apiResponse.data.run_status !== 'Pending' && apiResponse.data.run_status !== 'Not Executed') {
+					setExecutedModal(false);
+				}
 				setResultStatus(apiResponse.data.run_status)
+				setMessage(apiResponse.data.res_message)
 			}
 
 			setResultsData(resultDataCleanUp(apiResponse.data, apiResponse.data.run_status));
@@ -401,7 +406,7 @@ const ViewPageAnalysis = () => {
 						<Transformation finalModelJson={finalModelJson} editFinalJson={editFinalJson} tableKey={tableKey} />
 					</TabPane>} */}
 					{resultStatus !== 'Pending' && resultStatus !== 'Not Executed' && <TabPane tab="Results" key="5">
-						<Results jobId={jobId} tablekey={tableKey} modelType={modelType} resultsData={resultsData} metricList={metricList} resultStatus={resultStatus} setResultsData={setResultsData} />
+						<Results jobId={jobId} tablekey={tableKey} modelType={modelType} resultsData={resultsData} metricList={metricList} resultStatus={resultStatus} setResultsData={setResultsData} message={message} />
 					</TabPane>}
 				</Tabs>
 			</div>
@@ -416,7 +421,7 @@ const ViewPageAnalysis = () => {
 				status={approveReject}
 			/>
 			{executedModel && <ModalComponent isModalVisible={executedModel} closable={false} centered>
-				<ModelExcecute jobId={jobId} getResultFunc={getResultFunc} resultsData={resultsData} resultStatus={resultStatus} results={results} />
+				<ModelExcecute jobId={jobId} getResultFunc={getResultFunc} resultsData={resultsData} resultStatus={resultStatus} />
 			</ModalComponent>}
 			<ModalComponent
 				title="Schedule Execution"
