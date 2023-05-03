@@ -15,18 +15,19 @@ import InputField from "../../../../../../components/InputField/InputField";
 import LabelTag from "../../../../../../components/LabelTag";
 import ParameterTable from "./parameterTable/parameterTable";
 import "./viewParameterSummary.scss";
-
 const { Panel } = Collapse;
 
-const ViewParamterSummary = () => {
-	const [cardTitle, setCardTitle] = useState("Create Variable");
+const ViewParamterSummary = ({ viewDataJson, setViewDataJson, leftPanelCollapsed, setLeftPanelCollapsed, rightPanelCollapsed, setRightPanelCollapsed }) => {
+	const [cardTitle, setCardTitle] = useState("Create variable");
 	const [variableName, setVariableName] = useState("");
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [value, setValue] = useState('');
 	const [expandParameter, setExpandParameter] = useState(true);
 	const [expandSummary, setExpandSummary] = useState(true);
-	const [code, setCode] = React.useState(
+	const [selectParameter, setSelectParameter] = useState(false);
+	const [selectedRow, setSelectedRow] = useState([]);
+	const [code, setCode] = useState(
 		`import banana
 
 		class Monkey:
@@ -43,10 +44,17 @@ const ViewParamterSummary = () => {
 
 	const { TextArea } = Input;
 
-	const addVariableName = () => {
-		console.log("clicked");
-		setVariableName("");
-		setIsModalOpen(!isModalOpen);
+	const addVariableName = (e, title) => {
+		if (title === "Create variable") {
+			setCardTitle("Select parameter")
+			setVariableName("");
+			setSelectParameter(true);
+		} else if (title === "Select parameter") {
+			setCardTitle("Select parameter")
+			setVariableName("");
+		} else if (title === "Done") {
+			setIsModalOpen(!isModalOpen);
+		}
 	};
 
 	const handleScriptEditor = () => {
@@ -71,6 +79,7 @@ const ViewParamterSummary = () => {
 	const handleExpandExitSummary = () => {
 		setExpandSummary(true)
 	}
+
 	const data = [
 		'Variable 1',
 		'Variable 2',
@@ -113,6 +122,24 @@ const ViewParamterSummary = () => {
 		}
 	]);
 
+	const createVariable = () => {
+		const jsonData = { ...viewDataJson };
+		const paramObj = { ...selectedRow };
+
+		jsonData && jsonData?.data.map((ele) => {
+			return ele.variables[variableName] = paramObj
+		})
+		setViewDataJson(jsonData)
+		setIsModalOpen(!isModalOpen)
+		setCardTitle("Create variable")
+		setSelectedRow([])
+
+		setRightPanelCollapsed(false);
+		setLeftPanelCollapsed(true);
+
+
+	}
+
 	return (
 		<div className="view-summary__center">
 			{expandParameter && (
@@ -120,10 +147,10 @@ const ViewParamterSummary = () => {
 					title='View Summary'
 					className='custom__card'
 					extra={expandSummary ?
-						<Tooltip title="Expand panel">
+						<Tooltip title="Expand panel" mouseLeaveDelay={0}>
 							<FullscreenOutlined onClick={handleExpandSummary} />
 						</Tooltip> :
-						<Tooltip title="Collapse panel">
+						<Tooltip title="Collapse panel" mouseLeaveDelay={0}>
 							<FullscreenExitOutlined onClick={handleExpandExitSummary} />
 						</Tooltip>
 					}>
@@ -155,19 +182,24 @@ const ViewParamterSummary = () => {
 					title='Parameter'
 					className='custom__card'
 					extra={expandParameter ?
-						<Tooltip title="Expand panel">
+						<Tooltip title="Expand panel" mouseLeaveDelay={0}>
 							<FullscreenOutlined onClick={handleExpand} />
 						</Tooltip> :
-						<Tooltip title="Collapse panel">
+						<Tooltip title="Collapse panel" mouseLeaveDelay={0}>
 							<FullscreenExitOutlined onClick={handleExpandExit} />
 						</Tooltip>
 					}
 				>
 					<div className="variable-wrapper">
-						<CustomButton className="add-var_block add-var_block_bg" icon={<PlusOutlined />} type="dashed" onClick={addVariableName} >Create variable</CustomButton>
+						<CustomButton className={cardTitle === "Done" ? "add-var_block add-var_block_bg remove_icon" : "add-var_block add-var_block_bg"} icon={<PlusOutlined />} type="dashed" onClick={(e) => addVariableName(e, cardTitle)} >{cardTitle}</CustomButton>
 						<CustomButton className="custom__btn--dashed" icon={<PlusOutlined />} type="dashed" onClick={handleScriptEditor} >Create function</CustomButton>
 					</div>
-					<ParameterTable />
+					<ParameterTable
+						cardTitle={cardTitle} setCardTitle={setCardTitle}
+						selectParameter={selectParameter} setSelectParameter={setSelectParameter}
+						viewDataJson={viewDataJson} setViewDataJson={setViewDataJson}
+						selectedRow={selectedRow} setSelectedRow={setSelectedRow}
+					/>
 				</Card>
 			)}
 
@@ -177,7 +209,6 @@ const ViewParamterSummary = () => {
 				title="Create Variable"
 				footer={null}
 				onCancel={addVariableName}
-
 			>
 				<div className="variable__input--block">
 					<InputField
@@ -188,7 +219,7 @@ const ViewParamterSummary = () => {
 					/>
 				</div>
 				<div className="variable__input--button">
-					<Button className="custom-secondary-btn" >
+					<Button className="custom-secondary-btn" onClick={createVariable}>
 						Create
 					</Button>
 					<Button className='custom-primary-btn'>Cancel</Button>
@@ -264,7 +295,6 @@ const ViewParamterSummary = () => {
 						</Collapse>
 					</Card>
 				</div>
-
 			</Modal>
 		</div >
 	)

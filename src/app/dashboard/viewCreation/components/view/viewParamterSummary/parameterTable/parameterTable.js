@@ -1,90 +1,45 @@
-import { DeleteOutlined, RightCircleOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Input, Modal, Radio, Select, Table, Tag } from "antd";
-import React, { memo, useState } from 'react';
+import { CheckOutlined, CloseOutlined, DeleteOutlined, RightCircleOutlined } from "@ant-design/icons";
+import { Button, Checkbox, Input, Modal, Radio, Select, Table, Tag, Tooltip } from "antd";
+import axios from "axios";
+import React, { memo, useEffect, useState } from 'react';
+import { BMS_APP_PYTHON_SERVICE } from "../../../../../../../constants/apiBaseUrl";
+import { generateColumns } from "../../../../../../../utils/TableColumns";
 
-const ParameterTable = memo(function ParameterTable() {
+const ParameterTable = memo(function ParameterTable({ viewDataJson, setViewDataJson, selectParameter, setSelectParameter, cardTitle, setCardTitle, selectedRow, setSelectedRow }) {
 	const Option = Select;
 	const { Search } = Input;
 
-	const [tableData, setTableData] = useState([
-		{
-			"aggregation": "Mean",
-			"parameter": "ARSENIC",
-			"primary": 0,
-			"coverage": "66%(2/3)",
-			"path": "/115477001-Bi Directional Vernay Valve/DIM_1",
-			"data": ">"
-		}
-	]);
-	const [totalMolBatch, setTotalMolBatch] = useState([]);
-	const [isMolBatchUpdate, setIsMolBatchUpdate] = useState([]);
+	const [tableData, setTableData] = useState([]);
+	const [totalMolBatch, setTotalMolBatch] = useState();
 	const [filterMolTable, setFilterMolTable] = useState(null);
 	const [loading, setLoading] = useState(false);
-	const [molBatchColumn, setMolBatchColumn] = useState([
-		{
-			title: (
-				<div className="treenode-block-batch">
-					<div className="tree-block-param-batch">
-						{/* <Tag color="geekblue">
-							ARSENIC
-						</Tag> */}
-					</div>
-				</div>
-			),
-			dataIndex: 'ARSENIC',
-			key: 'ARSENIC',
-			width: 80,
-			render: (value, record, rowIndex) => {
-				if (rowDisable) {
-					if (value) {
-						return (
-							<Checkbox
-								// disabled={isParamSelected}
-								id="batch-id"
-								className="custom-check"
-								onChange={(e) => onChangeBatchPopup(e, record, ele)}
-								checked={value}
-							/>
-						);
-					} else if (value === "") {
-
-						return (
-							<Checkbox
-								// disabled={isParamSelected}
-								id="batch-id"
-								className="custom-check"
-								onChange={(e) => onChangeBatchPopup(e, record, ele)}
-								checked={value === "" ? false : true}
-							/>
-						);
-					} else {
-
-						return (
-							<span className="batchClosed">
-								<CloseOutlined />
-							</span>
-						);
-					}
-				} else {
-					if (value) {
-						return (
-							<span className="batchChecked">
-								<CheckOutlined />
-							</span>
-						);
-					} else {
-						return (
-							<span className="batchClosed">
-								<CloseOutlined />
-							</span>
-						);
-					}
-				}
-			}
-		}
-	]);
+	const [loadingRaw, setLoadingRaw] = useState(false);
+	const [molBatchColumn, setMolBatchColumn] = useState([]);
 	const [isBatchTableVisible, setIsBatchTableVisible] = useState(false);
 	const [rowDisable, setRowDisable] = useState(true);
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [rawDataTable, setRawDataTable] = useState([]);
+	const [rawDataTableColumn, setRawDataTableColumn] = useState([]);
+	const [scrollX, setScrollX] = useState(1200);
+
+	useEffect(() => {
+		const jsonData = { ...viewDataJson };
+		jsonData && jsonData?.data.map((ele) => {
+			return setTableData(ele?.parameters)
+		})
+	}, [viewDataJson])
+
+	useEffect(() => {
+		window.addEventListener('resize', handleResize);
+		handleResize();
+		return () => window.removeEventListener('resize', handleResize);
+	}, []);
+
+	const handleResize = () => {
+		// calculate the new scroll width based on the width of the container
+		const newScrollX = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0) - 200;
+		setScrollX(newScrollX);
+	};
 
 
 	const columns = [
@@ -97,13 +52,15 @@ const ParameterTable = memo(function ParameterTable() {
 		},
 		{
 			title: 'Parameter',
-			dataIndex: 'parameter',
-			key: 'parameter',
+			dataIndex: 'title',
+			key: 'title',
 			render: (text) => {
 				return (
-					<Tag color="geekblue">
-						{text}
-					</Tag>
+					<Tooltip title={text}>
+						<Tag color="geekblue" className="paramtitle--overflow">
+							{text}
+						</Tag>
+					</Tooltip>
 				)
 			}
 		},
@@ -153,18 +110,32 @@ const ParameterTable = memo(function ParameterTable() {
 			title: 'Coverage',
 			dataIndex: 'coverage',
 			key: 'coverage',
+			render: (text) => {
+				return <a>View coverage</a>
+			}
+		},
+
+		{
+			title: 'Raw Data',
+			dataIndex: 'data',
+			key: 'data',
+			width: 100,
+			render: (text, record) => {
+				return <a onClick={(e) => showRawData(e, record)}>View raw data</a>
+			}
 		},
 		{
 			title: 'Path',
 			dataIndex: 'path',
 			key: 'path',
-
-		},
-		{
-			title: 'Data',
-			dataIndex: 'data',
-			key: 'data',
-			width: 100,
+			width: 250,
+			render: (text) => {
+				return (
+					<Tooltip title={text}>
+						<p className="path--overflow">{text}</p>
+					</Tooltip>
+				)
+			}
 		},
 	];
 
@@ -202,6 +173,18 @@ const ParameterTable = memo(function ParameterTable() {
 	};
 
 	const isModalBatch = () => {
+		const _req = {
+			page: 1,
+			per_page: 25,
+			is_page: false,
+			key: '75833b02-1cec-47b1-b435-6df113555587'
+		}
+
+		const _recordData = {
+			data: tableData,
+		}
+
+		moleculeBatchData(_recordData, _req);
 		setIsBatchTableVisible(true);
 	}
 
@@ -210,7 +193,7 @@ const ParameterTable = memo(function ParameterTable() {
 	}
 
 	const TableSearch = value => {
-		const tableDataSearch = [...isMolBatchUpdate];
+		const tableDataSearch = [...totalMolBatch];
 		const searchTable = tableDataSearch.filter(o =>
 			Object.keys(o).some(k =>
 				String(o[k]).toLowerCase().includes(value.toLowerCase())
@@ -219,12 +202,201 @@ const ParameterTable = memo(function ParameterTable() {
 		setFilterMolTable(searchTable)
 	};
 
+	const rowSelection = {
+		// selectedRowKeys,
+		onChange: (selectedRowKeys, selectedRows) => {
+			setSelectedRow(selectedRows);
+			setSelectParameter(true);
+			setCardTitle("Done")
+		},
+		getCheckboxProps: () => ({
+			disabled: !selectParameter,
+		}),
+
+	}
+
+	const showRawData = (e, _record) => {
+		const _req = {
+			page: 1,
+			per_page: 25,
+			is_page: false,
+			key: '75833b02-1cec-47b1-b435-6df113555587'
+		}
+		rawData(_record, _req);
+		setIsModalOpen(true);
+	}
+
+	const cancelModal = () => {
+		setIsModalOpen(false);
+	}
+
+	const rawData = async (_reqMolecule, _params) => {
+		let login_response = JSON.parse(localStorage.getItem("login_details"));
+		const headers = {
+			'Content-Type': 'application/json',
+			"x-access-token": login_response.token ? login_response.token : "",
+			"resource-name": "VIEW",
+		};
+
+		try {
+			const apiRes = await axios.post(BMS_APP_PYTHON_SERVICE + "/view-raw-data", _reqMolecule, { params: _params, headers: headers });
+			if (apiRes.status === 200) {
+
+				const data = apiRes?.data?.data
+				const rawColumn = generateColumns(data)
+
+				setRawDataTableColumn(rawColumn);
+				setRawDataTable(data);
+				setLoadingRaw(false);
+			} else if (apiRes.status === 400 || apiRes.status === 404) {
+				setLoadingRaw(false);
+				dispatch(showNotification("error", apiRes.message));
+			}
+		} catch (error) {
+			setLoadingRaw(false);
+		}
+	};
+
+
+	const moleculeBatchData = async (_reqMolecule, _params) => {
+		let login_response = JSON.parse(localStorage.getItem("login_details"));
+		const headers = {
+			'Content-Type': 'application/json',
+			"x-access-token": login_response.token ? login_response.token : "",
+			"resource-name": "VIEW",
+		};
+
+		try {
+			const apiRes = await axios.post(BMS_APP_PYTHON_SERVICE + "/view-molecule-parameter-table", _reqMolecule, { params: _params, headers: headers });
+			if (apiRes.status === 200) {
+
+				const data = apiRes?.data?.data
+				const rawColumn = generateBatchColumns(data)
+
+				setMolBatchColumn(rawColumn);
+				setTotalMolBatch(data);
+				setLoadingRaw(false);
+			} else if (apiRes.status === 400 || apiRes.status === 404) {
+				setLoadingRaw(false);
+				dispatch(showNotification("error", apiRes.message));
+			}
+		} catch (error) {
+			setLoadingRaw(false);
+		}
+	};
+
+
+	const generateBatchColumns = (responseData) => {
+		const columns = [{
+			title: 'BATCH',
+			dataIndex: 'batch_num',
+			key: 'batch_num',
+			width: 80,
+		}
+		];
+		const firstRow = responseData[0];
+		for (const key in firstRow) {
+			if (Object.hasOwnProperty.call(firstRow, key)) {
+				if (key !== "batch_num") {
+					columns.push({
+						title: (
+							<Tooltip title={key.toUpperCase()}>
+								<Tag color="geekblue" className="paramtitle--overflow">
+									{key.toUpperCase()}
+								</Tag>
+							</Tooltip>
+						),
+						dataIndex: key,
+						key: `${key + 2}`,
+						width: 150,
+						render: (value, record, rowIndex) => {
+							console.log("value, record, rowIndex", value, record, rowIndex);
+							console.log("selectParameter", !selectParameter);
+							if (selectParameter) {
+								if (value) {
+									return (
+										<Checkbox
+											//disabled={isParamSelected}
+											className="custom-check"
+											onChange={(e) => onChangeBatch(e, record, key)}
+											checked={value}
+										/>
+									);
+								} else if (value === "") {
+									return (
+										<Checkbox
+											//disabled={isParamSelected}
+											className="custom-check"
+											onChange={(e) => onChangeBatch(e, record, key)}
+											checked={value === "" ? false : true}
+										/>
+									);
+								} else {
+									return (
+										<span className="batchClosed">
+											<CloseOutlined />
+										</span>
+									);
+								}
+							} else {
+								if (value) {
+									return (
+										<span className="batchChecked">
+											<CheckOutlined />
+										</span>
+									);
+								} else {
+									return (
+										<span className="batchClosed">
+											<CloseOutlined />
+										</span>
+									);
+								}
+							}
+						}
+					})
+				}
+			}
+		}
+		return columns;
+	};
+
+	const onChangeBatch = (e, record, key) => {
+		console.log("e, record, rowIndex, key", record, key);
+		const molTableData = [...totalMolBatch]
+		const excludeJson = { ...viewDataJson }
+		console.log("molTableData", molTableData, totalMolBatch);
+
+		molTableData.forEach((ele) => {
+			if (ele.batch_num === record.batch_num) {
+				ele[key] = e.target.checked == false ? "" : e.target.checked;
+			}
+		})
+		console.log("molTableData", molTableData, totalMolBatch);
+
+
+		excludeJson?.data?.forEach((ele) => {
+			ele.parameters.forEach((e) => {
+				if (e.title === key) {
+					if (e.batch_exclude.indexOf(record.batch_num) === -1) {
+						e.batch_exclude.push(record.batch_num);
+					}
+				}
+			})
+		})
+		console.log("excludeJson", excludeJson);
+		setViewDataJson(excludeJson)
+		setTotalMolBatch(totalMolBatch);
+	}
+	console.log("total mol batch", totalMolBatch);
 	return (
 		<>
 			<div className="param-table">
 				<div className="param-column">
-					<span onClick={(e) => isModalBatch(e)}>
-						<RightCircleOutlined className="right-circle" />
+					<span onClick={() => isModalBatch()}>
+						<Tooltip title="Molecule batch">
+							<RightCircleOutlined className="right-circle" />
+						</Tooltip>
 					</span>
 				</div>
 				<Table
@@ -236,6 +408,10 @@ const ParameterTable = memo(function ParameterTable() {
 					pagination={false}
 					rowKey={(record) => record.uuid}
 					loading={loading}
+					rowSelection={{
+						type: "checkbox",
+						...rowSelection
+					}}
 				/>
 			</div>
 
@@ -257,13 +433,14 @@ const ParameterTable = memo(function ParameterTable() {
 				<div className="batch-table-block">
 					<Table
 						columns={molBatchColumn}
-						dataSource={filterMolTable === null ? isMolBatchUpdate : filterMolTable}
+						dataSource={totalMolBatch}
 						size="small"
 						scroll={{ y: 450 }}
 						rowClassName={(index) =>
 							index % 2 === 0 ? "table-row-light" : "table-row-dark"
 
 						}
+						rowKey={(record) => record.batch_num}
 					/>
 					<div className="batch-table-footer">
 						{rowDisable ? (<Button
@@ -281,6 +458,26 @@ const ParameterTable = memo(function ParameterTable() {
 						</Button>)}
 					</div>
 				</div>
+			</Modal>
+
+			<Modal
+				visible={isModalOpen}
+				width={1200}
+				title="Raw data"
+				footer={null}
+				onCancel={cancelModal}
+			>
+				<Table
+					rowClassName={(record, index) =>
+						index % 2 === 0 ? "table-row-light" : "table-row-dark"
+					}
+					columns={rawDataTableColumn}
+					dataSource={rawDataTable}
+					pagination={false}
+					rowKey={(record) => record.uuid}
+					loading={loadingRaw}
+					scroll={{ x: scrollX, y: 500 }}
+				/>
 			</Modal>
 		</>
 	);

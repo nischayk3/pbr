@@ -44,6 +44,44 @@
 	}
 }
 
+.batch-modal {
+	.ant-input-group-wrapper {
+		width: 50%;
+	}
+}
+
+span.batchChecked,
+span.statusChecked {
+	color: #00a811;
+	font-size: 16px;
+
+	.anticon-check-circle {
+		font-size: 16px;
+	}
+}
+
+span.batchClosed,
+span.statusClosed {
+	color: #db0000;
+	font-size: 16px;
+}
+
+.custom-check {
+	>span {
+		background: var(--primary-color);
+		border-radius: 50px;
+		width: 22px;
+		height: 22px;
+		border: 1px solid var(--primary-color);
+		padding: 2px;
+
+		.ant-checkbox-inner {
+			background-color: transparent;
+			border-color: transparent;
+		}
+	}
+}
+
 .delete-param {
 	color: #FF2828;
 	font-size: 18px;
@@ -154,5 +192,34 @@
 			color: #ff2828;
 			cursor: pointer;
 		}
+	}
+}
+
+
+.summary__card {
+	height: calc(100vh - 434px);
+}
+
+.paramtitle--overflow {
+	width: 160px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.path--overflow {
+	width: 250px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.remove_icon {
+	span:nth-child(1) {
+		display: none !important;
+	}
+
+	span:nth-child(2) {
+		margin: 0px !important;
 	}
 }
