@@ -17,7 +17,7 @@ import Plot from "react-plotly.js";
 
 const { Panel } = Collapse;
 
-const Results = ({ tablekey, resultsData, jobId, metricList, resultStatus, setResultsData }) => {
+const Results = ({ tablekey, resultsData, jobId, metricList, resultStatus, setResultsData, message }) => {
   const selectedViewData = useSelector(
     (state) => state.analyticsReducer.viewData
   );
@@ -115,7 +115,7 @@ const Results = ({ tablekey, resultsData, jobId, metricList, resultStatus, setRe
       {(resultStatus === 'Failed') && (
         <div>
           <h3>Model Execution Failed</h3>
-          <p>Failure Reason : {resultStatus || '-'}</p>
+          <p>Failure Reason : {message || '-'}</p>
           <a className="view-link" href={`${MDH_AIRFLOW_ANALYTICS}/${id}_ANALYTICS_${jobId?.current}/grid?`} target="_blank">View logs</a> <span className='alert-arrow'><ArrowRightOutlined /></span>
         </div>
       )}
