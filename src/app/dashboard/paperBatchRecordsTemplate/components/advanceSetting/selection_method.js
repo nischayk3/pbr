@@ -54,7 +54,7 @@ function SelectionMethod(props) {
                 })
                 setWord(res.Data[0]?.["box_type"]['word'])
                 setLine(res.Data[0]?.["box_type"]['line'])
-                setInvert(res.Data[0]?.["box_type"]['invert'])
+                setInvert(res.Data[0]?.['invert'])
                 // if (val === 'default' && flag==='apply') {
                 //     let obj = formValues
                 //     obj[name] = { ...obj[name], advance_setting: res.Data }
@@ -155,7 +155,7 @@ function SelectionMethod(props) {
                     method: method,
                     settings: {
                         box_type: { "word": word, "line": line },
-                        invert: false,
+                        invert: invert,
                         mapper: mapper,
                         setting_name: loadValue,
                         bbox_delta: {
@@ -199,7 +199,7 @@ function SelectionMethod(props) {
                     method: method,
                     settings: {
                         box_type: { "word": word, "line": line },
-                        invert: false,
+                        invert: invert,
                         mapper: mapper,
                         setting_name: loadValue,
                         bbox_delta: {

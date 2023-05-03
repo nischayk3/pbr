@@ -1,6 +1,6 @@
 import { LogoutOutlined } from '@ant-design/icons';
 import { Button, Result } from "antd";
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { MDH_APP_PYTHON_SERVICE, PRODUCT_FOR } from '../../../constants/apiBaseUrl';
 import "./logout.scss";
@@ -8,11 +8,6 @@ import "./logout.scss";
 const Logout = () => {
 	const history = useHistory();
 	const status = localStorage.getItem("loginwith");
-
-	useEffect(() => {
-		localStorage.removeItem('login_details');
-		localStorage.removeItem('username');
-	}, []);
 
 	const loginBack = () => {
 		if (PRODUCT_FOR == 'BMS') {
@@ -26,8 +21,6 @@ const Logout = () => {
 			history.push('/user/login');
 		}
 	}
-
-
 
 	return (
 		<div className="bg-img-logout">

@@ -1,0 +1,25 @@
+{
+	"data": [
+		{
+			"view_disp_id": "",
+			"view_name": "",
+			"view_description": "",
+			"view_version": 0,
+			"view_status": "DRFT",
+			"molecule_name": "",
+			"chart_links": [],
+			"files": {},
+			"functions": {},
+			"parameters": [],
+			"variables": {},
+			"universe": [
+				{
+					"name": "",
+					"n_mat_no": "",
+					"n_plant": ""
+				}
+			],
+			"expanded": []
+		}
+	]
+}

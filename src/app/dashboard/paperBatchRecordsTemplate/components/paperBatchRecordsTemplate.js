@@ -17,7 +17,7 @@ import ImageMapper from 'react-image-mapper';
 import { useLocation, useParams, useHistory, useRouteMatch } from 'react-router-dom';
 
 import {
-	DeleteOutlined, ArrowRightOutlined, LeftOutlined, MinusSquareTwoTone, MonitorOutlined, PlusSquareTwoTone, RightOutlined, InfoCircleOutlined, UndoOutlined
+	DeleteOutlined, ArrowRightOutlined, LeftOutlined, MinusSquareTwoTone, MonitorOutlined, PlusSquareTwoTone, RightOutlined, InfoCircleOutlined, UndoOutlined,EditOutlined
 } from '@ant-design/icons';
 
 import Sider from 'antd/lib/layout/Sider';
@@ -744,11 +744,12 @@ const PaperBatchRecordsTemplate = () => {
 			material_num: matBatch.material_num,
 			batch: matBatch.batch,
 			site: matBatch.site,
-			template_name: params?.tempalteName,
+			template_name: additionalData?.newTempalteName ? additionalData?.newTempalteName : params?.tempalteName,
 			status: templateStatus,
 			template_id: params?.temp_disp_id ? params?.temp_disp_id : templateId,
 			version: templateVersion ? templateVersion : "1",
-			time_zone: fileTimezoneData
+			time_zone: fileTimezoneData,
+			// template_name : saveAsName ? saveAsName : params?.tempalteName
 		}
 		templateForm.setFieldsValue(template)
 		setTemplateFormData(template)
@@ -758,7 +759,6 @@ const PaperBatchRecordsTemplate = () => {
 	useEffect(() => {
 
 		getImage()
-
 		// let loadData =  getIdTemplateData()
 		const params = QueryString.parse(location?.search)
 		const getIdTemplateData = async () => {
@@ -2070,9 +2070,9 @@ const PaperBatchRecordsTemplate = () => {
 		}
 	}
 	/* istanbul ignore next */
-	// const handleDrawSnippet = () => {
-	// 	initDraw(document.getElementById('drawRectangle'));
-	// }
+	const handleDrawSnippet = () => {
+		initDraw(document.getElementById('drawRectangle'));
+	}
 	/* istanbul ignore next */
 	const handleSideState = () => {
 		setTriggerUpdate(true)
@@ -2297,7 +2297,8 @@ const PaperBatchRecordsTemplate = () => {
 							pbrDisplayId: batchRes?.Data?.tempDispId,
 							pbrTempId: Number(batchRes?.Data?.tempDispId.replace(/\D/g, '')),
 							pbrTemplateStatus: batchRes?.Data?.tempStatus,
-							pbrVersion: batchRes?.Data?.tempVersion
+							pbrVersion: batchRes?.Data?.tempVersion,
+							newTempalteName : saveAsName
 						}
 						setAdditionalData(additional)
 						message.success(batchRes.Message);
@@ -3297,7 +3298,7 @@ const PaperBatchRecordsTemplate = () => {
 									style={{ justifyContent: params?.fromScreen == "Workflow" ? "" : "right" }}
 								>
 									{/* <div className='drawSnippet'>
-                                        <EditOutlined />
+                                        <EditOutlined onClick={()=>handleDrawSnippet()}/>
                                         Draw Snippet
                                     </div> */}
 									{/* {params?.fromScreen == "Workflow" ?

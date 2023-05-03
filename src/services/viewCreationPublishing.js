@@ -1,3 +1,11 @@
+/**
+ * @author Dinesh
+ * @Mareana - CPV Product
+ * @version  2
+ * @Last Modified - 28 April, 2023
+ * @Last Changed By - Dinesh
+ */
+
 import { BMS_APP_PYTHON_SERVICE } from "../constants/apiBaseUrl";
 import Service from "./AjaxService";
 let login_response = JSON.parse(localStorage.getItem("login_details"));
@@ -186,3 +194,36 @@ export const viewhieararchyTree = (_queryParam) => {
 		}
 	);
 };
+
+
+export const viewHierarchySource = (_queryParam) => {
+	return Service.post(
+		BMS_APP_PYTHON_SERVICE + "/view-hierarchy-source",
+		_queryParam,
+		_reqheader('VIEW')
+
+	).then((response) => {
+		return response.data;
+	}, (error) => {
+		return error.response.data;
+	})
+}
+
+/**
+ * view raw data api
+*/
+
+/**
+ * view-molecule-parameter-table
+*/
+export const moleculeBatches = (_queryParam) => {
+	return Service.post(
+		BMS_APP_PYTHON_SERVICE + "/view-molecule-parameter-table",
+		_queryParam,
+		_reqheader('VIEW')
+	).then((response) => {
+		return response.data;
+	}, (error) => {
+		return error.response.data;
+	})
+}

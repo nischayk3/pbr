@@ -5,18 +5,19 @@
  * @Last Modified - 11 April, 2023
  * @Last Changed By - Dinesh
  */
-import { CaretRightOutlined, FullscreenExitOutlined, FullscreenOutlined } from "@ant-design/icons";
+import { CaretRightOutlined, FullscreenExitOutlined, FullscreenOutlined, PlusOutlined } from "@ant-design/icons";
 import SortableTree from '@nosferatu500/react-sortable-tree';
 import '@nosferatu500/react-sortable-tree/style.css';
-import { Card, Divider, Empty, Select, Tooltip } from "antd";
+import { Card, Divider, Empty, Select, Tag, Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import FileExplorerTheme from 'react-sortable-tree-theme-file-explorer';
 import InputField from "../../../../../../components/InputField/InputField";
 import { hideLoader, showLoader, showNotification } from "../../../../../../duck/actions/commonActions";
-import { getMoleculeList, viewhieararchyTree } from "../../../../../../services/viewCreationPublishing";
+import { getMoleculeList, viewHierarchySource, viewhieararchyTree } from "../../../../../../services/viewCreationPublishing";
 import "./processHierarchy.scss";
-const ProcessHierarchy = () => {
+
+const ProcessHierarchy = ({ viewDataJson, setViewDataJson }) => {
 	const dispatch = useDispatch();
 
 	const [moleculeId, setMoleculeId] = useState("");
@@ -27,6 +28,7 @@ const ProcessHierarchy = () => {
 	const [loading, setLoading] = useState(false);
 	const [searchString, setSearchString] = useState("");
 	const [searchFocusIndex, setSearchFocusIndex] = useState(0);
+	const [expandedData, setExpandedData] = useState([]);
 
 	useEffect(() => {
 		const reqMol = {
@@ -53,7 +55,6 @@ const ProcessHierarchy = () => {
 			setTreeData([]);
 			setSearchString("");
 		}
-
 	}
 
 	const handleExpand = () => {
@@ -104,6 +105,63 @@ const ProcessHierarchy = () => {
 		}
 	}
 
+	//view Hieararchy soure tree api call
+	const viewHieararchySrcTree = async (_reqparam) => {
+		const _req = {
+			ds_name: moleculeId,
+			expanded: expandedData,
+			to_expand: _reqparam
+		}
+
+		try {
+			// setLoading(true);
+			const apiRes = await viewHierarchySource(_req);
+			if (apiRes.status === 200) {
+				const data = apiRes?.data?.process_steps
+				const expanded = apiRes?.expanded
+				setTreeData([data])
+				setExpandedData(expanded)
+				// setLoading(false);
+			} else if (apiRes.status === 400 || apiRes.status === 404) {
+				// setLoading(false);
+				dispatch(showNotification("error", apiRes?.message));
+			}
+		} catch (error) {
+			dispatch(showNotification("error", "Oops! Something went wrong. Please try again."));
+		}
+	}
+
+	const expandNode = (e, node) => {
+		viewHieararchySrcTree(node)
+
+	}
+
+	const parameterNode = (e, node) => {
+
+		// const paramJson = { ...viewJson }
+		const nodeParam = { ...viewDataJson }
+
+		const obj = {
+			batch_exclude: [],
+			aggregation: "",
+			priority: 0,
+			coverage: "",
+			dataset_name: node?.dataset_name,
+			n_mat_no: node?.n_mat_no,
+			n_plant: node?.n_mat_no,
+			path: node?.path,
+			rec_disp_id: node?.rec_disp_id,
+			title: node?.title,
+			type: node?.type,
+			uuid: node?.uuid
+		}
+
+		const updateParam = nodeParam && nodeParam?.data.map((ele) => {
+			return ele.parameters = [...ele.parameters, obj]
+		});
+
+		setViewDataJson(nodeParam)
+	}
 
 	return (
 		<div className="card__block--wrapper">
@@ -138,16 +196,16 @@ const ProcessHierarchy = () => {
 				title='Process hierarchy'
 				className='custom__card'
 				extra={expandHierarchy ?
-					<Tooltip title="Expand panel">
+					<Tooltip title="Expand panel" mouseLeaveDelay={0}>
 						<FullscreenOutlined onClick={handleExpand} />
 					</Tooltip> :
-					<Tooltip title="Collapse panel">
+					<Tooltip title="Collapse panel" mouseLeaveDelay={0}>
 						<FullscreenExitOutlined onClick={handleExpandExit} />
 					</Tooltip>
 				}
 				loading={loading}
 			>
-				{treeData.length === 0 ? (<Empty className="empty--layout" description="Nothing to see here!" imageStyle={{
+				{treeData?.length === 0 ? (<Empty className="empty--layout" description="Nothing to see here!" imageStyle={{
 					height: 120,
 				}} image={Empty.PRESENTED_IMAGE_SIMPLE} />)
 					: (
@@ -179,32 +237,34 @@ const ProcessHierarchy = () => {
 											updateTreeData(treeData)
 										}}
 										generateNodeProps={({ node, path }) => ({
-
 											title: (
 												<>
 													<form onClick={(e) => { e.preventDefault(); e.stopPropagation(); selectThis(node, path); }}>
-														{/* {node && node?.n_mat_desc ? (
+														{node && node?.type === "material" ? (
 															<div className="sortable-tree__tree--node">
-																<Tooltip title={node?.title.toUpperCase()}>
-																	<Tag color="geekblue">
-																		{node?.title.toUpperCase()}
-																	</Tag>
-																</Tooltip>
-																<PlusOutlined />
-															</div>) : (
-															<p className='sortable-tree__tree--input--disabled'>{node?.title.toUpperCase()}</p>
-														)} */}
-														{node && node?.n_mat_desc ? (
-															<div className="sortable-tree__tree--node">
-																<Tooltip title={node?.title.toUpperCase()}>
-																	<div className="sortable-tree__tree--materialnode">
-																		<CaretRightOutlined />
+																<Tooltip title={node?.title.toUpperCase()} mouseLeaveDelay={0}>
+																	<div className="sortable-tree__tree--materialnode" onClick={(e) => expandNode(e, node)}>
+																		{node?.children ? null : <CaretRightOutlined />}
 																		<p className='sortable-tree__tree--materialtitle'>{node?.title.toUpperCase()}</p>
 																	</div>
 																</Tooltip>
-															</div>) : (
-															<p className='sortable-tree__tree--input--disabled'>{node?.title.toUpperCase()}</p>
-														)}
+															</div>) : node?.type === "source-folder" ? (
+																<p className='sortable-tree__tree--input--disabled'>{node?.title.toUpperCase()}</p>
+															) :
+															node?.type === "parameters" ? (
+																<div className="sortable-tree__tree--parameternode ">
+																	<Tooltip title={node?.title.toUpperCase()}>
+																		<Tag color="geekblue" className="sortable-tree__tree--paramtitle">
+																			{node?.title.toUpperCase()}
+																		</Tag>
+																	</Tooltip>
+																	<PlusOutlined style={{ fontSize: '14px' }} onClick={(e) => parameterNode(e, node)} />
+																</div>
+															) : (
+																<p className='sortable-tree__tree--input--disabled'>{node?.title.toUpperCase()}</p>
+															)
+														}
+
 													</form>
 												</>
 											)
@@ -216,9 +276,11 @@ const ProcessHierarchy = () => {
 					)}
 			</Card>
 
-			{expandHierarchy && (
-				<Card title='Files' className='custom__card'></Card>
-			)}
+			{
+				expandHierarchy && (
+					<Card title='Files' className='custom__card'></Card>
+				)
+			}
 		</div >
 	)
 }

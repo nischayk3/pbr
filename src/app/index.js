@@ -1,7 +1,7 @@
 import React, { lazy, useEffect } from "react";
 import ReactGA from 'react-ga4';
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect, Route, Switch, useRouteMatch } from "react-router-dom";
+import { Redirect, Route, Switch, useLocation, useRouteMatch } from "react-router-dom";
 import Loading from "../components/Loading";
 import Notification from "../components/Notification";
 import SuspenseWrapper from "../components/SuspenseWrapper";
@@ -20,7 +20,8 @@ const Account = lazy(() => import("./user"));
 const App = () => {
 	const dispatch = useDispatch();
 	const match = useRouteMatch();
-
+	const location = useLocation();
+	console.log("match", location);
 	const showLoading = useSelector((state) => state.commonReducer.showLoading);
 	const authenticated = useSelector(
 		(state) => state.commonReducer.isAuthenticated
@@ -57,7 +58,10 @@ const App = () => {
 		if (window.location.host == 'merck-mi-dev.mareana.com' || window.location.host == 'mi-devv3-7.mareana.com') {
 			ReactGA.initialize('G-1WM83NDTY2');
 		}
-		getSessionDetail();
+
+		if (location.pathname !== '/user/logout') {
+			getSessionDetail();
+		}
 	}, [])
 
 	return (
