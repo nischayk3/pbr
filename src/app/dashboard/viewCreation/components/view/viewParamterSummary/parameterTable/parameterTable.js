@@ -1,26 +1,35 @@
-import { CheckOutlined, CloseOutlined, DeleteOutlined, RightCircleOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Input, Modal, Radio, Select, Table, Tag, Tooltip } from "antd";
+/**
+ * @author Dinesh
+ * @Mareana - CPV Product
+ * @version  2
+ * @Last Modified - 20 April, 2023
+ * @Last Changed By - Dinesh
+ */
+
+
+import { DeleteOutlined, RightCircleOutlined } from "@ant-design/icons";
+import { Modal, Radio, Select, Table, Tag, Tooltip } from "antd";
 import axios from "axios";
 import React, { memo, useEffect, useState } from 'react';
 import { BMS_APP_PYTHON_SERVICE } from "../../../../../../../constants/apiBaseUrl";
 import { generateColumns } from "../../../../../../../utils/TableColumns";
+import MoleculeBatch from "./moleculeBatch";
 
-const ParameterTable = memo(function ParameterTable({ viewDataJson, setViewDataJson, selectParameter, setSelectParameter, cardTitle, setCardTitle, selectedRow, setSelectedRow }) {
+const ParameterTable = memo(function ParameterTable({ viewDataJson, setViewDataJson, selectParameter, setSelectParameter, cardTitle, setCardTitle, selectedRowData, setSelectedRowData, counter, setCounter }) {
 	const Option = Select;
-	const { Search } = Input;
-
 	const [tableData, setTableData] = useState([]);
-	const [totalMolBatch, setTotalMolBatch] = useState();
 	const [filterMolTable, setFilterMolTable] = useState(null);
 	const [loading, setLoading] = useState(false);
 	const [loadingRaw, setLoadingRaw] = useState(false);
-	const [molBatchColumn, setMolBatchColumn] = useState([]);
-	const [isBatchTableVisible, setIsBatchTableVisible] = useState(false);
-	const [rowDisable, setRowDisable] = useState(true);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [rawDataTable, setRawDataTable] = useState([]);
 	const [rawDataTableColumn, setRawDataTableColumn] = useState([]);
 	const [scrollX, setScrollX] = useState(1200);
+	const [isModalBatch, setIsModalBatch] = useState(false);
+	const [totalMolBatch, setTotalMolBatch] = useState([]);
+	const [selectedRowKey, setSelectedRowKey] = useState('');
+	const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
 
 	useEffect(() => {
 		const jsonData = { ...viewDataJson };
@@ -34,13 +43,6 @@ const ParameterTable = memo(function ParameterTable({ viewDataJson, setViewDataJ
 		handleResize();
 		return () => window.removeEventListener('resize', handleResize);
 	}, []);
-
-	const handleResize = () => {
-		// calculate the new scroll width based on the width of the container
-		const newScrollX = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0) - 200;
-		setScrollX(newScrollX);
-	};
-
 
 	const columns = [
 		{
@@ -72,7 +74,10 @@ const ParameterTable = memo(function ParameterTable({ viewDataJson, setViewDataJ
 				return (
 					<Radio
 						id="param-radio"
-					></Radio>
+						value={record.uuid}
+						checked={selectedRowKey === record.uuid}
+						onChange={() => handlePrioritySelection(record, index)}
+					/>
 				);
 			}
 		},
@@ -85,6 +90,9 @@ const ParameterTable = memo(function ParameterTable({ viewDataJson, setViewDataJ
 					<Select
 						style={{ width: "100px" }}
 						placeholder="Aggregation"
+						onChange={(e, value) => {
+							handleAggregationChange(record, value);
+						}}
 						{...(text && { defaultValue: text })}
 					>
 						<Option key="1" value="Min">
@@ -102,7 +110,7 @@ const ParameterTable = memo(function ParameterTable({ viewDataJson, setViewDataJ
 						<Option key="5" value="Last">
 							Last
 						</Option>
-					</Select>
+					</Select >
 				);
 			}
 		},
@@ -111,7 +119,7 @@ const ParameterTable = memo(function ParameterTable({ viewDataJson, setViewDataJ
 			dataIndex: 'coverage',
 			key: 'coverage',
 			render: (text) => {
-				return <a>View coverage</a>
+				return <a>Display coverage</a>
 			}
 		},
 
@@ -119,9 +127,8 @@ const ParameterTable = memo(function ParameterTable({ viewDataJson, setViewDataJ
 			title: 'Raw Data',
 			dataIndex: 'data',
 			key: 'data',
-			width: 100,
 			render: (text, record) => {
-				return <a onClick={(e) => showRawData(e, record)}>View raw data</a>
+				return <a onClick={(e) => showRawData(e, record)}>Display raw data</a>
 			}
 		},
 		{
@@ -139,80 +146,87 @@ const ParameterTable = memo(function ParameterTable({ viewDataJson, setViewDataJ
 		},
 	];
 
-	const handleChange = (text, record, value, index) => {
-		const tableRecord = [...tableData]
-		const tableJson = [...finalJson?.children]
-		const jsonObj = {
-			ds_name: finalJson?.ds_name,
-			process_step: finalJson?.process_step,
-			uuid: finalJson?.uuid,
+
+	const handleResize = () => {
+		// calculate the new scroll width based on the width of the container
+		const newScrollX = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0) - 200;
+		setScrollX(newScrollX);
+	};
+
+	const handleAggregationChange = (record, value) => {
+		setSelectedRowKey(record.uuid);
+		const aggData = [...selectedRowData];
+
+		const selectedAggData = aggData.find(row => row.uuid === record.uuid);
+		if (!selectedAggData) {
+			return aggData;
 		}
-		const finalProcessStep = updateData(tableJson, record?.uuid, 'process-step', value)
-		const newProcessStep = updateData(tableRecord, record?.uuid, 'process-step', value)
-
-		const objMerge = {
-			ds_name: jsonObj?.ds_name,
-			process_step: jsonObj?.process_step,
-			uuid: jsonObj?.uuid,
-			children: [...finalProcessStep]
-		}
-
-		setTableData(newProcessStep)
-		setFinalJson(objMerge)
-	}
-
-	const updateData = (data, uuid, key, value) => {
-		return data.map((item) => {
-			if (item.uuid === uuid) {
-				return { ...item, [key]: value };
-			} else if (item?.children?.length > 0) {
-				return { ...item, children: updateData(item.children, uuid, key, value) };
+		// Update selected row priority to 1
+		const updatedAggData = aggData.map(row => {
+			if (row.uuid === record.uuid) {
+				return { ...row, aggregation: value?.value != undefined ? value?.value : value };
 			}
-			return item;
+			return row;
 		});
+		setSelectedRowData(updatedAggData)
 	};
 
-	const isModalBatch = () => {
-		const _req = {
-			page: 1,
-			per_page: 25,
-			is_page: false,
-			key: '75833b02-1cec-47b1-b435-6df113555587'
-		}
-
-		const _recordData = {
-			data: tableData,
-		}
-
-		moleculeBatchData(_recordData, _req);
-		setIsBatchTableVisible(true);
-	}
-
-	const handleTableCancel = () => {
-		setIsBatchTableVisible(false);
-	}
-
-	const TableSearch = value => {
-		const tableDataSearch = [...totalMolBatch];
-		const searchTable = tableDataSearch.filter(o =>
-			Object.keys(o).some(k =>
-				String(o[k]).toLowerCase().includes(value.toLowerCase())
-			)
-		);
-		setFilterMolTable(searchTable)
+	const handlePrioritySelection = (record, index) => {
+		setSelectedRowKey(record.uuid);
+		const newData = [...selectedRowData];
+		const priorityData = reorderData(record.uuid, newData);
+		setSelectedRowData(priorityData);
 	};
+
+
+	function reorderData(selectedKey, data) {
+		// Find the selected row
+		const selectedRow = data.find(row => row.uuid === selectedKey);
+		if (!selectedRow) {
+			return data; // Return original data if selected key is not found
+		}
+
+		// Update selected row priority to 1
+		const updatedData = data.map(row => {
+			if (row.uuid === selectedKey) {
+				return { ...row, priority: 1 };
+			}
+			return row;
+		});
+
+		// Sort updated data by priority, excluding the selected row
+		const otherRows = updatedData.filter(row => row.uuid !== selectedKey);
+		const sortedRows = otherRows.sort((a, b) => a.priority - b.priority);
+
+		// Update priorities of the other rows based on their sorted order
+		let currentPriority = 2;
+		sortedRows.forEach(row => {
+			updatedData.find(r => r.uuid === row.uuid).priority = currentPriority;
+			currentPriority++;
+		});
+
+		return updatedData;
+	}
 
 	const rowSelection = {
-		// selectedRowKeys,
-		onChange: (selectedRowKeys, selectedRows) => {
-			setSelectedRow(selectedRows);
+		selectedRowKeys,
+		onChange: (selectedRowKeys, selectedRows,) => {
+			const selectedJson = JSON.parse(JSON.stringify(selectedRows));;
+			const updateData = selectedJson.map((ele, i) => {
+				return {
+					...ele,
+					priority: ++i
+				}
+			})
+			setCounter(counter + 1)
+			setSelectedRowData(updateData);
+			setSelectedRowKeys(selectedRowKeys);
 			setSelectParameter(true);
 			setCardTitle("Done")
 		},
 		getCheckboxProps: () => ({
 			disabled: !selectParameter,
 		}),
-
 	}
 
 	const showRawData = (e, _record) => {
@@ -257,143 +271,15 @@ const ParameterTable = memo(function ParameterTable({ viewDataJson, setViewDataJ
 		}
 	};
 
-
-	const moleculeBatchData = async (_reqMolecule, _params) => {
-		let login_response = JSON.parse(localStorage.getItem("login_details"));
-		const headers = {
-			'Content-Type': 'application/json',
-			"x-access-token": login_response.token ? login_response.token : "",
-			"resource-name": "VIEW",
-		};
-
-		try {
-			const apiRes = await axios.post(BMS_APP_PYTHON_SERVICE + "/view-molecule-parameter-table", _reqMolecule, { params: _params, headers: headers });
-			if (apiRes.status === 200) {
-
-				const data = apiRes?.data?.data
-				const rawColumn = generateBatchColumns(data)
-
-				setMolBatchColumn(rawColumn);
-				setTotalMolBatch(data);
-				setLoadingRaw(false);
-			} else if (apiRes.status === 400 || apiRes.status === 404) {
-				setLoadingRaw(false);
-				dispatch(showNotification("error", apiRes.message));
-			}
-		} catch (error) {
-			setLoadingRaw(false);
-		}
-	};
-
-
-	const generateBatchColumns = (responseData) => {
-		const columns = [{
-			title: 'BATCH',
-			dataIndex: 'batch_num',
-			key: 'batch_num',
-			width: 80,
-		}
-		];
-		const firstRow = responseData[0];
-		for (const key in firstRow) {
-			if (Object.hasOwnProperty.call(firstRow, key)) {
-				if (key !== "batch_num") {
-					columns.push({
-						title: (
-							<Tooltip title={key.toUpperCase()}>
-								<Tag color="geekblue" className="paramtitle--overflow">
-									{key.toUpperCase()}
-								</Tag>
-							</Tooltip>
-						),
-						dataIndex: key,
-						key: `${key + 2}`,
-						width: 150,
-						render: (value, record, rowIndex) => {
-							console.log("value, record, rowIndex", value, record, rowIndex);
-							console.log("selectParameter", !selectParameter);
-							if (selectParameter) {
-								if (value) {
-									return (
-										<Checkbox
-											//disabled={isParamSelected}
-											className="custom-check"
-											onChange={(e) => onChangeBatch(e, record, key)}
-											checked={value}
-										/>
-									);
-								} else if (value === "") {
-									return (
-										<Checkbox
-											//disabled={isParamSelected}
-											className="custom-check"
-											onChange={(e) => onChangeBatch(e, record, key)}
-											checked={value === "" ? false : true}
-										/>
-									);
-								} else {
-									return (
-										<span className="batchClosed">
-											<CloseOutlined />
-										</span>
-									);
-								}
-							} else {
-								if (value) {
-									return (
-										<span className="batchChecked">
-											<CheckOutlined />
-										</span>
-									);
-								} else {
-									return (
-										<span className="batchClosed">
-											<CloseOutlined />
-										</span>
-									);
-								}
-							}
-						}
-					})
-				}
-			}
-		}
-		return columns;
-	};
-
-	const onChangeBatch = (e, record, key) => {
-		console.log("e, record, rowIndex, key", record, key);
-		const molTableData = [...totalMolBatch]
-		const excludeJson = { ...viewDataJson }
-		console.log("molTableData", molTableData, totalMolBatch);
-
-		molTableData.forEach((ele) => {
-			if (ele.batch_num === record.batch_num) {
-				ele[key] = e.target.checked == false ? "" : e.target.checked;
-			}
-		})
-		console.log("molTableData", molTableData, totalMolBatch);
-
-
-		excludeJson?.data?.forEach((ele) => {
-			ele.parameters.forEach((e) => {
-				if (e.title === key) {
-					if (e.batch_exclude.indexOf(record.batch_num) === -1) {
-						e.batch_exclude.push(record.batch_num);
-					}
-				}
-			})
-		})
-		console.log("excludeJson", excludeJson);
-		setViewDataJson(excludeJson)
-		setTotalMolBatch(totalMolBatch);
+	const isBatchModalVisible = () => {
+		setIsModalBatch(true)
 	}
-	console.log("total mol batch", totalMolBatch);
+
 	return (
 		<>
 			<div className="param-table">
 				<div className="param-column">
-					<span onClick={() => isModalBatch()}>
+					<span onClick={() => isBatchModalVisible()}>
 						<Tooltip title="Molecule batch">
 							<RightCircleOutlined className="right-circle" />
 						</Tooltip>
@@ -415,50 +301,16 @@ const ParameterTable = memo(function ParameterTable({ viewDataJson, setViewDataJ
 				/>
 			</div>
 
-			<Modal
-				title={(
-					<Search
-						placeholder='Search'
-						allowClear
-						onSearch={TableSearch}
-						id='molecule_table'
-					/>
-				)}
-				width={700}
-				visible={isBatchTableVisible}
-				onCancel={handleTableCancel}
-				footer={null}
-				className="batch-modal"
-			>
-				<div className="batch-table-block">
-					<Table
-						columns={molBatchColumn}
-						dataSource={totalMolBatch}
-						size="small"
-						scroll={{ y: 450 }}
-						rowClassName={(index) =>
-							index % 2 === 0 ? "table-row-light" : "table-row-dark"
-
-						}
-						rowKey={(record) => record.batch_num}
-					/>
-					<div className="batch-table-footer">
-						{rowDisable ? (<Button
-							onClick={handleTableCancel}
-							type="text"
-							className="custom-primary-btn "
-						>
-							Apply
-						</Button>) : (<Button
-							onClick={handleTableCancel}
-							type="text"
-							className="custom-primary-btn "
-						>
-							Back
-						</Button>)}
-					</div>
-				</div>
-			</Modal>
+			<MoleculeBatch
+				tableData={tableData}
+				isModalBatch={isModalBatch}
+				setIsModalBatch={setIsModalBatch}
+				viewDataJson={viewDataJson}
+				setViewDataJson={setViewDataJson}
+				selectParameter={selectParameter}
+				totalMolBatch={totalMolBatch}
+				setTotalMolBatch={setTotalMolBatch}
+			/>
 
 			<Modal
 				visible={isModalOpen}

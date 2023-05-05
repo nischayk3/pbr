@@ -12,16 +12,10 @@ import "./variable.scss";
 import VariableCard from "./variableCard";
 
 const Variable = ({ viewDataJson, setViewDataJson }) => {
-
-
 	const jsonData = { ...viewDataJson }
 	const obj = jsonData && jsonData?.data[0]?.variables
 	const variableObj = Object.entries(obj);
 
-	console.log("viewDataJson", viewDataJson);
-	console.log("jsonData", jsonData);
-	console.log("variableObj", variableObj);
-	console.log("obj", obj);
 	return (
 		<div className="variable__card--wrapper">
 			<Card
