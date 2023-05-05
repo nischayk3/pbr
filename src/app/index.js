@@ -30,35 +30,38 @@ const App = () => {
 		(state) => state.commonReducer.isError
 	);
 
-	// const getSessionDetail = async () => {
-	// 	try {
-	// 		const sessionres = await getSession()
-	// 		if (sessionres.status === 200) {
-	// 			const data = sessionres['data'];
-	// 			localStorage.setItem('login_details', JSON.stringify(data));
-	// 			localStorage.setItem('user', data?.user_id);
-	// 			localStorage.setItem('username', data?.firstname ? data?.firstname.replaceAll('^"|"$', '') : data?.email_id.replaceAll('^"|"$', ''));
-	// 			localStorage.setItem("user_id", data?.user_id)
+	const getSessionDetail = async () => {
+		try {
+			const sessionres = await getSession()
+			if (sessionres.status === 200) {
+				const data = sessionres['data'];
+				localStorage.setItem('login_details', JSON.stringify(data));
+				localStorage.setItem('user', data?.user_id);
+				localStorage.setItem('username', data?.firstname ? data?.firstname.replaceAll('^"|"$', '') : data?.email_id.replaceAll('^"|"$', ''));
+				localStorage.setItem("user_id", data?.user_id)
 
-	// 			dispatch(showNotification('success', `Logged in as ${data?.email_id}`));
-	// 			if (data?.token != '') {
-	// 				dispatch(sendLoginDetails(data));
-	// 			}
-	// 		} else {
-	// 			dispatch(showNotification("error", 'Login Failed', 'Sorry, an unexpectede error occurred. Please try logging in again.'));
-	// 		}
-	// 	} catch (error) {
-	// 		dispatch(showNotification("error", 'Login Failed', 'Sorry, an unexpectede error occurred. Please try logging in again.'));
-	// 		window.open("https://mi-dev.mareana.com", '_self')
-	// 	}
-	// }
+				dispatch(showNotification('success', `Logged in as ${data?.email_id}`));
+				if (data?.token != '') {
+					dispatch(sendLoginDetails(data));
+				}
+			} else {
+				dispatch(showNotification("error", 'Login Failed', 'Sorry, an unexpectede error occurred. Please try logging in again.'));
+			}
+		} catch (error) {
+			dispatch(showNotification("error", 'Login Failed', 'Sorry, an unexpectede error occurred. Please try logging in again.'));
+			window.open(MDH_APP_PYTHON_SERVICE, '_self')
+		}
+	}
 
 	useEffect(() => {
 		// google analytis initialize
 		if (window.location.host == 'merck-mi-dev.mareana.com' || window.location.host == 'mi-devv3-7.mareana.com') {
 			ReactGA.initialize('G-1WM83NDTY2');
 		}
-		// getSessionDetail();
+
+		if (location.pathname !== '/user/logout') {
+			getSessionDetail();
+		}
 	}, [])
 
 	return (
