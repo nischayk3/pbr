@@ -8,11 +8,14 @@
 
 import { DeleteOutlined, FullscreenExitOutlined, FullscreenOutlined, PlusOutlined } from '@ant-design/icons';
 import CodeEditor from '@uiw/react-textarea-code-editor';
-import { Button, Card, Collapse, Input, List, Modal, Table, Tooltip } from "antd";
-import React, { useState } from "react";
+import { Button, Card, Checkbox, Collapse, Input, List, Modal, Table, Tooltip } from "antd";
+import axios from 'axios';
+import React, { useEffect, useState } from "react";
 import CustomButton from "../../../../../../components/CustomButton/CustomButton";
 import InputField from "../../../../../../components/InputField/InputField";
 import LabelTag from "../../../../../../components/LabelTag";
+import { BMS_APP_PYTHON_SERVICE } from '../../../../../../constants/apiBaseUrl';
+import { generateColumns } from '../../../../../../utils/TableColumns';
 import ParameterTable from "./parameterTable/parameterTable";
 import "./viewParameterSummary.scss";
 const { Panel } = Collapse;
@@ -26,29 +29,32 @@ const ViewParamterSummary = ({ viewDataJson, setViewDataJson, leftPanelCollapsed
 	const [expandParameter, setExpandParameter] = useState(true);
 	const [expandSummary, setExpandSummary] = useState(true);
 	const [selectParameter, setSelectParameter] = useState(false);
-	const [selectedRow, setSelectedRow] = useState([]);
-	const [code, setCode] = useState(
-		`import banana
-
-		class Monkey:
-			# Bananas the monkey can eat.
-			capacity = 10
-			def eat(self, n):
-				"""Make the monkey eat n bananas!"""
-				self.capacity -= n * banana.size
-
-			def feeding_frenzy(self):
-				self.eat(9.25)
-				return "Yum yum"`
-	)
+	const [selectedRowData, setSelectedRowData] = useState([]);
+	const [code, setCode] = useState(``)
+	const [isFunctionEvaluated, setIsFunctionEvaluated] = useState(false);
+	const [counter, setCounter] = useState(1);
+	const [variable, setVariable] = useState([]);
+	const [functionList, setFunctionList] = useState([]);
+	const [evaluateModal, setEvaluateModal] = useState(false);
+	const [evaluateData, setEvaluateData] = useState([]);
+	const [evaluateColumn, setEvaluateColumn] = useState([]);
 
 	const { TextArea } = Input;
+
+	useEffect(() => {
+		const varJson = { ...viewDataJson }
+		const variableArray = Object.keys(varJson?.data[0]?.variables);
+		const funArray = Object.keys(varJson?.data[0]?.functions);
+		setVariable(variableArray)
+		setFunctionList(funArray)
+	}, [viewDataJson])
 
 	const addVariableName = (e, title) => {
 		if (title === "Create variable") {
 			setCardTitle("Select parameter")
 			setVariableName("");
 			setSelectParameter(true);
+			setCounter(1)
 		} else if (title === "Select parameter") {
 			setCardTitle("Select parameter")
 			setVariableName("");
@@ -72,6 +78,7 @@ const ViewParamterSummary = ({ viewDataJson, setViewDataJson, leftPanelCollapsed
 	const handleExpandExit = () => {
 		setExpandParameter(true)
 	}
+
 	const handleExpandSummary = () => {
 		setExpandSummary(false)
 	}
@@ -80,13 +87,6 @@ const ViewParamterSummary = ({ viewDataJson, setViewDataJson, leftPanelCollapsed
 		setExpandSummary(true)
 	}
 
-	const data = [
-		'Variable 1',
-		'Variable 2',
-		'Variable 3',
-		'Variable 4',
-		'Variable 5',
-	];
 	const data1 = [
 		'Function 1',
 		'Function 2',
@@ -124,7 +124,7 @@ const ViewParamterSummary = ({ viewDataJson, setViewDataJson, leftPanelCollapsed
 
 	const createVariable = () => {
 		const jsonData = { ...viewDataJson };
-		const paramObj = { ...selectedRow };
+		const paramObj = { ...selectedRowData };
 
 		jsonData && jsonData?.data.map((ele) => {
 			return ele.variables[variableName] = paramObj
@@ -132,14 +132,77 @@ const ViewParamterSummary = ({ viewDataJson, setViewDataJson, leftPanelCollapsed
 		setViewDataJson(jsonData)
 		setIsModalOpen(!isModalOpen)
 		setCardTitle("Create variable")
-		setSelectedRow([])
+		setSelectedRowData([])
 
 		setRightPanelCollapsed(false);
 		setLeftPanelCollapsed(true);
-
-
 	}
 
+	const functionEvaluation = async (_reqFunction, _params) => {
+		let login_response = JSON.parse(localStorage.getItem("login_details"));
+		const headers = {
+			'Content-Type': 'application/json',
+			"x-access-token": login_response.token ? login_response.token : "",
+			"resource-name": "VIEW",
+		};
+		try {
+			const apiRes = await axios.post(BMS_APP_PYTHON_SERVICE + "/view-evaluate-v2", _reqFunction, { params: _params, headers: headers });
+			if (apiRes.status === 200) {
+				const data = apiRes?.data?.data
+				const evaluateColumn = generateColumns(data)
+				setIsFunctionEvaluated(true)
+				setEvaluateColumn(evaluateColumn)
+				setEvaluateData(data)
+			} else if (apiRes.status === 400 || apiRes.status === 404) {
+				dispatch(showNotification("error", apiRes.message));
+			}
+		} catch (error) {
+			console.log("error", error);
+		}
+	};
+
+	const evaluateFunction = () => {
+		const viewJson = { ...viewDataJson }
+
+		const variable = viewJson.data.map((ele) => {
+			return ele.variables
+		})
+
+		const updateVar = variable[0]
+
+		const updatedVarObj = {}
+		for (const key in updateVar) {
+			updatedVarObj[key] = Object.values(updateVar[key]);
+		}
+
+		const _reqParam = {
+			page: 1,
+			per_page: 25,
+			is_page: false,
+			key: '75833b02-1cec-47b1-b435-6df113555587'
+		}
+		const _req = {
+			functions: {
+				script: code,
+			},
+			variables: updatedVarObj
+		}
+
+		functionEvaluation(_req, _reqParam)
+	}
+
+
+	const saveAsGlobal = (e) => {
+		console.log(`checked = ${e.target.checked}`);
+	}
+
+	const cancelEvalateModal = () => {
+		setEvaluateModal(false);
+	}
+
+	const viewEvalatedData = () => {
+		setEvaluateModal(true);
+	}
 	return (
 		<div className="view-summary__center">
 			{expandParameter && (
@@ -195,10 +258,16 @@ const ViewParamterSummary = ({ viewDataJson, setViewDataJson, leftPanelCollapsed
 						<CustomButton className="custom__btn--dashed" icon={<PlusOutlined />} type="dashed" onClick={handleScriptEditor} >Create function</CustomButton>
 					</div>
 					<ParameterTable
-						cardTitle={cardTitle} setCardTitle={setCardTitle}
-						selectParameter={selectParameter} setSelectParameter={setSelectParameter}
-						viewDataJson={viewDataJson} setViewDataJson={setViewDataJson}
-						selectedRow={selectedRow} setSelectedRow={setSelectedRow}
+						cardTitle={cardTitle}
+						setCardTitle={setCardTitle}
+						selectParameter={selectParameter}
+						setSelectParameter={setSelectParameter}
+						viewDataJson={viewDataJson}
+						setViewDataJson={setViewDataJson}
+						selectedRowData={selectedRowData}
+						setSelectedRowData={setSelectedRowData}
+						counter={counter}
+						setCounter={setCounter}
 					/>
 				</Card>
 			)}
@@ -239,7 +308,10 @@ const ViewParamterSummary = ({ viewDataJson, setViewDataJson, leftPanelCollapsed
 								value={code}
 								language="python"
 								placeholder="Please enter the script"
-								onChange={(evn) => setCode(evn.target.value)}
+								onChange={(evn) => {
+									setCode(evn.target.value);
+									setIsFunctionEvaluated(false)
+								}}
 								padding={15}
 								style={{
 									fontSize: 12,
@@ -247,7 +319,7 @@ const ViewParamterSummary = ({ viewDataJson, setViewDataJson, leftPanelCollapsed
 									fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
 								}}
 							/>
-							<div className="function__logs--wrapper">
+							{/* <div className="function__logs--wrapper">
 								<p>Logs</p>
 								<TextArea
 									value={value}
@@ -258,9 +330,16 @@ const ViewParamterSummary = ({ viewDataJson, setViewDataJson, leftPanelCollapsed
 										maxRows: 10,
 									}}
 								/>
-							</div>
+							</div> */}
 							<div className="evaluate-function__wrapper">
-								<Button className='custom-primary-btn'>Evaluate function</Button>
+
+								<>
+									<Button className='custom-secondary-btn' onClick={evaluateFunction}>Evaluate function</Button>
+									{isFunctionEvaluated && (
+										<Button className='custom-primary-btn' onClick={viewEvalatedData}>Display evaluated function</Button>
+									)}
+								</>
+								<Checkbox onChange={saveAsGlobal}>Save as Global function</Checkbox>
 							</div>
 						</Card>
 						<Card title='Function name' className='custom__card '>
@@ -272,7 +351,7 @@ const ViewParamterSummary = ({ viewDataJson, setViewDataJson, leftPanelCollapsed
 									onChangeInput={(e) => setVariableName(e.target.value)}
 								/>
 								<Button className='custom-primary-btn'>Cancel</Button>
-								<Button className='custom-secondary-btn'>Save function</Button>
+								<Button className='custom-secondary-btn'>Save</Button>
 							</div>
 						</Card>
 					</div>
@@ -281,11 +360,18 @@ const ViewParamterSummary = ({ viewDataJson, setViewDataJson, leftPanelCollapsed
 							<Panel header="Variable" key="1">
 								<List
 									size="small"
-									dataSource={data}
+									dataSource={variable}
 									renderItem={(item) => <List.Item>{item}</List.Item>}
 								/>
 							</Panel>
-							<Panel header="Function" key="2">
+							<Panel header="Parameter function" key="2">
+								<List
+									size="small"
+									dataSource={functionList}
+									renderItem={(item) => <List.Item>{item}</List.Item>}
+								/>
+							</Panel>
+							<Panel header="Global function" key="3">
 								<List
 									size="small"
 									dataSource={data1}
@@ -295,6 +381,25 @@ const ViewParamterSummary = ({ viewDataJson, setViewDataJson, leftPanelCollapsed
 						</Collapse>
 					</Card>
 				</div>
+			</Modal>
+			<Modal
+				visible={evaluateModal}
+				width={1200}
+				title="Evaluate data"
+				footer={null}
+				onCancel={cancelEvalateModal}
+			>
+				<Table
+					rowClassName={(record, index) =>
+						index % 2 === 0 ? "table-row-light" : "table-row-dark"
+					}
+					columns={evaluateColumn}
+					dataSource={evaluateData}
+					pagination={false}
+					//rowKey={(record) => record.uuid}
+					//loading={loadingRaw}
+					scroll={{ x: scrollX, y: 500 }}
+				/>
 			</Modal>
 		</div >
 	)
