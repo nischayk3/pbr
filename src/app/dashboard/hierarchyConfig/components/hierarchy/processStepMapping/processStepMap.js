@@ -71,7 +71,14 @@ const ProcessStepMap = memo(function ProcessStepMap({ drugName, activeTab, final
 		} else if (apiRes.status === 404) {
 			setFinalJson({})
 			setProcessData([])
-			dispatch(showNotification("error", apiRes.message));
+			const _req = {
+				data: {
+					ds_name: drugName,
+				},
+				keyword: "ds_name",
+				main_json: {},
+			}
+			processStepDsName(_req);
 		} else {
 			setFinalJson({})
 			setProcessData([])
