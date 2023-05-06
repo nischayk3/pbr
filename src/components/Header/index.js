@@ -1,8 +1,9 @@
 import { BellOutlined, CaretUpOutlined, DownOutlined, LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Button, Layout, Modal, Dropdown, Space, Divider, } from 'antd';
+import { Avatar, Button, Dropdown, Layout, Modal, Space } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import menuIcon from '../../assets/icons/menuicon.svg';
 import mareanaLogo from '../../assets/mareana_logo_svg.svg';
 import { adenabled } from '../../config/config';
 import { MDH_APP_PYTHON_SERVICE } from '../../constants/apiBaseUrl';
@@ -11,7 +12,6 @@ import { getUploadProfile } from '../../duck/actions/loginAction';
 import { getUserProfile, logoutUrl } from "../../services/loginService";
 import Auth from '../../utils/auth';
 import './style.scss';
-import menuIcon from '../../assets/icons/menuicon.svg'
 
 const { Header } = Layout;
 // const { Search } = Input;
@@ -80,7 +80,7 @@ const HeaderBar = () => {
 		localStorage.removeItem('username');
 
 		window.open(`${logoutUrl}`, '_self');
-		window.open(`${logoutUrl}?redirect_url=${MDH_APP_PYTHON_SERVICE}/mi/%23/user/logout`, '_self');
+		window.open(`${logoutUrl}?redirect_url=${MDH_APP_PYTHON_SERVICE}/%23/user/logout`, '_self');
 	}
 
 	const wrapperRef = useRef(null);
@@ -114,7 +114,7 @@ const HeaderBar = () => {
 					label: (
 						<div>
 							<Avatar
-								style={{ marginRight: '10px'}}
+								style={{ marginRight: '10px' }}
 								size={18}
 							>
 							</Avatar>
@@ -146,9 +146,9 @@ const HeaderBar = () => {
 							</div>
 						)}
 					>
-						<img src={menuIcon} height='39' alt='menu' style={{ marginBottom: '-15px'}} />
+						<img src={menuIcon} height='39' alt='menu' style={{ marginBottom: '-15px' }} />
 					</Dropdown>}
-					<img src={mareanaLogo} height='39' alt='menu' style={{ marginLeft: '30px'}} />
+					<img src={mareanaLogo} height='39' alt='menu' style={{ marginLeft: '30px' }} />
 				</div>
 			</div>
 			<div className="subheader">
