@@ -168,8 +168,13 @@ span.statusClosed {
 
 		.evaluate-function__wrapper {
 			display: flex;
-			flex-direction: row-reverse;
 			margin: 24px 0;
+			gap: 20px;
+			justify-content: space-between;
+
+			.ant-checkbox-wrapper {
+				padding: 4px 0;
+			}
 		}
 	}
 

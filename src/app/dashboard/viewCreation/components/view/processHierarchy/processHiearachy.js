@@ -144,8 +144,8 @@ const ProcessHierarchy = ({ viewDataJson, setViewDataJson }) => {
 		const obj = {
 			batch_exclude: [],
 			aggregation: "",
-			priority: 0,
 			coverage: "",
+			priority: null,
 			dataset_name: node?.dataset_name,
 			n_mat_no: node?.n_mat_no,
 			n_plant: node?.n_mat_no,
@@ -156,7 +156,7 @@ const ProcessHierarchy = ({ viewDataJson, setViewDataJson }) => {
 			uuid: node?.uuid
 		}
 
-		const updateParam = nodeParam && nodeParam?.data.map((ele) => {
+		nodeParam && nodeParam?.data.map((ele) => {
 			return ele.parameters = [...ele.parameters, obj]
 		});
 
