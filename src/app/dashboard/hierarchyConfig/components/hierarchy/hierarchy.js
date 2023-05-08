@@ -274,7 +274,6 @@ const Hierarchy = () => {
 		/* istanbul ignore next */
 		if (activeTab == "Process steps") {
 			setCallbackStructure(true)
-
 		}
 
 		/* istanbul ignore next */
@@ -289,12 +288,48 @@ const Hierarchy = () => {
 	};
 
 	const callbackTree = (treeData) => {
-		const folderStructure = {
-			ds_name: hierarchyName,
-			process_step: treeData && treeData[0]
-		}
-		saveTreeStructure(folderStructure);
+		console.log("countqqqqq");
+		checkTitles(treeData[0])
 	}
+
+	/**
+	 * Check title is empty ot not
+	 *
+	 * */
+
+	const checkTitles = (obj) => {
+		if (!checkTitleNotEmpty(obj)) {
+			// at least one title is empty, do not call API
+			dispatch(showNotification("error", "Please enter process step name before save hierarchy"));
+			setCallbackStructure(false);
+		} else {
+			// all titles are non-empty, call API
+			const folderStructure = {
+				ds_name: hierarchyName,
+				process_step: obj
+			}
+			saveTreeStructure(folderStructure);
+			setCallbackStructure(false);
+			// Call your API here
+		}
+	}
+
+	const checkTitleNotEmpty = (obj) => {
+		if (typeof obj !== 'object' || obj === null) {
+			return true;
+		}
+		if ('title' in obj && obj.title === '') {
+			return false;
+		}
+		// recursively check child objects
+		for (let key in obj) {
+			if (!checkTitleNotEmpty(obj[key])) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 
 	/**
 	 * Folder Struture Save API CALL
@@ -302,6 +337,7 @@ const Hierarchy = () => {
 
 	const saveTreeStructure = async (_payload) => {
 		const apiRes = await updateProcessStepFolder(_payload)
+		setCallbackStructure(false)
 		if (apiRes.status === 200) {
 			dispatch(showNotification("success", `Drug substance ${hierarchyName} has been saved successfully.`));
 		} else if (apiRes.status === 400) {
