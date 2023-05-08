@@ -5,24 +5,33 @@
  * @Last Modified - 20 April, 2023
  * @Last Changed By - Dinesh
  */
-
-import { DeleteOutlined, FullscreenExitOutlined, FullscreenOutlined, PlusOutlined } from '@ant-design/icons';
+import {
+	CheckCircleOutlined,
+	CheckOutlined,
+	CloseOutlined,
+	DeleteOutlined,
+	FullscreenExitOutlined, FullscreenOutlined, PlusOutlined
+} from '@ant-design/icons';
 import CodeEditor from '@uiw/react-textarea-code-editor';
-import { Button, Card, Checkbox, Collapse, Input, List, Modal, Table, Tooltip } from "antd";
+import { Alert, Button, Card, Checkbox, Collapse, List, Modal, Table, Tooltip } from "antd";
 import axios from 'axios';
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import CustomButton from "../../../../../../components/CustomButton/CustomButton";
 import InputField from "../../../../../../components/InputField/InputField";
 import LabelTag from "../../../../../../components/LabelTag";
 import { BMS_APP_PYTHON_SERVICE } from '../../../../../../constants/apiBaseUrl';
+import { showNotification } from '../../../../../../duck/actions/commonActions';
 import { generateColumns } from '../../../../../../utils/TableColumns';
 import ParameterTable from "./parameterTable/parameterTable";
 import "./viewParameterSummary.scss";
+
 const { Panel } = Collapse;
 
 const ViewParamterSummary = ({ viewDataJson, setViewDataJson, leftPanelCollapsed, setLeftPanelCollapsed, rightPanelCollapsed, setRightPanelCollapsed }) => {
 	const [cardTitle, setCardTitle] = useState("Create variable");
 	const [variableName, setVariableName] = useState("");
+	const [funName, setFunName] = useState("");
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [value, setValue] = useState('');
@@ -38,8 +47,13 @@ const ViewParamterSummary = ({ viewDataJson, setViewDataJson, leftPanelCollapsed
 	const [evaluateModal, setEvaluateModal] = useState(false);
 	const [evaluateData, setEvaluateData] = useState([]);
 	const [evaluateColumn, setEvaluateColumn] = useState([]);
+	const [isLog, setIsLog] = useState(false);
+	const [funSaveSuccefull, setFunSaveSuccefull] = useState(true);
+	const [tableData, setTableData] = useState([]);
+	const [summaryColumn, setSummaryColumn] = useState([]);
 
-	const { TextArea } = Input;
+
+	const dispatch = useDispatch();
 
 	useEffect(() => {
 		const varJson = { ...viewDataJson }
@@ -48,6 +62,14 @@ const ViewParamterSummary = ({ viewDataJson, setViewDataJson, leftPanelCollapsed
 		setVariable(variableArray)
 		setFunctionList(funArray)
 	}, [viewDataJson])
+
+	{
+		funSaveSuccefull ? (
+			setTimeout(() => {
+				setFunSaveSuccefull(false)
+			}, 8000)
+		) : null
+	}
 
 	const addVariableName = (e, title) => {
 		if (title === "Create variable") {
@@ -115,13 +137,6 @@ const ViewParamterSummary = ({ viewDataJson, setViewDataJson, leftPanelCollapsed
 		},
 	]
 
-	const [tableData, setTableData] = useState([
-		{
-			"batch": "ABL2215",
-			"FUNCTION_1": "",
-		}
-	]);
-
 	const createVariable = () => {
 		const jsonData = { ...viewDataJson };
 		const paramObj = { ...selectedRowData };
@@ -148,13 +163,22 @@ const ViewParamterSummary = ({ viewDataJson, setViewDataJson, leftPanelCollapsed
 		try {
 			const apiRes = await axios.post(BMS_APP_PYTHON_SERVICE + "/view-evaluate-v2", _reqFunction, { params: _params, headers: headers });
 			if (apiRes.status === 200) {
-				const data = apiRes?.data?.data
-				const evaluateColumn = generateColumns(data)
+				const resData = apiRes?.data?.data
+				const evalColumn = generateColumns(resData)
 				setIsFunctionEvaluated(true)
-				setEvaluateColumn(evaluateColumn)
-				setEvaluateData(data)
-			} else if (apiRes.status === 400 || apiRes.status === 404) {
-				dispatch(showNotification("error", apiRes.message));
+				setEvaluateColumn(evalColumn)
+				setEvaluateData(resData)
+			} else if (apiRes.status === 202) {
+
+				setIsLog(true)
+				setValue(apiRes?.data?.data?.logs)
+				dispatch(showNotification("error", apiRes?.data?.message));
+			} else if (apiRes.status === 400) {
+				console.log("apiRes.message", apiRes?.data?.message);
+				dispatch(showNotification("error", apiRes?.data?.message));
+			} else if (apiRes.status === 404) {
+				console.log("apiRes.message", apiRes?.data?.message);
+				dispatch(showNotification("error", apiRes?.data?.message));
 			}
 		} catch (error) {
 			console.log("error", error);
@@ -203,6 +227,103 @@ const ViewParamterSummary = ({ viewDataJson, setViewDataJson, leftPanelCollapsed
 	const viewEvalatedData = () => {
 		setEvaluateModal(true);
 	}
+
+	/**
+	 * View Summary - get data from evaluation function
+	*/
+
+	const viewSummary = async (_reqFunction, _params, script) => {
+		let login_response = JSON.parse(localStorage.getItem("login_details"));
+		const headers = {
+			'Content-Type': 'application/json',
+			"x-access-token": login_response.token ? login_response.token : "",
+			"resource-name": "VIEW",
+		};
+		try {
+			const apiRes = await axios.post(BMS_APP_PYTHON_SERVICE + "/view-summary", _reqFunction, { params: _params, headers: headers });
+			if (apiRes.status === 200) {
+				const data = apiRes?.data?.data
+				const summaryCol = generateViewSummaryColumns(data)
+				console.log("summaryCol", summaryCol, data);
+				setSummaryColumn(summaryCol && summaryCol)
+				setTableData(data)
+				setFunSaveSuccefull(true)
+				const funJson = { ...viewDataJson }
+				funJson.data.map((ele) => {
+					return ele.functions[funName] = script
+				})
+				setViewDataJson(funJson)
+			} else if (apiRes.status === 400 || apiRes.status === 404) {
+				dispatch(showNotification("error", apiRes.message));
+			}
+		} catch (error) {
+			console.log("error", error);
+		}
+	};
+
+	const saveFunction = () => {
+		const viewJson = { ...viewDataJson }
+		const variable = viewJson.data.map((ele) => {
+			return ele.variables
+		})
+		const updateVar = variable[0]
+		const updatedVariableObj = {}
+		for (const key in updateVar) {
+			updatedVariableObj[key] = Object.values(updateVar[key]);
+		}
+		const _reqParam = {
+			page: 1,
+			per_page: 25,
+			is_page: false,
+			key: '75833b02-1cec-47b1-b435-6df113555587'
+		}
+		const _req = {
+			functions: {
+				[funName]: code,
+			},
+			variables: updatedVariableObj
+		}
+		viewSummary(_req, _reqParam, code)
+	}
+	const generateViewSummaryColumns = (responseData) => {
+		const columns = [{
+			title: 'BATCH',
+			dataIndex: 'batch_num',
+			key: 'batch_num',
+			width: 80,
+		}];
+		const firstRow = responseData[0];
+		for (const key in firstRow) {
+			if (Object.hasOwnProperty.call(firstRow, key)) {
+				if (key !== 'batch_num') {
+					columns.push({
+						title: key.toUpperCase().replace(/_/g, " "),
+						dataIndex: key,
+						key: key,
+						width: 130,
+						render: (value) => {
+							console.log("value", value);
+							if (value) {
+								return (
+									<span className="batchChecked" >
+										<CheckOutlined />
+									</span >
+								)
+							} else {
+								return (
+									<span className="batchClosed">
+										<CloseOutlined />
+									</span>
+								)
+							}
+						}
+					})
+				}
+			}
+		}
+		return columns;
+	};
+	console.log("viewwww json", viewDataJson);
 	return (
 		<div className="view-summary__center">
 			{expandParameter && (
@@ -231,11 +352,10 @@ const ViewParamterSummary = ({ viewDataJson, setViewDataJson, leftPanelCollapsed
 							rowClassName={(record, index) =>
 								index % 2 === 0 ? "table-row-light" : "table-row-dark"
 							}
-							columns={columns}
+							columns={summaryColumn}
 							dataSource={tableData}
 							pagination={false}
 							rowKey={(record) => record.uuid}
-
 						/>
 					</div>
 				</Card>
@@ -303,38 +423,48 @@ const ViewParamterSummary = ({ viewDataJson, setViewDataJson, leftPanelCollapsed
 			>
 				<div className="code-editor__wraper">
 					<div className="code-editor__function--wrapper">
-						<Card title='Script Editor' className='custom__card '>
-							<CodeEditor
-								value={code}
-								language="python"
-								placeholder="Please enter the script"
-								onChange={(evn) => {
-									setCode(evn.target.value);
-									setIsFunctionEvaluated(false)
-								}}
-								padding={15}
-								style={{
-									fontSize: 12,
-									backgroundColor: "#f5f5f5",
-									fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
-								}}
-							/>
-							{/* <div className="function__logs--wrapper">
-								<p>Logs</p>
-								<TextArea
-									value={value}
-									onChange={(e) => setValue(e.target.value)}
-									placeholder="Logs"
-									autoSize={{
-										minRows: 3,
-										maxRows: 10,
+						<Card title='Script Editor' className='custom__card'>
+							{funSaveSuccefull ? (
+								<div className="function-alert">
+									<p>{`Function '${funName}' created `}</p>
+									<span>
+										<CheckCircleOutlined />
+									</span>
+								</div>
+							) : (
+								<CodeEditor
+									value={code}
+									language="python"
+									placeholder="Please enter the script"
+									onChange={(evn) => {
+										setCode(evn.target.value);
+										setIsFunctionEvaluated(false);
+										setIsLog(false);
+									}}
+									padding={15}
+									style={{
+										border: ".5px solid #eee",
+										fontSize: 12,
+										backgroundColor: "#f5f5f5",
+										fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
 									}}
 								/>
-							</div> */}
-							<div className="evaluate-function__wrapper">
+							)}
 
+							{isLog && (
+								<div className="function__logs--wrapper">
+									<p>Logs</p>
+									<Alert
+										message="Error: An Uncaught Error"
+										description={value}
+										type="error"
+									/>
+								</div>
+							)}
+
+							<div className="evaluate-function__wrapper">
 								<>
-									<Button className='custom-secondary-btn' onClick={evaluateFunction}>Evaluate function</Button>
+									<Button className='custom-secondary-btn' disabled={code === ""} onClick={evaluateFunction}>Evaluate function</Button>
 									{isFunctionEvaluated && (
 										<Button className='custom-primary-btn' onClick={viewEvalatedData}>Display evaluated function</Button>
 									)}
@@ -347,11 +477,11 @@ const ViewParamterSummary = ({ viewDataJson, setViewDataJson, leftPanelCollapsed
 								<InputField
 									// label="Variable name"
 									placeholder="Enter function name"
-									value={variableName}
-									onChangeInput={(e) => setVariableName(e.target.value)}
+									value={funName}
+									onChangeInput={(e) => setFunName(e.target.value)}
 								/>
 								<Button className='custom-primary-btn'>Cancel</Button>
-								<Button className='custom-secondary-btn'>Save</Button>
+								<Button className='custom-secondary-btn' disabled={funName === ""} onClick={saveFunction}>Save</Button>
 							</div>
 						</Card>
 					</div>

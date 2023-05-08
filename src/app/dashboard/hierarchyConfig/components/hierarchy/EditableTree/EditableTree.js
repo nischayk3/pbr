@@ -43,19 +43,18 @@ class EditableTree extends Component {
 	componentWillMount() {
 		const { location, treeData } = this.props;
 		const params = queryString.parse(location.search);
-		console.log("check params", params);
 		this.setState({ params: params });
 		if (Object.keys(params) && Object.keys(params).length > 0) {
 			if (params?.load) {
-				console.log("check params1", params);
 				this.setState({ isVisible: true, treeData: treeData });
 			}
 		}
 	}
 
-	UNSAFE_componentWillReceiveProps(nextProps) {
-		if (this.props.callbackStructure !== nextProps.callbackStructure) {
-			return this.props.callbackData(this.state.treeData);
+	componentDidUpdate(prevProps) {
+		if (prevProps.callbackStructure !== this.props.callbackStructure) {
+			console.log("calllll", this.state.treeData);
+			this.props.callbackData(this.state.treeData);
 		}
 	}
 
@@ -119,7 +118,6 @@ class EditableTree extends Component {
 				eventName: 'addNode',
 				visible: false,
 			},
-
 			{
 				value: 'Edit node',
 				icon: <EditOutlined />,
@@ -148,17 +146,12 @@ class EditableTree extends Component {
 		}
 	}
 
-
-
 	render() {
 		const { treeData, isVisible, menuPosition, showMenu, items, isEdit, } = this.state;
 		const { drugName, } = this.props;
 		const getNodeKey = ({ treeIndex }) => treeIndex;
-
-		console.log("this.state", this.state);
 		return (
 			<>
-
 				<div className="sortable-tree" style={{ height: 'calc(100vh - 350px)', overflowY: 'auto' }}>
 					<CustomButton className="custom__btn--dashed" icon={<PlusOutlined />} disabled={isVisible} type="dashed" onClick={(e) => this.showTree()}>Create new process</CustomButton>
 					<div className="sortable-tree__tree">
