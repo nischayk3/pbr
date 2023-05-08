@@ -7,7 +7,7 @@ let login_response = JSON.parse(localStorage.getItem("login_details"));
 const request_headers = {
 	"content-type": "application/json",
 	"x-access-token": login_response.token ? login_response.token : "",
-	"resource-name": "USER_REPORT",
+	"resource-name": "AUDIT_TRIAL",
 };
 
 export const auditDataChange = (request) => {
