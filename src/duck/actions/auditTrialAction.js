@@ -3,10 +3,18 @@ import {
 } from '../../constants/apiBaseUrl';
 import Service from '../../services/AjaxService';
 
+let login_response = JSON.parse(localStorage.getItem("login_details"));
+const request_headers = {
+	"content-type": "application/json",
+	"x-access-token": login_response.token ? login_response.token : "",
+	"resource-name": "AUDIT_TRIAL",
+};
+
 export const auditDataChange = (request) => {
 	return Service.post(
 		BMS_APP_PYTHON_SERVICE + '/audit-data-change',
-		request
+		request,
+		request_headers
 	).then(
 		(response) => {
 			return response.data;
