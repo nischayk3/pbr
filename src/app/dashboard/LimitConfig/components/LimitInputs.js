@@ -225,9 +225,10 @@ const LimitInputs = ({ expandedMol, selectedMol, getMoleData, editable, totalVie
 					}
 				}),
 		},
+		// added start date and end date as columns for validity.
 		{
-			title: 'Validity Date',
-			dataIndex: 'validity_date',
+			title: 'Start Validity Date',
+			dataIndex: 'start_valid_date',
 			key: 'vod',
 
 			render: (text, record) =>
@@ -235,13 +236,13 @@ const LimitInputs = ({ expandedMol, selectedMol, getMoleData, editable, totalVie
 					if (record.key === data.key) {
 						if (!editable) {
 							/* istanbul ignore next */
-							if (!data.validity_date) {
+							if (!data.start_valid_date) {
 								return "";
 							} else {
 								return (
 									<span>
 										<CalendarOutlined style={{ color: '#6C63FF', display: "inline-block", marginRight: '10px' }} />
-										<p style={{ margin: "0", display: "inline-block" }}>{moment(data.validity_date).format('YYYY-MM-DD')}</p>
+										<p style={{ margin: "0", display: "inline-block" }}>{moment(data.start_valid_date).format('YYYY-MM-DD')}</p>
 									</span>
 								);
 							}
@@ -250,12 +251,49 @@ const LimitInputs = ({ expandedMol, selectedMol, getMoleData, editable, totalVie
 						return (
 							<DatePicker
 								type="text"
-								name="validity_date"
+								name="start_valid_date"
 								defaultValue={
-									data.validity_date ? moment(data.validity_date) : ""
+									data.start_valid_date ? moment(data.start_valid_date) : ""
 								}
 								onChange={(dateString) =>
-									handleChange(index, "", dateString, "date")
+									handleChange(index, "", dateString, "start_valid_date")
+								}
+							/>
+						);
+					}
+				}),
+		},
+		{
+			title: 'End Validity Date',
+			dataIndex: 'end_valid_date',
+			key: 'vod',
+
+			render: (text, record) =>
+				paramData.map((data, index) => {
+					if (record.key === data.key) {
+						if (!editable) {
+							/* istanbul ignore next */
+							if (!data.end_valid_date) {
+								return "";
+							} else {
+								return (
+									<span>
+										<CalendarOutlined style={{ color: '#6C63FF', display: "inline-block", marginRight: '10px' }} />
+										<p style={{ margin: "0", display: "inline-block" }}>{moment(data.end_valid_date).format('YYYY-MM-DD')}</p>
+									</span>
+								);
+							}
+						}
+
+						return (
+							<DatePicker
+								type="text"
+								name="end_valid_date"
+								defaultValue={
+									data.end_valid_date ? moment(data.end_valid_date) : ""
+								}
+								onChange={(dateString) =>
+									handleChange(index, "", dateString, "end_valid_date")
 								}
 							/>
 						);
@@ -310,8 +348,8 @@ const LimitInputs = ({ expandedMol, selectedMol, getMoleData, editable, totalVie
 	/* istanbul ignore next */
 	const handleChange = async (index, event, dateString, type) => {
 		const rowsInput = [...paramData];
-		if (dateString && type === "date") {
-			rowsInput[index]["validity_date"] = dateString._d.toLocaleDateString();
+		if (dateString && (type === "end_valid_date" || type === "start_valid_date")) {	
+			rowsInput[index][type] = dateString._d.toISOString();
 		} else if (type === "limits") {
 			const { name, value } = event.target;
 			rowsInput[index][name] = value;
@@ -397,7 +435,8 @@ const LimitInputs = ({ expandedMol, selectedMol, getMoleData, editable, totalVie
 			"parameters": '',
 			"site": "",
 			"to_": "",
-			"validity_date": "",
+			"start_valid_date": "",
+			"end_valid_date": "",
 			"view_disp_id": "",
 			"view_version": '',
 			"parameter_class": [],
