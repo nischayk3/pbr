@@ -302,6 +302,16 @@ const LimitTable = () => {
 
 				return;
 			}
+			// added validation for chekcing end date is greater than start date
+			if(moment(limits?.start_valid_date).isAfter(limits?.end_valid_date)) {
+				flag = true
+				dispatch(
+					showNotification(
+						"error",
+						"End validity date should not be less than start validity date"
+					)
+				);
+			}
 			if (Number(limits.from_) && Number(limits.to_)) {
 				if (Number(limits.from_) >= Number(limits.to_)) {
 					flag = true;
