@@ -57,12 +57,14 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
 		searchValue: "",
 		chartVersion: 0,
 	});
+	// sgtate for batch filters
 	const [batchFilters, setBatchFilters] = useState({
 		site: null,
 		startDate: null,
 		endDate: null,
 		time: "",
 		duration: null,
+		is_gxp: null,
 		unApproved: 0,
 	});
 
@@ -342,6 +344,8 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
 				new Date(batchFilters.endDate).toISOString()
 				: "";
 			ele.data_filter.site = batchFilters.site ? batchFilters.site : "";
+			// setting up gxp value while sending in the chart json
+			ele.is_gxp = batchFilters.is_gxp;
 		});
 		setPostChartData({ ...postChartData, data: newArr });
 		getFilterData();
@@ -366,6 +370,8 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
 				setBatchFilters({
 					...batchFilters,
 					unApproved: ele.data_filter.unapproved_data,
+					// setting up gxp value
+					is_gxp: ele?.is_gxp
 				});
 				setCoverageTableData(ele.extras.coverage);
 			});
@@ -459,7 +465,7 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
 			<Divider />
 			{postChartData && postChartData.data && postChartData.data[0].view_id ? (
 				<>
-					<Row gutter={24} className="filter">
+				<Row gutter={24} className="filter">
 						<Col span={11}>
 							<Select
 								placeholder="Site"
@@ -478,7 +484,9 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
 									})}
 							</Select>
 						</Col>
-						<Col span={13} className="unapproved">
+					</Row>
+					<Row gutter={24} className="filter">
+						<Col span={17} className="unapproved">
 							<label>Show unapproved data</label>&nbsp;&nbsp;
 							<Switch
 								type="primary"
@@ -488,6 +496,20 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
 									setBatchFilters({
 										...batchFilters,
 										unApproved: e === true ? 1 : 0,
+									})
+								}
+							/>
+						</Col>
+						<Col span={7} className="unapproved">
+							<label>GXP</label>&nbsp;&nbsp;
+							<Switch
+								type="primary"
+								size="small"
+								checked={batchFilters.is_gxp}
+								onChange={(e) =>
+									setBatchFilters({
+										...batchFilters,
+										is_gxp: e,
 									})
 								}
 							/>

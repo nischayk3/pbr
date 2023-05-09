@@ -54,7 +54,7 @@ export const getRuleList = (request) => {
 //get chart plot data
 export const postChartPlotData = (_queryParam) => {
 	return Service.post(
-		BMS_APP_PYTHON_SERVICE + "/chart-object",
+		BMS_APP_PYTHON_SERVICE + "/chart-object-v2",
 		_queryParam,
 		_reqheader('chart')
 	).then(
@@ -70,7 +70,7 @@ export const postChartPlotData = (_queryParam) => {
 //save chart data
 export const saveChartPlotData = (_queryParam) => {
 	return Service.put(
-		BMS_APP_PYTHON_SERVICE + "/chart-object",
+		BMS_APP_PYTHON_SERVICE + "/chart-object-v2",
 		_queryParam,
 		_reqheader('chart')
 	).then(
@@ -86,7 +86,7 @@ export const saveChartPlotData = (_queryParam) => {
 //get chart data
 export const getChartPlotData = (_queryParam, resource) => {
 	return Service.get(
-		BMS_APP_PYTHON_SERVICE + "/chart-object",
+		BMS_APP_PYTHON_SERVICE + "/chart-object-v2",
 		_queryParam,
 		_reqheader(resource)
 	).then(
