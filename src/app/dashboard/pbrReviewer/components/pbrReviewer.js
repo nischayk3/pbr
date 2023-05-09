@@ -610,10 +610,10 @@ function PbrReviewer() {
 						style={{ color: "#1890ff" }}
 						onClick={() => {
 							if (record?.table_value === null) {
-								window.open(`/#/dashboard/pbr_update?id=${record.id}&temp_disp_id=${record.template_id}&version=${record.template_version
+								window.open(`/mi/#/dashboard/pbr_update?id=${record.id}&temp_disp_id=${record.template_id}&version=${record.template_version
 									}&param_name=${record.param_name}`)
 							} else {
-								window.open(`/#/dashboard/pbr_table_reviewer?id=${record.id}&temp_disp_id=${record.template_id}&version=${record.template_version
+								window.open(`/mi/#/dashboard/pbr_table_reviewer?id=${record.id}&temp_disp_id=${record.template_id}&version=${record.template_version
 									}&param_name=${record.param_name}`)
 							}
 
