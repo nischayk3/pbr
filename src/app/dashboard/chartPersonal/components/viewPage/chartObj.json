@@ -98,6 +98,7 @@
 			"exclusions": [],
 			"violations": [],
 			"thresholds": [],
+			"is_gxp": true,
 			"limits": {
 				"control": [],
 				"warning": [],
